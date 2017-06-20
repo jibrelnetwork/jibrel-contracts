@@ -1,0 +1,13 @@
+dist: trusty
+sudo: false
+group: beta
+language: node_js
+node_js:
+  - "6"
+cache:
+  yarn: true
+script:
+  - testrpc > /dev/null &
+  - truffle test
+after_script:
+  - yarn run coveralls
