@@ -103,6 +103,23 @@ contract Manageable is Ownable {
    * @param _permissionName string  Permission name
    * @return True if manager has been granted needed permission
    */
+  function isLicenseObtained(
+    address _manager, string _permissionName
+  )
+    constant
+    onlyValidAddress(_manager)
+    onlyValidPermissionName(_permissionName)
+    returns (bool)
+  {
+    return managerPermissions[_manager][_permissionName];
+  }
+
+  /**
+   * @dev Function to check if the manager can perform the action or not
+   * @param _manager        address Manager`s address
+   * @param _permissionName string  Permission name
+   * @return True if manager is enabled and has been granted needed permission
+   */
   function isManagerAllowed(
     address _manager, string _permissionName
   )
