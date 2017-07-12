@@ -34,7 +34,7 @@ contract('Manageable', (accounts) => {
 
     isManagerAllowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     assert.equal(isManagerAllowed, true);
-    await manageableContract.cancelManagerPermission.sendTransaction(manager, 'permission_02', { from: owner });
+    await manageableContract.revokeManagerPermission.sendTransaction(manager, 'permission_02', { from: owner });
     isManagerAllowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     assert.equal(isManagerAllowed, false);
 
