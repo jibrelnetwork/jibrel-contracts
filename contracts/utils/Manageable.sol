@@ -156,7 +156,7 @@ contract Manageable is Ownable {
   /**
    * @dev Modifier to use in derived contracts
    */
-  modifier onlyManager(string _permissionName) {
+  modifier onlyAllowedManager(string _permissionName) {
     require(isManagerAllowed(msg.sender, _permissionName) == true);
     _;
   }
