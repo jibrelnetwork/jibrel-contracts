@@ -1,9 +1,10 @@
 const Manageable = artifacts.require('Manageable.sol');
 
+
 contract('Manageable', (accounts) => {
   let manageableContract;
 
-  const owner = accounts[0];
+  const owner   = accounts[0];
   const manager = accounts[1];
 
   beforeEach(async () => {
@@ -48,4 +49,6 @@ contract('Manageable', (accounts) => {
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     assert.equal(isManagerEnabled, false);
   });
+
+  // todo add tests that check exceptions for not-authorised actions
 });
