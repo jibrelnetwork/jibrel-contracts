@@ -1,7 +1,6 @@
-pragma solidity ^0.4.11;
-
-
 /* Author: Victor Mezrin  victor@mezrin.com */
+
+pragma solidity ^0.4.11;
 
 
 import "../zeppelin/ownership/Ownable.sol";
@@ -10,10 +9,20 @@ import "../zeppelin/ownership/Ownable.sol";
 /**
  * @title Manageable
  * @dev Contract that allows to grant permissions to any address
+ * @dev In real life we are no able to perform all actions with just one Ethereum address
+ * @dev because risks are too high.
+ * @dev Instead owner delegates rights to manage an contract to the different addresses and
+ * @dev stay able to revoke permissions at any time.
  */
 contract Manageable is Ownable {
-  mapping (address => bool) managerEnabled;
-  mapping (address => mapping (string => bool)) managerPermissions;
+
+  /* Storage */
+
+  mapping (address => bool) managerEnabled;  // hard switch for a manager - on/off
+  mapping (address => mapping (string => bool)) managerPermissions;  // detailed info about manager`s permissions
+
+
+  /* Events */
 
   event ManagerEnabledEvent(address indexed manager);
   event ManagerDisabledEvent(address indexed manager);
@@ -48,7 +57,7 @@ contract Manageable is Ownable {
   }
 
   /**
-   * @dev Function to grant new permission to the existing manager
+   * @dev Function to grant new permission to the manager
    * @param _manager        address Existing manager
    * @param _permissionName string  Granted permission name
    */
@@ -67,12 +76,12 @@ contract Manageable is Ownable {
   }
 
   /**
-   * @dev Function to cancel permission of the existing manager
+   * @dev Function to revoke permission of the manager
    * @param _manager        address Existing manager
    * @param _permissionName string  Revoked permission name
    */
   function revokeManagerPermission(
-    address _manager, string _managerPermission
+    address _manager, string _permissionName
   )
     onlyOwner
     onlyValidAddress(_manager)
@@ -103,7 +112,7 @@ contract Manageable is Ownable {
    * @param _permissionName string  Permission name
    * @return True if manager has been granted needed permission
    */
-  function isLicenseObtained(
+  function isPermissionGranted(
     address _manager, string _permissionName
   )
     constant
@@ -138,7 +147,7 @@ contract Manageable is Ownable {
    * @dev Modifier to check manager address
    */
   modifier onlyValidAddress(address _manager) {
-    require(_manager != 0x0);
+    require(_manager != address(0x0));
     _;
   }
 
