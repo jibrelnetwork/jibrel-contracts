@@ -1,7 +1,6 @@
-pragma solidity ^0.4.11;
-
-
 /* Author: Victor Mezrin  victor@mezrin.com */
+
+pragma solidity ^0.4.11;
 
 
 /**
