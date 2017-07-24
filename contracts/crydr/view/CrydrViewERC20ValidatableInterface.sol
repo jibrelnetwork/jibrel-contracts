@@ -14,6 +14,8 @@ contract CrydrViewERC20ValidatableInterface{
    * If _value == 0, methods do not take this parameter into account at all
   */
 
+  function isRegulated() constant returns (bool);
+
   function isReceivingAllowed(address _account, uint _value) constant returns (bool);
   function isSpendingAllowed(address _account, uint _value) constant returns (bool);
 

@@ -87,6 +87,10 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
 
   /* Getters */
 
+  function isRegulated() constant returns (bool) {
+    return true;
+  }
+
   function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }

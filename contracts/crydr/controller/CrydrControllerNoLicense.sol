@@ -60,6 +60,10 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
 
   /* Getters */
 
+  function isRegulated() constant returns (bool) {
+    return false;
+  }
+
   function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
     return true;
   }

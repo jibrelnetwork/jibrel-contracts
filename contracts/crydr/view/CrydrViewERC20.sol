@@ -76,6 +76,11 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* Getters */
 
+  function isRegulated() constant returns (bool) {
+    var _controller = CrydrControllerERC20ValidatableInterface(address(crydrController));
+    return _controller.isRegulated();
+  }
+
   function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
     var _controller = CrydrControllerERC20ValidatableInterface(address(crydrController));
     return _controller.isReceivingAllowed(_account, _value);
