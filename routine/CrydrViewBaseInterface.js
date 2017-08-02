@@ -1,80 +1,72 @@
-const deploymentController = require('../deployment_controller');
+import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+
 const ManageableRoutines   = require('./Manageable');
 const PausableRoutines     = require('./Pausable');
 
 const CrydrViewBaseInterface = global.artifacts.require('CrydrViewBaseInterface.sol');
 
 
-export const deployCrydrView = (network, owner, crydrSymbol, crydrViewContract, viewApiStandard) => {
+export const deployCrydrView = async (deployer, crydrViewContractObject, owner, viewApiStandard) => {
   global.console.log('\tDeploying view of a crydr:');
   global.console.log(`\t\towner - ${owner}`);
-  global.console.log(`\t\tcrydrSymbol - ${crydrSymbol}`);
   global.console.log(`\t\tviewApiStandard - ${viewApiStandard}`);
-  return crydrViewContract.new({ from: owner })
-    .then((value) => {
-      global.console.log(`\tView ${viewApiStandard} of a crydr ${crydrSymbol} successfully deployed: ${value.address}`);
-      deploymentController.setCrydrViewAddress(network, crydrSymbol, viewApiStandard, value.address);
-      return null;
-    });
+
+  await deployer.deploy(crydrViewContractObject, { from: owner });
+
+  global.console.log('\tView of a crydr successfully deployed');
+  return null;
 };
 
-export const deployCrydrViewsList = (network, owner, crydrSymbol, viewStandardToContract) => {
-  global.console.log(`\tDeploying ${viewStandardToContract.size} views of a crydr:`);
-  global.console.log(`\t\tnetwork - ${network}`);
+export const deployCrydrViewsList = async (deployer, viewStandardToContractObject, owner) => {
+  global.console.log(`\tDeploying ${viewStandardToContractObject.size} views of a crydr:`);
   global.console.log(`\t\towner - ${owner}`);
-  global.console.log(`\t\tcrydrSymbol - ${crydrSymbol}`);
   const contractPromises = [];
-  viewStandardToContract.forEach((contractObj, standardName) => contractPromises.push(
-    deployCrydrView(network, owner, crydrSymbol, contractObj, standardName)));
-  return Promise
-    .all(contractPromises)
-    .then(() => {
-      global.console.log('\tViews of CryDR successfully deployed');
-      return null;
-    });
+  viewStandardToContractObject.forEach((contractObj, standardName) => contractPromises.push(
+    deployCrydrView(deployer, contractObj, owner, standardName)));
+  await Promise.all(contractPromises);
+  global.console.log('\tViews of CryDR successfully deployed');
+  return null;
 };
 
-export const setControllerOfCrydrView = (manager, crydrControllerAddress, crydrViewAddress) => {
+export const setControllerOfCrydrView = async (crydrViewAddress, manager, crydrControllerAddress) => {
   global.console.log('\tSet controller of CryDR view:');
+  global.console.log(`\t\tview - ${crydrViewAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
-  global.console.log(`\t\tview - ${crydrViewAddress}`);
-  return CrydrViewBaseInterface
-    .at(crydrViewAddress)
-    .setCrydrController
-    .sendTransaction(crydrControllerAddress, { from: manager })
-    .then(() => {
-      global.console.log('\tController of CryDR view successfully set');
-      return null;
-    });
+
+  await SubmitTxAndWaitConfirmation(
+    CrydrViewBaseInterface
+      .at(crydrViewAddress)
+      .setCrydrController
+      .sendTransaction,
+    [crydrControllerAddress, { from: manager }]);
+  global.console.log('\tController of CryDR view successfully set');
+  return null;
 };
 
-export const setStorageOfCrydrView = (manager, crydrStorageAddress, crydrViewAddress) => {
+export const setStorageOfCrydrView = async (crydrViewAddress, manager, crydrStorageAddress) => {
   global.console.log('\tSet storage of CryDR view:');
+  global.console.log(`\t\tview - ${crydrViewAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
-  global.console.log(`\t\tview - ${crydrViewAddress}`);
-  return CrydrViewBaseInterface
-    .at(crydrViewAddress)
-    .setCrydrStorage
-    .sendTransaction(crydrStorageAddress, { from: manager })
-    .then(() => {
-      global.console.log('\tStorage of CryDR view successfully set');
-      return null;
-    });
+  await SubmitTxAndWaitConfirmation(
+    CrydrViewBaseInterface
+      .at(crydrViewAddress)
+      .setCrydrStorage
+      .sendTransaction,
+    [crydrStorageAddress, { from: manager }]);
+  global.console.log('\tStorage of CryDR view successfully set');
+  return null;
 };
 
-export const configureCrydrView = (network, owner, manager, crydrSymbol, viewApiStandard) => {
-  global.console.log(`  Configuring view of a crydr ${crydrSymbol} ...`);
-  global.console.log(`\t\tnetwork - ${network}`);
+export const configureCrydrView = async (crydrViewAddress, owner, manager,
+                                         crydrStorageAddress, crydrControllerAddress) => {
+  global.console.log('  Configuring view of a crydr ...');
+  global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanager - ${manager}`);
-  global.console.log(`\t\tcrydrSymbol - ${crydrSymbol}`);
-  global.console.log(`\t\tstandardName - ${viewApiStandard}`);
-
-  const crydrStorageAddress    = deploymentController.getCrydrStorageAddress(network, crydrSymbol);
-  const crydrControllerAddress = deploymentController.getCrydrControllerAddress(network, crydrSymbol);
-  const crydrViewAddress       = deploymentController.getCrydrViewAddress(network, crydrSymbol, viewApiStandard);
+  global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
   const managerPermissions = [
     'set_crydr_controller',
@@ -82,13 +74,12 @@ export const configureCrydrView = (network, owner, manager, crydrSymbol, viewApi
     'pause_contract',
     'unpause_contract'];
 
-  return ManageableRoutines.enableManager(owner, manager, crydrViewAddress)
-    .then(() => ManageableRoutines.grantManagerPermissions(owner, manager, crydrViewAddress, managerPermissions))
-    .then(() => setControllerOfCrydrView(manager, crydrControllerAddress, crydrViewAddress))
-    .then(() => setStorageOfCrydrView(manager, crydrStorageAddress, crydrViewAddress))
-    .then(() => PausableRoutines.unpauseContract(manager, crydrViewAddress))
-    .then(() => {
-      global.console.log(`\tView of a crydr ${crydrSymbol} successfully configured`);
-      return null;
-    });
+  await ManageableRoutines.enableManager(owner, manager, crydrViewAddress);
+  await ManageableRoutines.grantManagerPermissions(owner, manager, crydrViewAddress, managerPermissions);
+  await setControllerOfCrydrView(manager, crydrControllerAddress, crydrViewAddress);
+  await setStorageOfCrydrView(manager, crydrStorageAddress, crydrViewAddress);
+  await PausableRoutines.unpauseContract(manager, crydrViewAddress);
+
+  global.console.log('\tView of a crydr successfully configured');
+  return null;
 };

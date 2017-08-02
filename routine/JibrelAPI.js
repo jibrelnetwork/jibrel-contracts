@@ -1,42 +1,39 @@
-const JibrelAPI = global.artifacts.require('JibrelAPI.sol');
+const JibrelAPI        = global.artifacts.require('JibrelAPI.sol');
+const InvestorRegistry = global.artifacts.require('InvestorRegistry.sol');
+const CryDRRegistry    = global.artifacts.require('CryDRRegistry.sol');
 
-const deploymentController = require('../deployment_controller');
 const ManageableRoutines   = require('./Manageable');
 
 
 /* Migration promises */
 
-export const deployJibrelAPIContract = (network, owner) => {
+export const deployJibrelAPIContract = async (deployer, owner) => {
   global.console.log('  Deploying JibrelAPI ...');
-  global.console.log(`\t\tnetwork - ${network}`);
   global.console.log(`\t\towner - ${owner}`);
-  return JibrelAPI.new(owner,
-                       owner,
-                       deploymentController.getInvestorRegistryAddress(network),
-                       deploymentController.getCrydrRegistryAddress(network),
-                       { from: owner })
-    .then((value) => {
-      global.console.log(`\tJibrelAPI successfully deployed: ${value.address}`);
-      deploymentController.setJibrelApiAddress(network, value.address);
-      return null;
-    });
+
+  const investorRegistryInstance = await InvestorRegistry.deployed();
+  const crydrRegistryInstance = await CryDRRegistry.deployed();
+
+  await deployer.deploy(JibrelAPI,
+                        owner, // todo change it to BODC address
+                        owner, // todo change it to JibrelDAO address
+                        investorRegistryInstance.address(),
+                        crydrRegistryInstance.address(),
+                        { from: owner });
+  return null;
 };
 
-export const enableManager = (network, owner, manager) => {
+export const enableManager = (contractAddress, owner, manager) => {
   global.console.log('\tEnable manager of JibrelAPI ...');
-  return ManageableRoutines
-    .enableManager(owner, manager, deploymentController.getJibrelApiAddress(network));
+  return ManageableRoutines.enableManager(contractAddress, owner, manager);
 };
 
-export const grantManagerPermissions = (network, owner, manager) => {
+export const grantManagerPermissions = (contractAddress, owner, manager) => {
   global.console.log('\tGrant permissions to manager of JibrelAPI ...');
   const permissions = [
     'set_bodc',
     'set_jibrel_dao',
     'set_investor_repo',
     'set_crydr_repo'];
-  return ManageableRoutines
-    .grantManagerPermissions(owner, manager,
-                             deploymentController.getJibrelApiAddress(network),
-                             permissions);
+  return ManageableRoutines.grantManagerPermissions(contractAddress, owner, manager, permissions);
 };
