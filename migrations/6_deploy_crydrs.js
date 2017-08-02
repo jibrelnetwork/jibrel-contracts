@@ -1,4 +1,10 @@
+require('babel-register');
+require('babel-polyfill');
+
 global.artifacts = artifacts; // eslint-disable-line no-undef
+
+const GlobalConfig = require('../routine/utils/GlobalConfig');
+const SubmitTx = require('../routine/utils/SubmitTx');
 
 const jUSDStorage    = global.artifacts.require('jUSDStorage.sol');
 const jUSDController = global.artifacts.require('jUSDController.sol');
@@ -32,7 +38,6 @@ const jGDRStorage    = global.artifacts.require('jGDRStorage.sol');
 const jGDRController = global.artifacts.require('jGDRController.sol');
 const jGDRViewERC20  = global.artifacts.require('jGDRViewERC20.sol');
 
-const deploymentController           = require('../deployment_controller');
 const crydrGeneralRoutines           = require('../routine/CrydrGeneral');
 const JNTControllerInterfaceRoutines = require('../routine/JNTControllerInterface');
 
@@ -42,87 +47,115 @@ const JNTControllerInterfaceRoutines = require('../routine/JNTControllerInterfac
 const jntPrices = new Map(
   [['transfer', Math.pow(10, 18)], ['transferFrom', Math.pow(10, 18)], ['approve', Math.pow(10, 18)]]); // eslint-disable-line no-restricted-properties
 
-const deployJUSD = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jUSD', 'United States dollar',
+const deployJUSD = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jUSD', 'United States dollar',
                                                jUSDStorage, jUSDController, jUSDViewERC20,
                                                false, true, jntPrices);
 
-const deployJEUR = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jEUR', 'Euro',
+const deployJEUR = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jEUR', 'Euro',
                                                jEURStorage, jEURController, jEURViewERC20,
                                                false, true, jntPrices);
 
-const deployJGBP = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jGBP', 'Pound sterling',
+const deployJGBP = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jGBP', 'Pound sterling',
                                                jGBPStorage, jGBPController, jGBPViewERC20,
                                                false, true, jntPrices);
 
-const deployJAED = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jAED', 'United Arab Emirates dirham',
+const deployJAED = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jAED', 'United Arab Emirates dirham',
                                                jAEDStorage, jAEDController, jAEDViewERC20,
                                                false, true, jntPrices);
 
-const deployJRUB = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jRUB', 'Russian ruble',
+const deployJRUB = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jRUB', 'Russian ruble',
                                                jRUBStorage, jRUBController, jRUBViewERC20,
                                                false, true, jntPrices);
 
-const deployJCNY = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jCNY', 'Chinese yuan',
+const deployJCNY = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jCNY', 'Chinese yuan',
                                                jCNYStorage, jCNYController, jCNYViewERC20,
                                                false, true, jntPrices);
 
-const deployJTBill = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jTBill', 'Treasure bill',
+const deployJTBill = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jTBill', 'Treasure bill',
                                                jTBillStorage, jTBillController, jTBillViewERC20,
                                                true, true, jntPrices);
 
-const deployJGDR = (network, owner, manager) =>
-  crydrGeneralRoutines.deployAndConfigureCrydr(network, owner, manager, 'jGDR', 'Global depositary receipt',
+const deployJGDR = (deployer, owner, manager) =>
+  crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
+                                               'jGDR', 'Global depositary receipt',
                                                jGDRStorage, jGDRController, jGDRViewERC20,
                                                true, true, jntPrices);
 
 
 /* Migration routine */
 
-const migrationRoutine = (network, owner, manager) =>
-  deployJUSD(network, owner, manager)
-    .then(() => deployJEUR(network, owner, manager))
-    .then(() => deployJGBP(network, owner, manager))
-    .then(() => deployJAED(network, owner, manager))
-    .then(() => deployJRUB(network, owner, manager))
-    .then(() => deployJCNY(network, owner, manager))
-    .then(() => deployJTBill(network, owner, manager))
-    .then(() => deployJGDR(network, owner, manager))
-    .then(() => { deploymentController.logStorage(network); });
+const migrationRoutine = async (deployer, owner, manager) => {
+  await deployJUSD(deployer, owner, manager);
+  await deployJEUR(deployer, owner, manager);
+  await deployJGBP(deployer, owner, manager);
+  await deployJAED(deployer, owner, manager);
+  await deployJRUB(deployer, owner, manager);
+  await deployJCNY(deployer, owner, manager);
+  await deployJTBill(deployer, owner, manager);
+  await deployJGDR(deployer, owner, manager);
+};
 
-const verifyRoutine = (network) =>
-  JNTControllerInterfaceRoutines
-    .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jUSD'))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jEUR')))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jGBP')))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jAED')))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jRUB')))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jCNY')))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jTBill')))
-    .then(() => JNTControllerInterfaceRoutines
-      .verifyPayableService(network, deploymentController.getCrydrControllerAddress(network, 'jGDR')));
+const verifyRoutine = async (jntControllerAddress) => {
+  let payableServiceInstance;
 
+  payableServiceInstance = await jUSDController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jEURController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jGBPController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jAEDController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jRUBController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jCNYController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jTBillController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+
+  payableServiceInstance = await jGDRController.deployed();
+  await JNTControllerInterfaceRoutines.verifyPayableService(jntControllerAddress, payableServiceInstance.address);
+};
 
 /* Migration */
 
 module.exports = (deployer, network, accounts) => {
+  GlobalConfig.setWeb3(web3); // eslint-disable-line no-undef
+  if (network === 'development') {
+    SubmitTx.setDefaultWaitParams(
+      {
+        minConfirmations:   1,
+        pollingInterval:    500,
+        maxTimeoutMillisec: 60 * 1000,
+        maxTimeoutBlocks:   5,
+      });
+  }
+
   const owner   = accounts[1];
   const manager = accounts[2];
 
   global.console.log('  Start migration');
   deployer
-    .then(() => migrationRoutine(network, owner, manager))
-    .then(() => verifyRoutine(network));
+    .then(() => migrationRoutine(deployer, owner, manager))
+    .then(() => verifyRoutine(deployer));
 };

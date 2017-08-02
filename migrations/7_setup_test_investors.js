@@ -1,8 +1,57 @@
+require('babel-register');
+require('babel-polyfill');
+
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
+const GlobalConfig = require('../routine/utils/GlobalConfig');
+const SubmitTx     = require('../routine/utils/SubmitTx');
+
+const InvestorRegistry                = global.artifacts.require('InvestorRegistry.sol');
 const InvestorRegistryRoutines        = require('../routine/InvestorRegistry');
 const CrydrControllerMintableRoutines = require('../routine/CrydrControllerMintableInterface');
 
+const JNTController    = global.artifacts.require('JNTController.sol');
+const jUSDController   = global.artifacts.require('jUSDController.sol');
+const jEURController   = global.artifacts.require('jEURController.sol');
+const jGBPController   = global.artifacts.require('jGBPController.sol');
+const jAEDController   = global.artifacts.require('jAEDController.sol');
+const jRUBController   = global.artifacts.require('jRUBController.sol');
+const jCNYController   = global.artifacts.require('jCNYController.sol');
+const jTBillController = global.artifacts.require('jTBillController.sol');
+const jGDRController   = global.artifacts.require('jGDRController.sol');
+
+
+const migrationRoutine = async (manager, jntHolders, tokensHolder, licensedInvestors) => {
+  const licensesNames   = ['gdr_license', 'treasury_bill_license'];
+  const expireTimestamp = 1510000000;
+  const amountToMint    = 1000 * (10 ** 18);
+
+  const investorRegistryInstance = await InvestorRegistry.deployed();
+  await Promise.all(licensedInvestors.map(
+    (licensedInvestor) => InvestorRegistryRoutines.registerInvestor(investorRegistryInstance.address, manager,
+                                                                    licensedInvestor, licensesNames, expireTimestamp)
+  ));
+
+  const JNTControllerInstance = await JNTController.deployed();
+  await Promise.all(jntHolders.map(
+    (jntHolder) => CrydrControllerMintableRoutines.mintTokens(JNTControllerInstance.address, manager,
+                                                              jntHolder, amountToMint)
+  ));
+
+  const crydrControllerObjects = [jUSDController,
+                                  jEURController,
+                                  jGBPController,
+                                  jAEDController,
+                                  jRUBController,
+                                  jCNYController,
+                                  jTBillController,
+                                  jGDRController];
+
+  const crydrControllerInstances = await Promise.all(crydrControllerObjects.map((obj) => obj.deployed()));
+  await Promise.all(crydrControllerInstances.map(
+    (instance) => CrydrControllerMintableRoutines.mintTokens(instance.address, manager, tokensHolder, amountToMint)
+  ));
+};
 
 // todo verify migration
 
@@ -10,35 +59,22 @@ const CrydrControllerMintableRoutines = require('../routine/CrydrControllerMinta
 /* Migration */
 
 module.exports = (deployer, network, accounts) => {
-  const manager    = accounts[2];
-  const investor01 = accounts[3];
-  const investor02 = accounts[4];
-  const investor03 = accounts[5];
-  const investor04 = accounts[6];
-  const investor05 = accounts[7];
+  GlobalConfig.setWeb3(web3); // eslint-disable-line no-undef
+  if (network === 'development') {
+    SubmitTx.setDefaultWaitParams(
+      {
+        minConfirmations:   1,
+        pollingInterval:    500,
+        maxTimeoutMillisec: 60 * 1000,
+        maxTimeoutBlocks:   5,
+      });
+  }
 
-  const licensesNames   = ['gdr_license', 'treasury_bill_license'];  // todo grant licenses
-  const expireTimestamp = 1510000000;
-
-  // eslint-disable-next-line no-restricted-properties
-  const amountToMint = 1000 * Math.pow(10, 18);
+  const manager           = accounts[2];
+  const jntHolders        = accounts.slice(3, 7);
+  const tokensHolder      = accounts[3];
+  const licensedInvestors = accounts.slice(3, 5);
 
   global.console.log('  Start migration');
-  deployer
-    .then(() => InvestorRegistryRoutines.registerInvestor(network, manager, investor01, licensesNames, expireTimestamp))
-    .then(() => InvestorRegistryRoutines.registerInvestor(network, manager, investor02, licensesNames, expireTimestamp))
-    .then(() => InvestorRegistryRoutines.registerInvestor(network, manager, investor03, licensesNames, expireTimestamp))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'JNT', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor02, 'JNT', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor03, 'JNT', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor04, 'JNT', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor05, 'JNT', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jUSD', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jEUR', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jGBP', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jAED', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jRUB', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jCNY', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jTBill', amountToMint))
-    .then(() => CrydrControllerMintableRoutines.mintTokens(network, manager, investor01, 'jGDR', amountToMint));
+  deployer.then(() => migrationRoutine(manager, jntHolders, tokensHolder, licensedInvestors));
 };

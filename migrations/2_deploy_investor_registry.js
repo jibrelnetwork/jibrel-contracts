@@ -1,34 +1,50 @@
+require('babel-register');
+require('babel-polyfill');
+
+// todo remove all from global
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const deploymentController     = require('../deployment_controller');
+const GlobalConfig = require('../routine/utils/GlobalConfig');
+const SubmitTx = require('../routine/utils/SubmitTx');
+
+const InvestorRegistry         = global.artifacts.require('InvestorRegistry.sol');
 const InvestorRegistryRoutines = require('../routine/InvestorRegistry');
 
 
 /* Migration routine */
 
-const migrationRoutine = (network, owner, manager) =>
-  InvestorRegistryRoutines.deployInvestorRegistryContract(network, owner)
-    .then(() => InvestorRegistryRoutines.enableManager(network, owner, manager))
-    .then(() => InvestorRegistryRoutines.grantManagerPermissions(network, owner, manager))
-    .then(() => {
-      deploymentController.logStorage(network);
-      return null;
-    });
+const migrationRoutine = async (deployer, owner, manager) => {
+  await InvestorRegistryRoutines.deployInvestorRegistryContract(deployer, owner);
+  const investorRegistryInstance = await InvestorRegistry.deployed();
+  await InvestorRegistryRoutines.enableManager(investorRegistryInstance.address, owner, manager);
+  await InvestorRegistryRoutines.grantManagerPermissions(investorRegistryInstance.address, owner, manager);
+};
 
-const verifyRoutine = (network, owner, manager) =>
-  InvestorRegistryRoutines.verifyRegistryManager(network, manager);
+const verifyRoutine = async (network, owner, manager) => {
+  const investorRegistryInstance = await InvestorRegistry.deployed();
+  await InvestorRegistryRoutines.verifyRegistryManager(investorRegistryInstance.address, manager);
+};
 
 
 /* Migration */
 
 module.exports = (deployer, network, accounts) => {
-  global.deployer = deployer;
+  GlobalConfig.setWeb3(web3); // eslint-disable-line no-undef  // todo do we need it?
+  if (network === 'development') {
+    SubmitTx.setDefaultWaitParams(
+      {
+        minConfirmations:   1,
+        pollingInterval:    500,
+        maxTimeoutMillisec: 60 * 1000,
+        maxTimeoutBlocks:   5,
+      });
+  }
 
-  const owner   = accounts[1];
+  const owner   = accounts[1];  // todo make some abstraction that will give addresses
   const manager = accounts[2];
 
   global.console.log('  Start migration');
   deployer
-    .then(() => migrationRoutine(network, owner, manager))
-    .then(() => verifyRoutine(network, owner, manager));
+    .then(() => migrationRoutine(deployer, owner, manager))
+    .then(() => verifyRoutine(deployer, owner, manager));
 };

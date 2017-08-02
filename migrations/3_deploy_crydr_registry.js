@@ -1,26 +1,43 @@
+require('babel-register');
+require('babel-polyfill');
+
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const deploymentController  = require('../deployment_controller');
+const GlobalConfig = require('../routine/utils/GlobalConfig');
+const SubmitTx     = require('../routine/utils/SubmitTx');
+
+const CryDRRegistry         = global.artifacts.require('CryDRRegistry.sol');
 const CrydrRegistryRoutines = require('../routine/CryDRRegistry');
 
 
 /* Migration routine */
 
-const migrationRoutine = (network, owner, manager) =>
-  CrydrRegistryRoutines.deployCrydrRegistryContract(network, owner)
-    .then(() => CrydrRegistryRoutines.enableManager(network, owner, manager))
-    .then(() => CrydrRegistryRoutines.grantManagerPermissions(network, owner, manager))
-    .then(() => { deploymentController.logStorage(network); });
-
+const migrationRoutine = async (deployer, owner, manager) => {
+  await CrydrRegistryRoutines.deployCrydrRegistryContract(deployer, owner);
+  const crydrRegistryInstance = await CryDRRegistry.deployed();
+  await CrydrRegistryRoutines.enableManager(crydrRegistryInstance.address, owner, manager);
+  await CrydrRegistryRoutines.grantManagerPermissions(crydrRegistryInstance.address, owner, manager);
+};
 // todo verify migration
 
 
 /* Migration */
 
 module.exports = (deployer, network, accounts) => {
+  GlobalConfig.setWeb3(web3); // eslint-disable-line no-undef
+  if (network === 'development') {
+    SubmitTx.setDefaultWaitParams(
+      {
+        minConfirmations:   1,
+        pollingInterval:    500,
+        maxTimeoutMillisec: 60 * 1000,
+        maxTimeoutBlocks:   5,
+      });
+  }
+
   const owner   = accounts[1];
   const manager = accounts[2];
 
   global.console.log('  Start migration');
-  deployer.then(() => migrationRoutine(network, owner, manager));
+  deployer.then(() => migrationRoutine(deployer, owner, manager));
 };
