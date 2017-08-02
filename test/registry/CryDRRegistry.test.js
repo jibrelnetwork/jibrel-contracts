@@ -3,8 +3,6 @@
 const CryDRRegistry       = global.artifacts.require('CryDRRegistry.sol');
 const ERC20NamedInterface = global.artifacts.require('ERC20NamedInterface.sol');
 
-const deploymentController = require('../../deployment_controller');
-
 
 global.contract('CryDRRegistry', async () => {
   global.it('should generate JSON with known CryDRs', async () => {
