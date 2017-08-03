@@ -109,9 +109,7 @@ contract JibrelAPI is JibrelAPIInterface, Manageable {
    * @dev Modifier to check new address
    */
   modifier checkAddress(address _address) {
-    if (_address == 0x0) {
-      throw;
-    }
+    require (_address != 0x0);
     _;
   }
 }

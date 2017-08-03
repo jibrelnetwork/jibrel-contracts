@@ -75,13 +75,13 @@ contract BODC {
    * @param _member address Target address
    * @return Name of the member
    */
-  function getBODCMemberName(address _member) constant returns (string _memberName){
+  function getBODCMemberName(address _member) constant returns (string _memberName) {
     for (var i = 0; i < membersNumber; i++) {
       if (memberInfo[i].memberAddress == _member) {
         return memberInfo[i].memberName;
       }
     }
-    throw;
+    assert(false);
   }
 
   /**
@@ -95,7 +95,7 @@ contract BODC {
         return memberInfo[i].isActive;
       }
     }
-    return false;
+    assert(false);
   }
 
 
@@ -113,9 +113,7 @@ contract BODC {
    * @dev Modifier to prohibit actions to non-members
    */
   modifier onlyMember() {
-    if (isActiveMember(msg.sender) == false) {
-      throw;
-    }
+    require(isActiveMember(msg.sender) == true);
     _;
   }
 }

@@ -44,7 +44,7 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
 
   function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenNotPaused {
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    if ((_value != 0) && (crydrStorage.getAllowance(_msgsender, _spender) != 0)) throw;
+    require(crydrStorage.getAllowance(_msgsender, _spender) >= 0);
 
     chargeJNT(_msgsender, jntBeneficiary, jntPriceApprove);
 
