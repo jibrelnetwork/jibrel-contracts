@@ -51,11 +51,12 @@ contract JibrelAPI is JibrelAPIInterface, Manageable {
     address _InvestorRegistry,
     address _CryDRRegistry
   )
-    checkAddress(_BODC)
-    checkAddress(_JibrelDAO)
-    checkAddress(_InvestorRegistry)
-    checkAddress(_CryDRRegistry)
   {
+    require(_BODC != 0x0);
+    require(_JibrelDAO != 0x0);
+    require(_InvestorRegistry != 0x0);
+    require(_CryDRRegistry != 0x0);
+
     BODC = _BODC;
     JibrelDAO = _JibrelDAO;
     InvestorRegistry = _InvestorRegistry;

@@ -62,7 +62,7 @@ contract BODC {
    */
   function getActiveMembersNumber() constant returns (uint256 _number) {
     _number = 0;
-    for (var i = 0; i < membersNumber; i++) {
+    for (uint i = 0; i < membersNumber; i++) {
       if (memberInfo[i].isActive) {
         _number += 1;
       }
@@ -76,7 +76,7 @@ contract BODC {
    * @return Name of the member
    */
   function getBODCMemberName(address _member) constant returns (string _memberName) {
-    for (var i = 0; i < membersNumber; i++) {
+    for (uint i = 0; i < membersNumber; i++) {
       if (memberInfo[i].memberAddress == _member) {
         return memberInfo[i].memberName;
       }
@@ -90,7 +90,7 @@ contract BODC {
    * @return True if address is the active member of BODC
    */
   function isActiveMember(address _member) constant returns (bool _isActive) {
-    for (var i = 0; i < membersNumber; i++) {
+    for (uint i = 0; i < membersNumber; i++) {
       if (memberInfo[i].memberAddress == _member) {
         return memberInfo[i].isActive;
       }
