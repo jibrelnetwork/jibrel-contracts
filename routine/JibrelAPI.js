@@ -17,8 +17,8 @@ export const deployJibrelAPIContract = async (deployer, owner) => {
   await deployer.deploy(JibrelAPI,
                         owner, // todo change it to BODC address
                         owner, // todo change it to JibrelDAO address
-                        investorRegistryInstance.address(),
-                        crydrRegistryInstance.address(),
+                        investorRegistryInstance.address,
+                        crydrRegistryInstance.address,
                         { from: owner });
   return null;
 };

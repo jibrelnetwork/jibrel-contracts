@@ -38,6 +38,8 @@ const jGDRStorage    = global.artifacts.require('jGDRStorage.sol');
 const jGDRController = global.artifacts.require('jGDRController.sol');
 const jGDRViewERC20  = global.artifacts.require('jGDRViewERC20.sol');
 
+const JNTController                  = global.artifacts.require('JNTController.sol');
+
 const crydrGeneralRoutines           = require('../routine/CrydrGeneral');
 const JNTControllerInterfaceRoutines = require('../routine/JNTControllerInterface');
 
@@ -109,7 +111,12 @@ const migrationRoutine = async (deployer, owner, manager) => {
   await deployJGDR(deployer, owner, manager);
 };
 
-const verifyRoutine = async (jntControllerAddress) => {
+const verifyRoutine = async () => {
+  global.console.log(' Verify Deployed CryDRs');
+
+  const jntControllerInstance = await JNTController.deployed();
+  const jntControllerAddress = jntControllerInstance.address;
+
   let payableServiceInstance;
 
   payableServiceInstance = await jUSDController.deployed();
@@ -144,8 +151,8 @@ module.exports = (deployer, network, accounts) => {
   if (network === 'development') {
     SubmitTx.setDefaultWaitParams(
       {
-        minConfirmations:   1,
-        pollingInterval:    500,
+        minConfirmations:   0,
+        pollingInterval:    50,
         maxTimeoutMillisec: 60 * 1000,
         maxTimeoutBlocks:   5,
       });
@@ -161,5 +168,5 @@ module.exports = (deployer, network, accounts) => {
 
   deployer
     .then(() => migrationRoutine(deployer, owner, manager))
-    .then(() => verifyRoutine(deployer));
+    .then(() => verifyRoutine());
 };

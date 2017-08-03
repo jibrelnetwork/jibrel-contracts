@@ -6,17 +6,16 @@ const CrydrViewERC20ValidatableInterface = global.artifacts.require('CrydrViewER
 const jUSDViewERC20                      = global.artifacts.require('jUSDViewERC20.sol');
 const JNTViewERC20                       = global.artifacts.require('JNTViewERC20.sol');
 
-const deploymentController = require('../../deployment_controller');
 
-
-global.contract('jUSDViewERC20Instance', (accounts) => {
+global.contract('jUSDViewERC20Instance', async (accounts) => {
   const investor01 = accounts[3];
   const investor02 = accounts[4];
   const investor03 = accounts[5];
   const investor04 = accounts[6];
 
   global.it('should test that it is possible to receive admittance data', async () => {
-    const jUSDViewERC20Address = deploymentController.getCrydrViewAddress(global.deployer.network, 'jUSD', 'erc20');
+    const jUSDViewERC20Instance = await jUSDViewERC20.deployed();
+    const jUSDViewERC20Address = jUSDViewERC20Instance.address;
     const ValidatableInstance  = CrydrViewERC20ValidatableInterface.at(jUSDViewERC20Address);
 
     let isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor01, 0);
@@ -41,11 +40,8 @@ global.contract('jUSDViewERC20Instance', (accounts) => {
   });
 
   global.it('should test that any investor is able to receive tokens', async () => {
-    const JNTViewERC20Address  = deploymentController.getCrydrViewAddress(global.deployer.network, 'JNT', 'erc20');
-    const JNTViewERC20Instance = JNTViewERC20.at(JNTViewERC20Address);
-
-    const jUSDViewERC20Address  = deploymentController.getCrydrViewAddress(global.deployer.network, 'jUSD', 'erc20');
-    const jUSDViewERC20Instance = jUSDViewERC20.at(jUSDViewERC20Address);
+    const JNTViewERC20Instance  = await JNTViewERC20.deployed();
+    const jUSDViewERC20Instance = await jUSDViewERC20.deployed();
 
 
     let balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);

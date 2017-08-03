@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const Pausable = global.artifacts.require('Pausable.sol');
 
@@ -8,7 +8,7 @@ export const unpauseContract = async (contractAddress, manager) => {
   global.console.log('\tUnpause contract:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     Pausable
       .at(contractAddress)
       .unpause

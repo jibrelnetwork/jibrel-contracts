@@ -33,8 +33,8 @@ module.exports = (deployer, network, accounts) => {
   if (network === 'development') {
     SubmitTx.setDefaultWaitParams(
       {
-        minConfirmations:   1,
-        pollingInterval:    500,
+        minConfirmations:   0,
+        pollingInterval:    50,
         maxTimeoutMillisec: 60 * 1000,
         maxTimeoutBlocks:   5,
       });

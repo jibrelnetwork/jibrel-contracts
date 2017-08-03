@@ -25,8 +25,13 @@ export function setDefaultWaitParams(waitParams) {
   defaultWaitParams = waitParams;
 }
 
-export async function WaitTxConfirmation(txHash, waitParams = defaultWaitParams) {
+export async function waitTxConfirmation(txHash, waitParams = defaultWaitParams) {
   // inspired by this: https://gist.github.com/xavierlepretre/88682e871f4ad07be4534ae560692ee6
+
+  if (waitParams.minConfirmations <= 0) {
+    // just skip if do not need to wait for confirmations. Greatly speed up testing with ethereum-testrpc
+    return null;
+  }
 
   const startTime  = new Date().getTime();
   const startBlock = GlobalConfig.getWeb3().eth.blockNumber;
@@ -36,7 +41,7 @@ export async function WaitTxConfirmation(txHash, waitParams = defaultWaitParams)
     const currentBlockNumber = GlobalConfig.getWeb3().eth.blockNumber;
     if ((transactionReceipt !== null) &&
         (currentBlockNumber - transactionReceipt.blockNumber >= (waitParams.minConfirmations - 1))) {
-      return;
+      return null;
     }
 
     if (new Date().getTime() > startTime + waitParams.maxTimeoutMillisec) {
@@ -50,8 +55,9 @@ export async function WaitTxConfirmation(txHash, waitParams = defaultWaitParams)
   }
 }
 
-export async function SubmitTxAndWaitConfirmation(txTemplate, args, waitParams = defaultWaitParams) {
+// todo make the same for a list of promises, see Manageable routines, grantPermissions
+export async function submitTxAndWaitConfirmation(txTemplate, args, waitParams = defaultWaitParams) {
   const txHash = await txTemplate(...args);
   global.console.log(`\tTX submitted: ${txHash}`);
-  await WaitTxConfirmation(txHash, waitParams);
+  await waitTxConfirmation(txHash, waitParams);
 }

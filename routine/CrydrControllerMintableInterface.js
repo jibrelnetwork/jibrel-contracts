@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const CrydrControllerMintableInterface = global.artifacts.require('CrydrControllerMintableInterface.sol');
 
@@ -10,7 +10,7 @@ export const mintTokens = async (crydrControllerAddress, manager, investorAddres
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tinvestorAddress - ${investorAddress}`);
   global.console.log(`\t\tamount - ${amount}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CrydrControllerMintableInterface
       .at(crydrControllerAddress)
       .mint

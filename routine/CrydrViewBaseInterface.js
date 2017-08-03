@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const ManageableRoutines   = require('./Manageable');
 const PausableRoutines     = require('./Pausable');
@@ -34,7 +34,7 @@ export const setControllerOfCrydrView = async (crydrViewAddress, manager, crydrC
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
 
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CrydrViewBaseInterface
       .at(crydrViewAddress)
       .setCrydrController
@@ -49,7 +49,7 @@ export const setStorageOfCrydrView = async (crydrViewAddress, manager, crydrStor
   global.console.log(`\t\tview - ${crydrViewAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CrydrViewBaseInterface
       .at(crydrViewAddress)
       .setCrydrStorage
@@ -74,11 +74,11 @@ export const configureCrydrView = async (crydrViewAddress, owner, manager,
     'pause_contract',
     'unpause_contract'];
 
-  await ManageableRoutines.enableManager(owner, manager, crydrViewAddress);
-  await ManageableRoutines.grantManagerPermissions(owner, manager, crydrViewAddress, managerPermissions);
-  await setControllerOfCrydrView(manager, crydrControllerAddress, crydrViewAddress);
-  await setStorageOfCrydrView(manager, crydrStorageAddress, crydrViewAddress);
-  await PausableRoutines.unpauseContract(manager, crydrViewAddress);
+  await ManageableRoutines.enableManager(crydrViewAddress, owner, manager);
+  await ManageableRoutines.grantManagerPermissions(crydrViewAddress, owner, manager, managerPermissions);
+  await setControllerOfCrydrView(crydrViewAddress, manager, crydrControllerAddress);
+  await setStorageOfCrydrView(crydrViewAddress, manager, crydrStorageAddress);
+  await PausableRoutines.unpauseContract(crydrViewAddress, manager);
 
   global.console.log('\tView of a crydr successfully configured');
   return null;

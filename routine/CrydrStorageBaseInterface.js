@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const ManageableRoutines   = require('./Manageable');
 const PausableRoutines     = require('./Pausable');
@@ -21,7 +21,7 @@ export const setControllerOfCrydrStorage = async (crydrStorageAddress, manager, 
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CrydrStorageBaseInterface
       .at(crydrStorageAddress)
       .setCrydrController
@@ -43,10 +43,10 @@ export const configureCrydrStorage = async (crydrStorageAddress, owner, manager,
     'pause_contract',
     'unpause_contract'];
 
-  await ManageableRoutines.enableManager(owner, manager, crydrStorageAddress);
-  await ManageableRoutines.grantManagerPermissions(owner, manager, crydrStorageAddress, managerPermissions);
-  await setControllerOfCrydrStorage(manager, crydrStorageAddress, crydrControllerAddress);
-  await PausableRoutines.unpauseContract(manager, crydrStorageAddress);
+  await ManageableRoutines.enableManager(crydrStorageAddress, owner, manager);
+  await ManageableRoutines.grantManagerPermissions(crydrStorageAddress, owner, manager, managerPermissions);
+  await setControllerOfCrydrStorage(crydrStorageAddress, manager, crydrControllerAddress);
+  await PausableRoutines.unpauseContract(crydrStorageAddress, manager);
   global.console.log('\tStorage of a crydr successfully configured');
   return null;
 };

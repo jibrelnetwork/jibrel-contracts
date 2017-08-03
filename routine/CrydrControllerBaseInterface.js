@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const CrydrControllerBaseInterface    = global.artifacts.require('CrydrControllerBaseInterface.sol');
 const JNTPayableServiceInterface      = global.artifacts.require('JNTPayableServiceInterface.sol');
@@ -27,7 +27,7 @@ export const setStorageOfCrydrController = async (crydrControllerAddress, manage
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CrydrControllerBaseInterface
       .at(crydrControllerAddress)
       .setCrydrStorage
@@ -44,7 +44,7 @@ export const setViewsOfCrydrController = async (crydrControllerAddress, manager,
   global.console.log(`\t\tviews - ${JSON.stringify(crydrViewStandardToAddress)}`);
   const contractPromises = [];
   crydrViewStandardToAddress.forEach((crydrViewAddress, crydrViewStandard) => {
-    const newPromise = SubmitTxAndWaitConfirmation(
+    const newPromise = submitTxAndWaitConfirmation(
       CrydrControllerBaseInterface
         .at(crydrControllerAddress)
         .setCrydrView
@@ -61,7 +61,7 @@ export const setInvestorsRegistry = async (crydrControllerAddress, manager, inve
   global.console.log('\tSet investor registry for crydr controller:');
   global.console.log(`\t\tcrydr controller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CrydrControllerERC20Validatable
       .at(crydrControllerAddress)
       .setInvestorsRegistry
@@ -80,19 +80,19 @@ export const setJNTController = (crydrControllerAddress, manager,
   global.console.log(`\t\tjnt beneficiary - ${jntBeneficiaryAddress}`);
   global.console.log(`\t\tjnt prices - ${JSON.stringify(jntPrices)}`);
   const contractPromises = [
-    SubmitTxAndWaitConfirmation(
+    submitTxAndWaitConfirmation(
       JNTPayableServiceInterface
         .at(crydrControllerAddress)
         .setJntController
         .sendTransaction,
       [jntControllerAddress, { from: manager }]),
-    SubmitTxAndWaitConfirmation(
+    submitTxAndWaitConfirmation(
       JNTPayableServiceInterface
         .at(crydrControllerAddress)
         .setJntBeneficiary
         .sendTransaction,
       [jntBeneficiaryAddress, { from: manager }]),
-    SubmitTxAndWaitConfirmation(
+    submitTxAndWaitConfirmation(
       JNTPayableServiceERC20Interface
         .at(crydrControllerAddress)
         .setJntPrice
@@ -145,7 +145,7 @@ export const configureCrydrController = async (crydrControllerAddress,
   await setStorageOfCrydrController(crydrControllerAddress, manager, crydrStorageAddress);
   await setViewsOfCrydrController(crydrControllerAddress, manager, crydrViewStandardToAddress);
   if (isConnectToInvestorRegistry) {
-    await setInvestorsRegistry(crydrControllerAddress, manager, investorRegistryInstance);
+    await setInvestorsRegistry(crydrControllerAddress, manager, investorRegistryInstance.address);
   }
   if (isConnectToJNT) {
     const JNTControllerInstance = await JNTController.deployed();
@@ -154,7 +154,7 @@ export const configureCrydrController = async (crydrControllerAddress,
     await JNTControllerInterfaceRoutines.setJntPayableService(JNTControllerInstance.address, owner,
                                                               crydrControllerAddress);
   }
-  await PausableRoutines.unpauseContract(manager, crydrControllerAddress);
+  await PausableRoutines.unpauseContract(crydrControllerAddress, manager);
   global.console.log('\tController of CryDR successfully configured');
   return null;
 };

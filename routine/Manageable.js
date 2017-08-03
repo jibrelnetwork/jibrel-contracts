@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const Manageable = global.artifacts.require('Manageable.sol');
 
@@ -8,7 +8,7 @@ export const enableManager = async (contractAddress, owner, manager) => {
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanager - ${manager}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     Manageable
       .at(contractAddress)
       .enableManager
@@ -25,7 +25,7 @@ export const grantManagerPermissions = async (contractAddress, owner, manager, p
   global.console.log(`\t\tpermissions - ${JSON.stringify(permissionsList)}`);
   await Promise.all(
     permissionsList.map((permissionName) =>
-                          SubmitTxAndWaitConfirmation(
+                          submitTxAndWaitConfirmation(
                             Manageable
                               .at(contractAddress)
                               .grantManagerPermission

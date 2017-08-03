@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const CryDRRegistryManagementInterface = global.artifacts.require('CryDRRegistryManagementInterface.sol');
 const CryDRRegistry                    = global.artifacts.require('CryDRRegistry.sol');
@@ -35,7 +35,7 @@ export const registerCrydr = async (crydrRegistryAddress, manager, crydrSymbol, 
   global.console.log(`\t\tcrydrSymbol - ${crydrSymbol}`);
   global.console.log(`\t\tcrydrName - ${crydrName}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     CryDRRegistryManagementInterface
       .at(crydrRegistryAddress)
       .addCrydr

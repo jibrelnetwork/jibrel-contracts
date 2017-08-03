@@ -1,4 +1,4 @@
-import { SubmitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
 const InvestorRegistry                    = global.artifacts.require('InvestorRegistry.sol');
 const InvestorRegistryManagementInterface = global.artifacts.require('InvestorRegistryManagementInterface.sol');
@@ -17,7 +17,7 @@ export const deployInvestorRegistryContract = async (deployer, owner) => {
 
 export const enableManager = (investorRegistryAddress, owner, manager) => {
   global.console.log('\tEnable manager of InvestorRegistry');
-  return ManageableRoutines.enableManager(owner, manager, investorRegistryAddress);
+  return ManageableRoutines.enableManager(investorRegistryAddress, owner, manager);
 };
 
 export const grantManagerPermissions = (investorRegistryAddress, owner, manager) => {
@@ -39,7 +39,7 @@ export const admitInvestor = async (investorRegistryAddress, manager, investorAd
   global.console.log(`\t\tregistryAddress - ${investorRegistryAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   global.console.log(`\t\tinvestorAddress - ${investorAddress}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     InvestorRegistryManagementInterface
       .at(investorRegistryAddress)
       .admitInvestor
@@ -57,7 +57,7 @@ export const grantInvestorLicenses = async (investorRegistryAddress, manager, in
   global.console.log(`\t\tinvestorAddress - ${investorAddress}`);
   global.console.log(`\t\tlicenseName - ${licenseName}`);
   global.console.log(`\t\texpireTimestamp - ${expireTimestamp}`);
-  await SubmitTxAndWaitConfirmation(
+  await submitTxAndWaitConfirmation(
     InvestorRegistryManagementInterface
       .at(investorRegistryAddress)
       .grantInvestorLicense
@@ -85,7 +85,7 @@ export const verifyRegistryManager = async (investorRegistryAddress, manager) =>
   global.console.log(`\t\tinvestorRegistryAddress - ${investorRegistryAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
 
-  const isEnabled = await ManageableRoutines.isManagerEnabled(manager, investorRegistryAddress);
+  const isEnabled = await ManageableRoutines.isManagerEnabled(investorRegistryAddress, manager);
   if (isEnabled !== true) { throw new Error('Expected that manager is enabled'); }
 
   let isGranted = await ManageableRoutines
