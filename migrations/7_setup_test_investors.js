@@ -71,9 +71,9 @@ module.exports = (deployer, network, accounts) => {
   }
 
   const manager           = accounts[2];
-  const jntHolders        = accounts.slice(3, 7);
+  const jntHolders        = accounts.slice(3, 8);
   const tokensHolder      = accounts[3];
-  const licensedInvestors = accounts.slice(3, 5);
+  const licensedInvestors = accounts.slice(3, 6);
 
   global.console.log('  Start migration');
   global.console.log('  Accounts:');

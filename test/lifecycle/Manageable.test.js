@@ -43,7 +43,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.equal(isManagerAllowed, true);
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, true);
-    await manageableContract.disableManager.sendTransaction(manager, 'permission_02', { from: owner });
+    await manageableContract.disableManager.sendTransaction(manager, { from: owner });
     isManagerAllowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
     global.assert.equal(isManagerAllowed, false);
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);

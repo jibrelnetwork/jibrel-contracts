@@ -40,8 +40,8 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
   });
 
   global.it('should test that any investor is able to receive tokens', async () => {
-    const JNTViewERC20Instance = JNTViewERC20.deployed();
-    const jGDRViewERC20Instance = jGDRViewERC20.deployed();
+    const JNTViewERC20Instance = await JNTViewERC20.deployed();
+    const jGDRViewERC20Instance = await jGDRViewERC20.deployed();
 
 
     let balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
