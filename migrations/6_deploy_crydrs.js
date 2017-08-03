@@ -155,6 +155,10 @@ module.exports = (deployer, network, accounts) => {
   const manager = accounts[2];
 
   global.console.log('  Start migration');
+  global.console.log('  Accounts:');
+  global.console.log(`\towner: ${owner}`);
+  global.console.log(`\tmanager: ${manager}`);
+
   deployer
     .then(() => migrationRoutine(deployer, owner, manager))
     .then(() => verifyRoutine(deployer));

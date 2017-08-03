@@ -76,5 +76,11 @@ module.exports = (deployer, network, accounts) => {
   const licensedInvestors = accounts.slice(3, 5);
 
   global.console.log('  Start migration');
+  global.console.log('  Accounts:');
+  global.console.log(`\tmanager: ${manager}`);
+  global.console.log(`\tjntHolders: ${jntHolders}`);
+  global.console.log(`\ttokensHolder: ${tokensHolder}`);
+  global.console.log(`\tlicensedInvestors: ${licensedInvestors}`);
+
   deployer.then(() => migrationRoutine(manager, jntHolders, tokensHolder, licensedInvestors));
 };
