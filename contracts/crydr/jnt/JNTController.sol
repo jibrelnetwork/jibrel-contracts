@@ -26,7 +26,7 @@ contract JNTController is CrydrControllerBase,
   function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenNotPaused {
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_msgsender, _to, _value);
 
-    for (uint i = 0; i < crydrViewsAddressesList.length - 1; i += 1) {
+    for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
       CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitTransferEvent(_msgsender, _to, _value);
     }
   }
@@ -34,7 +34,7 @@ contract JNTController is CrydrControllerBase,
   function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenNotPaused {
     CrydrStorageERC20Interface(address(crydrStorage)).transferFrom(_msgsender, _from, _to, _value);
 
-    for (uint i = 0; i < crydrViewsAddressesList.length - 1; i += 1) {
+    for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
       CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitTransferEvent(_from, _to, _value);
     }
   }
@@ -45,7 +45,7 @@ contract JNTController is CrydrControllerBase,
 
     CrydrStorageERC20Interface(address(crydrStorage)).approve(_msgsender, _spender, _value);
 
-    for (uint i = 0; i < crydrViewsAddressesList.length - 1; i += 1) {
+    for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
       CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitApprovalEvent(_msgsender, _spender, _value);
     }
   }
