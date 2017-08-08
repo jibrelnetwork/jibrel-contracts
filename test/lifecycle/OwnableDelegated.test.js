@@ -16,18 +16,18 @@ global.contract('OwnableDelegated', (accounts) => {
     global.console.log(`\townableDelegatetContract: ${ownableDelegatetContract.address}`);
     global.assert.equal(ownableDelegatetContract.address == 0x0, false);
 
-    let contractOwner = await ownableDelegatetContract.owner.call();
+    let contractOwner = await ownableDelegatetContract.getOwner.call();
     global.assert.equal(contractOwner, owner1);
 
     await ownableDelegatetContract.transferOwnership.sendTransaction(owner2, { from: owner1 });
-    contractOwner = await ownableDelegatetContract.owner.call();
+    contractOwner = await ownableDelegatetContract.getOwner.call();
     global.assert.equal(contractOwner, owner2);
 
     let isTrowWrongOwner = false;
     await ownableDelegatetContract.transferOwnership.sendTransaction(owner1, { from: owner1 }).catch(() => {
       isTrowWrongOwner = true;
     });
-    contractOwner = await ownableDelegatetContract.owner.call();
+    contractOwner = await ownableDelegatetContract.getOwner.call();
     global.assert.equal(isTrowWrongOwner == true && contractOwner == owner2, true, 'It should throw an exception if transferOwnership called by any account other than the owner');
   });
 });
