@@ -28,6 +28,7 @@ global.contract('OwnableDelegated', (accounts) => {
       isTrowWrongOwner = true;
     });
     contractOwner = await ownableDelegatetContract.getOwner.call();
-    global.assert.equal(isTrowWrongOwner == true && contractOwner == owner2, true, 'It should throw an exception if transferOwnership called by any account other than the owner');
+    global.assert.equal(isTrowWrongOwner == true && contractOwner == owner2, true,
+      'It should throw an exception if transferOwnership called by any account other than the owner');
   });
 });
