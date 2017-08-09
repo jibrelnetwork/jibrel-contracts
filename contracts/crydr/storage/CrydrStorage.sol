@@ -118,8 +118,6 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpause()
-    onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidCrydrControllerAddress(crydrController)
   {
     super.unpause();

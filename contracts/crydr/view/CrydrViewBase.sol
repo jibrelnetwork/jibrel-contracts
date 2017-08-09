@@ -78,8 +78,6 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpause()
-    onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidCrydrStorageAddress(address(crydrStorage))
     onlyValidCrydrControllerAddress(address(crydrController))
   {
