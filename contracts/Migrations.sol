@@ -21,11 +21,11 @@ contract Migrations {
     upgraded.setCompleted(last_completed_migration);
   }
 
-  function getOwner() public constant returns (address) {
+  function getOwner() constant returns (address) {
     return owner;
   }
 
-  function getLastCompletedMigration() public constant returns (uint) {
+  function getLastCompletedMigration() constant returns (uint) {
     return last_completed_migration;
   }
 }
