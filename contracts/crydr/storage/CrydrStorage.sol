@@ -37,10 +37,10 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _crydrController
   )
     onlyValidCrydrControllerAddress(_crydrController)
-    onlyDifferentAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
   {
     require(_crydrController != crydrController);
+    require(_crydrController != address(this));
 
     crydrController = _crydrController;
     CrydrControllerChangedEvent(_crydrController);
@@ -131,11 +131,6 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   modifier onlyValidCrydrControllerAddress(address _controllerAddress) {
     require(_controllerAddress != address(0x0));
     // todo check that this is contract address
-    _;
-  }
-
-  modifier onlyDifferentAddress(address _address) {
-    require(_address != address(this));
     _;
   }
 
