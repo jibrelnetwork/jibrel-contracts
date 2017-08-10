@@ -16,7 +16,7 @@ contract Pausable is Manageable {
   event PauseEvent();
   event UnpauseEvent();
 
-  bool public paused = true;
+  bool paused = true;
 
 
   /**
@@ -49,5 +49,12 @@ contract Pausable is Manageable {
   function unpause() onlyAllowedManager('unpause_contract') whenPaused {
     paused = false;
     UnpauseEvent();
+  }
+
+  /**
+   * @dev The getter for "paused" contract variable
+   */
+  function getPaused() public constant returns (bool) {
+    return paused;
   }
 }

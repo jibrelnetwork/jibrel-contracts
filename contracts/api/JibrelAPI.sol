@@ -37,10 +37,10 @@ contract JibrelAPI is JibrelAPIInterface, Manageable {
 
   /* Storage */
 
-  address public BODC;
-  address public JibrelDAO;
-  address public InvestorRegistry;
-  address public CryDRRegistry;
+  address BODC;
+  address JibrelDAO;
+  address InvestorRegistry;
+  address CryDRRegistry;
 
 
   /* Constructor */
@@ -89,19 +89,19 @@ contract JibrelAPI is JibrelAPIInterface, Manageable {
 
   /* Getters */
 
-  function getBODC() constant returns (address) {
+  function getBODC() public constant returns (address) {
     return BODC;
   }
 
-  function getJibrelDAO() constant returns (address) {
+  function getJibrelDAO() public constant returns (address) {
     return JibrelDAO;
   }
 
-  function getInvestorRegistry() constant returns (address) {
+  function getInvestorRegistry() public constant returns (address) {
     return InvestorRegistry;
   }
 
-  function getCryDRRegistry() constant returns (address) {
+  function getCryDRRegistry() public constant returns (address) {
     return CryDRRegistry;
   }
 

@@ -9,7 +9,7 @@ pragma solidity ^0.4.13;
  * functions, this simplifies the implementation of "user permissions".
  */
 contract OwnableDelegated {
-  address public owner;
+  address owner;
 
 
   /**
@@ -39,4 +39,10 @@ contract OwnableDelegated {
     }
   }
 
+  /**
+   * @dev The getter for "owner" contract variable
+   */
+  function getOwner() public constant returns (address) {
+    return owner;
+  }
 }

@@ -27,10 +27,10 @@ contract BODC {
   /* Storage */
 
   MemberInfo[] public memberInfo;
-  uint256 public membersNumber;
+  uint256 membersNumber;
 
   MemberProposal[] memberProposals;
-  uint256 public proposalsNumber;
+  uint256 proposalsNumber;
 
 
   /* Events */
@@ -98,6 +98,19 @@ contract BODC {
     assert(false);
   }
 
+  /**
+   * @dev Function to get membersNumber of BODC member
+   */
+  function getMembersNumber() public constant returns (uint256) {
+    return membersNumber;
+  }
+
+  /**
+   * @dev Function to get proposalsNumber of BODC member
+   */
+  function getProposalsNumber() public constant returns (uint256) {
+    return proposalsNumber;
+  }
 
   /* Manage members of Board of Directors */
 
