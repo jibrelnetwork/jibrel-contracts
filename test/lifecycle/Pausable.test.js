@@ -15,7 +15,7 @@ global.contract('Pausable', (accounts) => {
   global.it('check Pausable contract', async () => {
 
     global.console.log(`\tpausableContract: ${pausableContract.address}`);
-    global.assert.equal(pausableContract.address == 0x0, false);
+    global.assert.equal(pausableContract.address === 0x0, false);
 
     let isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, true, 'The paused must be true');

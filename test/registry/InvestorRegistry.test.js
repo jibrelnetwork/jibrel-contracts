@@ -15,12 +15,11 @@ global.contract('InvestorRegistry', (accounts) => {
   global.it('check InvestorRegistry contract', async () => {
 
     global.console.log(`\tInvestorRegistryContract: ${InvestorRegistryContract.address}`);
-    global.assert.equal(InvestorRegistryContract.address == 0x0, false);
+    global.assert.equal(InvestorRegistryContract.address === 0x0, false);
 
     await InvestorRegistryContract.grantManagerPermission.sendTransaction(manager, 'admit_investor', { from: owner });
-    let isManagerAllowed = await InvestorRegistryContract.isManagerAllowed.call(manager, 'admit_investor');
+    const isManagerAllowed = await InvestorRegistryContract.isManagerAllowed.call(manager, 'admit_investor');
     global.assert.equal(isManagerAllowed, false);
-
 
     let isInvestorAdmitted = await InvestorRegistryContract.isInvestorAdmitted.call(investor01);
     global.assert.equal(isInvestorAdmitted, false);

@@ -14,110 +14,109 @@ global.contract('Manageable', (accounts) => {
   global.it('should add manager and check permissions', async () => {
     let isManagerEnabled;
     let isManagerAllowed;
-    let isPermissionGranted;
 
-    let isTrow = false;
-    isManagerEnabled = await manageableContract.isManagerEnabled.call(0x0).catch(() => {
-      isTrow = true;
+    let isThrow = false;
+    await manageableContract.isManagerEnabled.call(0x0).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true,
+    global.assert.equal(isThrow, true,
       'It should throw an exception if enableManager called by any account other than the owner or if manager address is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.enableManager.sendTransaction(0x0, { from: owner }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.enableManager.sendTransaction(manager, { from: manager }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if enableManager called by any account other than the owner');
+    global.assert.equal(isThrow, true, 'It should throw an exception if enableManager called by any account other than the owner');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.disableManager.sendTransaction(0x0, { from: owner }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.disableManager.sendTransaction(manager, { from: manager }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if disableManager called by any account other than the owner');
+    global.assert.equal(isThrow, true, 'It should throw an exception if disableManager called by any account other than the owner');
 
-    isTrow = false;
-    isManagerAllowed = await manageableContract.isManagerAllowed.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
-      isTrow = true;
+    isThrow = false;
+    await manageableContract.isManagerAllowed.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid or name of manager permission is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid or name of manager permission is invalid');
 
-    isTrow = false;
-    isManagerAllowed = await manageableContract.isManagerAllowed.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
-      isTrow = true;
+    isThrow = false;
+    await manageableContract.isManagerAllowed.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid');
 
-    isTrow = false;
-    isManagerAllowed = await manageableContract.isManagerAllowed.sendTransaction(manager, '', { from: owner }).catch(() => {
-      isTrow = true;
+    isThrow = false;
+    await manageableContract.isManagerAllowed.sendTransaction(manager, '', { from: owner }).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if name of manager permission is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if name of manager permission is invalid');
 
-    isTrow = false;
-    isPermissionGranted = await manageableContract.isPermissionGranted.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
-      isTrow = true;
+    isThrow = false;
+    await manageableContract.isPermissionGranted.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid or name of manager permission is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid or name of manager permission is invalid');
 
-    isTrow = false;
-    isPermissionGranted = await manageableContract.isPermissionGranted.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
-      isTrow = true;
+    isThrow = false;
+    await manageableContract.isPermissionGranted.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid');
 
-    isTrow = false;
-    isPermissionGranted = await manageableContract.isPermissionGranted.sendTransaction(manager, '', { from: owner }).catch(() => {
-      isTrow = true;
+    isThrow = false;
+    await manageableContract.isPermissionGranted.sendTransaction(manager, '', { from: owner }).catch(() => {
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if name of manager permission is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if name of manager permission is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.grantManagerPermission.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.grantManagerPermission.sendTransaction(manager, '', { from: owner }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if name of manager permission is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if name of manager permission is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.grantManagerPermission.sendTransaction(manager, 'permission_01', { from: manager }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if grantManagerPermission called by any account other than the owner');
+    global.assert.equal(isThrow, true, 'It should throw an exception if grantManagerPermission called by any account other than the owner');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.revokeManagerPermission.sendTransaction(0x0, 'permission_01', { from: owner }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if manager address is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if manager address is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.revokeManagerPermission.sendTransaction(manager, '', { from: owner }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if name of manager permission is invalid');
+    global.assert.equal(isThrow, true, 'It should throw an exception if name of manager permission is invalid');
 
-    isTrow = false;
+    isThrow = false;
     await manageableContract.revokeManagerPermission.sendTransaction(manager, 'permission_01', { from: manager }).catch(() => {
-      isTrow = true;
+      isThrow = true;
     });
-    global.assert.equal(isTrow, true, 'It should throw an exception if revokeManagerPermission called by any account other than the owner');
+    global.assert.equal(isThrow, true, 'It should throw an exception if revokeManagerPermission called by any account other than the owner');
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, false);
