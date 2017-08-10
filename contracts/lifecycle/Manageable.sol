@@ -37,9 +37,8 @@ contract Manageable is Ownable {
    * @param _manager address New manager
    */
   function enableManager(address _manager) onlyOwner onlyValidAddress(_manager) {
-    if (managerEnabled[_manager]) {
-      return;
-    }
+    require(managerEnabled[_manager] == false);
+
     managerEnabled[_manager] = true;
     ManagerEnabledEvent(_manager);
   }
@@ -49,9 +48,8 @@ contract Manageable is Ownable {
    * @param _manager address Existing manager
    */
   function disableManager(address _manager) onlyOwner onlyValidAddress(_manager) {
-    if (managerEnabled[_manager] == false) {
-      return;
-    }
+    require(managerEnabled[_manager] == true);
+
     managerEnabled[_manager] = false;
     ManagerDisabledEvent(_manager);
   }
@@ -68,9 +66,8 @@ contract Manageable is Ownable {
     onlyValidAddress(_manager)
     onlyValidPermissionName(_permissionName)
   {
-    if (managerPermissions[_manager][_permissionName]) {
-      return;
-    }
+    require(managerPermissions[_manager][_permissionName] == false);
+
     managerPermissions[_manager][_permissionName] = true;
     ManagerPermissionGrantedEvent(_manager, _permissionName);
   }
@@ -87,9 +84,8 @@ contract Manageable is Ownable {
     onlyValidAddress(_manager)
     onlyValidPermissionName(_permissionName)
   {
-    if (managerPermissions[_manager][_permissionName] == false) {
-      return;
-    }
+    require(managerPermissions[_manager][_permissionName] == true);
+
     managerPermissions[_manager][_permissionName] = false;
     ManagerPermissionRevokedEvent(_manager, _permissionName);
   }
