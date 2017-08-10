@@ -23,8 +23,6 @@ contract CrydrStorageBaseInterface {
 
   /* Configuration */
 
-  // todo add name and symbol
-
   function setCrydrController(address _newController);
   function getCrydrController() constant returns (address);
 

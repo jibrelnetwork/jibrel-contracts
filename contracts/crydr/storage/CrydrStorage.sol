@@ -25,7 +25,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
 
   address crydrController;
   mapping (address => uint) balances;
-  uint crydrSupply;
+  uint totalSupply;
   mapping (address => mapping (address => uint)) allowed;
 
 
@@ -50,17 +50,17 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     return crydrController;
   }
 
-  /* Low-level change of balance and getters. Implied that crydrSupply kept in sync. */
+  /* Low-level change of balance and getters. Implied that totalSupply kept in sync. */
 
   function increaseBalance(address _account, uint _value) onlyCrydrController whenNotPaused {
     balances[_account] = balances[_account].add(_value);
-    crydrSupply = crydrSupply.add(_value);
+    totalSupply = totalSupply.add(_value);
     AccountBalanceIncreasedEvent(_account, _value);
   }
 
   function decreaseBalance(address _account, uint _value) onlyCrydrController whenNotPaused {
     balances[_account] = balances[_account].sub(_value);
-    crydrSupply = crydrSupply.sub(_value);
+    totalSupply = totalSupply.sub(_value);
     AccountBalanceDecreasedEvent(_account, _value);
   }
 
@@ -69,7 +69,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   }
 
   function getTotalSupply() constant returns (uint) {
-    return crydrSupply;
+    return totalSupply;
   }
 
   /* Low-level change of allowance and getters */
