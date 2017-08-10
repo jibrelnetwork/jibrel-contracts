@@ -2,6 +2,7 @@ const crydrStorageRoutines = require('../routine/CrydrStorageBaseInterface');
 const crydrControllerRoutines = require('../routine/CrydrControllerBaseInterface');
 const crydrViewRoutines = require('../routine/CrydrViewBaseInterface');
 const CryDRRegistryRoutines = require('../routine/CryDRRegistry');
+
 const CryDRRegistry                    = global.artifacts.require('CryDRRegistry.sol');
 
 
