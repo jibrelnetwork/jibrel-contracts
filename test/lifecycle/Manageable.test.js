@@ -1,6 +1,7 @@
 const Manageable = global.artifacts.require('Manageable.sol');
 
-const UtilsTestRoutines = require('../../routine/utils/UtilsTest');
+const UtilsTestRoutines  = require('../../routine/utils/UtilsTest');
+const ManageableRoutines = require('../../routine/Manageable');
 
 
 global.contract('Manageable', (accounts) => {
@@ -12,8 +13,6 @@ global.contract('Manageable', (accounts) => {
   global.beforeEach(async () => {
     manageableContract = await Manageable.new({ from: owner });
   });
-
-  // todo test events
 
   global.it('should test that contract works as expected', async () => {
     let isManagerEnabled;
@@ -183,5 +182,62 @@ global.contract('Manageable', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(manageableContract.revokeManagerPermission.sendTransaction,
                                                 [manager, 'permission_01', { from: owner }],
                                                 'Should not be possible to revoke permission that is already revoked');
+  });
+
+  global.it('should test that functions fire events', async () => {
+    let blockNumber = global.web3.eth.blockNumber;
+    await manageableContract.enableManager.sendTransaction(manager, { from: owner });
+    let pastEvents = await ManageableRoutines.getManagerEnabledEvents(manageableContract.address,
+                                                                      {
+                                                                        manager,
+                                                                      },
+                                                                      {
+                                                                        fromBlock: blockNumber + 1,
+                                                                        toBlock:   blockNumber + 1,
+                                                                        address:   owner,
+                                                                      });
+    global.assert.equal(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await manageableContract.disableManager.sendTransaction(manager, { from: owner });
+    pastEvents = await ManageableRoutines.getManagerDisabledEvents(manageableContract.address,
+                                                                   {
+                                                                     manager,
+                                                                   },
+                                                                   {
+                                                                     fromBlock: blockNumber + 1,
+                                                                     toBlock:   blockNumber + 1,
+                                                                     address:   owner,
+                                                                   });
+    global.assert.equal(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await manageableContract.grantManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    pastEvents = await ManageableRoutines.getManagerPermissionGrantedEvents(manageableContract.address,
+                                                                            {
+                                                                              manager,
+                                                                            },
+                                                                            {
+                                                                              fromBlock: blockNumber + 1,
+                                                                              toBlock:   blockNumber + 1,
+                                                                              address:   owner,
+                                                                            });
+    global.assert.equal(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await manageableContract.revokeManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    pastEvents = await ManageableRoutines.getManagerPermissionRevokedEvents(manageableContract.address,
+                                                                            {
+                                                                              manager,
+                                                                            },
+                                                                            {
+                                                                              fromBlock: blockNumber + 1,
+                                                                              toBlock:   blockNumber + 1,
+                                                                              address:   owner,
+                                                                            });
+    global.assert.equal(pastEvents.length, 1);
   });
 });

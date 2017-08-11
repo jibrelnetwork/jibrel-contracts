@@ -1,5 +1,7 @@
 import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
+const Promise = require('bluebird');
+
 const Manageable = global.artifacts.require('Manageable.sol');
 
 
@@ -76,4 +78,33 @@ export const isManagerAllowed = (contractAddress, manager, permissionName) => {
       global.console.log(`\tResult: ${value}`);
       return value;
     });
+};
+
+
+/*
+ * Events
+ */
+
+export const getManagerEnabledEvents = (contractAddress, eventDataFilter, commonFilter) => {
+  const eventObj = Manageable.at(contractAddress).ManagerEnabledEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getManagerDisabledEvents = (contractAddress, eventDataFilter, commonFilter) => {
+  const eventObj = Manageable.at(contractAddress).ManagerDisabledEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getManagerPermissionGrantedEvents = (contractAddress, eventDataFilter, commonFilter) => {
+  const eventObj = Manageable.at(contractAddress).ManagerPermissionGrantedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getManagerPermissionRevokedEvents = (contractAddress, eventDataFilter, commonFilter) => {
+  const eventObj = Manageable.at(contractAddress).ManagerPermissionRevokedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
 };

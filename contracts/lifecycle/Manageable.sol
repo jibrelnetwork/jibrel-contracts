@@ -26,8 +26,8 @@ contract Manageable is Ownable {
 
   event ManagerEnabledEvent(address indexed manager);
   event ManagerDisabledEvent(address indexed manager);
-  event ManagerPermissionGrantedEvent(address indexed manager, string indexed permission);
-  event ManagerPermissionRevokedEvent(address indexed manager, string indexed permission);
+  event ManagerPermissionGrantedEvent(address indexed manager, string permission);
+  event ManagerPermissionRevokedEvent(address indexed manager, string permission);
 
 
   /* Configure contract */
