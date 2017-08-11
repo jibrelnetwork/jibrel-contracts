@@ -15,7 +15,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableManag
   InvestorRegistryInterface investorsRegistry;
 
 
-  /* CrydrControllerERC20ValidatableInterface */
+  /* CrydrERC20ValidatableInterface */
 
   /* Configuration */
 

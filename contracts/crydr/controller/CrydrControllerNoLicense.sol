@@ -15,7 +15,7 @@ import "./CrydrControllerERC20Validatable.sol";
 contract CrydrControllerNoLicense is CrydrControllerBase,
                                      CrydrControllerMintable,
                                      CrydrControllerERC20Interface,
-                                     CrydrControllerERC20ValidatableInterface,
+                                     CrydrERC20ValidatableInterface,
                                      JNTPayableServiceERC20 {
 
   /* CrydrControllerERC20Interface */
@@ -56,7 +56,7 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
   }
 
 
-  /* CrydrControllerERC20ValidatableInterface */
+  /* CrydrERC20ValidatableInterface */
 
   /* Getters */
 

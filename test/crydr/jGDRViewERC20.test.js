@@ -2,7 +2,7 @@
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const CrydrViewERC20ValidatableInterface = global.artifacts.require('CrydrViewERC20ValidatableInterface.sol');
+const CrydrERC20ValidatableInterface = global.artifacts.require('CrydrERC20ValidatableInterface.sol');
 const jGDRViewERC20                      = global.artifacts.require('jGDRViewERC20.sol');
 const JNTViewERC20                       = global.artifacts.require('JNTViewERC20.sol');
 
@@ -16,7 +16,7 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
   global.it('should test that it is possible to receive admittance data', async () => {
     const jGDRViewERC20Instance = await jGDRViewERC20.deployed();
     const jGDRViewERC20Address = jGDRViewERC20Instance.address;
-    const ValidatableInstance  = CrydrViewERC20ValidatableInterface.at(jGDRViewERC20Address);
+    const ValidatableInstance  = CrydrERC20ValidatableInterface.at(jGDRViewERC20Address);
 
     let isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor01, 0);
     let isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor01, 0);

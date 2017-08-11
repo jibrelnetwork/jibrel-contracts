@@ -4,10 +4,10 @@ pragma solidity ^0.4.13;
 
 
 /**
- * @title CrydrControllerERC20ValidatableInterface interface
+ * @title CrydrERC20ValidatableInterface interface
  * @dev Interface of a contract that allows to check validity of transaction (in terms of licensing only)
  */
-contract CrydrControllerERC20ValidatableInterface {
+contract CrydrERC20ValidatableInterface {
 
   /*
    * Getters

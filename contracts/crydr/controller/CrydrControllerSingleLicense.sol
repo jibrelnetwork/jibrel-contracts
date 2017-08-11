@@ -83,7 +83,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   }
 
 
-  /* CrydrControllerERC20ValidatableInterface */
+  /* CrydrERC20ValidatableInterface */
 
   /* Getters */
 
