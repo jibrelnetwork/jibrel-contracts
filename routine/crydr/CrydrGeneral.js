@@ -1,7 +1,7 @@
-const crydrStorageRoutines    = require('./storage/CrydrStorageBaseInterface');
-const crydrControllerRoutines = require('./controller/CrydrControllerBaseInterface');
-const crydrViewRoutines       = require('./view/CrydrViewBaseInterface');
-const CryDRRegistryRoutines   = require('../registry/CryDRRegistry');
+const crydrStorageGeneralRoutines = require('./storage/CrydrStorageGeneral');
+const crydrControllerRoutines     = require('./controller/CrydrControllerBaseInterface');
+const crydrViewRoutines           = require('./view/CrydrViewBaseInterface');
+const CryDRRegistryRoutines       = require('../registry/CryDRRegistry');
 
 const CryDRRegistry = global.artifacts.require('CryDRRegistry.sol');
 
@@ -11,7 +11,7 @@ export const deployCrydrContracts = async (deployer, owner,
                                            crydrControllerContractObject,
                                            viewStandardToContractObject) => {
   global.console.log('\tDeploying components of a crydr');
-  await crydrStorageRoutines.deployCrydrStorage(deployer, crydrStorageContractObject, owner);
+  await crydrStorageGeneralRoutines.deployCrydrStorage(deployer, crydrStorageContractObject, owner);
   await crydrControllerRoutines.deployCrydrController(deployer, crydrControllerContractObject, owner);
   await crydrViewRoutines.deployCrydrViewsList(deployer, viewStandardToContractObject, owner);
   global.console.log('\tComponents of a crydr successfully deployed');
@@ -34,8 +34,8 @@ export const deployAndConfigureCrydr = async (deployer, owner, manager,
   const crydrControllerInstance = await crydrControllerContractObject.deployed();
   const crydrViewERC20Instance = await crydrViewERC20Contract.deployed();
 
-  await crydrStorageRoutines.configureCrydrStorage(crydrStorageInstance.address, owner, manager,
-                                                   crydrControllerInstance.address);
+  await crydrStorageGeneralRoutines.configureCrydrStorage(crydrStorageInstance.address, owner, manager,
+                                                          crydrControllerInstance.address);
   await crydrControllerRoutines.configureCrydrController(crydrControllerInstance.address, owner, manager,
                                                          crydrStorageInstance.address,
                                                          new Map([['erc20', crydrViewERC20Instance.address]]),

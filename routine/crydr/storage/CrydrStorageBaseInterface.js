@@ -1,22 +1,15 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
-const ManageableRoutines   = require('../../lifecycle/Manageable');
-const PausableRoutines     = require('../../lifecycle/Pausable');
+const Promise = require('bluebird');
 
 const CrydrStorageBaseInterface = global.artifacts.require('CrydrStorageBaseInterface.sol');
 
 
-export const deployCrydrStorage = async (deployer, crydrStorageContractObject, owner) => {
-  global.console.log('\tDeploying storage of a crydr:');
-  global.console.log(`\t\towner - ${owner}`);
+/**
+ * Configuration
+ */
 
-  await deployer.deploy(crydrStorageContractObject, { from: owner });
-
-  global.console.log('\tStorage of a crydr successfully deployed');
-  return null;
-};
-
-export const setControllerOfCrydrStorage = async (crydrStorageAddress, manager, crydrControllerAddress) => {
+export const setCrydrController = async (crydrStorageAddress, manager, crydrControllerAddress) => {
   global.console.log('\tSet controller of CryDR storage:');
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
@@ -28,25 +21,120 @@ export const setControllerOfCrydrStorage = async (crydrStorageAddress, manager, 
       .sendTransaction,
     [crydrControllerAddress, { from: manager }]);
   global.console.log('\tController of CryDR storage successfully set');
-  return null;
 };
 
-export const configureCrydrStorage = async (crydrStorageAddress, owner, manager, crydrControllerAddress) => {
-  global.console.log('  Configuring storage of a crydr...');
-  global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
-  global.console.log(`\t\towner - ${owner}`);
-  global.console.log(`\t\tmanager - ${manager}`);
-  global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  const managerPermissions = [
-    'set_crydr_controller',
-    'pause_contract',
-    'unpause_contract'];
+/**
+ * Low-level setters
+ */
 
-  await ManageableRoutines.enableManager(crydrStorageAddress, owner, manager);
-  await ManageableRoutines.grantManagerPermissions(crydrStorageAddress, owner, manager, managerPermissions);
-  await setControllerOfCrydrStorage(crydrStorageAddress, manager, crydrControllerAddress);
-  await PausableRoutines.unpauseContract(crydrStorageAddress, manager);
-  global.console.log('\tStorage of a crydr successfully configured');
-  return null;
+export const increaseBalance = async (crydrStorageAddress, crydrControllerAddress,
+                                      accountAddress, valueWei) => {
+  global.console.log('\tIncrease balance of account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\taccountAddress - ${accountAddress}`);
+  global.console.log(`\t\tvalueWei - ${valueWei}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .increaseBalance
+      .sendTransaction,
+    [accountAddress, valueWei, { from: crydrControllerAddress }]);
+  global.console.log('\tBalance successfully increased');
+};
+
+export const decreaseBalance = async (crydrStorageAddress, crydrControllerAddress,
+                                      accountAddress, valueWei) => {
+  global.console.log('\tDecrease balance of account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\taccountAddress - ${accountAddress}`);
+  global.console.log(`\t\tvalueWei - ${valueWei}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .decreaseBalance
+      .sendTransaction,
+    [accountAddress, valueWei, { from: crydrControllerAddress }]);
+  global.console.log('\tBalance successfully decreased');
+};
+
+export const increaseAllowance = async (crydrStorageAddress, crydrControllerAddress,
+                                        ownerAddress, spenderAddress, valueWei) => {
+  global.console.log('\tDecrease allowance of account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
+  global.console.log(`\t\tvalueWei - ${valueWei}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .increaseAllowance
+      .sendTransaction,
+    [ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress }]);
+  global.console.log('\tBalance successfully increased');
+};
+
+export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddress,
+                                        ownerAddress, spenderAddress, valueWei) => {
+  global.console.log('\tDecrease allowance of account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
+  global.console.log(`\t\tvalueWei - ${valueWei}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .decreaseAllowance
+      .sendTransaction,
+    [ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress }]);
+  global.console.log('\tBalance successfully increased');
+};
+
+
+/**
+ * Events
+ */
+
+export const getCrydrControllerChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .CrydrControllerChangedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountBalanceIncreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountBalanceIncreasedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountBalanceDecreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountBalanceDecreasedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountAllowanceIncreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountAllowanceIncreasedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountAllowanceDecreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountAllowanceDecreasedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
 };
