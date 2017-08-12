@@ -1,7 +1,7 @@
-import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
-const ManageableRoutines   = require('./Manageable');
-const PausableRoutines     = require('./Pausable');
+const ManageableRoutines   = require('../../lifecycle/Manageable');
+const PausableRoutines     = require('../../lifecycle/Pausable');
 
 const CrydrViewBaseInterface = global.artifacts.require('CrydrViewBaseInterface.sol');
 

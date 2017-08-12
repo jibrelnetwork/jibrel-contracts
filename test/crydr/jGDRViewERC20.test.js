@@ -3,8 +3,8 @@
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
 const CrydrERC20ValidatableInterface = global.artifacts.require('CrydrERC20ValidatableInterface.sol');
-const jGDRViewERC20                      = global.artifacts.require('jGDRViewERC20.sol');
-const JNTViewERC20                       = global.artifacts.require('JNTViewERC20.sol');
+const jGDRViewERC20                  = global.artifacts.require('jGDRViewERC20.sol');
+const JNTViewERC20                   = global.artifacts.require('JNTViewERC20.sol');
 
 
 global.contract('jGDRViewERC20Instance', (accounts) => {

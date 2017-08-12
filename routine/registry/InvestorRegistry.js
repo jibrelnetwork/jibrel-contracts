@@ -1,9 +1,9 @@
-import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../misc/SubmitTx';
 
 const InvestorRegistry                    = global.artifacts.require('InvestorRegistry.sol');
 const InvestorRegistryManagementInterface = global.artifacts.require('InvestorRegistryManagementInterface.sol');
 
-const ManageableRoutines = require('./Manageable');
+const ManageableRoutines = require('../lifecycle/Manageable');
 
 
 /* Deploy contract */

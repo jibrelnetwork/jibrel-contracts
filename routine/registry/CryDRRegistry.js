@@ -1,9 +1,9 @@
-import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../misc/SubmitTx';
 
 const CryDRRegistryManagementInterface = global.artifacts.require('CryDRRegistryManagementInterface.sol');
 const CryDRRegistry                    = global.artifacts.require('CryDRRegistry.sol');
 
-const ManageableRoutines   = require('./Manageable');
+const ManageableRoutines   = require('../lifecycle/Manageable');
 
 
 /* Migration promises */

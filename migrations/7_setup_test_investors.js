@@ -3,12 +3,12 @@ require('babel-polyfill');
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const GlobalConfig = require('../routine/utils/GlobalConfig');
-const SubmitTx     = require('../routine/utils/SubmitTx');
+const GlobalConfig = require('../routine/misc/GlobalConfig');
+const SubmitTx     = require('../routine/misc/SubmitTx');
 
 const InvestorRegistry                = global.artifacts.require('InvestorRegistry.sol');
-const InvestorRegistryRoutines        = require('../routine/InvestorRegistry');
-const CrydrControllerMintableRoutines = require('../routine/CrydrControllerMintableInterface');
+const InvestorRegistryRoutines        = require('../routine/registry/InvestorRegistry');
+const CrydrControllerMintableRoutines = require('../routine/crydr/controller/CrydrControllerMintableInterface');
 
 const JNTController    = global.artifacts.require('JNTController.sol');
 const jUSDController   = global.artifacts.require('jUSDController.sol');

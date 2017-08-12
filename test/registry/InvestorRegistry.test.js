@@ -1,7 +1,7 @@
 /* eslint-disable no-multi-spaces */
 const InvestorRegistry = global.artifacts.require('InvestorRegistry.sol');
 
-const ManageableRoutines = require('../../routine/Manageable');
+const ManageableRoutines = require('../../routine/lifecycle/Manageable');
 
 
 global.contract('InvestorRegistry', (accounts) => {

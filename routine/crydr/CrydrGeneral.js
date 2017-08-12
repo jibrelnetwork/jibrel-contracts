@@ -1,9 +1,9 @@
-const crydrStorageRoutines = require('../routine/CrydrStorageBaseInterface');
-const crydrControllerRoutines = require('../routine/CrydrControllerBaseInterface');
-const crydrViewRoutines = require('../routine/CrydrViewBaseInterface');
-const CryDRRegistryRoutines = require('../routine/CryDRRegistry');
+const crydrStorageRoutines    = require('./storage/CrydrStorageBaseInterface');
+const crydrControllerRoutines = require('./controller/CrydrControllerBaseInterface');
+const crydrViewRoutines       = require('./view/CrydrViewBaseInterface');
+const CryDRRegistryRoutines   = require('../registry/CryDRRegistry');
 
-const CryDRRegistry                    = global.artifacts.require('CryDRRegistry.sol');
+const CryDRRegistry = global.artifacts.require('CryDRRegistry.sol');
 
 
 export const deployCrydrContracts = async (deployer, owner,

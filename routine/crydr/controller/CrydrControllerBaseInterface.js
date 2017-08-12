@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
 const CrydrControllerBaseInterface    = global.artifacts.require('CrydrControllerBaseInterface.sol');
 const JNTPayableServiceInterface      = global.artifacts.require('JNTPayableServiceInterface.sol');
@@ -6,9 +6,9 @@ const JNTPayableServiceERC20Interface = global.artifacts.require('JNTPayableServ
 const CrydrControllerERC20Validatable = global.artifacts.require('CrydrControllerERC20ValidatableManagerInterface.sol');
 const InvestorRegistry = global.artifacts.require('InvestorRegistry.sol');
 
-const ManageableRoutines             = require('./Manageable');
-const PausableRoutines               = require('./Pausable');
-const JNTControllerInterfaceRoutines = require('../routine/JNTControllerInterface');
+const ManageableRoutines             = require('../../lifecycle/Manageable');
+const PausableRoutines               = require('../../lifecycle/Pausable');
+const JNTControllerInterfaceRoutines = require('../../crydr/jnt/JNTControllerInterface');
 const JNTController = global.artifacts.require('JNTController.sol');
 
 

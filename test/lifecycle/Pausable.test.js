@@ -1,10 +1,10 @@
-import { submitTxAndWaitConfirmation } from '../../routine/utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../routine/misc/SubmitTx';
 
 const PausableTest = global.artifacts.require('PausableTest.sol');
 
-const UtilsTestRoutines  = require('../../routine/utils/UtilsTest');
-const ManageableRoutines = require('../../routine/Manageable');
-const PausableRoutines   = require('../../routine/Pausable');
+const UtilsTestRoutines  = require('../../routine/misc/UtilsTest');
+const ManageableRoutines = require('../../routine/lifecycle/Manageable');
+const PausableRoutines   = require('../../routine/lifecycle/Pausable');
 
 
 global.contract('Pausable', (accounts) => {

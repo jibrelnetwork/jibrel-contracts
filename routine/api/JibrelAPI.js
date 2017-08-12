@@ -2,7 +2,7 @@ const JibrelAPI        = global.artifacts.require('JibrelAPI.sol');
 const InvestorRegistry = global.artifacts.require('InvestorRegistry.sol');
 const CryDRRegistry    = global.artifacts.require('CryDRRegistry.sol');
 
-const ManageableRoutines   = require('./Manageable');
+const ManageableRoutines   = require('../lifecycle/Manageable');
 
 
 /* Migration promises */

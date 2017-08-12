@@ -1,4 +1,4 @@
-const ManageableRoutines   = require('./Manageable');
+const ManageableRoutines   = require('../../lifecycle/Manageable');
 
 
 // eslint-disable-next-line import/prefer-default-export

@@ -3,8 +3,8 @@ require('babel-polyfill');
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const GlobalConfig = require('../routine/utils/GlobalConfig');
-const SubmitTx = require('../routine/utils/SubmitTx');
+const GlobalConfig = require('../routine/misc/GlobalConfig');
+const SubmitTx = require('../routine/misc/SubmitTx');
 
 const jUSDStorage    = global.artifacts.require('jUSDStorage.sol');
 const jUSDController = global.artifacts.require('jUSDController.sol');
@@ -40,8 +40,8 @@ const jGDRViewERC20  = global.artifacts.require('jGDRViewERC20.sol');
 
 const JNTController                  = global.artifacts.require('JNTController.sol');
 
-const crydrGeneralRoutines           = require('../routine/CrydrGeneral');
-const JNTControllerInterfaceRoutines = require('../routine/JNTControllerInterface');
+const crydrGeneralRoutines           = require('../routine/crydr/CrydrGeneral');
+const JNTControllerInterfaceRoutines = require('../routine/crydr/jnt/JNTControllerInterface');
 
 
 /* Deploy and configure fiat CryDRs */

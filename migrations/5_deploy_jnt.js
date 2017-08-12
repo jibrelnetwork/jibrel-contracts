@@ -3,14 +3,14 @@ require('babel-polyfill');
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const GlobalConfig = require('../routine/utils/GlobalConfig');
-const SubmitTx = require('../routine/utils/SubmitTx');
+const GlobalConfig = require('../routine/misc/GlobalConfig');
+const SubmitTx = require('../routine/misc/SubmitTx');
 
 const JNTStorage    = global.artifacts.require('JNTStorage.sol');
 const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
-const crydrGeneralRoutines = require('../routine/CrydrGeneral');
+const crydrGeneralRoutines = require('../routine/crydr/CrydrGeneral');
 
 
 /* Deploy and configure JNT */

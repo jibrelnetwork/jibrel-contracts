@@ -1,8 +1,8 @@
 const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
 
-const UtilsTestRoutines    = require('../../routine/utils/UtilsTest');
-const ManageableRoutines   = require('../../routine/Manageable');
-const crydrStorageRoutines = require('../../routine/CrydrStorageBaseInterface');
+const UtilsTestRoutines    = require('../../routine/misc/UtilsTest');
+const ManageableRoutines   = require('../../routine/lifecycle/Manageable');
+const crydrStorageRoutines = require('../../routine/crydr/storage/CrydrStorageBaseInterface');
 
 
 global.contract('CrydrStorage', (accounts) => {

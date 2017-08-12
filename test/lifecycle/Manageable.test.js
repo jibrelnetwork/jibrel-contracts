@@ -1,7 +1,7 @@
 const Manageable = global.artifacts.require('Manageable.sol');
 
-const UtilsTestRoutines  = require('../../routine/utils/UtilsTest');
-const ManageableRoutines = require('../../routine/Manageable');
+const UtilsTestRoutines  = require('../../routine/misc/UtilsTest');
+const ManageableRoutines = require('../../routine/lifecycle/Manageable');
 
 
 global.contract('Manageable', (accounts) => {

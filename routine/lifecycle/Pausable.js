@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../misc/SubmitTx';
 
 const Promise = require('bluebird');
 

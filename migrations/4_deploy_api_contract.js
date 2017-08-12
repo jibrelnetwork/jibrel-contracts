@@ -3,11 +3,11 @@ require('babel-polyfill');
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const GlobalConfig = require('../routine/utils/GlobalConfig');
-const SubmitTx = require('../routine/utils/SubmitTx');
+const GlobalConfig = require('../routine/misc/GlobalConfig');
+const SubmitTx = require('../routine/misc/SubmitTx');
 
 const JibrelAPI         = global.artifacts.require('JibrelAPI.sol');
-const JibrelAPIRoutines = require('../routine/JibrelAPI');
+const JibrelAPIRoutines = require('../routine/api/JibrelAPI');
 
 
 /* Migration routine */

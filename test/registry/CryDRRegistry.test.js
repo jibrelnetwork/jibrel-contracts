@@ -1,16 +1,16 @@
 /* eslint-disable no-multi-spaces */
 
-const CryDRRegistry       = global.artifacts.require('CryDRRegistry.sol');
+const CryDRRegistry = global.artifacts.require('CryDRRegistry.sol');
 
-const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
-const jUSDViewERC20  = global.artifacts.require('jUSDViewERC20.sol');
-const jEURViewERC20  = global.artifacts.require('jEURViewERC20.sol');
-const jGBPViewERC20  = global.artifacts.require('jGBPViewERC20.sol');
-const jAEDViewERC20  = global.artifacts.require('jAEDViewERC20.sol');
-const jRUBViewERC20  = global.artifacts.require('jRUBViewERC20.sol');
-const jCNYViewERC20  = global.artifacts.require('jCNYViewERC20.sol');
-const jTBillViewERC20  = global.artifacts.require('jTBillViewERC20.sol');
-const jGDRViewERC20  = global.artifacts.require('jGDRViewERC20.sol');
+const JNTViewERC20    = global.artifacts.require('JNTViewERC20.sol');
+const jUSDViewERC20   = global.artifacts.require('jUSDViewERC20.sol');
+const jEURViewERC20   = global.artifacts.require('jEURViewERC20.sol');
+const jGBPViewERC20   = global.artifacts.require('jGBPViewERC20.sol');
+const jAEDViewERC20   = global.artifacts.require('jAEDViewERC20.sol');
+const jRUBViewERC20   = global.artifacts.require('jRUBViewERC20.sol');
+const jCNYViewERC20   = global.artifacts.require('jCNYViewERC20.sol');
+const jTBillViewERC20 = global.artifacts.require('jTBillViewERC20.sol');
+const jGDRViewERC20   = global.artifacts.require('jGDRViewERC20.sol');
 
 
 global.contract('CryDRRegistry', async () => {
