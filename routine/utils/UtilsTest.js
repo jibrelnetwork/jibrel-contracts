@@ -1,5 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
-export async function checkContractThrows(functionObj, functionParams, notThrowMsg = null) {
+export async function checkContractThrows(functionObj, functionParams = [], notThrowMsg = null) {
+  if (typeof functionObj === 'undefined' || functionObj === null) {
+    throw Error('Function is not defined.');
+  }
   let isCaught = false;
   try {
     await functionObj(...functionParams);
