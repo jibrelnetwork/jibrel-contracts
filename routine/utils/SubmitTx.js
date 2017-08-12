@@ -56,7 +56,7 @@ export async function waitTxConfirmation(txHash, waitParams = defaultWaitParams)
 }
 
 // todo make the same for a list of promises, see Manageable routines, grantPermissions
-export async function submitTxAndWaitConfirmation(txTemplate, args, waitParams = defaultWaitParams) {
+export async function submitTxAndWaitConfirmation(txTemplate, args = [], waitParams = defaultWaitParams) {
   const txHash = await txTemplate(...args);
   global.console.log(`\tTX submitted: ${txHash}`);
   await waitTxConfirmation(txHash, waitParams);

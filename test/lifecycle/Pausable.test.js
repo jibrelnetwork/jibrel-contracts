@@ -34,7 +34,7 @@ global.contract('Pausable', (accounts) => {
     let contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 0);
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction, []);
+    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 1);
 
@@ -42,7 +42,7 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenNotPaused.sendTransaction, []);
+    await submitTxAndWaitConfirmation(pausableContract.worksWhenNotPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 2);
 
@@ -50,7 +50,7 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, true, 'Expected that contract is unpaused');
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction, []);
+    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 3);
   });
@@ -90,7 +90,7 @@ global.contract('Pausable', (accounts) => {
     let contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 0);
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction, []);
+    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 1);
 
@@ -103,7 +103,7 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenNotPaused.sendTransaction, []);
+    await submitTxAndWaitConfirmation(pausableContract.worksWhenNotPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 2);
     await UtilsTestRoutines.checkContractThrows(pausableContract.worksWhenPaused.sendTransaction, [],
@@ -112,5 +112,28 @@ global.contract('Pausable', (accounts) => {
     global.assert.equal(contractCounter, 2);
   });
 
-  // todo test events
+  global.it('should test that functions fire events', async () => {
+    let blockNumber = global.web3.eth.blockNumber;
+    await PausableRoutines.unpauseContract(pausableContract.address, manager02);
+    let pastEvents = await PausableRoutines.getUnpauseEvents(pausableContract.address,
+                                                             {},
+                                                             {
+                                                               fromBlock: blockNumber + 1,
+                                                               toBlock:   blockNumber + 1,
+                                                               address:   manager02,
+                                                             });
+    global.assert.equal(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await PausableRoutines.pauseContract(pausableContract.address, manager01);
+    pastEvents = await PausableRoutines.getPauseEvents(pausableContract.address,
+                                                       {},
+                                                       {
+                                                         fromBlock: blockNumber + 1,
+                                                         toBlock:   blockNumber + 1,
+                                                         address:   manager01,
+                                                       });
+    global.assert.equal(pastEvents.length, 1);
+  });
 });

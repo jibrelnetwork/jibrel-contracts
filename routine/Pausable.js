@@ -1,7 +1,13 @@
 import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
 
+const Promise = require('bluebird');
+
 const Pausable = global.artifacts.require('Pausable.sol');
 
+
+/**
+ * Setters
+ */
 
 export const unpauseContract = async (contractAddress, manager) => {
   global.console.log('\tUnpause contract:');
@@ -15,7 +21,6 @@ export const unpauseContract = async (contractAddress, manager) => {
     [{ from: manager }],
   );
   global.console.log('\t\tContract successfully unpaused');
-  return null;
 };
 
 export const pauseContract = async (contractAddress, manager) => {
@@ -30,5 +35,21 @@ export const pauseContract = async (contractAddress, manager) => {
     [{ from: manager }],
   );
   global.console.log('\t\tContract successfully unpaused');
-  return null;
+};
+
+
+/**
+ * Events
+ */
+
+export const getPauseEvents = (contractAddress, eventDataFilter, commonFilter) => {
+  const eventObj = Pausable.at(contractAddress).PauseEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getUnpauseEvents = (contractAddress, eventDataFilter, commonFilter) => {
+  const eventObj = Pausable.at(contractAddress).UnpauseEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
 };
