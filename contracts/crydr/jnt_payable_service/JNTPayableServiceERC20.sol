@@ -34,7 +34,7 @@ contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Inte
     }
     if (jntPriceTransferFrom != _jntPriceTransferFrom) {
       jntPriceTransferFrom = _jntPriceTransferFrom;
-      JNTPriceTransferChangedEvent(_jntPriceTransferFrom);
+      JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);
     }
     if (jntPriceApprove != _jntPriceApprove) {
       jntPriceApprove = _jntPriceApprove;
