@@ -36,6 +36,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   function setCrydrController(
     address _crydrController
   )
+    whenPaused
     onlyValidCrydrControllerAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
   {
@@ -52,19 +53,39 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
 
   /* Low-level change of balance and getters. Implied that totalSupply kept in sync. */
 
-  function increaseBalance(address _account, uint _value) onlyCrydrController whenNotPaused {
+  function increaseBalance(
+    address _account,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_account != address(0x0));
+    require(_value > 0);
+
     balances[_account] = balances[_account].add(_value);
     totalSupply = totalSupply.add(_value);
     AccountBalanceIncreasedEvent(_account, _value);
   }
 
-  function decreaseBalance(address _account, uint _value) onlyCrydrController whenNotPaused {
+  function decreaseBalance(
+    address _account,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_account != address(0x0));
+    require(_value > 0);
+
     balances[_account] = balances[_account].sub(_value);
     totalSupply = totalSupply.sub(_value);
     AccountBalanceDecreasedEvent(_account, _value);
   }
 
   function getBalance(address _account) constant returns (uint) {
+    require(_account != address(0x0));
+
     return balances[_account];
   }
 
@@ -74,17 +95,51 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
 
   /* Low-level change of allowance and getters */
 
-  function increaseAllowance(address _owner, address _spender, uint _value) onlyCrydrController whenNotPaused {
+  function increaseAllowance(
+    address _owner,
+    address _spender,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_owner != address(0x0));
+    require(_spender != address(0x0));
+    require(_owner != _spender);
+    require(_value > 0);
+
     allowed[_owner][_spender] = allowed[_owner][_spender].add(_value);
     AccountAllowanceIncreasedEvent(_owner, _spender, _value);
   }
 
-  function decreaseAllowance(address _owner, address _spender, uint _value) onlyCrydrController whenNotPaused {
+  function decreaseAllowance(
+    address _owner,
+    address _spender,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_owner != address(0x0));
+    require(_spender != address(0x0));
+    require(_owner != _spender);
+    require(_value > 0);
+
     allowed[_owner][_spender] = allowed[_owner][_spender].sub(_value);
     AccountAllowanceDecreasedEvent(_owner, _spender, _value);
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint) {
+  function getAllowance(
+    address _owner,
+    address _spender
+  )
+    constant
+    returns (uint)
+  {
+    require(_owner != address(0x0));
+    require(_spender != address(0x0));
+    require(_owner != _spender);
+
     return allowed[_owner][_spender];
   }
 
@@ -93,22 +148,60 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
 
   /* ERC20 optimization. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint _value) onlyCrydrController whenNotPaused {
+  function transfer(
+    address _msgsender,
+    address _to,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_msgsender != address(0x0));
+    require(_to != address(0x0));
+    require(_msgsender != _to);
+    require(_value > 0);
+
     balances[_msgsender] = balances[_msgsender].sub(_value);
     balances[_to] = balances[_to].add(_value);
     CrydrTransferEvent(_msgsender, _to, _value);
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrController whenNotPaused {
+  function transferFrom(
+    address _msgsender,
+    address _from,
+    address _to,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_msgsender != address(0x0));
+    require(_from != address(0x0));
+    require(_to != address(0x0));
+    require(_from != _to);
+    require(_value > 0);
+
     allowed[_from][_msgsender] = allowed[_from][_msgsender].sub(_value);
     balances[_from] = balances[_from].sub(_value);
     balances[_to] = balances[_to].add(_value);
     CrydrTransferFromEvent(_msgsender, _from, _to, _value);
   }
 
-  function approve(address _msgsender, address _spender, uint _value) onlyCrydrController whenNotPaused {
+  function approve(
+    address _msgsender,
+    address _spender,
+    uint _value
+  )
+    whenNotPaused
+    onlyCrydrController
+  {
+    require(_msgsender != address(0x0));
+    require(_spender != address(0x0));
+    require(_msgsender != _spender);
+    require(_value > 0);
+
     allowed[_msgsender][_spender] = _value;
-    CrydrApprovalEvent(_msgsender, _spender, _value);
+    CrydrSpendingApprovedEvent(_msgsender, _spender, _value);
   }
 
 

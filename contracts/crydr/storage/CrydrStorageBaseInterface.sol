@@ -16,9 +16,6 @@ contract CrydrStorageBaseInterface {
   event AccountBalanceDecreasedEvent(address indexed account, uint value);
   event AccountAllowanceIncreasedEvent(address indexed owner, address indexed spender, uint value);
   event AccountAllowanceDecreasedEvent(address indexed owner, address indexed spender, uint value);
-  event CrydrTransferEvent(address indexed from, address indexed to, uint value);
-  event CrydrTransferFromEvent(address indexed spender, address indexed from, address indexed to, uint value);
-  event CrydrApprovalEvent(address indexed owner, address indexed spender, uint value);
 
 
   /* Configuration */
@@ -27,7 +24,7 @@ contract CrydrStorageBaseInterface {
   function getCrydrController() constant returns (address);
 
 
-  /* Low-level change of balance and getters. Implied that totalSupply kept in sync. */
+  /* Low-level change of balance. Implied that totalSupply kept in sync. */
 
   function increaseBalance(address _account, uint _value);
   function decreaseBalance(address _account, uint _value);
@@ -35,7 +32,7 @@ contract CrydrStorageBaseInterface {
   function getTotalSupply() constant returns (uint);
 
 
-  /* Low-level change of allowance and getters */
+  /* Low-level change of allowance */
 
   function increaseAllowance(address _owner, address _spender, uint _value);
   function decreaseAllowance(address _owner, address _spender, uint _value);

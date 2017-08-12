@@ -13,7 +13,7 @@ contract CrydrStorageERC20Interface {
 
   event CrydrTransferEvent(address indexed from, address indexed to, uint value);
   event CrydrTransferFromEvent(address indexed spender, address indexed from, address indexed to, uint value);
-  event CrydrApprovalEvent(address indexed owner, address indexed spender, uint value);
+  event CrydrSpendingApprovedEvent(address indexed owner, address indexed spender, uint value);
 
 
   /* ERC20 optimization. _msgsender - account that invoked CrydrView */
