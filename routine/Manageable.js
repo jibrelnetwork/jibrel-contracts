@@ -83,11 +83,7 @@ export const isManagerEnabled = (contractAddress, manager) => {
   return Manageable
     .at(contractAddress)
     .isManagerEnabled
-    .call(manager)
-    .then((value) => {
-      global.console.log(`\tResult: ${value}`);
-      return value;
-    });
+    .call(manager);
 };
 
 export const isPermissionGranted = (contractAddress, manager, permissionName) => {
@@ -98,11 +94,7 @@ export const isPermissionGranted = (contractAddress, manager, permissionName) =>
   return Manageable
     .at(contractAddress)
     .isPermissionGranted
-    .call(manager, permissionName)
-    .then((value) => {
-      global.console.log(`\tResult: ${value}`);
-      return value;
-    });
+    .call(manager, permissionName);
 };
 
 export const isManagerAllowed = (contractAddress, manager, permissionName) => {
@@ -113,11 +105,7 @@ export const isManagerAllowed = (contractAddress, manager, permissionName) => {
   return Manageable
     .at(contractAddress)
     .isManagerAllowed
-    .call(manager, permissionName)
-    .then((value) => {
-      global.console.log(`\tResult: ${value}`);
-      return value;
-    });
+    .call(manager, permissionName);
 };
 
 
