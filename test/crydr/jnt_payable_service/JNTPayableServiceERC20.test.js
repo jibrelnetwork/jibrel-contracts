@@ -1,12 +1,12 @@
-import { submitTxAndWaitConfirmation } from '../../routine/utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
 
 const JNTPayableServiceERC20 = global.artifacts.require('JNTPayableServiceERC20.sol');
-const JNTController     = global.artifacts.require('JNTController.sol');
+const JNTController          = global.artifacts.require('JNTController.sol');
 
-const UtilsTestRoutines         = require('../../routine/utils/UtilsTest');
-const ManageableRoutines        = require('../../routine/Manageable');
-const PausableRoutines          = require('../../routine/Pausable');
-const JNTPayableServiceERC20Routines = require('../../routine/JNTPayableServiceERC20');
+const UtilsTestRoutines              = require('../../../routine/misc/UtilsTest');
+const ManageableRoutines             = require('../../../routine/lifecycle/Manageable');
+const PausableRoutines               = require('../../../routine/lifecycle/Pausable');
+const JNTPayableServiceERC20Routines = require('../../../routine/crydr/jnt/JNTPayableServiceERC20');
 
 
 global.contract('JNTPayableServiceERC20', (accounts) => {
@@ -148,7 +148,7 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
                                                          address:   manager05,
                                                        });
     global.assert.equal(pastEvents.length, 1, 'The JNTPriceApproveChanged event must be raised');
-    
+
 
     blockNumber = global.web3.eth.blockNumber;
     await submitTxAndWaitConfirmation(jntPayableServiceERC20Contract.setJntPrice.sendTransaction,

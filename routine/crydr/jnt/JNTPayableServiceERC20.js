@@ -1,5 +1,3 @@
-import { submitTxAndWaitConfirmation } from './utils/SubmitTx';
-
 const Promise = require('bluebird');
 
 const JNTPayableService = global.artifacts.require('JNTPayableServiceERC20.sol');

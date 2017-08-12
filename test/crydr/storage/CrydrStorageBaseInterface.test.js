@@ -2,11 +2,11 @@ const BigNumber = require('bignumber.js');
 
 const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
 
-const UtilsTestRoutines           = require('../../routine/misc/UtilsTest');
-const ManageableRoutines          = require('../../routine/lifecycle/Manageable');
-const PausableRoutines            = require('../../routine/lifecycle/Pausable');
-const crydrStorageBaseRoutines    = require('../../routine/crydr/storage/CrydrStorageBaseInterface');
-const crydrStorageGeneralRoutines = require('../../routine/crydr/storage/CrydrStorageGeneral');
+const UtilsTestRoutines           = require('../../../routine/misc/UtilsTest');
+const ManageableRoutines          = require('../../../routine/lifecycle/Manageable');
+const PausableRoutines            = require('../../../routine/lifecycle/Pausable');
+const crydrStorageBaseRoutines    = require('../../../routine/crydr/storage/CrydrStorageBaseInterface');
+const crydrStorageGeneralRoutines = require('../../../routine/crydr/storage/CrydrStorageGeneral');
 
 
 global.contract('CrydrStorageBaseInterface', (accounts) => {

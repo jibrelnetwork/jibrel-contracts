@@ -1,12 +1,12 @@
-import { submitTxAndWaitConfirmation } from '../../routine/utils/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
 
 const JNTPayableService = global.artifacts.require('JNTPayableService.sol');
 const JNTController     = global.artifacts.require('JNTController.sol');
 
-const UtilsTestRoutines         = require('../../routine/utils/UtilsTest');
-const ManageableRoutines        = require('../../routine/Manageable');
-const PausableRoutines          = require('../../routine/Pausable');
-const JNTPayableServiceRoutines = require('../../routine/JNTPayableService');
+const UtilsTestRoutines         = require('../../../routine/misc/UtilsTest');
+const ManageableRoutines        = require('../../../routine/lifecycle/Manageable');
+const PausableRoutines          = require('../../../routine/lifecycle/Pausable');
+const JNTPayableServiceRoutines = require('../../../routine/crydr/jnt/JNTPayableService');
 
 
 global.contract('JNTPayableService', (accounts) => {

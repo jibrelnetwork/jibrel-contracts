@@ -1,10 +1,10 @@
 const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
 
-const UtilsTestRoutines           = require('../../routine/misc/UtilsTest');
-const PausableRoutines            = require('../../routine/lifecycle/Pausable');
-const crydrStorageBaseRoutines    = require('../../routine/crydr/storage/CrydrStorageBaseInterface');
-const crydrStorageERC20Routines   = require('../../routine/crydr/storage/CrydrStorageERC20Interface');
-const crydrStorageGeneralRoutines = require('../../routine/crydr/storage/CrydrStorageGeneral');
+const UtilsTestRoutines           = require('../../../routine/misc/UtilsTest');
+const PausableRoutines            = require('../../../routine/lifecycle/Pausable');
+const crydrStorageBaseRoutines    = require('../../../routine/crydr/storage/CrydrStorageBaseInterface');
+const crydrStorageERC20Routines   = require('../../../routine/crydr/storage/CrydrStorageERC20Interface');
+const crydrStorageGeneralRoutines = require('../../../routine/crydr/storage/CrydrStorageGeneral');
 
 
 global.contract('CrydrStorageERC20Interface', (accounts) => {
