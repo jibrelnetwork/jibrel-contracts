@@ -32,7 +32,7 @@ global.contract('Manageable', (accounts) => {
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     global.assert.equal(isPermission02Allowed, false);
 
-    await manageableContract.enableManager.sendTransaction(manager, { from: owner });
+    await ManageableRoutines.enableManager(manageableContract.address, owner, manager);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, true);
@@ -45,7 +45,7 @@ global.contract('Manageable', (accounts) => {
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     global.assert.equal(isPermission02Allowed, false);
 
-    await manageableContract.grantManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    await ManageableRoutines.grantManagerPermissions(manageableContract.address, owner, manager, ['permission_01']);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, true);
@@ -58,7 +58,7 @@ global.contract('Manageable', (accounts) => {
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     global.assert.equal(isPermission02Allowed, false);
 
-    await manageableContract.grantManagerPermission.sendTransaction(manager, 'permission_02', { from: owner });
+    await ManageableRoutines.grantManagerPermissions(manageableContract.address, owner, manager, ['permission_02']);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, true);
@@ -71,7 +71,7 @@ global.contract('Manageable', (accounts) => {
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     global.assert.equal(isPermission02Allowed, true);
 
-    await manageableContract.revokeManagerPermission.sendTransaction(manager, 'permission_02', { from: owner });
+    await ManageableRoutines.revokeManagerPermissions(manageableContract.address, owner, manager, ['permission_02']);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, true);
@@ -84,7 +84,7 @@ global.contract('Manageable', (accounts) => {
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
     global.assert.equal(isPermission02Allowed, false);
 
-    await manageableContract.disableManager.sendTransaction(manager, { from: owner });
+    await ManageableRoutines.disableManager(manageableContract.address, owner, manager);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
     global.assert.equal(isManagerEnabled, false);
@@ -133,7 +133,7 @@ global.contract('Manageable', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(manageableContract.enableManager.sendTransaction,
                                                 [manager, { from: manager }],
                                                 'Only owner should be able to enable manager');
-    await manageableContract.enableManager.sendTransaction(manager, { from: owner });
+    await ManageableRoutines.enableManager(manageableContract.address, owner, manager);
     await UtilsTestRoutines.checkContractThrows(manageableContract.enableManager.sendTransaction,
                                                 [manager, { from: owner }],
                                                 'Should not be possible to enable already enabled manager');
@@ -144,7 +144,7 @@ global.contract('Manageable', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(manageableContract.disableManager.sendTransaction,
                                                 [manager, { from: manager }],
                                                 'Only owner should be able to disable manager');
-    await manageableContract.disableManager.sendTransaction(manager, { from: owner });
+    await ManageableRoutines.disableManager(manageableContract.address, owner, manager);
     await UtilsTestRoutines.checkContractThrows(manageableContract.disableManager.sendTransaction,
                                                 [manager, { from: owner }],
                                                 'Should not be possible to disable already disabled manager');
@@ -164,7 +164,7 @@ global.contract('Manageable', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(manageableContract.grantManagerPermission.sendTransaction,
                                                 [manager, 'permission_01', { from: manager }],
                                                 'Only owner should be able to grant permissions');
-    await manageableContract.grantManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    await ManageableRoutines.grantManagerPermissions(manageableContract.address, owner, manager, ['permission_01']);
     await UtilsTestRoutines.checkContractThrows(manageableContract.grantManagerPermission.sendTransaction,
                                                 [manager, 'permission_01', { from: owner }],
                                                 'Should not be possible to grant permission that is already granted');
@@ -178,7 +178,7 @@ global.contract('Manageable', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(manageableContract.revokeManagerPermission.sendTransaction,
                                                 [manager, 'permission_01', { from: manager }],
                                                 'Only owner should be able to revoke permissions');
-    await manageableContract.revokeManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    await ManageableRoutines.revokeManagerPermissions(manageableContract.address, owner, manager, ['permission_01']);
     await UtilsTestRoutines.checkContractThrows(manageableContract.revokeManagerPermission.sendTransaction,
                                                 [manager, 'permission_01', { from: owner }],
                                                 'Should not be possible to revoke permission that is already revoked');
@@ -186,7 +186,7 @@ global.contract('Manageable', (accounts) => {
 
   global.it('should test that functions fire events', async () => {
     let blockNumber = global.web3.eth.blockNumber;
-    await manageableContract.enableManager.sendTransaction(manager, { from: owner });
+    await ManageableRoutines.enableManager(manageableContract.address, owner, manager);
     let pastEvents = await ManageableRoutines.getManagerEnabledEvents(manageableContract.address,
                                                                       {
                                                                         manager,
@@ -200,7 +200,7 @@ global.contract('Manageable', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await manageableContract.disableManager.sendTransaction(manager, { from: owner });
+    await ManageableRoutines.disableManager(manageableContract.address, owner, manager);
     pastEvents = await ManageableRoutines.getManagerDisabledEvents(manageableContract.address,
                                                                    {
                                                                      manager,
@@ -214,7 +214,7 @@ global.contract('Manageable', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await manageableContract.grantManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    await ManageableRoutines.grantManagerPermissions(manageableContract.address, owner, manager, ['permission_01']);
     pastEvents = await ManageableRoutines.getManagerPermissionGrantedEvents(manageableContract.address,
                                                                             {
                                                                               manager,
@@ -228,7 +228,7 @@ global.contract('Manageable', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await manageableContract.revokeManagerPermission.sendTransaction(manager, 'permission_01', { from: owner });
+    await ManageableRoutines.revokeManagerPermissions(manageableContract.address, owner, manager, ['permission_01']);
     pastEvents = await ManageableRoutines.getManagerPermissionRevokedEvents(manageableContract.address,
                                                                             {
                                                                               manager,

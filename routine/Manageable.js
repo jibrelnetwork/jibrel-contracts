@@ -5,6 +5,10 @@ const Promise = require('bluebird');
 const Manageable = global.artifacts.require('Manageable.sol');
 
 
+/**
+ * Setters
+ */
+
 export const enableManager = async (contractAddress, owner, manager) => {
   global.console.log('\tEnable manager of a contract:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
@@ -17,6 +21,20 @@ export const enableManager = async (contractAddress, owner, manager) => {
       .sendTransaction,
     [manager, { from: owner }]);
   global.console.log('\tManager successfully enabled');
+};
+
+export const disableManager = async (contractAddress, owner, manager) => {
+  global.console.log('\tDisable manager of a contract:');
+  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
+  global.console.log(`\t\towner - ${owner}`);
+  global.console.log(`\t\tmanager - ${manager}`);
+  await submitTxAndWaitConfirmation(
+    Manageable
+      .at(contractAddress)
+      .disableManager
+      .sendTransaction,
+    [manager, { from: owner }]);
+  global.console.log('\tManager successfully disabled');
 };
 
 export const grantManagerPermissions = async (contractAddress, owner, manager, permissionsList) => {
@@ -35,6 +53,28 @@ export const grantManagerPermissions = async (contractAddress, owner, manager, p
                             [manager, permissionName, { from: owner }])));
   global.console.log('\tPermissions to the manager successfully granted');
 };
+
+export const revokeManagerPermissions = async (contractAddress, owner, manager, permissionsList) => {
+  global.console.log('\tRevoke manager permissions:');
+  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
+  global.console.log(`\t\towner - ${owner}`);
+  global.console.log(`\t\tmanager - ${manager}`);
+  global.console.log(`\t\tpermissions - ${JSON.stringify(permissionsList)}`);
+  await Promise.all(
+    permissionsList.map((permissionName) =>
+                          submitTxAndWaitConfirmation(
+                            Manageable
+                              .at(contractAddress)
+                              .revokeManagerPermission
+                              .sendTransaction,
+                            [manager, permissionName, { from: owner }])));
+  global.console.log('\tPermissions to the manager successfully revoked');
+};
+
+
+/**
+ * Getters
+ */
 
 export const isManagerEnabled = (contractAddress, manager) => {
   global.console.log('\tGet whether manager is enabled');
@@ -81,7 +121,7 @@ export const isManagerAllowed = (contractAddress, manager, permissionName) => {
 };
 
 
-/*
+/**
  * Events
  */
 
