@@ -36,7 +36,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   function setCrydrController(
     address _crydrController
   )
-    whenPaused
+    whenContractPaused
     onlyValidCrydrControllerAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
   {
@@ -57,7 +57,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _account,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -72,7 +72,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _account,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -100,7 +100,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _spender,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_owner != address(0x0));
@@ -117,7 +117,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _spender,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_owner != address(0x0));
@@ -153,7 +153,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _to,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_msgsender != address(0x0));
@@ -172,7 +172,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _to,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_msgsender != address(0x0));
@@ -192,7 +192,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _spender,
     uint _value
   )
-    whenNotPaused
+    whenContractNotPaused
     onlyCrydrController
   {
     require(_msgsender != address(0x0));
@@ -212,10 +212,10 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
    */
   function unpause()
     onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
+    whenContractPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidCrydrControllerAddress(crydrController)
   {
-    super.unpause();
+    super.unpauseContract();
   }
 
 

@@ -27,7 +27,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
   )
     onlyValidJntControllerAddress(_jntController)
     onlyAllowedManager('set_jnt_controller')
-    whenPaused
+    whenContractPaused
   {
     require(_jntController != address(jntController));
 
@@ -45,7 +45,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
   )
     onlyValidJntBeneficiary(_jntBeneficiary)
     onlyAllowedManager('set_jnt_beneficiary')
-    whenPaused
+    whenContractPaused
   {
     require(_jntBeneficiary != jntBeneficiary);
 
@@ -60,7 +60,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
 
   /* Actions */
 
-  function chargeJNT(address _from, address _to, uint _value) internal whenNotPaused {
+  function chargeJNT(address _from, address _to, uint _value) internal whenContractNotPaused {
     require(_from != address(0x0));
     require(_to != address(0x0));
     require(_value > 0);
@@ -89,11 +89,11 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
    */
   function unpause()
     onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
+    whenContractPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidJntControllerAddress(jntController)
     onlyValidJntBeneficiary(jntBeneficiary)
   {
-    super.unpause();
+    super.unpauseContract();
   }
 
 

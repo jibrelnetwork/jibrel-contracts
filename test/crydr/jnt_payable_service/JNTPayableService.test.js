@@ -105,12 +105,12 @@ global.contract('JNTPayableService', (accounts) => {
                                                 [0x0, { from: manager04 }],
                                                 'Should be a valid address of JntBeneficiary');
 
-    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.unpause.sendTransaction,
-                                                [{ from: manager02 }],
+    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.unpauseContract.sendTransaction,
+                                                [{ from: manager03 }],
                                                 'Only manager should be able to unpause contract');
 
-    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.pause.sendTransaction,
-                                                [{ from: manager02 }],
+    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.pauseContract.sendTransaction,
+                                                [{ from: manager03 }],
                                                 'It should not be possible to pause already paused contract');
 
     await submitTxAndWaitConfirmation(jntPayableServiceContract.setJntController.sendTransaction,
@@ -121,10 +121,10 @@ global.contract('JNTPayableService', (accounts) => {
     isPaused = await jntPayableServiceContract.getPaused.call();
     global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
 
-    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.pause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.pauseContract.sendTransaction,
                                                 [{ from: manager02 }],
                                                 'Only manager should be able to pause contract');
-    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.unpause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.unpauseContract.sendTransaction,
                                                 [{ from: manager01 }],
                                                 'It should not be possible to unpause already unpaused contract');
 

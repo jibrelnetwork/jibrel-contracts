@@ -16,7 +16,7 @@ export const unpauseContract = async (contractAddress, manager) => {
   await submitTxAndWaitConfirmation(
     Pausable
       .at(contractAddress)
-      .unpause
+      .unpauseContract
       .sendTransaction,
     [{ from: manager }],
   );
@@ -30,7 +30,7 @@ export const pauseContract = async (contractAddress, manager) => {
   await submitTxAndWaitConfirmation(
     Pausable
       .at(contractAddress)
-      .pause
+      .pauseContract
       .sendTransaction,
     [{ from: manager }],
   );

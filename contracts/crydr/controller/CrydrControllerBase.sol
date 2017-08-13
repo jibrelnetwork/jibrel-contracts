@@ -35,7 +35,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
     onlyValidCrydrStorageAddress(_crydrStorage)
     onlyDifferentAddress(_crydrStorage)
     onlyAllowedManager('set_crydr_storage')
-    whenPaused
+    whenContractPaused
   {
     require(_crydrStorage != address(crydrStorage));
 
@@ -55,7 +55,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
     onlyValidCrydrViewAddress(_crydrView)
     onlyDifferentAddress(_crydrView)
     onlyAllowedManager('set_crydr_view')
-    whenPaused
+    whenContractPaused
   {
     require(crydrViewsAddresses[_viewApiStandardName] == address(0x0));
 
@@ -75,7 +75,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
   )
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     onlyAllowedManager('remove_crydr_view')
-    whenPaused
+    whenContractPaused
   {
     require(crydrViewsAddresses[_viewApiStandardName] != address(0x0));
 
@@ -122,12 +122,12 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
    */
   function unpause()
     onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
+    whenContractPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidCrydrStorageAddress(crydrStorage)
   {
     require(crydrViewsAddressesList.length > 0);
 
-    super.unpause();
+    super.unpauseContract();
   }
 
 

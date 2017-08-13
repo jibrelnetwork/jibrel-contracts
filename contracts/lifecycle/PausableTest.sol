@@ -14,11 +14,11 @@ contract PausableTest is Pausable {
 
   uint public counter = 0;
 
-  function worksWhenNotPaused() whenNotPaused {
+  function workswhenContractNotPaused() whenContractNotPaused {
     counter += 1;
   }
 
-  function worksWhenPaused() whenPaused {
+  function workswhenContractPaused() whenContractPaused {
     counter += 1;
   }
 }

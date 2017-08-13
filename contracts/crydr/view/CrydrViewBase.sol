@@ -32,7 +32,7 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
   )
     onlyValidCrydrStorageAddress(_crydrStorage)
     onlyAllowedManager('set_crydr_storage')
-    whenPaused
+    whenContractPaused
   {
     require(address(crydrStorage) != _crydrStorage);
 
@@ -50,7 +50,7 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
   )
     onlyValidCrydrControllerAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
-    whenPaused
+    whenContractPaused
   {
     require(address(crydrController) != _crydrController);
 
@@ -79,11 +79,11 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
    */
   function unpause()
     onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
+    whenContractPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidCrydrStorageAddress(address(crydrStorage))
     onlyValidCrydrControllerAddress(address(crydrController))
   {
-    super.unpause();
+    super.unpauseContract();
   }
 
 

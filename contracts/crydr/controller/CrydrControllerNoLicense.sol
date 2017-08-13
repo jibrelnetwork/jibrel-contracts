@@ -22,7 +22,7 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenNotPaused {
+  function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenContractNotPaused {
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransfer);
 
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_msgsender, _to, _value);
@@ -32,7 +32,7 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
     }
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenNotPaused {
+  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransferFrom);
 
     CrydrStorageERC20Interface(address(crydrStorage)).transferFrom(_msgsender, _from, _to, _value);
@@ -42,7 +42,7 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
     }
   }
 
-  function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenNotPaused {
+  function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenContractNotPaused {
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     require(crydrStorage.getAllowance(_msgsender, _spender) >= 0);
 

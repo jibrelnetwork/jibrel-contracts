@@ -24,7 +24,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableManag
   )
     onlyValidInvestorsRegistryAddress(_investorsRegistry)
     onlyAllowedManager('set_investors_registry')
-    whenPaused
+    whenContractPaused
   {
     require(_investorsRegistry != address(investorsRegistry));
 
@@ -44,10 +44,10 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableManag
    */
   function unpause()
     onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenPaused  // todo do we need to explicitly repeat modifiers ?
+    whenContractPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidInvestorsRegistryAddress(address(investorsRegistry))
   {
-    super.unpause();
+    super.unpauseContract();
   }
 
 

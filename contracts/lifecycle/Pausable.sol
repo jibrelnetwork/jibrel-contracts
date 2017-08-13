@@ -13,8 +13,18 @@ import "./Manageable.sol";
  * @dev Contract is in paused state by default and should be explicitly unlocked
  */
 contract Pausable is Manageable {
+
+  /**
+   * Events
+   */
+
   event PauseEvent();
   event UnpauseEvent();
+
+
+  /**
+   * Storage
+   */
 
   bool paused = true;
 
@@ -22,7 +32,7 @@ contract Pausable is Manageable {
   /**
    * @dev modifier to allow actions only when the contract IS paused
    */
-  modifier whenNotPaused() {
+  modifier whenContractNotPaused() {
     require(paused == false);
     _;
   }
@@ -30,7 +40,7 @@ contract Pausable is Manageable {
   /**
    * @dev modifier to allow actions only when the contract IS NOT paused
    */
-  modifier whenPaused {
+  modifier whenContractPaused {
     require(paused == true);
     _;
   }
@@ -38,7 +48,7 @@ contract Pausable is Manageable {
   /**
    * @dev called by the manager to pause, triggers stopped state
    */
-  function pause() onlyAllowedManager('pause_contract') whenNotPaused {
+  function pauseContract() onlyAllowedManager('pause_contract') whenContractNotPaused {
     paused = true;
     PauseEvent();
   }
@@ -46,7 +56,7 @@ contract Pausable is Manageable {
   /**
    * @dev called by the manager to unpause, returns to normal state
    */
-  function unpause() onlyAllowedManager('unpause_contract') whenPaused {
+  function unpauseContract() onlyAllowedManager('unpause_contract') whenContractPaused {
     paused = false;
     UnpauseEvent();
   }

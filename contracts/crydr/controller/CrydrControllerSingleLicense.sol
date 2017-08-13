@@ -37,7 +37,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenNotPaused {
+  function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenContractNotPaused {
     if (isTransferAllowed(_msgsender, _to, _value) == false) {
       revert();
     }
@@ -51,7 +51,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     }
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenNotPaused {
+  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
     if (isTransferFromAllowed(_msgsender, _from, _to, _value) == false) {
       revert();
     }
@@ -65,7 +65,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     }
   }
 
-  function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenNotPaused {
+  function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenContractNotPaused {
     if (isApproveAllowed(_msgsender, _spender, _value) == false) {
       revert();
     }

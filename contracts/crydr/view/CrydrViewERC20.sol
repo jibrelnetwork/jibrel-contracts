@@ -28,7 +28,7 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* ERC20Interface */
 
-//  function transfer(address _to, uint _value) whenNotPaused returns (bool success) {  // todo uncomment
+//  function transfer(address _to, uint _value) whenContractNotPaused returns (bool success) {  // todo uncomment
   function transfer(address _to, uint _value) returns (bool success) {
     CrydrControllerERC20Interface(address(crydrController)).transfer(msg.sender, _to, _value);
     return true;
@@ -43,12 +43,12 @@ contract CrydrViewERC20 is CrydrViewBase,
   }
 
 
-  function approve(address _spender, uint _value) whenNotPaused returns (bool success) {
+  function approve(address _spender, uint _value) whenContractNotPaused returns (bool success) {
     CrydrControllerERC20Interface(address(crydrController)).approve(msg.sender, _spender, _value);
     return true;
   }
 
-  function transferFrom(address _from, address _to, uint _value) whenNotPaused returns (bool success) {
+  function transferFrom(address _from, address _to, uint _value) whenContractNotPaused returns (bool success) {
     CrydrControllerERC20Interface(address(crydrController)).transferFrom(msg.sender, _from, _to, _value);
     return true;
   }

@@ -34,7 +34,7 @@ global.contract('Pausable', (accounts) => {
     let contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 0);
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction);
+    await submitTxAndWaitConfirmation(pausableContract.workswhenContractPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 1);
 
@@ -42,7 +42,7 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenNotPaused.sendTransaction);
+    await submitTxAndWaitConfirmation(pausableContract.workswhenContractNotPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 2);
 
@@ -50,7 +50,7 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, true, 'Expected that contract is unpaused');
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction);
+    await submitTxAndWaitConfirmation(pausableContract.workswhenContractPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 3);
   });
@@ -62,10 +62,10 @@ global.contract('Pausable', (accounts) => {
     let isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, true, 'Just deployed pausable contract must be paused');
 
-    await UtilsTestRoutines.checkContractThrows(pausableContract.unpause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
                                                 [{ from: manager01 }],
                                                 'Only manager should be able to unpause contract');
-    await UtilsTestRoutines.checkContractThrows(pausableContract.pause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
                                                 [{ from: manager02 }],
                                                 'It should not be possible to pause already paused contract');
 
@@ -73,10 +73,10 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
 
-    await UtilsTestRoutines.checkContractThrows(pausableContract.pause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
                                                 [{ from: manager02 }],
                                                 'Only manager should be able to pause contract');
-    await UtilsTestRoutines.checkContractThrows(pausableContract.unpause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
                                                 [{ from: manager01 }],
                                                 'It should not be possible to unpause already unpaused contract');
   });
@@ -90,11 +90,11 @@ global.contract('Pausable', (accounts) => {
     let contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 0);
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenPaused.sendTransaction);
+    await submitTxAndWaitConfirmation(pausableContract.workswhenContractPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 1);
 
-    await UtilsTestRoutines.checkContractThrows(pausableContract.worksWhenNotPaused.sendTransaction, [],
+    await UtilsTestRoutines.checkContractThrows(pausableContract.workswhenContractNotPaused.sendTransaction, [],
                                                 'Modifiers should prohibit method when contract is paused');
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 1);
@@ -103,10 +103,10 @@ global.contract('Pausable', (accounts) => {
     isPaused = await pausableContract.getPaused.call();
     global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
 
-    await submitTxAndWaitConfirmation(pausableContract.worksWhenNotPaused.sendTransaction);
+    await submitTxAndWaitConfirmation(pausableContract.workswhenContractNotPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 2);
-    await UtilsTestRoutines.checkContractThrows(pausableContract.worksWhenPaused.sendTransaction, [],
+    await UtilsTestRoutines.checkContractThrows(pausableContract.workswhenContractPaused.sendTransaction, [],
                                                 'Modifiers should prohibit method when contract is unpaused');
     contractCounter = await pausableContract.counter.call();
     global.assert.equal(contractCounter, 2);
