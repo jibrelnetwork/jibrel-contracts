@@ -24,7 +24,7 @@ export const unpauseContract = async (contractAddress, manager) => {
 };
 
 export const pauseContract = async (contractAddress, manager) => {
-  global.console.log('\tUnpause contract:');
+  global.console.log('\tPause contract:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   await submitTxAndWaitConfirmation(
@@ -34,8 +34,15 @@ export const pauseContract = async (contractAddress, manager) => {
       .sendTransaction,
     [{ from: manager }],
   );
-  global.console.log('\t\tContract successfully unpaused');
+  global.console.log('\t\tContract successfully paused');
 };
+
+
+/**
+ * Getters
+ */
+
+export const getPaused = async (contractAddress) => Pausable.at(contractAddress).getPaused.call();
 
 
 /**
