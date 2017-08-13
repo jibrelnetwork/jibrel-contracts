@@ -14,15 +14,22 @@ global.contract('ERC20Named', () => {
     ERC20NamedContract = await ERC20Named.new(originalName, originalSymbol, originalDecimals);
   });
 
-  global.it('check getters functions', async () => {
+  global.it('should test that contract works as expected', async () => {
+    global.console.log(`\tERC20NamedContract: ${ERC20NamedContract.address}`);
+    global.assert.notEqual(ERC20NamedContract.address, 0x0);
+
     const contractName = await ERC20NamedContract.name();
     global.assert.equal(contractName, originalName);
+
     const contractSymbol = await ERC20NamedContract.symbol();
     global.assert.equal(contractSymbol, originalSymbol);
+
     const contractDecimals = await ERC20NamedContract.decimals();
     global.assert.equal(contractDecimals, originalDecimals);
+
     const contractNameHash = await ERC20NamedContract.getNameHash();
     global.assert.equal(contractNameHash, originalNameHash);
+
     const contractSymbolHash = await ERC20NamedContract.getSymbolHash();
     global.assert.equal(contractSymbolHash, originalSymbolHash);
   });
