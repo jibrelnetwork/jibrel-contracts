@@ -7,13 +7,14 @@ import "../../lifecycle/Pausable.sol";
 import "../storage/CrydrStorageBaseInterface.sol";
 import "../view/CrydrViewBaseInterface.sol";
 import "./CrydrControllerBaseInterface.sol";
+import "../common/CrydrModifiers.sol";
 
 
 /**
  * @title CrydrControllerBase
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
+contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrModifiers {
 
   /* Storage */
 
@@ -145,7 +146,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
 
   modifier onlyValidCrydrStorageAddress(address _storageAddress) {
     require(_storageAddress != address(0x0));
-    // todo check that this is contract address
+    require(isContract(_storageAddress) == true);
     _;
   }
 
@@ -156,7 +157,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
 
   modifier onlyValidCrydrViewAddress(address _viewAddress) {
     require(_viewAddress != address(0x0));
-    // todo check that this is contract address
+    require(isContract(_viewAddress) == true);
     _;
   }
 

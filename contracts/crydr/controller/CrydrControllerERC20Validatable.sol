@@ -6,9 +6,10 @@ pragma solidity ^0.4.13;
 import "../../lifecycle/Pausable.sol";
 import "../../registry/investor/InvestorRegistryInterface.sol";
 import "./CrydrControllerERC20ValidatableInterface.sol";
+import "../common/CrydrModifiers.sol";
 
 
-contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface, Pausable {
+contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface, Pausable, CrydrModifiers {
 
   /* Storage */
 
@@ -53,7 +54,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
 
   modifier onlyValidInvestorsRegistryAddress(address _viewAddress) {
     require(_viewAddress != address(0x0));
-    // todo check that this is contract address
+    require(isContract(_viewAddress) == true);
     _;
   }
 }

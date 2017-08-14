@@ -97,6 +97,10 @@ global.contract('JNTPayableService', (accounts) => {
                                                 [0x0, { from: manager03 }],
                                                 'Should be a valid address of JntController');
 
+    await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.setJntController.sendTransaction,
+                                                [manager01, { from: manager03 }],
+                                                'Should be a valid address of JntController');
+
     await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.setJntBeneficiary.sendTransaction,
                                                 [beneficiary, { from: manager01 }],
                                                 'Only manager should be able to set JntBeneficiary');

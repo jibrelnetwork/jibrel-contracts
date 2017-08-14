@@ -8,9 +8,10 @@ import "../controller/CrydrControllerBaseInterface.sol";
 import "../view/ERC20Interface.sol";
 import "../jnt/JNTControllerInterface.sol";
 import "./JNTPayableServiceInterface.sol";
+import "../common/CrydrModifiers.sol";
 
 
-contract JNTPayableService is JNTPayableServiceInterface, Pausable {
+contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifiers {
 
   /* Storage */
 
@@ -99,7 +100,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
 
   modifier onlyValidJntControllerAddress(address _jntAddress) {
     require(_jntAddress != address(0x0));
-    // todo check that this is contract address
+    require(isContract(_jntAddress) == true);
     _;
   }
 

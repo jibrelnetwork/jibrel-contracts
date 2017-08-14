@@ -1,4 +1,4 @@
-const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
+const CrydrStorage    = global.artifacts.require('CrydrStorage.sol');
 
 const PausableTestSuite = require('../../../test_suit/lifecycle/Pausable');
 

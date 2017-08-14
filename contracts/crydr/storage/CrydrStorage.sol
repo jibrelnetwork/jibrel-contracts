@@ -7,13 +7,14 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "../../lifecycle/Pausable.sol";
 import "./CrydrStorageBaseInterface.sol";
 import "./CrydrStorageERC20Interface.sol";
+import "../common/CrydrModifiers.sol";
 
 
 /**
  * @title CrydrStorage
  * @dev Implementation of a contract that manages data of an CryDR
  */
-contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, Pausable {
+contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, Pausable, CrydrModifiers {
 
   /* Libraries */
   // todo check gas costs without lib
@@ -294,7 +295,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
 
   modifier onlyValidCrydrControllerAddress(address _controllerAddress) {
     require(_controllerAddress != address(0x0));
-    // todo check that this is contract address
+    require(isContract(_controllerAddress) == true);
     _;
   }
 

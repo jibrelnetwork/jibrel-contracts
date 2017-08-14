@@ -7,13 +7,14 @@ import "../../util/JsonEncoder.sol";
 import "../../crydr/controller/CrydrControllerBaseInterface.sol";
 import "./CryDRRegistryInterface.sol";
 import "./CryDRRegistryManagementInterface.sol";
+import "../../crydr/common/CrydrModifiers.sol";
 
 
 /**
  * @title CryDRRegistry
  * @dev   Stores list of tokens
  */
-contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterface, Manageable, JsonEncoder {
+contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterface, Manageable, JsonEncoder, CrydrModifiers {
 
   /* Libs */
 
@@ -163,7 +164,7 @@ contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterfa
 
   modifier onlyValidCrydrControllerAddress(address _crydrController) {
     require(_crydrController != address(0x0));
-    // todo check that this is contract address
+    require(isContract(_crydrController) == true);
     _;
   }
 

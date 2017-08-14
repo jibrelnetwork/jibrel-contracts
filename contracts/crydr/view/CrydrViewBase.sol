@@ -6,9 +6,10 @@ pragma solidity ^0.4.13;
 import '../../lifecycle/Pausable.sol';
 import '../controller/CrydrControllerBaseInterface.sol';
 import './CrydrViewBaseInterface.sol';
+import '../common/CrydrModifiers.sol';
 
 
-contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
+contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers {
 
   /* Storage */
 
@@ -71,9 +72,9 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
     _;
   }
 
-  modifier onlyValidCrydrControllerAddress(address _controllerAddress) {
-    require(_controllerAddress != address(0x0));
-    // todo check that this is contract address
+  modifier onlyValidCrydrControllerAddress(address _storageAddress) {
+    require(_storageAddress != address(0x0));
+    require(isContract(_storageAddress) == true);
     _;
   }
 
