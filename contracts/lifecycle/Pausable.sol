@@ -64,7 +64,7 @@ contract Pausable is Manageable {
   /**
    * @dev The getter for "paused" contract variable
    */
-  function getPaused() public constant returns (bool) {
+  function getPaused() constant returns (bool) {
     return paused;
   }
 }

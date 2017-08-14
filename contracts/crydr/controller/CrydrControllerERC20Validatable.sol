@@ -43,8 +43,6 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableManag
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpause()
-    onlyAllowedManager('unpause_contract')  // todo do we need to explicitly repeat modifiers ?
-    whenContractPaused  // todo do we need to explicitly repeat modifiers ?
     onlyValidInvestorsRegistryAddress(address(investorsRegistry))
   {
     super.unpauseContract();

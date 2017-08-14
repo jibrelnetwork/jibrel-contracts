@@ -42,7 +42,7 @@ contract OwnableDelegated {
   /**
    * @dev The getter for "owner" contract variable
    */
-  function getOwner() public constant returns (address) {
+  function getOwner() constant returns (address) {
     return owner;
   }
 }

@@ -101,14 +101,14 @@ contract BODC {
   /**
    * @dev Function to get membersNumber of BODC member
    */
-  function getMembersNumber() public constant returns (uint256) {
+  function getMembersNumber() constant returns (uint256) {
     return membersNumber;
   }
 
   /**
    * @dev Function to get proposalsNumber of BODC member
    */
-  function getProposalsNumber() public constant returns (uint256) {
+  function getProposalsNumber() constant returns (uint256) {
     return proposalsNumber;
   }
 

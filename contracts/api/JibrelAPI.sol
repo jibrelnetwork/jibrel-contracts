@@ -89,19 +89,19 @@ contract JibrelAPI is JibrelAPIInterface, Manageable {
 
   /* Getters */
 
-  function getBODC() public constant returns (address) {
+  function getBODC() constant returns (address) {
     return BODC;
   }
 
-  function getJibrelDAO() public constant returns (address) {
+  function getJibrelDAO() constant returns (address) {
     return JibrelDAO;
   }
 
-  function getInvestorRegistry() public constant returns (address) {
+  function getInvestorRegistry() constant returns (address) {
     return InvestorRegistry;
   }
 
-  function getCryDRRegistry() public constant returns (address) {
+  function getCryDRRegistry() constant returns (address) {
     return CryDRRegistry;
   }
 
