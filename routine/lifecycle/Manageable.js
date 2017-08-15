@@ -76,37 +76,14 @@ export const revokeManagerPermissions = async (contractAddress, owner, manager, 
  * Getters
  */
 
-export const isManagerEnabled = (contractAddress, manager) => {
-  global.console.log('\tGet whether manager is enabled');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tmanager - ${manager}`);
-  return Manageable
-    .at(contractAddress)
-    .isManagerEnabled
-    .call(manager);
-};
+export const isManagerEnabled = (contractAddress, manager) =>
+  Manageable.at(contractAddress).isManagerEnabled.call(manager);
 
-export const isPermissionGranted = (contractAddress, manager, permissionName) => {
-  global.console.log('\tGet whether manager is granted with permission');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tmanager - ${manager}`);
-  global.console.log(`\t\tpermissionName - ${permissionName}`);
-  return Manageable
-    .at(contractAddress)
-    .isPermissionGranted
-    .call(manager, permissionName);
-};
+export const isPermissionGranted = (contractAddress, manager, permissionName) =>
+  Manageable.at(contractAddress).isPermissionGranted.call(manager, permissionName);
 
-export const isManagerAllowed = (contractAddress, manager, permissionName) => {
-  global.console.log('\tGet whether manager is allowed to make an action');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tmanager - ${manager}`);
-  global.console.log(`\t\tpermissionName - ${permissionName}`);
-  return Manageable
-    .at(contractAddress)
-    .isManagerAllowed
-    .call(manager, permissionName);
-};
+export const isManagerAllowed = (contractAddress, manager, permissionName) =>
+  Manageable.at(contractAddress).isManagerAllowed.call(manager, permissionName);
 
 
 /**
