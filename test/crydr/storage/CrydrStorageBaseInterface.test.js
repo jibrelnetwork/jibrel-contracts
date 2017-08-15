@@ -8,6 +8,8 @@ const PausableRoutines            = require('../../../routine/lifecycle/Pausable
 const crydrStorageBaseRoutines    = require('../../../routine/crydr/storage/CrydrStorageBaseInterface');
 const crydrStorageGeneralRoutines = require('../../../routine/crydr/storage/CrydrStorageGeneral');
 
+const PausableTestSuite = require('../../../test_suit/lifecycle/Pausable');
+
 
 global.contract('CrydrStorageBaseInterface', (accounts) => {
   const owner             = accounts[0];
@@ -31,7 +33,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                             crydrController01);
   });
 
-  global.it('check storage state after deployment and configuration routines finished', async () => {
+  global.it('check contract state after deployment and configuration routines finished', async () => {
     global.assert.notEqual(crydrStorageContract.address, 0x0);
 
     let isAllowed = await crydrStorageContract.isManagerAllowed.call(manager, 'set_crydr_controller');
@@ -85,11 +87,6 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                 'Storage can not be a controller');
 
     await PausableRoutines.unpauseContract(crydrStorageContract.address, manager);
-
-    await UtilsTestRoutines.checkContractThrows(crydrStorageContract.setCrydrController.sendTransaction,
-                                                [crydrController02, { from: manager }],
-                                                'We should not be able to set crydr controller of unpaused contract');
-
     await PausableRoutines.pauseContract(crydrStorageContract.address, manager);
 
     await crydrStorageBaseRoutines.setCrydrController(crydrStorageContract.address, manager, crydrController02);
@@ -98,6 +95,42 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                         'Manager should be able to change crydr controller at any time');
 
     await PausableRoutines.unpauseContract(crydrStorageContract.address, manager);
+  });
+
+  global.it('check that crydr storage has correct pausable modifiers for configuration functions', async () => {
+    crydrStorageContract = await CrydrStorage.new({ from: owner });
+
+    const managerPermissions = [
+      'set_crydr_controller',
+      'pause_contract',
+      'unpause_contract'];
+    await ManageableRoutines.enableManager(crydrStorageContract.address, owner, manager);
+    await ManageableRoutines.grantManagerPermissions(crydrStorageContract.address, owner, manager, managerPermissions);
+
+
+    let crydrController01Received = await crydrStorageContract.getCrydrController.call();
+    global.assert.equal(crydrController01Received, 0x0, 'Default controller address should be zero');
+
+    await PausableTestSuite.assertWhenContractPaused(
+      crydrStorageContract.address,
+      manager,
+      crydrStorageContract.setCrydrController.sendTransaction,
+      [crydrController01, { from: manager }]);
+
+    crydrController01Received = await crydrStorageContract.getCrydrController.call();
+    global.assert.equal(crydrController01Received, crydrController01,
+                        'Manager should be able to configure crydr storage and set controller');
+
+
+    await PausableTestSuite.assertWhenContractPaused(
+      crydrStorageContract.address,
+      manager,
+      crydrStorageContract.setCrydrController.sendTransaction,
+      [crydrController02, { from: manager }]);
+
+    crydrController01Received = await crydrStorageContract.getCrydrController.call();
+    global.assert.equal(crydrController01Received, crydrController02,
+                        'Manager should be able to reconfigure crydr storage and set different controller');
   });
 
   global.it('should test that configuration functions fire events', async () => {
@@ -246,7 +279,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   });
 
   global.it('check that low-level setters throw if general conditions not met', async () => {
-    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
+    global.console.log(`\tCrydrStorage contract: ${crydrStorageContract.address}`);
     global.assert.notEqual(crydrStorageContract.address, 0x0);
 
     // set non-zero values
@@ -254,28 +287,6 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                    investor01, 10 * (10 ** 18));
     await crydrStorageBaseRoutines.increaseAllowance(crydrStorageContract.address, crydrController01,
                                                      investor01, investor02, 10 * (10 ** 18));
-
-    // pause contract
-    await PausableRoutines.pauseContract(crydrStorageContract.address, manager);
-
-
-    // test that methods throw if contract is paused
-    await UtilsTestRoutines.checkContractThrows(crydrStorageContract.increaseBalance.sendTransaction,
-                                                [investor01, 5 * (10 ** 18), { from: crydrController01 }],
-                                                'increaseBalance should throw if contract is paused');
-    await UtilsTestRoutines.checkContractThrows(crydrStorageContract.decreaseBalance.sendTransaction,
-                                                [investor01, 5 * (10 ** 18), { from: crydrController01 }],
-                                                'decreaseBalance should throw if contract is paused');
-    await UtilsTestRoutines.checkContractThrows(crydrStorageContract.increaseAllowance.sendTransaction,
-                                                [investor01, investor02, 5 * (10 ** 18), { from: crydrController01 }],
-                                                'increaseAllowance should throw if contract is paused');
-    await UtilsTestRoutines.checkContractThrows(crydrStorageContract.decreaseAllowance.sendTransaction,
-                                                [investor01, investor02, 5 * (10 ** 18), { from: crydrController01 }],
-                                                'decreaseAllowance should throw if contract is paused');
-
-    // unpause contract
-    await PausableRoutines.unpauseContract(crydrStorageContract.address, manager);
-
 
     // test that only crydr controller is able to invoke setters
     await UtilsTestRoutines.checkContractThrows(crydrStorageContract.increaseBalance.sendTransaction,
@@ -290,6 +301,35 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(crydrStorageContract.decreaseAllowance.sendTransaction,
                                                 [investor01, investor02, 5 * (10 ** 18), { from: miscAddress }],
                                                 'decreaseAllowance should throw if called by non-controller');
+  });
+
+  global.it('check that crydr storage has correct pausable modifiers for low-level setters', async () => {
+    await crydrStorageBaseRoutines.increaseBalance(crydrStorageContract.address, crydrController01,
+                                                   investor01, 100 * (10 ** 18));
+    await crydrStorageBaseRoutines.increaseAllowance(crydrStorageContract.address, crydrController01,
+                                                     investor01, investor02, 100 * (10 ** 18));
+
+
+    await PausableTestSuite.assertWhenContractNotPaused(
+      crydrStorageContract.address,
+      manager,
+      crydrStorageContract.increaseBalance.sendTransaction,
+      [investor01, 5 * (10 ** 18), { from: crydrController01 }]);
+    await PausableTestSuite.assertWhenContractNotPaused(
+      crydrStorageContract.address,
+      manager,
+      crydrStorageContract.decreaseBalance.sendTransaction,
+      [investor01, 5 * (10 ** 18), { from: crydrController01 }]);
+    await PausableTestSuite.assertWhenContractNotPaused(
+      crydrStorageContract.address,
+      manager,
+      crydrStorageContract.increaseAllowance.sendTransaction,
+      [investor01, investor02, 5 * (10 ** 18), { from: crydrController01 }]);
+    await PausableTestSuite.assertWhenContractNotPaused(
+      crydrStorageContract.address,
+      manager,
+      crydrStorageContract.decreaseAllowance.sendTransaction,
+      [investor01, investor02, 5 * (10 ** 18), { from: crydrController01 }]);
   });
 
   global.it('test that low-level setters throw if not enough balance or integer overflow', async () => {
@@ -364,7 +404,11 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                 [investor01, investor02, 1001, { from: crydrController01 }],
                                                 'decreaseAllowance should throw if integer overflow');
     await UtilsTestRoutines.checkContractThrows(crydrStorageContract.increaseAllowance.sendTransaction,
-                                                [investor01, investor02, uint256Max.minus(999), { from: crydrController01 }],
+                                                [
+                                                  investor01,
+                                                  investor02,
+                                                  uint256Max.minus(999),
+                                                  { from: crydrController01 }],
                                                 'increaseAllowance should throw if integer overflow');
 
     await crydrStorageBaseRoutines.increaseAllowance(crydrStorageContract.address, crydrController01,
