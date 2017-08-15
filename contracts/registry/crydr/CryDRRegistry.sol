@@ -5,7 +5,6 @@ pragma solidity ^0.4.13;
 
 import "../../util/JsonEncoder.sol";
 import "../../crydr/controller/CrydrControllerBaseInterface.sol";
-import "../../crydr/CrydrERC20ValidatableInterface.sol";
 import "./CryDRRegistryInterface.sol";
 import "./CryDRRegistryManagementInterface.sol";
 

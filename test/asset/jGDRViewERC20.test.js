@@ -4,6 +4,7 @@ global.artifacts = artifacts; // eslint-disable-line no-undef
 
 const CrydrERC20ValidatableInterface = global.artifacts.require('CrydrERC20ValidatableInterface.sol');
 const jGDRViewERC20                  = global.artifacts.require('jGDRViewERC20.sol');
+const jGDRViewERC20Validatable       = global.artifacts.require('jGDRViewERC20Validatable.sol');
 const JNTViewERC20                   = global.artifacts.require('JNTViewERC20.sol');
 
 
@@ -14,9 +15,9 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
   const investor04 = accounts[6];
 
   global.it('should test that it is possible to receive admittance data', async () => {
-    const jGDRViewERC20Instance = await jGDRViewERC20.deployed();
-    const jGDRViewERC20Address = jGDRViewERC20Instance.address;
-    const ValidatableInstance  = CrydrERC20ValidatableInterface.at(jGDRViewERC20Address);
+    const jGDRViewERC20ValidatableInstance = await jGDRViewERC20Validatable.deployed();
+    const jGDRViewERC20ValidatableAddress = jGDRViewERC20ValidatableInstance.address;
+    const ValidatableInstance  = CrydrERC20ValidatableInterface.at(jGDRViewERC20ValidatableAddress);
 
     let isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor01, 0);
     let isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor01, 0);
@@ -39,9 +40,11 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     global.assert.equal(isSpendingAllowed, false);
   });
 
-  global.it('should test that any investor is able to receive tokens', async () => {
+  global.it('should test that only licensed investor is able to receive tokens', async () => {
     const JNTViewERC20Instance = await JNTViewERC20.deployed();
     const jGDRViewERC20Instance = await jGDRViewERC20.deployed();
+
+    console.log('checkpoint 01')
 
 
     let balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
@@ -63,8 +66,10 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     global.assert.equal(balanceOfInvestor04.toNumber(), 0);
 
 
+    console.log('checkpoint 03')
     await jGDRViewERC20Instance.transfer.sendTransaction(investor02, 10 * (10 ** 18),
                                                          { from: investor01, gas: 1000000 });
+    console.log('checkpoint 05')
 
     balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
@@ -84,6 +89,8 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     global.assert.equal(balanceOfInvestor03.toNumber(), 0);
     global.assert.equal(balanceOfInvestor04.toNumber(), 0);
 
+    console.log('checkpoint 06')
+
     let isCaught = false;
     try {
       await jGDRViewERC20Instance.transfer.sendTransaction(investor04, 5 * (10 ** 18), { from: investor02 });
@@ -92,6 +99,8 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
       isCaught = true;
     }
     global.assert.equal(isCaught, true);
+
+    console.log('checkpoint 07')
 
     balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);

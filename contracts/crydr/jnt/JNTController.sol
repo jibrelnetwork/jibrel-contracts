@@ -27,33 +27,53 @@ contract JNTController is CrydrControllerBase,
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_msgsender, _to, _value);
 
     for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
+      // todo check gas consumption, do we need to optimise these type conversions ?
       CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitTransferEvent(_msgsender, _to, _value);
     }
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
-    CrydrStorageERC20Interface(address(crydrStorage)).transferFrom(_msgsender, _from, _to, _value);
+  function getTotalSupply() constant returns (uint) {
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    return CrydrStorageBaseInterface(address(crydrStorage)).getTotalSupply();
+  }
 
-    for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
-      CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitTransferEvent(_from, _to, _value);
-    }
+  function getBalance(address _owner) constant returns (uint balance) {
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    return CrydrStorageBaseInterface(address(crydrStorage)).getBalance(_owner);
   }
 
   function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenContractNotPaused {
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     require(crydrStorage.getAllowance(_msgsender, _spender) >= 0);
 
+    // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrStorageERC20Interface(address(crydrStorage)).approve(_msgsender, _spender, _value);
 
     for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
+      // todo check gas consumption, do we need to optimise these type conversions ?
       CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitApprovalEvent(_msgsender, _spender, _value);
     }
   }
 
+  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    CrydrStorageERC20Interface(address(crydrStorage)).transferFrom(_msgsender, _from, _to, _value);
+
+    for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
+      // todo check gas consumption, do we need to optimise these type conversions ?
+      CrydrViewERC20LoggableInterface(crydrViewsAddressesList[i]).emitTransferEvent(_from, _to, _value);
+    }
+  }
+
+  function getAllowance(address _owner, address _spender) constant returns (uint remaining) {
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    return CrydrStorageBaseInterface(address(crydrStorage)).getAllowance(_owner, _spender);
+  }
 
   /* JNTControllerInterface */
 
   function chargeJNT(address _from, address _to, uint _value) onlyAllowedManager('jnt_payable_service') {
+    // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_from, _to, _value);
     JNTChargedEvent(msg.sender, _from, _to, _value);
   }

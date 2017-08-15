@@ -6,6 +6,7 @@ pragma solidity ^0.4.13;
 /**
  * @title CrydrERC20ValidatableInterface interface
  * @dev Interface of a contract that allows to check validity of transaction (in terms of licensing only)
+ * @dev Methods do not sufficiency of funds to perform transactions, they check only required licenses
  */
 contract CrydrERC20ValidatableInterface {
 
@@ -13,8 +14,6 @@ contract CrydrERC20ValidatableInterface {
    * Getters
    * If _value == 0, methods do not take this parameter into account at all
   */
-
-  function isRegulated() constant returns (bool);
 
   function isReceivingAllowed(address _account, uint _value) constant returns (bool);
   function isSpendingAllowed(address _account, uint _value) constant returns (bool);

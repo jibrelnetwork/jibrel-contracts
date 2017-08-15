@@ -3,10 +3,7 @@
 pragma solidity ^0.4.13;
 
 
-import './ERC20Interface.sol';
-
-
-contract CrydrViewERC20LoggableInterface is ERC20Interface {
+contract CrydrViewERC20LoggableInterface {
 
   /* Actions */
 

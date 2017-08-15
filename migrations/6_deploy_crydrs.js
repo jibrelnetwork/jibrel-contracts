@@ -4,7 +4,7 @@ require('babel-polyfill');
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
 const GlobalConfig = require('../routine/misc/GlobalConfig');
-const SubmitTx = require('../routine/misc/SubmitTx');
+const SubmitTx     = require('../routine/misc/SubmitTx');
 
 const jUSDStorage    = global.artifacts.require('jUSDStorage.sol');
 const jUSDController = global.artifacts.require('jUSDController.sol');
@@ -30,15 +30,17 @@ const jCNYStorage    = global.artifacts.require('jCNYStorage.sol');
 const jCNYController = global.artifacts.require('jCNYController.sol');
 const jCNYViewERC20  = global.artifacts.require('jCNYViewERC20.sol');
 
-const jTBillStorage    = global.artifacts.require('jTBillStorage.sol');
-const jTBillController = global.artifacts.require('jTBillController.sol');
-const jTBillViewERC20  = global.artifacts.require('jTBillViewERC20.sol');
+const jTBillStorage              = global.artifacts.require('jTBillStorage.sol');
+const jTBillController           = global.artifacts.require('jTBillController.sol');
+const jTBillViewERC20            = global.artifacts.require('jTBillViewERC20.sol');
+const jTBillViewERC20Validatable = global.artifacts.require('jTBillViewERC20Validatable.sol');
 
-const jGDRStorage    = global.artifacts.require('jGDRStorage.sol');
-const jGDRController = global.artifacts.require('jGDRController.sol');
-const jGDRViewERC20  = global.artifacts.require('jGDRViewERC20.sol');
+const jGDRStorage              = global.artifacts.require('jGDRStorage.sol');
+const jGDRController           = global.artifacts.require('jGDRController.sol');
+const jGDRViewERC20            = global.artifacts.require('jGDRViewERC20.sol');
+const jGDRViewERC20Validatable = global.artifacts.require('jGDRViewERC20Validatable.sol');
 
-const JNTController                  = global.artifacts.require('JNTController.sol');
+const JNTController = global.artifacts.require('JNTController.sol');
 
 const crydrGeneralRoutines           = require('../routine/crydr/CrydrGeneral');
 const JNTControllerInterfaceRoutines = require('../routine/crydr/jnt/JNTControllerInterface');
@@ -52,49 +54,65 @@ const jntPrices = new Map(
 const deployJUSD = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jUSD', 'United States dollar',
-                                               jUSDStorage, jUSDController, jUSDViewERC20,
+                                               jUSDStorage, jUSDController, new Map([['erc20', jUSDViewERC20]]),
                                                false, true, jntPrices);
 
 const deployJEUR = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jEUR', 'Euro',
-                                               jEURStorage, jEURController, jEURViewERC20,
+                                               jEURStorage, jEURController, new Map([['erc20', jEURViewERC20]]),
                                                false, true, jntPrices);
 
 const deployJGBP = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jGBP', 'Pound sterling',
-                                               jGBPStorage, jGBPController, jGBPViewERC20,
+                                               jGBPStorage, jGBPController, new Map([['erc20', jGBPViewERC20]]),
                                                false, true, jntPrices);
 
 const deployJAED = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jAED', 'United Arab Emirates dirham',
-                                               jAEDStorage, jAEDController, jAEDViewERC20,
+                                               jAEDStorage, jAEDController, new Map([['erc20', jAEDViewERC20]]),
                                                false, true, jntPrices);
 
 const deployJRUB = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jRUB', 'Russian ruble',
-                                               jRUBStorage, jRUBController, jRUBViewERC20,
+                                               jRUBStorage, jRUBController, new Map([['erc20', jRUBViewERC20]]),
                                                false, true, jntPrices);
 
 const deployJCNY = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jCNY', 'Chinese yuan',
-                                               jCNYStorage, jCNYController, jCNYViewERC20,
+                                               jCNYStorage, jCNYController, new Map([['erc20', jCNYViewERC20]]),
                                                false, true, jntPrices);
 
 const deployJTBill = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jTBill', 'Treasure bill',
-                                               jTBillStorage, jTBillController, jTBillViewERC20,
+                                               jTBillStorage,
+                                               jTBillController,
+                                               new Map([
+                                                         [
+                                                           'erc20',
+                                                           jTBillViewERC20],
+                                                         [
+                                                           'erc20__validatable',
+                                                           jTBillViewERC20Validatable]]),
                                                true, true, jntPrices);
 
 const deployJGDR = (deployer, owner, manager) =>
   crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                'jGDR', 'Global depositary receipt',
-                                               jGDRStorage, jGDRController, jGDRViewERC20,
+                                               jGDRStorage,
+                                               jGDRController,
+                                               new Map([
+                                                         [
+                                                           'erc20',
+                                                           jGDRViewERC20],
+                                                         [
+                                                           'erc20__validatable',
+                                                           jGDRViewERC20Validatable]]),
                                                true, true, jntPrices);
 
 
@@ -115,7 +133,7 @@ const verifyRoutine = async () => {
   global.console.log(' Verify Deployed CryDRs');
 
   const jntControllerInstance = await JNTController.deployed();
-  const jntControllerAddress = jntControllerInstance.address;
+  const jntControllerAddress  = jntControllerInstance.address;
 
   let payableServiceInstance;
 

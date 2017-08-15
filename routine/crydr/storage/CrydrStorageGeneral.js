@@ -7,11 +7,11 @@ const CrydrStorageBaseInterfaceRoutines = require('./CrydrStorageBaseInterface')
  * Configuration
  */
 
-export const deployCrydrStorage = async (deployer, crydrStorageContractObject, owner) => {
+export const deployCrydrStorage = async (deployer, crydrStorageContractArtifact, owner) => {
   global.console.log('\tDeploying storage of a crydr:');
   global.console.log(`\t\towner - ${owner}`);
 
-  await deployer.deploy(crydrStorageContractObject, { from: owner });
+  await deployer.deploy(crydrStorageContractArtifact, { from: owner });
 
   global.console.log('\tStorage of a crydr successfully deployed');
 };

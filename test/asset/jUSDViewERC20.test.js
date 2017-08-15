@@ -2,9 +2,8 @@
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const CrydrERC20ValidatableInterface = global.artifacts.require('CrydrERC20ValidatableInterface.sol');
-const jUSDViewERC20                  = global.artifacts.require('jUSDViewERC20.sol');
-const JNTViewERC20                   = global.artifacts.require('JNTViewERC20.sol');
+const jUSDViewERC20 = global.artifacts.require('jUSDViewERC20.sol');
+const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
 
 global.contract('jUSDViewERC20Instance', async (accounts) => {
@@ -12,32 +11,6 @@ global.contract('jUSDViewERC20Instance', async (accounts) => {
   const investor02 = accounts[4];
   const investor03 = accounts[5];
   const investor04 = accounts[6];
-
-  global.it('should test that it is possible to receive admittance data', async () => {
-    const jUSDViewERC20Instance = await jUSDViewERC20.deployed();
-    const jUSDViewERC20Address = jUSDViewERC20Instance.address;
-    const ValidatableInstance  = CrydrERC20ValidatableInterface.at(jUSDViewERC20Address);
-
-    let isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor01, 0);
-    let isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor01, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
-
-    isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor02, 0);
-    isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor02, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
-
-    isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor03, 0);
-    isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor03, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
-
-    isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor04, 0);
-    isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor04, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
-  });
 
   global.it('should test that any investor is able to receive tokens', async () => {
     const JNTViewERC20Instance  = await JNTViewERC20.deployed();

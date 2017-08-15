@@ -3,14 +3,14 @@
 pragma solidity ^0.4.13;
 
 
-import "../CrydrERC20ValidatableInterface.sol";
+import "../common/CrydrERC20ValidatableInterface.sol";
 
 
 /**
  * @title CrydrControllerERC20ValidatableManagerInterface interface
  * @dev Interface of a contract that allows to check validity of transaction (in terms of licensing only)
  */
-contract CrydrControllerERC20ValidatableManagerInterface is CrydrERC20ValidatableInterface {
+contract CrydrControllerERC20ValidatableInterface is CrydrERC20ValidatableInterface {
 
   /* Events */
 

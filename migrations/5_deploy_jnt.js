@@ -18,7 +18,7 @@ const crydrGeneralRoutines = require('../routine/crydr/CrydrGeneral');
 const deployJNT = async (deployer, owner, manager) => {
   await crydrGeneralRoutines.deployAndConfigureCrydr(deployer, owner, manager,
                                                      'JNT', 'Jibrel Network Token',
-                                                     JNTStorage, JNTController, JNTViewERC20,
+                                                     JNTStorage, JNTController, new Map([['erc20', JNTViewERC20]]),
                                                      false, false, new Map());
 };
 // todo verify migration

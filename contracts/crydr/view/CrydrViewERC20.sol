@@ -9,14 +9,12 @@ import './CrydrViewBase.sol';
 import './ERC20Named.sol';
 import './ERC20Interface.sol';
 import './CrydrViewERC20LoggableInterface.sol';
-import '../CrydrERC20ValidatableInterface.sol';
 
 
 contract CrydrViewERC20 is CrydrViewBase,
                            ERC20Named,
                            ERC20Interface,
-                           CrydrViewERC20LoggableInterface,
-                           CrydrERC20ValidatableInterface {
+                           CrydrViewERC20LoggableInterface {
 
 
   /* Constructor */
@@ -28,33 +26,38 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* ERC20Interface */
 
-//  function transfer(address _to, uint _value) whenContractNotPaused returns (bool success) {  // todo uncomment
-  function transfer(address _to, uint _value) returns (bool success) {
+  function transfer(address _to, uint _value) whenContractNotPaused returns (bool success) {
+    // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).transfer(msg.sender, _to, _value);
     return true;
   }
 
   function totalSupply() constant returns (uint) {
-    return crydrStorage.getTotalSupply();
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    return CrydrControllerERC20Interface(address(crydrController)).getTotalSupply();
   }
 
   function balanceOf(address _owner) constant returns (uint balance) {
-    return crydrStorage.getBalance(_owner);
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    return CrydrControllerERC20Interface(address(crydrController)).getBalance(_owner);
   }
 
 
   function approve(address _spender, uint _value) whenContractNotPaused returns (bool success) {
+    // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).approve(msg.sender, _spender, _value);
     return true;
   }
 
   function transferFrom(address _from, address _to, uint _value) whenContractNotPaused returns (bool success) {
+    // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).transferFrom(msg.sender, _from, _to, _value);
     return true;
   }
 
   function allowance(address _owner, address _spender) constant returns (uint remaining) {
-    return crydrStorage.getAllowance(_owner, _spender);
+    // todo check gas consumption, do we need to optimise these type conversions ?
+    return CrydrControllerERC20Interface(address(crydrController)).getAllowance(_owner, _spender);
   }
 
 
@@ -62,53 +65,11 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* Actions */
 
-  function emitTransferEvent(address _from, address _to, uint _value) onlyCrydrController {
+  function emitTransferEvent(address _from, address _to, uint _value) whenContractNotPaused onlyCrydrController {
     Transfer(_from, _to, _value);
   }
 
-  function emitApprovalEvent(address _owner, address _spender, uint _value) onlyCrydrController {
+  function emitApprovalEvent(address _owner, address _spender, uint _value) whenContractNotPaused onlyCrydrController {
     Approval(_owner, _spender, _value);
-  }
-
-
-  /* CrydrERC20ValidatableInterface */
-
-  /* Getters */
-
-  function isRegulated() constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isRegulated();
-  }
-
-  function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isReceivingAllowed(_account, _value);
-  }
-
-  function isSpendingAllowed(address _account, uint _value) constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isSpendingAllowed(_account, _value);
-  }
-
-
-  function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isTransferAllowed(_from, _to, _value);
-  }
-
-
-  function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isApproveAllowed(_from, _spender, _value);
-  }
-
-  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isApprovedSpendingAllowed(_from, _spender, _value);
-  }
-
-  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool) {
-    var _controller = CrydrERC20ValidatableInterface(address(crydrController));
-    return _controller.isTransferFromAllowed(_spender, _from, _to, _value);
   }
 }

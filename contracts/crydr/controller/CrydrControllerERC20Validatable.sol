@@ -5,10 +5,10 @@ pragma solidity ^0.4.13;
 
 import "../../lifecycle/Pausable.sol";
 import "../../registry/investor/InvestorRegistryInterface.sol";
-import "./CrydrControllerERC20ValidatableManagerInterface.sol";
+import "./CrydrControllerERC20ValidatableInterface.sol";
 
 
-contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableManagerInterface, Pausable {
+contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface, Pausable {
 
   /* Storage */
 

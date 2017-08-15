@@ -3,20 +3,21 @@ import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 const CrydrControllerBaseInterface    = global.artifacts.require('CrydrControllerBaseInterface.sol');
 const JNTPayableServiceInterface      = global.artifacts.require('JNTPayableServiceInterface.sol');
 const JNTPayableServiceERC20Interface = global.artifacts.require('JNTPayableServiceERC20Interface.sol');
-const CrydrControllerERC20Validatable = global.artifacts.require('CrydrControllerERC20ValidatableManagerInterface.sol');
+const CrydrControllerERC20ValidatableInterface = global.artifacts.require('CrydrControllerERC20ValidatableInterface.sol');
 const InvestorRegistry = global.artifacts.require('InvestorRegistry.sol');
 
 const ManageableRoutines             = require('../../lifecycle/Manageable');
 const PausableRoutines               = require('../../lifecycle/Pausable');
 const JNTControllerInterfaceRoutines = require('../../crydr/jnt/JNTControllerInterface');
+
 const JNTController = global.artifacts.require('JNTController.sol');
 
 
-export const deployCrydrController = async (deployer, crydrControllerContractObject, owner) => {
+export const deployCrydrController = async (deployer, crydrControllerContractArtifact, owner) => {
   global.console.log('\tDeploying controller of a crydr:');
   global.console.log(`\t\towner - ${owner}`);
 
-  await deployer.deploy(crydrControllerContractObject, { from: owner });
+  await deployer.deploy(crydrControllerContractArtifact, { from: owner });
 
   global.console.log('\tController of a crydr successfully deployed');
   return null;
@@ -62,7 +63,7 @@ export const setInvestorsRegistry = async (crydrControllerAddress, manager, inve
   global.console.log(`\t\tcrydr controller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmanager - ${manager}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerERC20Validatable
+    CrydrControllerERC20ValidatableInterface
       .at(crydrControllerAddress)
       .setInvestorsRegistry
       .sendTransaction,

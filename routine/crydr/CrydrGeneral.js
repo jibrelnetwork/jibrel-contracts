@@ -7,47 +7,63 @@ const CryDRRegistry = global.artifacts.require('CryDRRegistry.sol');
 
 
 export const deployCrydrContracts = async (deployer, owner,
-                                           crydrStorageContractObject,
-                                           crydrControllerContractObject,
-                                           viewStandardToContractObject) => {
+                                           crydrStorageContractArtifact,
+                                           crydrControllerContractArtifact,
+                                           viewStandardToContractArtifact) => {
   global.console.log('\tDeploying components of a crydr');
-  await crydrStorageGeneralRoutines.deployCrydrStorage(deployer, crydrStorageContractObject, owner);
-  await crydrControllerRoutines.deployCrydrController(deployer, crydrControllerContractObject, owner);
-  await crydrViewRoutines.deployCrydrViewsList(deployer, viewStandardToContractObject, owner);
+  await crydrStorageGeneralRoutines.deployCrydrStorage(deployer, crydrStorageContractArtifact, owner);
+  await crydrControllerRoutines.deployCrydrController(deployer, crydrControllerContractArtifact, owner);
+  await crydrViewRoutines.deployCrydrViewsList(deployer, viewStandardToContractArtifact, owner);
   global.console.log('\tComponents of a crydr successfully deployed');
   return null;
 };
 
 export const deployAndConfigureCrydr = async (deployer, owner, manager,
                                               crydrSymbol, crydrName,
-                                              crydrStorageContractObject,
-                                              crydrControllerContractObject,
-                                              crydrViewERC20Contract,
+                                              crydrStorageContractArtifact,
+                                              crydrControllerContractArtifact,
+                                              viewStandardToContractArtifact,
                                               isConnectToInvestorRegistry,
                                               isConnectToJNT, jntPrices) => {
   global.console.log(`\tStart to deploy and configure crydr ${crydrSymbol}`);
   await deployCrydrContracts(deployer, owner,
-                             crydrStorageContractObject,
-                             crydrControllerContractObject,
-                             new Map([['erc20', crydrViewERC20Contract]]));
-  const crydrStorageInstance = await crydrStorageContractObject.deployed();
-  const crydrControllerInstance = await crydrControllerContractObject.deployed();
-  const crydrViewERC20Instance = await crydrViewERC20Contract.deployed();
+                             crydrStorageContractArtifact,
+                             crydrControllerContractArtifact,
+                             viewStandardToContractArtifact);
+
+  const crydrStorageInstance          = await crydrStorageContractArtifact.deployed();
+  const crydrControllerInstance       = await crydrControllerContractArtifact.deployed();
+  const viewStandardToContractAddress = new Map();
+
+  const viewStandardsArray = Array.from(viewStandardToContractArtifact.keys());
+  const promisesArray      = viewStandardsArray.map(
+    (viewStandardName) => viewStandardToContractArtifact.get(viewStandardName).deployed());
+  const viewInstancesArray = await Promise.all(promisesArray);
+  viewStandardsArray.forEach(
+    (viewStandardName, i) => viewStandardToContractAddress.set(viewStandardName, viewInstancesArray[i].address));
+
 
   await crydrStorageGeneralRoutines.configureCrydrStorage(crydrStorageInstance.address, owner, manager,
                                                           crydrControllerInstance.address);
+
   await crydrControllerRoutines.configureCrydrController(crydrControllerInstance.address, owner, manager,
                                                          crydrStorageInstance.address,
-                                                         new Map([['erc20', crydrViewERC20Instance.address]]),
+                                                         viewStandardToContractAddress,
                                                          isConnectToInvestorRegistry,
                                                          isConnectToJNT, jntPrices);
-  await crydrViewRoutines.configureCrydrView(crydrViewERC20Instance.address, owner, manager,
-                                             crydrStorageInstance.address,
-                                             crydrControllerInstance.address);
+
+  const viewsConfiguration = Array.from(viewStandardToContractAddress.values()).map(
+    async (viewAddress) => {
+      await crydrViewRoutines.configureCrydrView(viewAddress, owner, manager,
+                                                 crydrControllerInstance.address);
+    });
+  await Promise.all(viewsConfiguration);
+
 
   const crydrRegistryInstance = await CryDRRegistry.deployed();
   await CryDRRegistryRoutines.registerCrydr(crydrRegistryInstance.address, manager,
                                             crydrSymbol, crydrName, crydrControllerInstance.address);
+
   global.console.log(`\tCrydr ${crydrSymbol} successfully deployed and configured`);
   return null;
 };
