@@ -1,5 +1,7 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
+const Promise = require('bluebird');
+
 const CrydrControllerBaseInterface    = global.artifacts.require('CrydrControllerBaseInterface.sol');
 const JNTPayableServiceInterface      = global.artifacts.require('JNTPayableServiceInterface.sol');
 const JNTPayableServiceERC20Interface = global.artifacts.require('JNTPayableServiceERC20Interface.sol');
@@ -158,4 +160,33 @@ export const configureCrydrController = async (crydrControllerAddress,
   await PausableRoutines.unpauseContract(crydrControllerAddress, manager);
   global.console.log('\tController of CryDR successfully configured');
   return null;
+};
+
+
+/**
+ * Events
+ */
+
+export const getCrydrStorageChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrControllerBaseInterface
+    .at(contractAddress)
+    .CrydrStorageChangedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getCrydrViewAddedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrControllerBaseInterface
+    .at(contractAddress)
+    .CrydrViewAddedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getCrydrViewRemovedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrControllerBaseInterface
+    .at(contractAddress)
+    .CrydrViewRemovedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
 };
