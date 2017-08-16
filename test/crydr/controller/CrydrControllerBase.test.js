@@ -2,8 +2,8 @@ import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
 import {checkContractThrows} from "../../../routine/misc/UtilsTest";
 
 const CrydrControllerBase = global.artifacts.require('CrydrControllerBase.sol');
-const CrydrStorage       = global.artifacts.require('CrydrStorage.sol');
-const CrydrViewBase      = global.artifacts.require('CrydrViewBase.sol');
+const CrydrStorage        = global.artifacts.require('CrydrStorage.sol');
+const CrydrViewBase       = global.artifacts.require('CrydrViewBase.sol');
 
 const UtilsTestRoutines           = require('../../../routine/misc/UtilsTest');
 const ManageableRoutines          = require('../../../routine/lifecycle/Manageable');
@@ -215,7 +215,7 @@ global.contract('CrydrControllerBase', (accounts) => {
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
                                       [viewName, { from: manager05 }]);
     const crydrViewAddress = crydrViewBaseContract.address;
-    pastEvents = await CrydrControllerBaseRoutines.®getCrydrViewRemovedEvents(crydrControllerBaseContract.address,
+    pastEvents = await CrydrControllerBaseRoutines.getCrydrViewRemovedEvents(crydrControllerBaseContract.address,
                                                                    {
                                                                      viewName, crydrViewAddress,
                                                                    },
