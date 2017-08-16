@@ -50,61 +50,61 @@ global.contract('CrydrControllerBase', (accounts) => {
 
   global.it('should test that contract works as expected', async () => {
     global.console.log('\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}');
-    global.assert.notEqual(crydrControllerBaseContract.address, 0x0);
+    global.assert.notStrictEqual(crydrControllerBaseContract.address, 0x0);
 
     global.console.log('\tcrydrStorageContract: ${crydrStorageContract.address}');
-    global.assert.notEqual(crydrStorageContract.address, 0x0);
+    global.assert.notStrictEqual(crydrStorageContract.address, 0x0);
 
     global.console.log('\tcrydrViewBaseContract: ${crydrViewBaseContract.address}');
-    global.assert.notEqual(crydrViewBaseContract.address, 0x0);
+    global.assert.notStrictEqual(crydrViewBaseContract.address, 0x0);
 
     let isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed crydrControllerBase contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed crydrControllerBase contract must be paused');
 
     let storageAddress = await crydrControllerBaseContract.getCrydrStorage.call();
-    global.assert.equal(storageAddress, 0x0, 'Just deployed crydrControllerBase should have noninitialized crydrStorage address');
+    global.assert.strictEqual(storageAddress, '0x0000000000000000000000000000000000000000', 'Just deployed crydrControllerBase should have noninitialized crydrStorage address');
 
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
                                       [crydrStorageContract.address, { from: manager03 }]);
     storageAddress = await crydrControllerBaseContract.getCrydrStorage.call();
-    global.assert.equal(storageAddress, crydrStorageContract.address, 'Expected that crydrStorage is set');
+    global.assert.strictEqual(storageAddress, crydrStorageContract.address, 'Expected that crydrStorage is set');
 
     let viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
-    global.assert.equal(viewsNumber.toNumber(), 0, 'Just deployed crydrControllerBase should have no views');
+    global.assert.strictEqual(viewsNumber.toNumber(), 0, 'Just deployed crydrControllerBase should have no views');
 
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
                                       [viewName, crydrViewBaseContract.address, { from: manager04 }]);
     let viewsAddress = await crydrControllerBaseContract.getCrydrView.call(viewName);
-    global.assert.equal(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
+    global.assert.strictEqual(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
 
     viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
-    global.assert.equal(viewsNumber.toNumber(), 1, 'Expected that controller have only one view');
+    global.assert.strictEqual(viewsNumber.toNumber(), 1, 'Expected that controller have only one view');
 
     viewsAddress = await crydrControllerBaseContract.getCrydrViewByNumber.call(0);
-    global.assert.equal(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
+    global.assert.strictEqual(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
 
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
                                       [viewName, { from: manager05 }]);
     viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
-    global.assert.equal(viewsNumber.toNumber(), 0, 'Expected that controller have no any views');
+    global.assert.strictEqual(viewsNumber.toNumber(), 0, 'Expected that controller have no any views');
 
     await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
     isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
     global.console.log('\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}');
-    global.assert.notEqual(crydrControllerBaseContract.address, 0x0);
+    global.assert.notStrictEqual(crydrControllerBaseContract.address, 0x0);
 
     global.console.log('\tcrydrStorageContract: ${crydrStorageContract.address}');
-    global.assert.notEqual(crydrStorageContract.address, 0x0);
+    global.assert.notStrictEqual(crydrStorageContract.address, 0x0);
 
     global.console.log('\tcrydrViewBaseContract: ${crydrViewBaseContract.address}');
-    global.assert.notEqual(crydrViewBaseContract.address, 0x0);
+    global.assert.notStrictEqual(crydrViewBaseContract.address, 0x0);
 
     let isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed crydrControllerBase contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed crydrControllerBase contract must be paused');
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
                                                 [crydrStorageContract.address, { from: manager01 }],
@@ -113,11 +113,6 @@ global.contract('CrydrControllerBase', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
                                                 [0x0, { from: manager03 }],
                                                 'Should be a valid address of CrydrStorage');
-
-    //todo uncomment
-    //await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-    //                                            [manager01, { from: manager03 }],
-    //                                            'The _crydrStorage parameter should be a contract');
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.getCrydrViewByNumber.call,
                                                 [0], 'Just deployed crydrControllerBase should have no views');
@@ -129,11 +124,6 @@ global.contract('CrydrControllerBase', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
                                                 [viewName, 0x0, { from: manager04 }],
                                                 'Should be a valid address of CrydrView');
-
-    //todo uncomment
-    //await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
-    //                                            [viewName, manager01, { from: manager04 }],
-    //                                            'The _crydrView parameter should be a contract');
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
                                                 ['', crydrViewBaseContract.address, { from: manager04 }],
@@ -160,7 +150,7 @@ global.contract('CrydrControllerBase', (accounts) => {
 
     await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
     isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpause.sendTransaction,
                                                 [{ from: manager02 }],
@@ -193,7 +183,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                                                         toBlock:   blockNumber + 1,
                                                                         address:   manager03,
                                                                       });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
@@ -208,8 +198,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                                                         toBlock:   blockNumber + 1,
                                                                         address:   manager04,
                                                                       });
-    global.assert.equal(pastEvents.length, 1);
-
+    global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
@@ -224,6 +213,6 @@ global.contract('CrydrControllerBase', (accounts) => {
                                                                      toBlock:   blockNumber + 1,
                                                                      address:   manager05,
                                                                    });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
   });
 });
