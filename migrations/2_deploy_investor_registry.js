@@ -30,7 +30,7 @@ const verifyRoutine = async (network, owner, manager) => {
 
 module.exports = (deployer, network, accounts) => {
   GlobalConfig.setWeb3(web3); // eslint-disable-line no-undef  // todo do we need it?
-  if (network === 'development') {
+  if (network === 'development' || network === 'coverage') {
     SubmitTx.setDefaultWaitParams(
       {
         minConfirmations:   0,

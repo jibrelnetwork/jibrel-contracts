@@ -28,7 +28,7 @@ const deployJNT = async (deployer, owner, manager) => {
 
 module.exports = (deployer, network, accounts) => {
   GlobalConfig.setWeb3(web3); // eslint-disable-line no-undef
-  if (network === 'development') {
+  if (network === 'development' || network === 'coverage') {
     SubmitTx.setDefaultWaitParams(
       {
         minConfirmations:   0,

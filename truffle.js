@@ -22,5 +22,12 @@ module.exports = {
       network_id: 3, // official id of the ropsten network
       gas:        4500000,
     },
+    coverage: {
+      host:       "localhost",
+      network_id: "*",
+      port:       8570,
+      gas:        0xfffffffffff,
+      gasPrice:   0x01,
+    }
   },
 };
