@@ -8,6 +8,8 @@ cleanup() {
   if [ -n "$testrpc_pid" ] && ps -p $testrpc_pid > /dev/null; then
     kill -9 $testrpc_pid
   fi
+
+  rm -f ./.testrpc.log
 }
 
 testrpc_running() {
@@ -18,7 +20,7 @@ write_keys_to_file() {
   keys=(${!1})
   keys_file_path=./.jsapi.json
 
-  echo -en "{\n    \"privateKeys\": [" > $keys_file_path
+  echo -en "{\n\t\"privateKeys\": [" > $keys_file_path
 
   for i in {0..9}
   do
@@ -32,6 +34,18 @@ write_keys_to_file() {
   done
 }
 
+function start_jsapi_tests() {
+  if [ -d ../jibrel-contracts-jsapi ]; then
+    echo "jsapi directory exists. Starting tests..."
+
+    sleep 20
+
+    ./node_modules/.bin/truffle test ./test_suit/jsapi/JSAPI.test.js
+  else
+    echo "jsapi directory does not exist. Exit"
+  fi
+}
+
 if testrpc_running; then
   echo "Using existing testrpc instance"
 else
@@ -43,7 +57,7 @@ else
     keys[i]=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
   done
 
-  testrpc --port 8560 \
+  ./node_modules/.bin/testrpc --port 8560 \
     --account="0x${keys[0]},1000000000000000000000000"  \
     --account="0x${keys[1]},1000000000000000000000000"  \
     --account="0x${keys[2]},1000000000000000000000000"  \
@@ -54,10 +68,12 @@ else
     --account="0x${keys[7]},1000000000000000000000000"  \
     --account="0x${keys[8]},1000000000000000000000000"  \
     --account="0x${keys[9]},1000000000000000000000000"  \
-  > /dev/null &
+  > ./.testrpc.log &
   testrpc_pid=$!
 
   write_keys_to_file keys[@]
 fi
 
-node_modules/.bin/truffle test "$@"
+#./node_modules/.bin/truffle test "$@"
+
+start_jsapi_tests
