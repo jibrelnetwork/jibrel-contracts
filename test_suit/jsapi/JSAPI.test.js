@@ -5,10 +5,10 @@ const jGBPViewERC20              = global.artifacts.require('jGBPViewERC20.sol')
 const jAEDViewERC20              = global.artifacts.require('jAEDViewERC20.sol');
 const jRUBViewERC20              = global.artifacts.require('jRUBViewERC20.sol');
 const jCNYViewERC20              = global.artifacts.require('jCNYViewERC20.sol');
-const jTBillViewERC20            = global.artifacts.require('jTBillViewERC20.sol');
-const jTBillViewERC20Validatable = global.artifacts.require('jTBillViewERC20Validatable.sol');
 const jGDRViewERC20              = global.artifacts.require('jGDRViewERC20.sol');
+const jTBillViewERC20            = global.artifacts.require('jTBillViewERC20.sol');
 const jGDRViewERC20Validatable   = global.artifacts.require('jGDRViewERC20Validatable.sol');
+const jTBillViewERC20Validatable = global.artifacts.require('jTBillViewERC20Validatable.sol');
 
 const Promise  = require('bluebird');
 const fs       = require('fs');
@@ -39,10 +39,10 @@ global.contract('jsapi', async (accounts) => {
       jAEDViewERC20,
       jRUBViewERC20,
       jCNYViewERC20,
-      jTBillViewERC20,
-      jTBillViewERC20Validatable,
       jGDRViewERC20,
+      jTBillViewERC20,
       jGDRViewERC20Validatable,
+      jTBillViewERC20Validatable,
     };
 
     const contractNames = Object.keys(contracts);
