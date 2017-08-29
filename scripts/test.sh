@@ -38,7 +38,7 @@ function start_jsapi_tests() {
   if [ -d ../jibrel-contracts-jsapi ]; then
     echo "jsapi directory exists. Starting tests..."
 
-    sleep 20
+    sleep 1
 
     ./node_modules/.bin/truffle test ./test_suit/jsapi/JSAPI.test.js
   else
@@ -74,6 +74,6 @@ else
   write_keys_to_file keys[@]
 fi
 
-#./node_modules/.bin/truffle test "$@"
+./node_modules/.bin/truffle test "$@"
 
-start_jsapi_tests
+#start_jsapi_tests
