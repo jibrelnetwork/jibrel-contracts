@@ -34,18 +34,6 @@ write_keys_to_file() {
   done
 }
 
-function start_jsapi_tests() {
-  if [ -d ../jibrel-contracts-jsapi ]; then
-    echo "jsapi directory exists. Starting tests..."
-
-    sleep 1
-
-    ./node_modules/.bin/truffle test ./test_suit/jsapi/JSAPI.test.js
-  else
-    echo "jsapi directory does not exist. Exit"
-  fi
-}
-
 if testrpc_running; then
   echo "Using existing testrpc instance"
 else
@@ -75,5 +63,3 @@ else
 fi
 
 ./node_modules/.bin/truffle test "$@"
-
-#start_jsapi_tests
