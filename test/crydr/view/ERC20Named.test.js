@@ -1,4 +1,6 @@
 /* eslint-disable no-multi-spaces */
+const CrydrViewBaseTestSuite         = require('../../../test_suit/crydr/view/CrydrView');
+
 const ERC20Named       = global.artifacts.require('ERC20Named.sol');
 
 global.contract('ERC20Named', () => {
@@ -18,19 +20,21 @@ global.contract('ERC20Named', () => {
     global.console.log(`\tERC20NamedContract: ${ERC20NamedContract.address}`);
     global.assert.notEqual(ERC20NamedContract.address, 0x0);
 
-    const contractName = await ERC20NamedContract.name();
+    CrydrViewBaseTestSuite.testContractIsERC20Named(ERC20NamedContract.address);
+
+    const contractName = await ERC20NamedContract.name.call();
     global.assert.equal(contractName, originalName);
 
-    const contractSymbol = await ERC20NamedContract.symbol();
+    const contractSymbol = await ERC20NamedContract.symbol.call();
     global.assert.equal(contractSymbol, originalSymbol);
 
-    const contractDecimals = await ERC20NamedContract.decimals();
+    const contractDecimals = await ERC20NamedContract.decimals.call();
     global.assert.equal(contractDecimals, originalDecimals);
 
-    const contractNameHash = await ERC20NamedContract.getNameHash();
+    const contractNameHash = await ERC20NamedContract.getNameHash.call();
     global.assert.equal(contractNameHash, originalNameHash);
 
-    const contractSymbolHash = await ERC20NamedContract.getSymbolHash();
+    const contractSymbolHash = await ERC20NamedContract.getSymbolHash.call();
     global.assert.equal(contractSymbolHash, originalSymbolHash);
   });
 });

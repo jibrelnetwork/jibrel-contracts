@@ -110,31 +110,37 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   }
 
   function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
+    // todo do we need to check _value?
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }
 
   function isSpendingAllowed(address _account, uint _value) constant returns (bool) {
+    // todo do we need to check _value?
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }
 
 
   function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool) {
+    // todo do we need to check _value?
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_to, singleLicenseName);
   }
 
 
   function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool) {
+    // todo do we need to check _value?
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName);
   }
 
   function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool) {
+    // todo do we need to check _value?
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName);
   }
 
   function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool) {
+    // todo do we need to check _value?
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_to, singleLicenseName);

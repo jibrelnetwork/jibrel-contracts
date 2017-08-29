@@ -1,5 +1,6 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
+const Promise              = require('bluebird');
 const ManageableRoutines   = require('../../lifecycle/Manageable');
 const PausableRoutines     = require('../../lifecycle/Pausable');
 
@@ -64,4 +65,17 @@ export const configureCrydrView = async (crydrViewAddress, owner, manager, crydr
 
   global.console.log('\tView of a crydr successfully configured');
   return null;
+};
+
+
+/**
+ * Events
+ */
+
+export const getCrydrControllerChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrViewBaseInterface
+    .at(contractAddress)
+    .CrydrControllerChangedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
 };

@@ -50,6 +50,22 @@ export const admitInvestor = async (investorRegistryAddress, manager, investorAd
   return null;
 };
 
+export const denyInvestor = async (investorRegistryAddress, manager, investorAddress) => {
+  global.console.log('\tDeny investor:');
+  global.console.log(`\t\tregistryAddress - ${investorRegistryAddress}`);
+  global.console.log(`\t\tmanager - ${manager}`);
+  global.console.log(`\t\tinvestorAddress - ${investorAddress}`);
+  await submitTxAndWaitConfirmation(
+    InvestorRegistryManagementInterface
+      .at(investorRegistryAddress)
+      .denyInvestor
+      .sendTransaction,
+    [investorAddress, { from: manager }]
+  );
+  global.console.log('\tInvestor successfully admitted');
+  return null;
+};
+
 export const grantInvestorLicenses = async (investorRegistryAddress, manager, investorAddress, licenseName, expireTimestamp) => {
   global.console.log('\tGrant license to investor:');
   global.console.log(`\t\tinvestorRegistryAddress - ${investorRegistryAddress}`);
@@ -63,6 +79,21 @@ export const grantInvestorLicenses = async (investorRegistryAddress, manager, in
       .grantInvestorLicense
       .sendTransaction,
     [investorAddress, licenseName, expireTimestamp, { from: manager }]
+  );
+};
+
+export const revokeInvestorLicenses = async (investorRegistryAddress, manager, investorAddress, licenseName) => {
+  global.console.log('\tRevoke license to investor:');
+  global.console.log(`\t\tinvestorRegistryAddress - ${investorRegistryAddress}`);
+  global.console.log(`\t\tmanager - ${manager}`);
+  global.console.log(`\t\tinvestorAddress - ${investorAddress}`);
+  global.console.log(`\t\tlicenseName - ${licenseName}`);
+  await submitTxAndWaitConfirmation(
+    InvestorRegistryManagementInterface
+      .at(investorRegistryAddress)
+      .revokeInvestorLicense
+      .sendTransaction,
+    [investorAddress, licenseName, { from: manager }]
   );
 };
 
