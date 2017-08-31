@@ -31,7 +31,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
    * @dev Clears all the contract's data it frees up space on the blockchain.
    *      The ethers send to manager after selfdestruct call are lost.
    */
-  function close() onlyAllowedManager('close_crydr_controller') {
+  function close() external onlyAllowedManager('close_crydr_controller') {
     // todo test it
     selfdestruct(msg.sender);
   }
@@ -43,7 +43,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
 
   function setCrydrStorage(
     address _crydrStorage
-  )
+  ) external
     onlyValidCrydrStorageAddress(_crydrStorage)
     onlyDifferentAddress(_crydrStorage)
     onlyAllowedManager('set_crydr_storage')
@@ -55,14 +55,14 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
     CrydrStorageChangedEvent(_crydrStorage);
   }
 
-  function getCrydrStorage() constant returns (address) {
+  function getCrydrStorage() external constant returns (address) {
     return address(crydrStorage);
   }
 
 
   function setCrydrView(
     string _viewApiStandardName, address _crydrView
-  )
+  ) external
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     onlyValidCrydrViewAddress(_crydrView)
     onlyDifferentAddress(_crydrView)
@@ -84,7 +84,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
 
   function removeCrydrView(
     string _viewApiStandardName
-  )
+  ) external
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     onlyAllowedManager('remove_crydr_view')
     whenContractPaused
@@ -114,15 +114,15 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
     CrydrViewRemovedEvent(_viewApiStandardName, removedView);
   }
 
-  function getCrydrView(string _viewApiStandardName) constant returns (address) {
+  function getCrydrView(string _viewApiStandardName) external constant returns (address) {
     return crydrViewsAddresses[_viewApiStandardName];
   }
 
-  function getCrydrViewsNumber() constant returns (uint) {
+  function getCrydrViewsNumber() external constant returns (uint) {
     return crydrViewsAddressesList.length;
   }
 
-  function getCrydrViewByNumber(uint _viewId) constant returns (address) {
+  function getCrydrViewByNumber(uint _viewId) external constant returns (address) {
     return crydrViewsAddressesList[_viewId];
   }
 
@@ -132,7 +132,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
+  function unpause() external
     onlyValidCrydrStorageAddress(crydrStorage)
   {
     require(crydrViewsAddressesList.length > 0);
