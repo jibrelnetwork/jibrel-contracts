@@ -12,8 +12,8 @@ contract CrydrControllerBaseInterface {
   /* Events */
 
   event CrydrStorageChangedEvent(address indexed crydrstorage);
-  event CrydrViewAddedEvent(string indexed standardname, address indexed crydrview);
-  event CrydrViewRemovedEvent(string indexed standardname, address indexed crydrview);
+  event CrydrViewAddedEvent(string standardname, address indexed crydrview);
+  event CrydrViewRemovedEvent(string standardname, address indexed crydrview);
 
 
   /* Configuration */

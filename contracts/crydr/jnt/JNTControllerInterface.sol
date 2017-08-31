@@ -11,7 +11,7 @@ contract JNTControllerInterface {
 
   /* Events */
 
-  event JNTChargedEvent(address payableservice, address from, address to, uint value);  // todo make indexed
+  event JNTChargedEvent(address indexed payableservice, address indexed from, address indexed to, uint value);
 
 
   /* Actions */
