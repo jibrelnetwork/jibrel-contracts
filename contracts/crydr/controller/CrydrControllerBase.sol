@@ -25,6 +25,18 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
   mapping (address => bool) isRegisteredView;
 
 
+  /* Selfdestruct */
+
+  /*
+   * @dev Clears all the contract's data it frees up space on the blockchain.
+   *      The ethers send to manager after selfdestruct call are lost.
+   */
+  function close() onlyAllowedManager('close_crydr_controller') {
+    // todo test it
+    selfdestruct(msg.sender);
+  }
+
+
   /* CrydrControllerInterface */
 
   /* Configuration */
