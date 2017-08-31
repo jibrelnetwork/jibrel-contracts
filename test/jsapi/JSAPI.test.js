@@ -58,6 +58,16 @@ global.after(async () => {
 
   fs.appendFileSync(jsonPath, data);
 
+  try {
+    fs.accessSync(jsapiProjectPath);
+  } catch (e) {
+    consoleLog('\n\njsapi project not found... Exit')
+
+    return;
+  }
+
+  consoleLog('\n\njsapi project found... Launch tests')
+
   const jsapiTests = spawn('npm', ['test'], {
     cwd: jsapiProjectPath,
     env: { ...process.env, JSON_PATH: jsonPath, RPCPORT: 8560 },
