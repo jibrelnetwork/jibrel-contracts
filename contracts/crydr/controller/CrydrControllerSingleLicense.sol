@@ -39,7 +39,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
   function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenContractNotPaused {
-    if (isTransferAllowed(_msgsender, _to, _value) == false) {
+    if (this.isTransferAllowed(_msgsender, _to, _value) == false) {
       revert();
     }
 
@@ -64,7 +64,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   }
 
   function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenContractNotPaused {
-    if (isApproveAllowed(_msgsender, _spender, _value) == false) {
+    if (this.isApproveAllowed(_msgsender, _spender, _value) == false) {
       revert();
     }
 
@@ -82,7 +82,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   }
 
   function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
-    if (isTransferFromAllowed(_msgsender, _from, _to, _value) == false) {
+    if (this.isTransferFromAllowed(_msgsender, _from, _to, _value) == false) {
       revert();
     }
 
@@ -109,32 +109,32 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     return true;
   }
 
-  function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
+  function isReceivingAllowed(address _account, uint _value) external constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }
 
-  function isSpendingAllowed(address _account, uint _value) constant returns (bool) {
+  function isSpendingAllowed(address _account, uint _value) external constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }
 
 
-  function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool) {
+  function isTransferAllowed(address _from, address _to, uint _value) external constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_to, singleLicenseName);
   }
 
 
-  function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool) {
+  function isApproveAllowed(address _from, address _spender, uint _value) external constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName);
   }
 
-  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool) {
+  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) external constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName);
   }
 
-  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool) {
+  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) external constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_to, singleLicenseName);
