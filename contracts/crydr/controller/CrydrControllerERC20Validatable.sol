@@ -21,7 +21,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
 
   function setInvestorsRegistry(
     address _investorsRegistry
-  )
+  ) external
     onlyValidInvestorsRegistryAddress(_investorsRegistry)
     onlyAllowedManager('set_investors_registry')
     whenContractPaused
@@ -32,7 +32,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
     InvestorsRegistryChangedEvent(_investorsRegistry);
   }
 
-  function getInvestorsRegistry() constant returns (address) {
+  function getInvestorsRegistry() external constant returns (address) {
     return address(investorsRegistry);
   }
 
