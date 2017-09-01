@@ -23,7 +23,15 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenContractNotPaused {
+  function transfer(
+    address _msgsender,
+    address _to,
+    uint _value
+  )
+    onlyCrydrView
+    whenContractNotPaused
+    onlyGreaterThanZero(_value)
+  {
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransfer);
 
     // todo check gas consumption, do we need to optimise these type conversions ?
@@ -44,7 +52,15 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
     return CrydrStorageBaseInterface(address(crydrStorage)).getBalance(_owner);
   }
 
-  function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenContractNotPaused {
+  function approve(
+    address _msgsender,
+    address _spender,
+    uint _value
+  )
+    onlyCrydrView
+    whenContractNotPaused
+    onlyGreaterThanZero(_value)
+  {
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     require(crydrStorage.getAllowance(_msgsender, _spender) >= 0);
 
@@ -58,7 +74,16 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
     }
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
+  function transferFrom(
+    address _msgsender,
+    address _from,
+    address _to,
+    uint _value
+  )
+    onlyCrydrView
+    whenContractNotPaused
+    onlyGreaterThanZero(_value)
+  {
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransferFrom);
 
     // todo check gas consumption, do we need to optimise these type conversions ?

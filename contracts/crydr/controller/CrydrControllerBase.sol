@@ -169,4 +169,9 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
     require(isRegisteredView[msg.sender] == true);
     _;
   }
+
+  modifier onlyGreaterThanZero(uint _value) {
+    require(_value > 0);
+    _;
+  }
 }
