@@ -18,14 +18,14 @@ contract JNTPayableServiceInterface {
 
   /* Configuration */
 
-  function setJntController(address _jntController);
-  function getJntController() constant returns (address);
+  function setJntController(address _jntController) external;
+  function getJntController() external constant returns (address);
 
-  function setJntBeneficiary(address _jntBeneficiary);
-  function getJntBeneficiary() constant returns (address);
+  function setJntBeneficiary(address _jntBeneficiary) external;
+  function getJntBeneficiary() external constant returns (address);
 
 
   /* Actions */
 
-  function withdrawJnt();
+  function withdrawJnt() external;
 }

@@ -24,7 +24,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
 
   function setJntController(
     address _jntController
-  )
+  ) external
     onlyValidJntControllerAddress(_jntController)
     onlyAllowedManager('set_jnt_controller')
     whenContractPaused
@@ -35,14 +35,14 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
     JNTControllerChangedEvent(_jntController);
   }
 
-  function getJntController() constant returns (address) {
+  function getJntController() external constant returns (address) {
     return address(jntController);
   }
 
 
   function setJntBeneficiary(
     address _jntBeneficiary
-  )
+  ) external
     onlyValidJntBeneficiary(_jntBeneficiary)
     onlyAllowedManager('set_jnt_beneficiary')
     whenContractPaused
@@ -53,7 +53,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
     JNTBeneficiaryChangedEvent(jntBeneficiary);
   }
 
-  function getJntBeneficiary() constant returns (address) {
+  function getJntBeneficiary() external constant returns (address) {
     return jntBeneficiary;
   }
 
@@ -73,7 +73,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable {
    * @dev Method used to withdraw collected JNT if contract itself used to store charged JNT.
    * @dev Assumed that JNT provides 'erc20' view.
    */
-  function withdrawJnt() onlyAllowedManager('withdraw_jnt') {
+  function withdrawJnt() external onlyAllowedManager('withdraw_jnt') {
     var _jntControllerAddress = address(jntController);
     var _crydrController = CrydrControllerBaseInterface(_jntControllerAddress);
     var _jntERC20ViewAddress = _crydrController.getCrydrView('erc20');
