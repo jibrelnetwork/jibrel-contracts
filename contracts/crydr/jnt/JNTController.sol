@@ -72,7 +72,7 @@ contract JNTController is CrydrControllerBase,
 
   /* JNTControllerInterface */
 
-  function chargeJNT(address _from, address _to, uint _value) onlyAllowedManager('jnt_payable_service') {
+  function chargeJNT(address _from, address _to, uint _value) external onlyAllowedManager('jnt_payable_service') {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_from, _to, _value);
     JNTChargedEvent(msg.sender, _from, _to, _value);
