@@ -44,50 +44,50 @@ global.contract('JNTPayableService', (accounts) => {
 
   global.it('should test that contract works as expected', async () => {
     global.console.log(`\tjntPayableServiceContract: ${jntPayableServiceContract.address}`);
-    global.assert.notEqual(jntPayableServiceContract.address, 0x0);
+    global.assert.notStrictEqual(jntPayableServiceContract.address, '0x0000000000000000000000000000000000000000');
 
     global.console.log(`\tjntControllerContract: ${jntControllerContract.address}`);
-    global.assert.notEqual(jntControllerContract.address, 0x0);
+    global.assert.notStrictEqual(jntControllerContract.address, '0x0000000000000000000000000000000000000000');
 
     let isPaused = await jntPayableServiceContract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed jntPayableService contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed jntPayableService contract must be paused');
 
     let controllerAddress = await jntPayableServiceContract.getJntController.call();
-    global.assert.equal(controllerAddress, 0x0, 'Just deployed jntPayableService contract should have noninitialized jntController address');
+    global.assert.strictEqual(controllerAddress, '0x0000000000000000000000000000000000000000', 'Just deployed jntPayableService contract should have noninitialized jntController address');
 
     await submitTxAndWaitConfirmation(jntPayableServiceContract.setJntController.sendTransaction,
       [jntControllerContract.address, { from: manager03 }]);
     controllerAddress = await jntPayableServiceContract.getJntController.call();
-    global.assert.equal(controllerAddress, jntControllerContract.address, 'Expected that jntController is set');
+    global.assert.strictEqual(controllerAddress, jntControllerContract.address, 'Expected that jntController is set');
 
     let beneficiaryAddress = await jntPayableServiceContract.getJntBeneficiary.call();
-    global.assert.equal(beneficiaryAddress, 0x0, 'Just deployed jntPayableService contract should have noninitialized jntBeneficiary address');
+    global.assert.strictEqual(beneficiaryAddress, '0x0000000000000000000000000000000000000000', 'Just deployed jntPayableService contract should have noninitialized jntBeneficiary address');
 
     await submitTxAndWaitConfirmation(jntPayableServiceContract.setJntBeneficiary.sendTransaction,
       [beneficiary, { from: manager04 }]);
     beneficiaryAddress = await jntPayableServiceContract.getJntBeneficiary.call();
-    global.assert.equal(beneficiaryAddress, beneficiary, 'Expected that jntBeneficiary is set');
+    global.assert.strictEqual(beneficiaryAddress, beneficiary, 'Expected that jntBeneficiary is set');
 
     await PausableRoutines.unpauseContract(jntPayableServiceContract.address, manager02);
     isPaused = await jntPayableServiceContract.getPaused.call();
-    global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
     await PausableRoutines.pauseContract(jntPayableServiceContract.address, manager01);
     isPaused = await jntPayableServiceContract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, true, 'Expected that contract is unpaused');
 
     //todo test withdraw
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
     global.console.log(`\tjntPayableServiceContract: ${jntPayableServiceContract.address}`);
-    global.assert.notEqual(jntPayableServiceContract.address, 0x0);
+    global.assert.notStrictEqual(jntPayableServiceContract.address, '0x0000000000000000000000000000000000000000');
 
     global.console.log(`\tjntControllerContract: ${jntControllerContract.address}`);
-    global.assert.notEqual(jntControllerContract.address, 0x0);
+    global.assert.notStrictEqual(jntControllerContract.address, '0x0000000000000000000000000000000000000000');
 
     let isPaused = await jntPayableServiceContract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed pausable contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed pausable contract must be paused');
 
     await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.setJntController.sendTransaction,
                                                 [jntControllerContract.address, { from: manager01 }],
@@ -119,7 +119,7 @@ global.contract('JNTPayableService', (accounts) => {
       [beneficiary, { from: manager04 }]);
     await PausableRoutines.unpauseContract(jntPayableServiceContract.address, manager02);
     isPaused = await jntPayableServiceContract.getPaused.call();
-    global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
     await UtilsTestRoutines.checkContractThrows(jntPayableServiceContract.pauseContract.sendTransaction,
                                                 [{ from: manager02 }],
@@ -150,7 +150,7 @@ global.contract('JNTPayableService', (accounts) => {
                                                                toBlock:   blockNumber + 1,
                                                                address:   manager03,
                                                              });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
 
 
     blockNumber = global.web3.eth.blockNumber;
@@ -163,7 +163,7 @@ global.contract('JNTPayableService', (accounts) => {
                                                          toBlock:   blockNumber + 1,
                                                          address:   manager04,
                                                        });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
 
     //todo charge event test not possible
   });

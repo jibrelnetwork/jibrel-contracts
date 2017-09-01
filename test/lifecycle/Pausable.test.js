@@ -25,18 +25,18 @@ global.contract('Pausable', (accounts) => {
 
 
     let contractCounter = await pausableContract.counter.call();
-    global.assert.equal(contractCounter.toNumber(), 0);
+    global.assert.strictEqual(contractCounter.toNumber(), 0);
 
     await PausableTestSuite.assertWhenContractPaused(pausableContract.address,
                                                      manager,
                                                      pausableContract.worksWhenContractPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
-    global.assert.equal(contractCounter.toNumber(), 10);
+    global.assert.strictEqual(contractCounter.toNumber(), 10);
 
     await PausableTestSuite.assertWhenContractNotPaused(pausableContract.address,
                                                         manager,
                                                         pausableContract.worksWhenContractNotPaused.sendTransaction);
     contractCounter = await pausableContract.counter.call();
-    global.assert.equal(contractCounter.toNumber(), 11);
+    global.assert.strictEqual(contractCounter.toNumber(), 11);
   });
 });

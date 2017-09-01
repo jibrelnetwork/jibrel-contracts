@@ -22,80 +22,80 @@ global.contract('Manageable', (accounts) => {
     let isPermission02Allowed;
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, false);
+    global.assert.strictEqual(isManagerEnabled, false);
     isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, false);
+    global.assert.strictEqual(isPermission01Granted, false);
     isPermission02Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Granted, false);
+    global.assert.strictEqual(isPermission02Granted, false);
     isPermission01Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Allowed, false);
+    global.assert.strictEqual(isPermission01Allowed, false);
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Allowed, false);
+    global.assert.strictEqual(isPermission02Allowed, false);
 
     await ManageableRoutines.enableManager(manageableContract.address, owner, manager);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, true);
+    global.assert.strictEqual(isManagerEnabled, true);
     isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, false);
+    global.assert.strictEqual(isPermission01Granted, false);
     isPermission02Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Granted, false);
+    global.assert.strictEqual(isPermission02Granted, false);
     isPermission01Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Allowed, false);
+    global.assert.strictEqual(isPermission01Allowed, false);
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Allowed, false);
+    global.assert.strictEqual(isPermission02Allowed, false);
 
     await ManageableRoutines.grantManagerPermissions(manageableContract.address, owner, manager, ['permission_01']);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, true);
+    global.assert.strictEqual(isManagerEnabled, true);
     isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, true);
+    global.assert.strictEqual(isPermission01Granted, true);
     isPermission02Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Granted, false);
+    global.assert.strictEqual(isPermission02Granted, false);
     isPermission01Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Allowed, true);
+    global.assert.strictEqual(isPermission01Allowed, true);
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Allowed, false);
+    global.assert.strictEqual(isPermission02Allowed, false);
 
     await ManageableRoutines.grantManagerPermissions(manageableContract.address, owner, manager, ['permission_02']);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, true);
+    global.assert.strictEqual(isManagerEnabled, true);
     isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, true);
+    global.assert.strictEqual(isPermission01Granted, true);
     isPermission02Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Granted, true);
+    global.assert.strictEqual(isPermission02Granted, true);
     isPermission01Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Allowed, true);
+    global.assert.strictEqual(isPermission01Allowed, true);
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Allowed, true);
+    global.assert.strictEqual(isPermission02Allowed, true);
 
     await ManageableRoutines.revokeManagerPermissions(manageableContract.address, owner, manager, ['permission_02']);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, true);
+    global.assert.strictEqual(isManagerEnabled, true);
     isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, true);
+    global.assert.strictEqual(isPermission01Granted, true);
     isPermission02Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Granted, false);
+    global.assert.strictEqual(isPermission02Granted, false);
     isPermission01Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Allowed, true);
+    global.assert.strictEqual(isPermission01Allowed, true);
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Allowed, false);
+    global.assert.strictEqual(isPermission02Allowed, false);
 
     await ManageableRoutines.disableManager(manageableContract.address, owner, manager);
 
     isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, false);
+    global.assert.strictEqual(isManagerEnabled, false);
     isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, true);
+    global.assert.strictEqual(isPermission01Granted, true);
     isPermission02Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Granted, false);
+    global.assert.strictEqual(isPermission02Granted, false);
     isPermission01Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Allowed, false);
+    global.assert.strictEqual(isPermission01Allowed, false);
     isPermission02Allowed = await manageableContract.isManagerAllowed.call(manager, 'permission_02');
-    global.assert.equal(isPermission02Allowed, false);
+    global.assert.strictEqual(isPermission02Allowed, false);
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
@@ -125,7 +125,7 @@ global.contract('Manageable', (accounts) => {
     // enableManager & disableManager
 
     const isManagerEnabled = await manageableContract.isManagerEnabled.call(manager);
-    global.assert.equal(isManagerEnabled, false);
+    global.assert.strictEqual(isManagerEnabled, false);
 
     await UtilsTestRoutines.checkContractThrows(manageableContract.enableManager.sendTransaction,
                                                 [0x0, { from: owner }],
@@ -153,7 +153,7 @@ global.contract('Manageable', (accounts) => {
     // grantManagerPermission & revokeManagerPermission
 
     const isPermission01Granted = await manageableContract.isPermissionGranted.call(manager, 'permission_01');
-    global.assert.equal(isPermission01Granted, false);
+    global.assert.strictEqual(isPermission01Granted, false);
 
     await UtilsTestRoutines.checkContractThrows(manageableContract.grantManagerPermission.sendTransaction,
                                                 [0x0, 'permission_01', { from: owner }],
@@ -196,7 +196,7 @@ global.contract('Manageable', (accounts) => {
                                                                         toBlock:   blockNumber + 1,
                                                                         address:   owner,
                                                                       });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
 
 
     blockNumber = global.web3.eth.blockNumber;
@@ -210,7 +210,7 @@ global.contract('Manageable', (accounts) => {
                                                                      toBlock:   blockNumber + 1,
                                                                      address:   owner,
                                                                    });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
 
 
     blockNumber = global.web3.eth.blockNumber;
@@ -224,7 +224,7 @@ global.contract('Manageable', (accounts) => {
                                                                               toBlock:   blockNumber + 1,
                                                                               address:   owner,
                                                                             });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
 
 
     blockNumber = global.web3.eth.blockNumber;
@@ -238,6 +238,6 @@ global.contract('Manageable', (accounts) => {
                                                                               toBlock:   blockNumber + 1,
                                                                               address:   owner,
                                                                             });
-    global.assert.equal(pastEvents.length, 1);
+    global.assert.strictEqual(pastEvents.length, 1);
   });
 });

@@ -14,5 +14,5 @@ export async function checkContractThrows(functionObj, functionParams = [], notT
     // generally truffle should make these checks
     isCaught = true;
   }
-  global.assert.equal(isCaught, true, (notThrowMsg === null) ? 'Expected that function call throws' : notThrowMsg);
+  global.assert.strictEqual(isCaught, true, (notThrowMsg === null) ? 'Expected that function call throws' : notThrowMsg);
 }

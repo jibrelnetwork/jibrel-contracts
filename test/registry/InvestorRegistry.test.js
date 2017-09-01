@@ -20,17 +20,17 @@ global.contract('InvestorRegistry', (accounts) => {
 
   global.it('check InvestorRegistry contract', async () => {
     global.console.log(`\tInvestorRegistryContract: ${InvestorRegistryContract.address}`);
-    global.assert.equal(InvestorRegistryContract.address === 0x0, false);
+    global.assert.notStrictEqual(InvestorRegistryContract.address, '0x0000000000000000000000000000000000000000');
 
     let isInvestorAdmitted = await InvestorRegistryContract.isInvestorAdmitted.call(investor01);
-    global.assert.equal(isInvestorAdmitted, false);
+    global.assert.strictEqual(isInvestorAdmitted, false);
 
     await InvestorRegistryContract.admitInvestor.sendTransaction(investor01, { from: manager });
     isInvestorAdmitted = await InvestorRegistryContract.isInvestorAdmitted.call(investor01);
-    global.assert.equal(isInvestorAdmitted, true);
+    global.assert.strictEqual(isInvestorAdmitted, true);
 
     await InvestorRegistryContract.denyInvestor.sendTransaction(investor01, { from: manager });
     isInvestorAdmitted = await InvestorRegistryContract.isInvestorAdmitted.call(investor01);
-    global.assert.equal(isInvestorAdmitted, false);
+    global.assert.strictEqual(isInvestorAdmitted, false);
   });
 });

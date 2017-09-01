@@ -21,19 +21,19 @@ global.contract('jUSDViewERC20Instance', async (accounts) => {
     let balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
     let balanceOfInvestor03 = await JNTViewERC20Instance.balanceOf.call(investor03);
     let balanceOfInvestor04 = await JNTViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
 
     balanceOfInvestor01 = await jUSDViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await jUSDViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await jUSDViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await jUSDViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor03.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor04.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
 
 
     await jUSDViewERC20Instance.transfer.sendTransaction(investor02, 10 * (10 ** 18),
@@ -43,19 +43,19 @@ global.contract('jUSDViewERC20Instance', async (accounts) => {
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await JNTViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await JNTViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
 
     balanceOfInvestor01 = await jUSDViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await jUSDViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await jUSDViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await jUSDViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 10 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor04.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 10 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
 
 
     await jUSDViewERC20Instance.transfer.sendTransaction(investor04, 5 * (10 ** 18), { from: investor02 });
@@ -64,18 +64,18 @@ global.contract('jUSDViewERC20Instance', async (accounts) => {
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await JNTViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await JNTViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 999 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 999 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
 
     balanceOfInvestor01 = await jUSDViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await jUSDViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await jUSDViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await jUSDViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 5 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor04.toNumber(), 5 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 5 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 5 * (10 ** 18));
   });
 });

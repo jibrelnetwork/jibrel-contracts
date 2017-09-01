@@ -21,23 +21,23 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
 
     let isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor01, 0);
     let isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor01, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
+    global.assert.strictEqual(isReceivingAllowed, true);
+    global.assert.strictEqual(isSpendingAllowed, true);
 
     isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor02, 0);
     isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor02, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
+    global.assert.strictEqual(isReceivingAllowed, true);
+    global.assert.strictEqual(isSpendingAllowed, true);
 
     isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor03, 0);
     isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor03, 0);
-    global.assert.equal(isReceivingAllowed, true);
-    global.assert.equal(isSpendingAllowed, true);
+    global.assert.strictEqual(isReceivingAllowed, true);
+    global.assert.strictEqual(isSpendingAllowed, true);
 
     isReceivingAllowed = await ValidatableInstance.isReceivingAllowed.call(investor04, 0);
     isSpendingAllowed  = await ValidatableInstance.isSpendingAllowed.call(investor04, 0);
-    global.assert.equal(isReceivingAllowed, false);
-    global.assert.equal(isSpendingAllowed, false);
+    global.assert.strictEqual(isReceivingAllowed, false);
+    global.assert.strictEqual(isSpendingAllowed, false);
   });
 
   global.it('should test that only licensed investor is able to receive tokens', async () => {
@@ -51,19 +51,19 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     let balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
     let balanceOfInvestor03 = await JNTViewERC20Instance.balanceOf.call(investor03);
     let balanceOfInvestor04 = await JNTViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
 
     balanceOfInvestor01 = await jGDRViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await jGDRViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await jGDRViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await jGDRViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor03.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor04.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
 
 
     console.log('checkpoint 03')
@@ -75,19 +75,19 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await JNTViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await JNTViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
 
     balanceOfInvestor01 = await jGDRViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await jGDRViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await jGDRViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await jGDRViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 10 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor04.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 10 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
 
     console.log('checkpoint 06')
 
@@ -98,7 +98,7 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
       if (err.message.includes('is not a function')) { throw err; }
       isCaught = true;
     }
-    global.assert.equal(isCaught, true);
+    global.assert.strictEqual(isCaught, true);
 
     console.log('checkpoint 07')
 
@@ -106,18 +106,18 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await JNTViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await JNTViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 999 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 1000 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 1000 * (10 ** 18));
 
     balanceOfInvestor01 = await jGDRViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await jGDRViewERC20Instance.balanceOf.call(investor02);
     balanceOfInvestor03 = await jGDRViewERC20Instance.balanceOf.call(investor03);
     balanceOfInvestor04 = await jGDRViewERC20Instance.balanceOf.call(investor04);
-    global.assert.equal(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor02.toNumber(), 10 * (10 ** 18));
-    global.assert.equal(balanceOfInvestor03.toNumber(), 0);
-    global.assert.equal(balanceOfInvestor04.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor01.toNumber(), 990 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor02.toNumber(), 10 * (10 ** 18));
+    global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
+    global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
   });
 });

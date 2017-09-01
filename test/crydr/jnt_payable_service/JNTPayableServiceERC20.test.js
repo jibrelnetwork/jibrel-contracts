@@ -48,34 +48,34 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
 
   global.it('should test that contract works as expected', async () => {
     global.console.log(`\tjntPayableServiceERC20Contract: ${jntPayableServiceERC20Contract.address}`);
-    global.assert.notEqual(jntPayableServiceERC20Contract.address, 0x0);
+    global.assert.notStrictEqual(jntPayableServiceERC20Contract.address, '0x0000000000000000000000000000000000000000');
 
     global.console.log(`\tjntControllerContract: ${jntControllerContract.address}`);
-    global.assert.notEqual(jntControllerContract.address, 0x0);
+    global.assert.notStrictEqual(jntControllerContract.address, '0x0000000000000000000000000000000000000000');
 
     let isPaused = await jntPayableServiceERC20Contract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed jntPayableService contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed jntPayableService contract must be paused');
 
     let controllerAddress = await jntPayableServiceERC20Contract.getJntController.call();
-    global.assert.equal(controllerAddress, 0x0, 'Just deployed jntPayableService contract should have noninitialized jntController address');
+    global.assert.strictEqual(controllerAddress, '0x0000000000000000000000000000000000000000', 'Just deployed jntPayableService contract should have noninitialized jntController address');
 
     await submitTxAndWaitConfirmation(jntPayableServiceERC20Contract.setJntController.sendTransaction,
       [jntControllerContract.address, { from: manager03 }]);
     controllerAddress = await jntPayableServiceERC20Contract.getJntController.call();
-    global.assert.equal(controllerAddress, jntControllerContract.address, 'Expected that jntController is set');
+    global.assert.strictEqual(controllerAddress, jntControllerContract.address, 'Expected that jntController is set');
 
     let beneficiaryAddress = await jntPayableServiceERC20Contract.getJntBeneficiary.call();
-    global.assert.equal(beneficiaryAddress, 0x0, 'Just deployed jntPayableService contract should have noninitialized jntBeneficiary address');
+    global.assert.strictEqual(beneficiaryAddress, '0x0000000000000000000000000000000000000000', 'Just deployed jntPayableService contract should have noninitialized jntBeneficiary address');
 
     await submitTxAndWaitConfirmation(jntPayableServiceERC20Contract.setJntBeneficiary.sendTransaction,
       [beneficiary, { from: manager04 }]);
     beneficiaryAddress = await jntPayableServiceERC20Contract.getJntBeneficiary.call();
-    global.assert.equal(beneficiaryAddress, beneficiary, 'Expected that jntBeneficiary is set');
+    global.assert.strictEqual(beneficiaryAddress, beneficiary, 'Expected that jntBeneficiary is set');
 
     let jntPriceTransfer = await jntPayableServiceERC20Contract.getJntPriceForTransfer.call();
     let jntPriceTransferFrom = await jntPayableServiceERC20Contract.getJntPriceForTransferFrom.call();
     let jntPriceApprove = await jntPayableServiceERC20Contract.getJntPriceForApprove.call();
-    global.assert.equal(jntPriceTransfer.toNumber() === 0 &&
+    global.assert.strictEqual(jntPriceTransfer.toNumber() === 0 &&
       jntPriceTransferFrom.toNumber() === 0 && jntPriceApprove.toNumber() === 0, true, 'Expected that jnt prices is noninitialized');
 
     await submitTxAndWaitConfirmation(jntPayableServiceERC20Contract.setJntPrice.sendTransaction,
@@ -83,25 +83,25 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
     jntPriceTransfer = await jntPayableServiceERC20Contract.getJntPriceForTransfer.call();
     jntPriceTransferFrom = await jntPayableServiceERC20Contract.getJntPriceForTransferFrom.call();
     jntPriceApprove = await jntPayableServiceERC20Contract.getJntPriceForApprove.call();
-    global.assert.equal(jntPriceTransfer.toNumber() === 100 * (10 ** 18) &&
+    global.assert.strictEqual(jntPriceTransfer.toNumber() === 100 * (10 ** 18) &&
       jntPriceTransferFrom.toNumber() === 110 * (10 ** 18) &&
       jntPriceApprove.toNumber() === 120 * (10 ** 18), true, 'Expected that jnt prices is initialized');
 
     await PausableRoutines.unpauseContract(jntPayableServiceERC20Contract.address, manager02);
     isPaused = await jntPayableServiceERC20Contract.getPaused.call();
-    global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
     await PausableRoutines.pauseContract(jntPayableServiceERC20Contract.address, manager01);
     isPaused = await jntPayableServiceERC20Contract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, true, 'Expected that contract is unpaused');
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
     global.console.log(`\tjntPayableServiceERC20Contract: ${jntPayableServiceERC20Contract.address}`);
-    global.assert.notEqual(jntPayableServiceERC20Contract.address, 0x0);
+    global.assert.notStrictEqual(jntPayableServiceERC20Contract.address, '0x0000000000000000000000000000000000000000');
 
     let isPaused = await jntPayableServiceERC20Contract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed pausable contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed pausable contract must be paused');
 
     await UtilsTestRoutines.checkContractThrows(jntPayableServiceERC20Contract.setJntPrice.sendTransaction,
                                                 [100 * (10 ** 18), 110 * (10 ** 18), 120 * (10 ** 18), { from: manager01 }],
@@ -113,7 +113,7 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
       [beneficiary, { from: manager04 }]);
     await PausableRoutines.unpauseContract(jntPayableServiceERC20Contract.address, manager02);
     isPaused = await jntPayableServiceERC20Contract.getPaused.call();
-    global.assert.equal(isPaused, false, 'Expected that contract is unpaused');
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
     await UtilsTestRoutines.checkContractThrows(jntPayableServiceERC20Contract.setJntPrice.sendTransaction,
                                                 [100 * (10 ** 18), 110 * (10 ** 18), 120 * (10 ** 18), { from: manager05 }],
@@ -122,7 +122,7 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
 
   global.it('should test that functions fire events', async () => {
     const isPaused = await jntPayableServiceERC20Contract.getPaused.call();
-    global.assert.equal(isPaused, true, 'Just deployed jntPayableServiceERC20 contract must be paused');
+    global.assert.strictEqual(isPaused, true, 'Just deployed jntPayableServiceERC20 contract must be paused');
 
     let blockNumber = global.web3.eth.blockNumber;
     await submitTxAndWaitConfirmation(jntPayableServiceERC20Contract.setJntPrice.sendTransaction,
@@ -134,7 +134,7 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
                                                                toBlock:   blockNumber + 1,
                                                                address:   manager05,
                                                              });
-    global.assert.equal(pastEvents.length, 1, 'The JNTPriceTransferChanged event must be raised');
+    global.assert.strictEqual(pastEvents.length, 1, 'The JNTPriceTransferChanged event must be raised');
 
 
     blockNumber = global.web3.eth.blockNumber;
@@ -147,7 +147,7 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
                                                          toBlock:   blockNumber + 1,
                                                          address:   manager05,
                                                        });
-    global.assert.equal(pastEvents.length, 1, 'The JNTPriceApproveChanged event must be raised');
+    global.assert.strictEqual(pastEvents.length, 1, 'The JNTPriceApproveChanged event must be raised');
 
 
     blockNumber = global.web3.eth.blockNumber;
@@ -160,6 +160,6 @@ global.contract('JNTPayableServiceERC20', (accounts) => {
                                                          toBlock:   blockNumber + 1,
                                                          address:   manager05,
                                                        });
-    global.assert.equal(pastEvents.length, 1, 'The JNTPriceTransferFromChanged event must be raised');
+    global.assert.strictEqual(pastEvents.length, 1, 'The JNTPriceTransferFromChanged event must be raised');
   });
 });

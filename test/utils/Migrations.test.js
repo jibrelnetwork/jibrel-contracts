@@ -13,20 +13,20 @@ global.contract('Migrations', (accounts) => {
 
   global.it('check Migrations contract', async () => {
     global.console.log(`\tmigrationsContract: ${migrationsContract.address}`);
-    global.assert.equal(migrationsContract.address === 0x0, false);
+    global.assert.notStrictEqual(migrationsContract.address, '0x0000000000000000000000000000000000000000');
 
     const contractOwner = await migrationsContract.getOwner.call();
-    global.assert.equal(contractOwner, owner);
+    global.assert.strictEqual(contractOwner, owner);
 
     let lastCompletedMigration = await migrationsContract.getLastCompletedMigration.call();
-    global.assert.equal(lastCompletedMigration.toNumber(), 0);
+    global.assert.strictEqual(lastCompletedMigration.toNumber(), 0);
 
     await migrationsContract.setCompleted.sendTransaction(1, { from: owner });
     lastCompletedMigration = await migrationsContract.getLastCompletedMigration.call();
-    global.assert.equal(lastCompletedMigration.toNumber(), 1);
+    global.assert.strictEqual(lastCompletedMigration.toNumber(), 1);
 
     await migrationsContract.setCompleted.sendTransaction(2, { from: nonOwner });
     lastCompletedMigration = await migrationsContract.getLastCompletedMigration.call();
-    global.assert.equal(lastCompletedMigration.toNumber(), 1, 'Only owner should be able to change completed migration ');
+    global.assert.strictEqual(lastCompletedMigration.toNumber(), 1, 'Only owner should be able to change completed migration ');
   });
 });

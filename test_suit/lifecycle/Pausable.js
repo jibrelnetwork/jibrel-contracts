@@ -27,7 +27,7 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs, 
 
 
   let isPaused = await PausableRoutines.getPaused(pausableContract.address);
-  global.assert.equal(isPaused, true, 'New deployed contract should be paused');
+  global.assert.strictEqual(isPaused, true, 'New deployed contract should be paused');
 
   await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
                                               [{ from: owner }],
@@ -54,11 +54,11 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs, 
                                                              toBlock:   blockNumber + 1,
                                                              address:   manager02,
                                                            });
-  global.assert.equal(pastEvents.length, 1);
+  global.assert.strictEqual(pastEvents.length, 1);
 
 
   isPaused = await PausableRoutines.getPaused(pausableContract.address);
-  global.assert.equal(isPaused, false, 'Manager should be able to unpause contract');
+  global.assert.strictEqual(isPaused, false, 'Manager should be able to unpause contract');
 
   await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
                                               [{ from: owner }],
@@ -85,11 +85,11 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs, 
                                                        toBlock:   blockNumber + 1,
                                                        address:   manager01,
                                                      });
-  global.assert.equal(pastEvents.length, 1);
+  global.assert.strictEqual(pastEvents.length, 1);
 
 
   isPaused = await PausableRoutines.getPaused(pausableContract.address);
-  global.assert.equal(isPaused, true, 'Manager should be able to pause contract');
+  global.assert.strictEqual(isPaused, true, 'Manager should be able to pause contract');
 };
 
 export const assertWhenContractPaused = async (
@@ -108,7 +108,7 @@ export const assertWhenContractPaused = async (
 
   await PausableRoutines.pauseContract(contractAddress, manager);
   isPaused = await PausableRoutines.getPaused(contractAddress);
-  global.assert.equal(isPaused, true);
+  global.assert.strictEqual(isPaused, true);
 
 
   global.console.log('\tTest that function works when contract is paused');
@@ -137,7 +137,7 @@ export const assertWhenContractNotPaused = async (
 
   await PausableRoutines.unpauseContract(contractAddress, manager);
   isPaused = await PausableRoutines.getPaused(contractAddress);
-  global.assert.equal(isPaused, false);
+  global.assert.strictEqual(isPaused, false);
 
 
   global.console.log('\tTest that function works when contract is unpaused');
