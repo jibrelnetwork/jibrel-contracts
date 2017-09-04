@@ -11,10 +11,10 @@ pragma solidity ^0.4.13;
  * todo think about https://en.wikipedia.org/wiki/ISO_4217
  */
 contract ERC20NamedInterface {
-  function name() constant returns (string);
-  function symbol() constant returns (string);
-  function decimals() constant returns (uint32);
+  function name() external constant returns (string);
+  function symbol() external constant returns (string);
+  function decimals() external constant returns (uint32);
 
-  function getNameHash() constant returns (bytes32);
-  function getSymbolHash() constant returns (bytes32);
+  function getNameHash() external constant returns (bytes32);
+  function getSymbolHash() external constant returns (bytes32);
 }

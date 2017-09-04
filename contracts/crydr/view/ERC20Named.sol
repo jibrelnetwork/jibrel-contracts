@@ -26,15 +26,15 @@ contract ERC20Named is ERC20NamedInterface {
 
   /* Getters */
 
-  function name() constant returns (string) {
+  function name() external constant returns (string) {
     return tokenName;
   }
 
-  function symbol() constant returns (string) {
+  function symbol() external constant returns (string) {
     return tokenSymbol;
   }
 
-  function decimals() constant returns (uint32) {
+  function decimals() external constant returns (uint32) {
     return tokenDecimals;
   }
 
@@ -44,7 +44,7 @@ contract ERC20Named is ERC20NamedInterface {
    * @dev because strings can not be passed between contracts
    * @return Hash of the token`s name
    */
-  function getNameHash() constant returns (bytes32 result){
+  function getNameHash() external constant returns (bytes32 result){
     return sha3(tokenName);
   }
 
@@ -54,7 +54,7 @@ contract ERC20Named is ERC20NamedInterface {
    * @dev because strings can not be passed between contracts
    * @return Hash of the token`s symbol
    */
-  function getSymbolHash() constant returns (bytes32 result){
+  function getSymbolHash() external constant returns (bytes32 result){
     return sha3(tokenSymbol);
   }
 }
