@@ -6,6 +6,9 @@ const CryDRRegistryRoutines       = require('../registry/CryDRRegistry');
 const CryDRRegistry = global.artifacts.require('CryDRRegistry.sol');
 
 
+export const jntPrices = new Map(
+  [['transfer', Math.pow(10, 18)], ['transferFrom', Math.pow(10, 18)], ['approve', Math.pow(10, 18)]]); // eslint-disable-line no-restricted-properties
+
 export const deployCrydrContracts = async (deployer, owner,
                                            crydrStorageContractArtifact,
                                            crydrControllerContractArtifact,
