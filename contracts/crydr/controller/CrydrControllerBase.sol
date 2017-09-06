@@ -33,7 +33,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
    */
   function close() onlyAllowedManager('close_crydr_controller') {
     // todo test it
-    selfdestruct(msg.sender);
+    selfdestruct(owner);
   }
 
 
