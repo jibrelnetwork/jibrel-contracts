@@ -37,4 +37,14 @@ contract CrydrStorageBaseInterface {
   function increaseAllowance(address _owner, address _spender, uint _value);
   function decreaseAllowance(address _owner, address _spender, uint _value);
   function getAllowance(address _owner, address _spender) constant returns (uint);
+
+
+  /* Low-level change of blocks and getters */
+
+  function blockAccount(address _account);
+  function unlockAccount(address _account);
+  function getBlockAccount(address _account) constant returns (uint);
+  function blockFunds(address _account, uint _value);
+  function unlockFunds(address _account, uint _value);
+  function getBlockFunds(address _account) constant returns (uint);
 }
