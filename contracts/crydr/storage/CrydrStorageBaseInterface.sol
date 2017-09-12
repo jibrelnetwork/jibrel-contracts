@@ -20,21 +20,21 @@ contract CrydrStorageBaseInterface {
 
   /* Configuration */
 
-  function setCrydrController(address _newController) external;
-  function getCrydrController() external constant returns (address);
+  function setCrydrController(address _newController);
+  function getCrydrController() constant returns (address);
 
 
   /* Low-level change of balance. Implied that totalSupply kept in sync. */
 
-  function increaseBalance(address _account, uint _value) external;
-  function decreaseBalance(address _account, uint _value) external;
-  function getBalance(address _account) external constant returns (uint);
-  function getTotalSupply() external constant returns (uint);
+  function increaseBalance(address _account, uint _value);
+  function decreaseBalance(address _account, uint _value);
+  function getBalance(address _account) constant returns (uint);
+  function getTotalSupply() constant returns (uint);
 
 
   /* Low-level change of allowance */
 
-  function increaseAllowance(address _owner, address _spender, uint _value) external;
-  function decreaseAllowance(address _owner, address _spender, uint _value) external;
-  function getAllowance(address _owner, address _spender) external constant returns (uint);
+  function increaseAllowance(address _owner, address _spender, uint _value);
+  function decreaseAllowance(address _owner, address _spender, uint _value);
+  function getAllowance(address _owner, address _spender) constant returns (uint);
 }

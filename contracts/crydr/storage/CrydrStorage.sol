@@ -35,7 +35,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
 
   function setCrydrController(
     address _crydrController
-  ) external
+  )
     whenContractPaused
     onlyValidCrydrControllerAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
@@ -47,7 +47,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     CrydrControllerChangedEvent(_crydrController);
   }
 
-  function getCrydrController() external constant returns (address) {
+  function getCrydrController() constant returns (address) {
     return crydrController;
   }
 
@@ -56,7 +56,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   function increaseBalance(
     address _account,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
@@ -71,7 +71,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   function decreaseBalance(
     address _account,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
@@ -83,13 +83,13 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     AccountBalanceDecreasedEvent(_account, _value);
   }
 
-  function getBalance(address _account) external constant returns (uint) {
+  function getBalance(address _account) constant returns (uint) {
     require(_account != address(0x0));
 
     return balances[_account];
   }
 
-  function getTotalSupply() external constant returns (uint) {
+  function getTotalSupply() constant returns (uint) {
     return totalSupply;
   }
 
@@ -99,7 +99,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _owner,
     address _spender,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
@@ -116,7 +116,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _owner,
     address _spender,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
@@ -132,7 +132,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   function getAllowance(
     address _owner,
     address _spender
-  ) external
+  )
     constant
     returns (uint)
   {
@@ -152,7 +152,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _msgsender,
     address _to,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
@@ -171,7 +171,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _from,
     address _to,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
@@ -191,7 +191,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     address _msgsender,
     address _spender,
     uint _value
-  ) external
+  )
     whenContractNotPaused
     onlyCrydrController
   {
