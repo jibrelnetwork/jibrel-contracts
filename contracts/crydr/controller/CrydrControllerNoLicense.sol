@@ -8,12 +8,14 @@ import "../storage/CrydrStorageBaseInterface.sol";
 import "../storage/CrydrStorageERC20Interface.sol";
 import "../view/CrydrViewERC20LoggableInterface.sol";
 import "./CrydrControllerBase.sol";
+import "./CrydrControllerBlockable.sol";
 import "./CrydrControllerMintable.sol";
 import "./CrydrControllerERC20Interface.sol";
 import "./CrydrControllerERC20Validatable.sol";
 
 
 contract CrydrControllerNoLicense is CrydrControllerBase,
+                                     CrydrControllerBlockable,
                                      CrydrControllerMintable,
                                      CrydrControllerERC20Interface,
                                      CrydrERC20ValidatableInterface,

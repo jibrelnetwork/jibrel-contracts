@@ -27,6 +27,8 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
   mapping (address => uint) balances;
   uint totalSupply;
   mapping (address => mapping (address => uint)) allowed;
+  mapping (address => uint) blockedAccounts;
+  mapping (address => uint) blockedFunds;
 
 
   /* CrydrStorageBaseInterface */
@@ -143,6 +145,73 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     return allowed[_owner][_spender];
   }
 
+  /* Low-level change of blocks and getters */
+
+  function blockAccount(
+    address _account
+  )
+    whenContractNotPaused
+    onlyCrydrController
+  {
+    require(_account != address(0x0));
+
+    blockedAccounts[_account] = blockedAccounts[_account].add(1);
+  }
+
+  function unlockAccount(
+    address _account
+  )
+    whenContractNotPaused
+    onlyCrydrController
+  {
+    require(_account != address(0x0));
+
+    blockedAccounts[_account] = blockedAccounts[_account].sub(1);
+  }
+
+  function getBlockAccount(
+    address _account
+  )
+    constant
+    returns (uint)
+  {
+    require(_account != address(0x0));
+
+    return blockedAccounts[_account];
+  }
+
+  function blockFunds(
+    address _account,
+    uint _value
+  )
+    whenContractNotPaused
+    onlyCrydrController
+  {
+    blockedFunds[_account] = blockedFunds[_account].add(_value);
+  }
+
+  function unlockFunds(
+    address _account,
+    uint _value
+  )
+    whenContractNotPaused
+    onlyCrydrController
+  {
+    require(_account != address(0x0));
+
+    blockedFunds[_account] = blockedFunds[_account].sub(_value);
+  }
+
+  function getBlockFunds(
+    address _account
+  )
+    constant
+    returns (uint)
+  {
+    require(_account != address(0x0));
+
+    return blockedFunds[_account];
+  }
 
   /* CrydrStorageERC20Interface */
 
@@ -160,6 +229,8 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     require(_to != address(0x0));
     require(_msgsender != _to);
     require(_value > 0);
+    require(getBlockAccount(_msgsender) == 0);
+    require(balances[_msgsender].sub(_value) >= blockedFunds[_msgsender]);
 
     balances[_msgsender] = balances[_msgsender].sub(_value);
     balances[_to] = balances[_to].add(_value);
@@ -180,6 +251,8 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     require(_to != address(0x0));
     require(_from != _to);
     require(_value > 0);
+    require(getBlockAccount(_from) == 0);
+    require(balances[_from].sub(_value) >= blockedFunds[_from]);
 
     allowed[_from][_msgsender] = allowed[_from][_msgsender].sub(_value);
     balances[_from] = balances[_from].sub(_value);
