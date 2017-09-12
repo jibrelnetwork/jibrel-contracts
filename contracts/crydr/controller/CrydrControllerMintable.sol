@@ -17,7 +17,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
 
   function mint(
     address _account, uint _value
-  ) external
+  )
     onlyValidMintingAddress(_account)
     onlyAllowedManager('mint_crydr')
   {
@@ -28,7 +28,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
 
   function burn(
     address _account, uint _value
-  ) external
+  )
     onlyValidMintingAddress(_account)
     onlyAllowedManager('burn_crydr')
   {
