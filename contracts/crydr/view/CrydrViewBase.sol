@@ -27,7 +27,7 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
 
   function setCrydrController(
     address _crydrController
-  )
+  ) external
     onlyValidCrydrControllerAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
     whenContractPaused
@@ -38,16 +38,16 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable {
     CrydrControllerChangedEvent(_crydrController);
   }
 
-  function getCrydrController() constant returns (address controllerAddress) {
+  function getCrydrController() external constant returns (address controllerAddress) {
     return address(crydrController);
   }
 
 
-  function getCrydrViewStandardName() constant returns (string) {
+  function getCrydrViewStandardName() external constant returns (string) {
     return crydrViewStandardName;
   }
 
-  function getCrydrViewStandardNameHash() constant returns (bytes32) {
+  function getCrydrViewStandardNameHash() external constant returns (bytes32) {
     return sha3(crydrViewStandardName);
   }
 

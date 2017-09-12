@@ -26,36 +26,36 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* ERC20Interface */
 
-  function transfer(address _to, uint _value) whenContractNotPaused returns (bool success) {
+  function transfer(address _to, uint _value) external whenContractNotPaused returns (bool success) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).transfer(msg.sender, _to, _value);
     return true;
   }
 
-  function totalSupply() constant returns (uint) {
+  function totalSupply() external constant returns (uint) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrControllerERC20Interface(address(crydrController)).getTotalSupply();
   }
 
-  function balanceOf(address _owner) constant returns (uint balance) {
+  function balanceOf(address _owner) external constant returns (uint balance) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrControllerERC20Interface(address(crydrController)).getBalance(_owner);
   }
 
 
-  function approve(address _spender, uint _value) whenContractNotPaused returns (bool success) {
+  function approve(address _spender, uint _value) external whenContractNotPaused returns (bool success) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).approve(msg.sender, _spender, _value);
     return true;
   }
 
-  function transferFrom(address _from, address _to, uint _value) whenContractNotPaused returns (bool success) {
+  function transferFrom(address _from, address _to, uint _value) external whenContractNotPaused returns (bool success) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).transferFrom(msg.sender, _from, _to, _value);
     return true;
   }
 
-  function allowance(address _owner, address _spender) constant returns (uint remaining) {
+  function allowance(address _owner, address _spender) external constant returns (uint remaining) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrControllerERC20Interface(address(crydrController)).getAllowance(_owner, _spender);
   }
@@ -65,11 +65,11 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* Actions */
 
-  function emitTransferEvent(address _from, address _to, uint _value) whenContractNotPaused onlyCrydrController {
+  function emitTransferEvent(address _from, address _to, uint _value) external whenContractNotPaused onlyCrydrController {
     Transfer(_from, _to, _value);
   }
 
-  function emitApprovalEvent(address _owner, address _spender, uint _value) whenContractNotPaused onlyCrydrController {
+  function emitApprovalEvent(address _owner, address _spender, uint _value) external whenContractNotPaused onlyCrydrController {
     Approval(_owner, _spender, _value);
   }
 }
