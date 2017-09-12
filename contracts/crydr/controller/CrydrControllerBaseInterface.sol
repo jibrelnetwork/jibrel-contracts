@@ -20,13 +20,13 @@ contract CrydrControllerBaseInterface {
 
   // todo add name and symbol, check views and storage during unpause
 
-  function setCrydrStorage(address _newStorage) external;
-  function getCrydrStorage() external constant returns (address);
+  function setCrydrStorage(address _newStorage);
+  function getCrydrStorage() constant returns (address);
 
-  function setCrydrView(string _viewApiStandardName, address _newCrydrView) external;
-  function removeCrydrView(string _viewApiStandardName) external;
-  function getCrydrView(string _viewApiStandard) external constant returns (address);
+  function setCrydrView(string _viewApiStandardName, address _newCrydrView);
+  function removeCrydrView(string _viewApiStandardName);
+  function getCrydrView(string _viewApiStandard) constant returns (address);
 
-  function getCrydrViewsNumber() external constant returns (uint);
-  function getCrydrViewByNumber(uint _viewId) external constant returns (address);
+  function getCrydrViewsNumber() constant returns (uint);
+  function getCrydrViewByNumber(uint _viewId) constant returns (address);
 }
