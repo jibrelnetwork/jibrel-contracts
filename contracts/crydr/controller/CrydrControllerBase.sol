@@ -132,7 +132,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable {
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
+  function unpause() external
     onlyValidCrydrStorageAddress(crydrStorage)
   {
     require(crydrViewsAddressesList.length > 0);

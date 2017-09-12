@@ -23,7 +23,7 @@ contract JNTController is CrydrControllerBase,
   /* CrydrControllerERC20Interface */
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint _value) external onlyCrydrView whenContractNotPaused {
+  function transfer(address _msgsender, address _to, uint _value) onlyCrydrView whenContractNotPaused {
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_msgsender, _to, _value);
 
     for (uint i = 0; i < crydrViewsAddressesList.length; i += 1) {
@@ -32,17 +32,17 @@ contract JNTController is CrydrControllerBase,
     }
   }
 
-  function getTotalSupply() external constant returns (uint) {
+  function getTotalSupply() constant returns (uint) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrStorageBaseInterface(address(crydrStorage)).getTotalSupply();
   }
 
-  function getBalance(address _owner) external constant returns (uint balance) {
+  function getBalance(address _owner) constant returns (uint balance) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrStorageBaseInterface(address(crydrStorage)).getBalance(_owner);
   }
 
-  function approve(address _msgsender, address _spender, uint _value) external onlyCrydrView whenContractNotPaused {
+  function approve(address _msgsender, address _spender, uint _value) onlyCrydrView whenContractNotPaused {
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     require(crydrStorage.getAllowance(_msgsender, _spender) >= 0);
 
@@ -55,7 +55,7 @@ contract JNTController is CrydrControllerBase,
     }
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value) external onlyCrydrView whenContractNotPaused {
+  function transferFrom(address _msgsender, address _from, address _to, uint _value) onlyCrydrView whenContractNotPaused {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrStorageERC20Interface(address(crydrStorage)).transferFrom(_msgsender, _from, _to, _value);
 
@@ -65,7 +65,7 @@ contract JNTController is CrydrControllerBase,
     }
   }
 
-  function getAllowance(address _owner, address _spender) external constant returns (uint remaining) {
+  function getAllowance(address _owner, address _spender) constant returns (uint remaining) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrStorageBaseInterface(address(crydrStorage)).getAllowance(_owner, _spender);
   }
