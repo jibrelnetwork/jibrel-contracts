@@ -19,6 +19,6 @@ contract CrydrControllerERC20ValidatableInterface is CrydrERC20ValidatableInterf
 
   /* Configuration */
 
-  function setInvestorsRegistry(address _investorsRegistry) external;
-  function getInvestorsRegistry() external constant returns (address);
+  function setInvestorsRegistry(address _investorsRegistry);
+  function getInvestorsRegistry() constant returns (address);
 }
