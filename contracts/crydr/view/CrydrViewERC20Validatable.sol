@@ -24,34 +24,34 @@ contract CrydrViewERC20Validatable is CrydrViewBase,
 
   /* CrydrERC20ValidatableInterface */
 
-  function isReceivingAllowed(address _account, uint _value) external constant returns (bool) {
+  function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
     var _controller = CrydrERC20ValidatableInterface(address(crydrController));
     return _controller.isReceivingAllowed(_account, _value);
   }
 
-  function isSpendingAllowed(address _account, uint _value) external constant returns (bool) {
+  function isSpendingAllowed(address _account, uint _value) constant returns (bool) {
     var _controller = CrydrERC20ValidatableInterface(address(crydrController));
     return _controller.isSpendingAllowed(_account, _value);
   }
 
 
-  function isTransferAllowed(address _from, address _to, uint _value) external constant returns (bool) {
+  function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool) {
     var _controller = CrydrERC20ValidatableInterface(address(crydrController));
     return _controller.isTransferAllowed(_from, _to, _value);
   }
 
 
-  function isApproveAllowed(address _from, address _spender, uint _value) external constant returns (bool) {
+  function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool) {
     var _controller = CrydrERC20ValidatableInterface(address(crydrController));
     return _controller.isApproveAllowed(_from, _spender, _value);
   }
 
-  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) external constant returns (bool) {
+  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool) {
     var _controller = CrydrERC20ValidatableInterface(address(crydrController));
     return _controller.isApprovedSpendingAllowed(_from, _spender, _value);
   }
 
-  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) external constant returns (bool) {
+  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool) {
     var _controller = CrydrERC20ValidatableInterface(address(crydrController));
     return _controller.isTransferFromAllowed(_spender, _from, _to, _value);
   }

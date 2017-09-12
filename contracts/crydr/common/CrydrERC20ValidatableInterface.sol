@@ -15,12 +15,12 @@ contract CrydrERC20ValidatableInterface {
    * If _value == 0, methods do not take this parameter into account at all
   */
 
-  function isReceivingAllowed(address _account, uint _value) external constant returns (bool);
-  function isSpendingAllowed(address _account, uint _value) external constant returns (bool);
+  function isReceivingAllowed(address _account, uint _value) constant returns (bool);
+  function isSpendingAllowed(address _account, uint _value) constant returns (bool);
 
-  function isTransferAllowed(address _from, address _to, uint _value) external constant returns (bool);
+  function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool);
 
-  function isApproveAllowed(address _from, address _spender, uint _value) external constant returns (bool);
-  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) external constant returns (bool);
-  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) external constant returns (bool);
+  function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool);
+  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool);
+  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool);
 }
