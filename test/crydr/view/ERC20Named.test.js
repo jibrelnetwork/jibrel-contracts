@@ -1,4 +1,6 @@
 /* eslint-disable no-multi-spaces */
+const CrydrViewBaseTestSuite         = require('../../../test_suit/crydr/view/CrydrView');
+
 const ERC20Named       = global.artifacts.require('ERC20Named.sol');
 
 global.contract('ERC20Named', () => {
