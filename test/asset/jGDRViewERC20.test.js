@@ -44,8 +44,6 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     const JNTViewERC20Instance = await JNTViewERC20.deployed();
     const jGDRViewERC20Instance = await jGDRViewERC20.deployed();
 
-    console.log('checkpoint 01')
-
 
     let balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
     let balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
@@ -66,10 +64,8 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
 
 
-    console.log('checkpoint 03')
     await jGDRViewERC20Instance.transfer.sendTransaction(investor02, 10 * (10 ** 18),
                                                          { from: investor01, gas: 1000000 });
-    console.log('checkpoint 05')
 
     balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
@@ -89,8 +85,6 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
     global.assert.strictEqual(balanceOfInvestor03.toNumber(), 0);
     global.assert.strictEqual(balanceOfInvestor04.toNumber(), 0);
 
-    console.log('checkpoint 06')
-
     let isCaught = false;
     try {
       await jGDRViewERC20Instance.transfer.sendTransaction(investor04, 5 * (10 ** 18), { from: investor02 });
@@ -99,8 +93,6 @@ global.contract('jGDRViewERC20Instance', (accounts) => {
       isCaught = true;
     }
     global.assert.strictEqual(isCaught, true);
-
-    console.log('checkpoint 07')
 
     balanceOfInvestor01 = await JNTViewERC20Instance.balanceOf.call(investor01);
     balanceOfInvestor02 = await JNTViewERC20Instance.balanceOf.call(investor02);
