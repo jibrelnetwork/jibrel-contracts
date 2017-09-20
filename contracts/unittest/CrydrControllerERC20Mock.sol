@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.15;
 
 
 import "../../contracts/crydr/controller/CrydrControllerERC20Interface.sol";
