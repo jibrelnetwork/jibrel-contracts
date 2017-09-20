@@ -61,10 +61,10 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
   )
     onlyCrydrView
     whenContractNotPaused
-    onlyGreaterThanZero(_value)
   {
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    require(crydrStorage.getAllowance(_msgsender, _spender) >= 0);
+    var allowance = crydrStorage.getAllowance(_msgsender, _spender);
+    require((allowance > 0 && _value == 0) || (allowance == 0 && _value > 0));
 
     chargeJNT(_msgsender, jntBeneficiary, jntPriceApprove);
 
