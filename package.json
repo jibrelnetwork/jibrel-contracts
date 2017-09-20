@@ -9,14 +9,15 @@
     "coverage": "scripts/coverage.sh",
     "coveralls": "scripts/coveralls.sh",
     "lint": "npm run lint:js",
-    "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts",
+    "lint:eslint": "node ./node_modules/eslint/bin/eslint --ignore-path .gitignore --ignore-pattern internals/scripts",
     "lint:js": "npm run lint:eslint -- . ",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
   },
-  "pre-commit": "lint:staged",
+  "precommit": "lint:staged",
   "repository": {
     "type": "git",
     "url": "https://github.com/jibrelnetwork/jibrel-contracts.git"
@@ -49,6 +50,7 @@
     "ethereumjs-testrpc": "^4.0.1",
     "lint-staged": "^3.2.1",
     "mocha-lcov-reporter": "^1.3.0",
+    "pre-commit": "^1.2.2",
     "solidity-coverage": "^0.2.0",
     "truffle": "3.4.9",
     "zeppelin-solidity": "^1.2.0"
