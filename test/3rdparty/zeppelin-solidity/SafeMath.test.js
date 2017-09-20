@@ -26,7 +26,7 @@ global.contract('SafeMath', (accounts) => {
     let add = await safeMath.add(a, b);
     let result = await safeMath.result();
 
-    global.assert.equal(result.toNumber(), a+b);
+    global.assert.strictEqual(result.toNumber(), a+b);
   });
 
   global.it("subtracts correctly", async () => {
@@ -35,7 +35,7 @@ global.contract('SafeMath', (accounts) => {
     let subtract = await safeMath.subtract(a, b);
     let result = await safeMath.result();
 
-    global.assert.equal(result, a-b);
+    global.assert.strictEqual(result.toNumber(), a-b);
   });
 
   global.it("should throw an error if subtraction result would be negative", async () => {
