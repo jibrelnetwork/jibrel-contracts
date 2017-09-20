@@ -29,7 +29,7 @@ else
   pk08=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
   pk09=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
   pk10=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
-  ./node_modules/ethereumjs-testrpc-sc/bin/testrpc --gasLimit 0xfffffffffff --port 8570 \
+  ./node_modules/ethereumjs-testrpc-sc/build/cli.node.js --gasLimit 0xfffffffffff --port 8570 \
     --account="0x${pk01},1000000000000000000000000"  \
     --account="0x${pk02},1000000000000000000000000"  \
     --account="0x${pk03},1000000000000000000000000"  \
