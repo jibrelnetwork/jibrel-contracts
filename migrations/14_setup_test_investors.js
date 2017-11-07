@@ -23,7 +23,7 @@ const jGDRController   = global.artifacts.require('jGDRController.sol');
 
 const migrationRoutine = async (manager, jntHolders, tokensHolder, licensedInvestors) => {
   const licensesNames   = ['gdr_license', 'treasury_bill_license'];
-  const expireTimestamp = 1510000000;
+  const expireTimestamp = 1514678400;
   const amountToMint    = 1000 * (10 ** 18);
 
   const investorRegistryInstance = await InvestorRegistry.deployed();
