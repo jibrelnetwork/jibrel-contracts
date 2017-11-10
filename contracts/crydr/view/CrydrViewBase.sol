@@ -7,9 +7,10 @@ import '../../lifecycle/Pausable.sol';
 import '../controller/CrydrControllerBaseInterface.sol';
 import './CrydrViewBaseInterface.sol';
 import '../common/CrydrModifiers.sol';
+import '../common/CrydrBytecodeExecutable.sol';
 
 
-contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers {
+contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, CrydrBytecodeExecutable {
 
   /* Storage */
 

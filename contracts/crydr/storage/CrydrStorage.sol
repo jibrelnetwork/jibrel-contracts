@@ -8,13 +8,18 @@ import "../../lifecycle/Pausable.sol";
 import "./CrydrStorageBaseInterface.sol";
 import "./CrydrStorageERC20Interface.sol";
 import "../common/CrydrModifiers.sol";
+import "../common/CrydrBytecodeExecutable.sol";
 
 
 /**
  * @title CrydrStorage
  * @dev Implementation of a contract that manages data of an CryDR
  */
-contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, Pausable, CrydrModifiers {
+contract CrydrStorage is CrydrStorageBaseInterface,
+                         CrydrStorageERC20Interface,
+                         Pausable,
+                         CrydrModifiers,
+                         CrydrBytecodeExecutable {
 
   /* Libraries */
   // todo check gas costs without lib
