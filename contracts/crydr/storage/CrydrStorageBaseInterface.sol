@@ -16,6 +16,10 @@ contract CrydrStorageBaseInterface {
   event AccountBalanceDecreasedEvent(address indexed account, uint value);
   event AccountAllowanceIncreasedEvent(address indexed owner, address indexed spender, uint value);
   event AccountAllowanceDecreasedEvent(address indexed owner, address indexed spender, uint value);
+  event AccountBlockEvent(address indexed account);
+  event AccountUnlockEvent(address indexed account);
+  event AccountBlockFundsEvent(address indexed account, uint value);
+  event AccountUnlockFundsEvent(address indexed account, uint value);
 
 
   /* Configuration */

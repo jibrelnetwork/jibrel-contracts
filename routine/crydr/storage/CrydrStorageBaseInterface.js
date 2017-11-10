@@ -94,6 +94,72 @@ export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   global.console.log('\tBalance successfully increased');
 };
 
+export const blockAccount = async (crydrStorageAddress, crydrControllerAddress,
+                                   ownerAddress, accountAddress) => {
+  global.console.log('\tBlock account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\taccountAddress - ${accountAddress}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .blockAccount
+      .sendTransaction,
+    [ownerAddress, accountAddress, { from: crydrControllerAddress }]);
+  global.console.log('\tAccount successfully blocked');
+};
+
+export const unlockAccount = async (crydrStorageAddress, crydrControllerAddress,
+                                    ownerAddress, accountAddress) => {
+  global.console.log('\tUnlock account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\taccountAddress - ${accountAddress}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .unlockAccount
+      .sendTransaction,
+    [ownerAddress, accountAddress, { from: crydrControllerAddress }]);
+  global.console.log('\tAccount successfully unlocked');
+};
+
+export const blockFunds = async (crydrStorageAddress, crydrControllerAddress,
+                                 ownerAddress, accountAddress, valueWei) => {
+  global.console.log('\tBlock funds of account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\taccountAddress - ${accountAddress}`);
+  global.console.log(`\t\tvalueWei - ${valueWei}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .blockFunds
+      .sendTransaction,
+    [ownerAddress, accountAddress, valueWei, { from: crydrControllerAddress }]);
+  global.console.log('\tFunds successfully blocked');
+};
+
+export const unlockFunds = async (crydrStorageAddress, crydrControllerAddress,
+                                 ownerAddress, accountAddress, valueWei) => {
+  global.console.log('\tUnlock funds of account:');
+  global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
+  global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\taccountAddress - ${accountAddress}`);
+  global.console.log(`\t\tvalueWei - ${valueWei}`);
+  await submitTxAndWaitConfirmation(
+    CrydrStorageBaseInterface
+      .at(crydrStorageAddress)
+      .unlockFunds
+      .sendTransaction,
+    [ownerAddress, accountAddress, valueWei, { from: crydrControllerAddress }]);
+  global.console.log('\tFunds successfully unlocked');
+};
+
 
 /**
  * Events
@@ -135,6 +201,38 @@ export const getAccountAllowanceDecreasedEvents = (contractAddress, eventDataFil
   const eventObj = CrydrStorageBaseInterface
     .at(contractAddress)
     .AccountAllowanceDecreasedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountBlockEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountBlockEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountUnlockEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountUnlockEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountBlockFundsEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountBlockFundsEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getAccountUnlockFundsEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrStorageBaseInterface
+    .at(contractAddress)
+    .AccountUnlockFundsEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };

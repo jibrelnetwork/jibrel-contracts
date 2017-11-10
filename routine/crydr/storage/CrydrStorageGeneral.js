@@ -26,7 +26,12 @@ export const configureCrydrStorage = async (crydrStorageAddress, owner, manager,
   const managerPermissions = [
     'set_crydr_controller',
     'pause_contract',
-    'unpause_contract'];
+    'unpause_contract',
+    'block_account',
+    'unlock_account',
+    'block_funds',
+    'unlock_funds',
+  ];
 
   await ManageableRoutines.enableManager(crydrStorageAddress, owner, manager);
   await ManageableRoutines.grantManagerPermissions(crydrStorageAddress, owner, manager, managerPermissions);
