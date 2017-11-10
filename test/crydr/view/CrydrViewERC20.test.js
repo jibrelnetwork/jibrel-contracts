@@ -88,7 +88,7 @@ global.contract('CrydrViewERC20', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.transfer.sendTransaction,
                                                 [investor02, 10 * (10 ** 18), { from: investor01 }],
                                                 'It should not be possible to transfer already paused contract');
-    const transferCounter = await CrydrControllerERC20MockContract.transferCounter.call();
+    let transferCounter = await CrydrControllerERC20MockContract.transferCounter.call();
     global.assert.strictEqual(transferCounter.toNumber(), 0);
 
     await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.approve.sendTransaction,
@@ -100,7 +100,7 @@ global.contract('CrydrViewERC20', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.transferFrom.sendTransaction,
                                                 [investor01, investor02, 10 * (10 ** 18), { from: investor01 }],
                                                 'It should not be possible to transferFrom already paused contract');
-    const transferFromCounter = await CrydrControllerERC20MockContract.transferFromCounter.call();
+    let transferFromCounter = await CrydrControllerERC20MockContract.transferFromCounter.call();
     global.assert.strictEqual(transferFromCounter.toNumber(), 0);
 
     await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.emitTransferEvent.sendTransaction,
@@ -115,6 +115,18 @@ global.contract('CrydrViewERC20', (accounts) => {
     isPaused = await PausableRoutines.getPaused(CrydrViewERC20Contract.address);
     global.assert.strictEqual(isPaused, false, 'contract should be unpaused');
 
+    await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.transfer.sendTransaction,
+                                                [investor02, 10 * (10 ** 18), { from: '0x27c65a2e4ebcaf9b457028ffc771b2d5f7c06f' }],
+                                                'It should not be possible to transfer when a contract receives less data than it was expecting');
+    transferCounter = await CrydrControllerERC20MockContract.transferCounter.call();
+    global.assert.strictEqual(transferCounter.toNumber(), 0);
+
+    await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.transferFrom.sendTransaction,
+                                                [investor01, investor02, 10 * (10 ** 18), { from: '0x27c65a2e4ebcaf9b457028ffc771b2d5f7c06f' }],
+                                                'It should not be possible to transfer when a contract receives less data than it was expecting');
+    transferFromCounter = await CrydrControllerERC20MockContract.transferCounter.call();
+    global.assert.strictEqual(transferFromCounter.toNumber(), 0);
+
     await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.emitTransferEvent.sendTransaction,
                                                 [investor01, investor02, 10 * (10 ** 18), { from: investor01 }],
                                                 'Only CrydrController can emit transfer event');
@@ -122,7 +134,6 @@ global.contract('CrydrViewERC20', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(CrydrViewERC20Contract.emitApprovalEvent.sendTransaction,
                                                 [investor01, investor02, 10 * (10 ** 18), { from: investor01 }],
                                                 'Only CrydrController can emit approval event');
-
   });
 
   global.it('should test that functions fire events', async () => {
@@ -140,7 +151,7 @@ global.contract('CrydrViewERC20', (accounts) => {
     await submitTxAndWaitConfirmation(CrydrViewERC20Contract.transfer.sendTransaction,
       [investor02, 10 * (10 ** 18), { from: investor01 }]);
     let pastEvents = await ERC20InterfaceRoutines.getTransferEvents(CrydrViewERC20Contract.address,
-                                                                    {investor01, investor02, value},
+                                                                    { investor01, investor02, value },
                                                                     {
                                                                       fromBlock: blockNumber + 1,
                                                                       toBlock:   blockNumber + 1,
@@ -152,7 +163,7 @@ global.contract('CrydrViewERC20', (accounts) => {
     await submitTxAndWaitConfirmation(CrydrViewERC20Contract.approve.sendTransaction,
       [investor01, 10 * (10 ** 18), { from: investor01 }]);
     pastEvents = await ERC20InterfaceRoutines.getApprovalEvents(CrydrViewERC20Contract.address,
-                                                                {investor01, investor02, value},
+                                                                { investor01, investor02, value },
                                                                 {
                                                                   fromBlock: blockNumber + 1,
                                                                   toBlock:   blockNumber + 1,
@@ -164,12 +175,12 @@ global.contract('CrydrViewERC20', (accounts) => {
     await submitTxAndWaitConfirmation(CrydrViewERC20Contract.transferFrom.sendTransaction,
       [investor01, investor02, 10 * (10 ** 18), { from: investor01 }]);
     pastEvents = await ERC20InterfaceRoutines.getTransferEvents(CrydrViewERC20Contract.address,
-                                                             {investor01, investor02, value},
-                                                             {
-                                                               fromBlock: blockNumber + 1,
-                                                               toBlock:   blockNumber + 1,
-                                                               address:   investor01,
-                                                             });
+                                                                { investor01, investor02, value },
+                                                                {
+                                                                  fromBlock: blockNumber + 1,
+                                                                  toBlock:   blockNumber + 1,
+                                                                  address:   investor01,
+                                                                });
     global.assert.strictEqual(pastEvents.length, 1);
   });
 });

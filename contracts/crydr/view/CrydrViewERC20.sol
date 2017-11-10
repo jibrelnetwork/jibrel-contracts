@@ -26,7 +26,14 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* ERC20Interface */
 
-  function transfer(address _to, uint _value) external whenContractNotPaused returns (bool success) {
+  function transfer(
+    address _to,
+    uint _value
+  ) external
+    whenContractNotPaused
+    onlyPayloadSize(2 * 32)
+    returns (bool success)
+  {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).transfer(msg.sender, _to, _value);
     return true;
@@ -49,7 +56,15 @@ contract CrydrViewERC20 is CrydrViewBase,
     return true;
   }
 
-  function transferFrom(address _from, address _to, uint _value) external whenContractNotPaused returns (bool success) {
+  function transferFrom(
+    address _from,
+    address _to,
+    uint _value
+  ) external
+    whenContractNotPaused
+    onlyPayloadSize(2 * 32)
+    returns (bool success)
+  {
     // todo check gas consumption, do we need to optimise these type conversions ?
     CrydrControllerERC20Interface(address(crydrController)).transferFrom(msg.sender, _from, _to, _value);
     return true;
@@ -71,5 +86,16 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   function emitApprovalEvent(address _owner, address _spender, uint _value) external whenContractNotPaused onlyCrydrController {
     Approval(_owner, _spender, _value);
+  }
+
+
+  /* Helpers */
+
+  /**
+   * @dev Fix for the ERC20 short address attack.
+   */
+  modifier onlyPayloadSize(uint256 size) {
+    assert(msg.data.length >= size + 4);
+    _;
   }
 }
