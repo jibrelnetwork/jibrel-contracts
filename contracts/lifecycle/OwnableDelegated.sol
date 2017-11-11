@@ -9,7 +9,11 @@ pragma solidity ^0.4.15;
  * functions, this simplifies the implementation of "user permissions".
  */
 contract OwnableDelegated {
+
+  /* Storage */
+
   address owner;
+  address newOwner = address(0x0);
 
 
   /**
@@ -21,7 +25,7 @@ contract OwnableDelegated {
 
 
   /**
-   * @dev Throws if called by any account other than the owner.
+   * @dev Throws if called by any account other than the current owner.
    */
   modifier onlyOwner() {
     require (msg.sender == owner);
@@ -30,14 +34,33 @@ contract OwnableDelegated {
 
 
   /**
-   * @dev Allows the current owner to transfer control of the contract to a newOwner.
-   * @param newOwner The address to transfer ownership to.
+   * @dev Throws if called by any account other than the new owner.
    */
-  function transferOwnership(address newOwner) onlyOwner {
-    if (newOwner != address(0)) {
-      owner = newOwner;
+  modifier onlyNewOwner() {
+    require (msg.sender == newOwner);
+    _;
+  }
+
+
+  /**
+   * @dev Old owner request transfer ownership to the new owner.
+   * @param _newOwner The address to transfer ownership to.
+   */
+  function createOwnershipOffer(address _newOwner) onlyOwner {
+    if (_newOwner != address(0)) {
+      newOwner = _newOwner;
     }
   }
+
+
+  /**
+   * @dev Allows the new owner to accept an ownership offer to contract control.
+   */
+  function acceptOwnershipOffer() onlyNewOwner {
+    owner = newOwner;
+    newOwner = address(0);
+  }
+
 
   /**
    * @dev The getter for "owner" contract variable
