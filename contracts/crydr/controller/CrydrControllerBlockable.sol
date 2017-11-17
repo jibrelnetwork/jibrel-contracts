@@ -19,7 +19,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     address _account
   )
     onlyValidAccountAddress(_account)
-    onlyAllowedManager('block_accounts')
+    onlyAllowedManager('block_account')
   {
     crydrStorage.blockAccount(_account);
   }
@@ -28,7 +28,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     address _account
   )
     onlyValidAccountAddress(_account)
-    onlyAllowedManager('unblock_accounts')
+    onlyAllowedManager('unlock_account')
   {
     crydrStorage.unlockAccount(_account);
   }

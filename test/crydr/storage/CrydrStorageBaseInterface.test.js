@@ -80,7 +80,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     await crydrStorageBaseRoutines.setCrydrController(crydrStorageContract.address, manager, crydrControllerContract01.address);
     crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, crydrControllerContract01.address,
-                        'Manager should be able to configure crydr storage and set controller');
+                              'Manager should be able to configure crydr storage and set controller');
 
     await UtilsTestRoutines.checkContractThrows(crydrStorageContract.setCrydrController.sendTransaction,
                                                 [crydrControllerContract01.address, { from: manager }],
@@ -95,7 +95,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     await crydrStorageBaseRoutines.setCrydrController(crydrStorageContract.address, manager, crydrControllerContract02.address);
     crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, crydrControllerContract02.address,
-                        'Manager should be able to change crydr controller at any time');
+                              'Manager should be able to change crydr controller at any time');
 
     await PausableRoutines.unpauseContract(crydrStorageContract.address, manager);
   });
@@ -122,7 +122,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
     crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, crydrControllerContract01.address,
-                        'Manager should be able to configure crydr storage and set controller');
+                              'Manager should be able to configure crydr storage and set controller');
 
 
     await PausableTestSuite.assertWhenContractPaused(
@@ -133,7 +133,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
     crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, crydrControllerContract02.address,
-                        'Manager should be able to reconfigure crydr storage and set different controller');
+                              'Manager should be able to reconfigure crydr storage and set different controller');
   });
 
   global.it('should test that configuration functions fire events', async () => {
@@ -373,7 +373,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                    investor01, uint256Max.minus(1000));
     investorBalance = await crydrStorageContract.getBalance(investor01);
     global.assert.strictEqual(investorBalance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
     investorAllowance = await crydrStorageContract.getAllowance(investor01, investor02);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
@@ -389,7 +389,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
     investorBalance = await crydrStorageContract.getBalance(investor01);
     global.assert.strictEqual(investorBalance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
     investorAllowance = await crydrStorageContract.getAllowance(investor01, investor02);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
@@ -401,7 +401,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                      investor01, investor02, 1000);
     investorBalance = await crydrStorageContract.getBalance(investor01);
     global.assert.strictEqual(investorBalance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
     investorAllowance = await crydrStorageContract.getAllowance(investor01, investor02);
     global.assert.strictEqual(investorAllowance.toNumber(), 1000);
 
@@ -420,10 +420,10 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                      investor01, investor02, uint256Max.minus(1000));
     investorBalance = await crydrStorageContract.getBalance(investor01);
     global.assert.strictEqual(investorBalance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
     investorAllowance = await crydrStorageContract.getAllowance(investor01, investor02);
     global.assert.strictEqual(investorAllowance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.increaseAllowance.sendTransaction,
                                                 [investor01, investor02, 1, { from: owner }],
@@ -431,9 +431,187 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
     investorBalance = await crydrStorageContract.getBalance(investor01);
     global.assert.strictEqual(investorBalance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
     investorAllowance = await crydrStorageContract.getAllowance(investor01, investor02);
     global.assert.strictEqual(investorAllowance.toNumber(),
-                        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+  });
+
+  /**
+   * Low-level change of blocks
+   */
+
+  global.it('test that blocking/unlocking functions throw if general conditions not met', async () => {
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
+    global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
+
+    let investorBalance = await crydrStorageContract.getBalance(investor01);
+    global.assert.strictEqual(investorBalance.toNumber(), 0);
+
+    await crydrStorageBaseRoutines.increaseBalance(crydrControllerContract01.address, owner,
+                                                   investor01, 1000);
+    investorBalance = await crydrStorageContract.getBalance(investor01);
+    global.assert.strictEqual(investorBalance.toNumber(), 1000);
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.blockAccount.sendTransaction,
+                                                ['0x0', { from: owner }],
+                                                'blockAccount should throw if account address is 0x0');
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.unlockAccount.sendTransaction,
+                                                ['0x0', { from: owner }],
+                                                'unlockAccount should throw if account address is 0x0');
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.blockFunds.sendTransaction,
+                                                ['0x0', 1000, { from: owner }],
+                                                'blockFunds should throw if account address is 0x0');
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.blockFunds.sendTransaction,
+                                                [investor01, 0, { from: owner }],
+                                                'blockFunds should throw if value is 0');
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.unlockFunds.sendTransaction,
+                                                ['0x0', 1000, { from: owner }],
+                                                'unlockFunds should throw if account address is 0x0');
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.unlockFunds.sendTransaction,
+                                                [investor01, 0, { from: owner }],
+                                                'unlockFunds should throw if value is 0');
+  });
+
+  global.it('test that blockFunds/unlockFunds functions throw if integer overflow', async () => {
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
+    global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
+
+    const uint256Max = new BigNumber('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+
+
+    await crydrStorageBaseRoutines.blockFunds(crydrControllerContract01.address, owner,
+                                              investor01, uint256Max);
+    let investorBlockFunds = await crydrStorageContract.getBlockFunds(investor01);
+    global.assert.strictEqual(investorBlockFunds.toNumber(),
+                              0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.blockFunds.sendTransaction,
+                                                [investor01, 1, { from: owner }],
+                                                'blockFunds should throw if integer overflow');
+
+    await crydrStorageBaseRoutines.unlockFunds(crydrControllerContract01.address, owner,
+                                               investor01, uint256Max);
+    investorBlockFunds = await crydrStorageContract.getBlockFunds(investor01);
+    global.assert.strictEqual(investorBlockFunds.toNumber(), 0);
+
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.unlockFunds.sendTransaction,
+                                                [investor01, 1, { from: owner }],
+                                                'blockFunds should throw if integer overflow');
+  });
+
+  global.it('should test that block/unlock functions fire events', async () => {
+    await crydrStorageBaseRoutines.increaseBalance(crydrControllerContract01.address, owner,
+                                                   investor01, 10 * (10 ** 18));
+
+    const controllerAddress = crydrControllerContract01.address;
+
+
+    let blockNumber = global.web3.eth.blockNumber;
+    await crydrStorageBaseRoutines.blockFunds(crydrControllerContract01.address, owner,
+                                              investor01, 10 * (10 ** 18));
+    let pastEvents = await crydrStorageBaseRoutines.getAccountBlockFundsEvents(
+      crydrStorageContract.address,
+      {
+        account: investor01,
+      },
+      {
+        fromBlock: blockNumber + 1,
+        toBlock:   blockNumber + 1,
+        address:   controllerAddress,
+      });
+    global.assert.strictEqual(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await crydrStorageBaseRoutines.unlockFunds(crydrControllerContract01.address, owner,
+                                               investor01, 5 * (10 ** 18));
+    pastEvents = await crydrStorageBaseRoutines.getAccountUnlockFundsEvents(
+      crydrStorageContract.address,
+      {
+        account: investor01,
+      },
+      {
+        fromBlock: blockNumber + 1,
+        toBlock:   blockNumber + 1,
+        address:   controllerAddress,
+      });
+    global.assert.strictEqual(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await crydrStorageBaseRoutines.blockAccount(crydrControllerContract01.address, owner,
+                                                investor01);
+    pastEvents = await crydrStorageBaseRoutines.getAccountBlockEvents(
+      crydrStorageContract.address,
+      {
+        owner: investor01,
+      },
+      {
+        fromBlock: blockNumber + 1,
+        toBlock:   blockNumber + 1,
+        address:   controllerAddress,
+      });
+    global.assert.strictEqual(pastEvents.length, 1);
+
+
+    blockNumber = global.web3.eth.blockNumber;
+    await crydrStorageBaseRoutines.unlockAccount(crydrControllerContract01.address, owner,
+                                                 investor01);
+    pastEvents = await crydrStorageBaseRoutines.getAccountUnlockEvents(
+      crydrStorageContract.address,
+      {
+        owner: investor01,
+      },
+      {
+        fromBlock: blockNumber + 1,
+        toBlock:   blockNumber + 1,
+        address:   controllerAddress,
+      });
+    global.assert.strictEqual(pastEvents.length, 1);
+  });
+
+  global.it('check that block/unlock functions work as expected', async () => {
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
+    global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
+
+    let investor01Balance = await crydrStorageContract.getBalance.call(investor01);
+    global.assert.strictEqual(investor01Balance.toNumber(), 0);
+
+    await crydrStorageBaseRoutines.increaseBalance(crydrControllerContract01.address, owner,
+                                                   investor01, 10 * (10 ** 18));
+
+    investor01Balance = await crydrStorageContract.getBalance.call(investor01);
+    global.assert.strictEqual(investor01Balance.toNumber(), 10 * (10 ** 18));
+
+    await crydrStorageBaseRoutines.blockAccount(crydrControllerContract01.address, owner,
+                                                investor01);
+    let accountBlock = await crydrStorageContract.getBlockAccount.call(investor01);
+    global.assert.strictEqual(accountBlock.toNumber(), 1);
+
+    await crydrStorageBaseRoutines.unlockAccount(crydrControllerContract01.address, owner,
+                                                 investor01);
+    accountBlock = await crydrStorageContract.getBlockAccount.call(investor01);
+    global.assert.strictEqual(accountBlock.toNumber(), 0);
+
+    await crydrStorageBaseRoutines.blockFunds(crydrControllerContract01.address, owner,
+                                              investor01, 10 * (10 ** 18));
+    let blockFunds = await crydrStorageContract.getBlockFunds.call(investor01);
+    global.assert.strictEqual(blockFunds.toNumber(), 10 * (10 ** 18));
+
+    await crydrStorageBaseRoutines.unlockFunds(crydrControllerContract01.address, owner,
+                                               investor01, 5 * (10 ** 18));
+    blockFunds = await crydrStorageContract.getBlockFunds.call(investor01);
+    global.assert.strictEqual(blockFunds.toNumber(), 5 * (10 ** 18));
+
+    await crydrStorageBaseRoutines.unlockFunds(crydrControllerContract01.address, owner,
+                                               investor01, 5 * (10 ** 18));
+    blockFunds = await crydrStorageContract.getBlockFunds.call(investor01);
+    global.assert.strictEqual(blockFunds.toNumber(), 0);
   });
 });

@@ -260,6 +260,39 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     // unpause contract
     await PausableRoutines.unpauseContract(crydrStorageContract.address, manager);
 
+    // block/unlock
+    await crydrStorageBaseRoutines.blockAccount(crydrControllerContract01.address, owner,
+                                                investor01);
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.transfer.sendTransaction,
+                                                [investor01, investor02, 2 * (10 ** 18), { from: owner }],
+                                                'transfer should throw if account is blocked');
+    await crydrStorageERC20Routines.approve(crydrControllerContract01.address, owner,
+                                            investor01, investor02, 2 * (10 ** 18));
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.transferFrom.sendTransaction,
+                                                [
+                                                  investor02,
+                                                  investor01,
+                                                  investor02,
+                                                  2 * (10 ** 18),
+                                                  { from: owner }],
+                                                'transferFrom should throw if account is blocked');
+
+    await crydrStorageBaseRoutines.unlockAccount(crydrControllerContract01.address, owner,
+                                                 investor01);
+
+    await crydrStorageBaseRoutines.blockFunds(crydrControllerContract01.address, owner,
+                                              investor01, 7 * (10 ** 18));
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.transfer.sendTransaction,
+                                                [investor01, investor02, 4 * (10 ** 18), { from: owner }],
+                                                'transfer should throw if funds is blocked');
+    await UtilsTestRoutines.checkContractThrows(crydrControllerContract01.transferFrom.sendTransaction,
+                                                [
+                                                  investor02,
+                                                  investor01,
+                                                  investor02,
+                                                  4 * (10 ** 18),
+                                                  { from: owner }],
+                                                'transferFrom should throw if funds is blocked');
 
     // test that only crydr controller is able to invoke setters
     await UtilsTestRoutines.checkContractThrows(crydrControllerContract02.transfer.sendTransaction,

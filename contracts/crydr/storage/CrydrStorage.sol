@@ -157,6 +157,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     require(_account != address(0x0));
 
     blockedAccounts[_account] = blockedAccounts[_account].add(1);
+    AccountBlockEvent(_account);
   }
 
   function unlockAccount(
@@ -168,6 +169,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     require(_account != address(0x0));
 
     blockedAccounts[_account] = blockedAccounts[_account].sub(1);
+    AccountUnlockEvent(_account);
   }
 
   function getBlockAccount(
@@ -188,7 +190,11 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     whenContractNotPaused
     onlyCrydrController
   {
+    require(_account != address(0x0));
+    require(_value > 0);
+
     blockedFunds[_account] = blockedFunds[_account].add(_value);
+    AccountBlockFundsEvent(_account, _value);
   }
 
   function unlockFunds(
@@ -199,8 +205,10 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     onlyCrydrController
   {
     require(_account != address(0x0));
+    require(_value > 0);
 
     blockedFunds[_account] = blockedFunds[_account].sub(_value);
+    AccountUnlockFundsEvent(_account, _value);
   }
 
   function getBlockFunds(
@@ -231,7 +239,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     require(_msgsender != _to);
     require(_value > 0);
     require(getBlockAccount(_msgsender) == 0);
-    require(balances[_msgsender].sub(_value) >= blockedFunds[_msgsender]);
+    require(balances[_msgsender].sub(_value) >= getBlockFunds(_msgsender));
 
     balances[_msgsender] = balances[_msgsender].sub(_value);
     balances[_to] = balances[_to].add(_value);
@@ -253,7 +261,7 @@ contract CrydrStorage is CrydrStorageBaseInterface, CrydrStorageERC20Interface, 
     require(_from != _to);
     require(_value > 0);
     require(getBlockAccount(_from) == 0);
-    require(balances[_from].sub(_value) >= blockedFunds[_from]);
+    require(balances[_from].sub(_value) >= getBlockFunds(_msgsender));
 
     allowed[_from][_msgsender] = allowed[_from][_msgsender].sub(_value);
     balances[_from] = balances[_from].sub(_value);
