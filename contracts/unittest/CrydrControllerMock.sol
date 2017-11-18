@@ -5,19 +5,24 @@ pragma solidity ^0.4.15;
 
 import "../crydr/storage/CrydrStorageBaseInterface.sol";
 import "../crydr/storage/CrydrStorageERC20Interface.sol";
+import "../crydr/common/CrydrIdentifiable.sol";
 
 
 /**
  * @title CrydrControllerMock
  * @dev This contract used only to test functions of CrydrStorage contract
  */
-contract CrydrControllerMock {
+contract CrydrControllerMock is CrydrIdentifiable {
 
   /* Storage */
 
   address crydrStorage;
 
-  function CrydrControllerMock(address _crydrStorage)
+  function CrydrControllerMock(
+    address _crydrStorage,
+    uint _uniqueId
+  )
+    CrydrIdentifiable(_uniqueId)
   {
     require(_crydrStorage != address(0x0));
 

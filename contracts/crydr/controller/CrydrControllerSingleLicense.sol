@@ -28,7 +28,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
 
   /* Constructor */
 
-  function CrydrControllerSingleLicense(string _singleLicenseName)
+  function CrydrControllerSingleLicense(string _singleLicenseName, uint _uniqueId) CrydrControllerBase(_uniqueId)
   {
     require(bytes(_singleLicenseName).length > 0);
 

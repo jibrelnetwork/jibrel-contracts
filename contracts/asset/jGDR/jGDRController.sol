@@ -7,5 +7,5 @@ import "../../crydr/controller/CrydrControllerSingleLicense.sol";
 
 
 contract jGDRController is CrydrControllerSingleLicense {
-  function jGDRController() CrydrControllerSingleLicense("gdr_license") {}
+  function jGDRController() CrydrControllerSingleLicense("gdr_license", 0x5) {}
 }

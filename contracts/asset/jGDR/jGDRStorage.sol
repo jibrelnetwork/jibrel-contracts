@@ -6,4 +6,6 @@ pragma solidity ^0.4.15;
 import "../../crydr/storage/CrydrStorage.sol";
 
 
-contract jGDRStorage is CrydrStorage {}
+contract jGDRStorage is CrydrStorage {
+  function jGDRStorage() CrydrStorage(0x5) {}
+}

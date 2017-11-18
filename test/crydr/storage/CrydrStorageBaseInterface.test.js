@@ -22,6 +22,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   let crydrStorageContract;
   let crydrControllerContract01;
   let crydrControllerContract02;
+  let crydrControllerContract03;
 
 
   /**
@@ -29,9 +30,10 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
    */
 
   global.beforeEach(async () => {
-    crydrStorageContract = await CrydrStorage.new({ from: owner });
-    crydrControllerContract01 = await CrydrController.new(crydrStorageContract.address, { from: owner });
-    crydrControllerContract02 = await CrydrController.new(crydrStorageContract.address, { from: owner });
+    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
+    crydrControllerContract01 = await CrydrController.new(crydrStorageContract.address, 1, { from: owner });
+    crydrControllerContract02 = await CrydrController.new(crydrStorageContract.address, 1, { from: owner });
+    crydrControllerContract03 = await CrydrController.new(crydrStorageContract.address, 2, { from: owner });
     await crydrStorageGeneralRoutines.configureCrydrStorage(crydrStorageContract.address, owner, manager,
                                                             crydrControllerContract01.address);
   });
@@ -57,7 +59,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   });
 
   global.it('check that crydr storage is configurable', async () => {
-    crydrStorageContract = await CrydrStorage.new({ from: owner });
+    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
 
     const managerPermissions = [
       'set_crydr_controller',
@@ -65,7 +67,6 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
       'unpause_contract'];
     await ManageableRoutines.enableManager(crydrStorageContract.address, owner, manager);
     await ManageableRoutines.grantManagerPermissions(crydrStorageContract.address, owner, manager, managerPermissions);
-
 
     let crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, '0x0000000000000000000000000000000000000000', 'Default controller address should be zero');
@@ -92,6 +93,16 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     await PausableRoutines.unpauseContract(crydrStorageContract.address, manager);
     await PausableRoutines.pauseContract(crydrStorageContract.address, manager);
 
+    await crydrStorageBaseRoutines.setCrydrController(crydrStorageContract.address, manager, crydrControllerContract03.address);
+    crydrController01Received = await crydrStorageContract.getCrydrController.call();
+    global.assert.strictEqual(crydrController01Received, crydrControllerContract03.address,
+                        'Manager should be able to change crydr controller at any time');
+    await UtilsTestRoutines.checkContractThrows(crydrStorageContract.unpauseContract.sendTransaction,
+                                                [{ from: manager}],
+                                                'sould it not be possible');
+    const isPaused = await crydrStorageContract.getPaused.call();
+    global.assert.strictEqual(isPaused, true, 'Contract should be paused');
+
     await crydrStorageBaseRoutines.setCrydrController(crydrStorageContract.address, manager, crydrControllerContract02.address);
     crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, crydrControllerContract02.address,
@@ -101,7 +112,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   });
 
   global.it('check that crydr storage has correct pausable modifiers for configuration functions', async () => {
-    crydrStorageContract = await CrydrStorage.new({ from: owner });
+    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
 
     const managerPermissions = [
       'set_crydr_controller',
@@ -114,6 +125,8 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let crydrController01Received = await crydrStorageContract.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, '0x0000000000000000000000000000000000000000', 'Default controller address should be zero');
 
+    await crydrStorageBaseRoutines.setCrydrController(crydrStorageContract.address, manager, crydrControllerContract02.address);
+
     await PausableTestSuite.assertWhenContractPaused(
       crydrStorageContract.address,
       manager,
@@ -124,6 +137,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(crydrController01Received, crydrControllerContract01.address,
                               'Manager should be able to configure crydr storage and set controller');
 
+
+    let isPaused = await crydrStorageContract.getPaused.call();
+    global.assert.strictEqual(isPaused, true, 'should be paused');
 
     await PausableTestSuite.assertWhenContractPaused(
       crydrStorageContract.address,

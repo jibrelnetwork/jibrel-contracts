@@ -20,9 +20,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
   let crydrControllerContract02;
 
   global.beforeEach(async () => {
-    crydrStorageContract = await CrydrStorage.new({ from: owner });
-    crydrControllerContract01 = await CrydrController.new(crydrStorageContract.address, { from: owner });
-    crydrControllerContract02 = await CrydrController.new(crydrStorageContract.address, { from: owner });
+    crydrStorageContract = await CrydrStorage.new(0x1, { from: owner });
+    crydrControllerContract01 = await CrydrController.new(crydrStorageContract.address, 0x1, { from: owner });
+    crydrControllerContract02 = await CrydrController.new(crydrStorageContract.address, 0x1, { from: owner });
     await crydrStorageGeneralRoutines.configureCrydrStorage(crydrStorageContract.address, owner, manager,
                                                             crydrControllerContract01.address);
   });

@@ -7,10 +7,12 @@ import '../../lifecycle/Pausable.sol';
 import '../controller/CrydrControllerBaseInterface.sol';
 import './CrydrViewBaseInterface.sol';
 import '../common/CrydrModifiers.sol';
+import "../common/CrydrIdentifiable.sol";
+import "../common/CrydrIdentifiableInterface.sol";
 import '../common/CrydrBytecodeExecutable.sol';
 
 
-contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, CrydrBytecodeExecutable {
+contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, CrydrBytecodeExecutable, CrydrIdentifiable {
 
   /* Storage */
 
@@ -20,7 +22,13 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, Cryd
 
   /* Constructor */
 
-  function CrydrViewBase(string _standardName) onlyValidStandardName(_standardName) {
+  function CrydrViewBase(
+    string _standardName,
+    uint _uniqueId
+  )
+    CrydrIdentifiable(_uniqueId)
+    onlyValidStandardName(_standardName)
+  {
     crydrViewStandardName = _standardName;
   }
 
@@ -59,10 +67,12 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, Cryd
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
+  function unpauseContract()
     onlyValidCrydrControllerAddress(address(crydrController))
   {
-    super.unpauseContract();
+    require(CrydrIdentifiable.getUniqueId() == CrydrIdentifiableInterface(crydrController).getUniqueId());
+
+    Pausable.unpauseContract();
   }
 
 

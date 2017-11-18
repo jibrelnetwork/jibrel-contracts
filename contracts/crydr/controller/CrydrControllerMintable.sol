@@ -13,6 +13,11 @@ import './CrydrControllerMintableInterface.sol';
  */
 contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintableInterface {
 
+  /* Constructor */
+
+  function CrydrControllerMintable(uint _uniqueId) CrydrControllerBase(_uniqueId) {}
+
+
   /* minting/burning */
 
   function mint(

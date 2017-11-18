@@ -8,6 +8,7 @@ contract CrydrViewBaseInterface {
   /* Events */
 
   event CrydrControllerChangedEvent(address indexed crydrcontroller);
+  event CrydrControllerGetUniqueId(uint id);
 
 
   /* Configuration */

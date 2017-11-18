@@ -20,6 +20,11 @@ contract JNTController is CrydrControllerBase,
                           CrydrControllerERC20Interface,
                           JNTControllerInterface {
 
+  /* Constructor */
+
+  function JNTController() CrydrControllerBase(0xfffffffe) {}
+
+
   /* CrydrControllerERC20Interface */
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 

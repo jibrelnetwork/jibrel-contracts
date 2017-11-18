@@ -88,11 +88,11 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifie
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
+  function unpauseContract()
     onlyValidJntControllerAddress(jntController)
     onlyValidJntBeneficiary(jntBeneficiary)
   {
-    super.unpauseContract();
+    Pausable.unpauseContract();
   }
 
 

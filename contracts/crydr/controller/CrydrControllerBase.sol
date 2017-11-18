@@ -8,13 +8,14 @@ import "../storage/CrydrStorageBaseInterface.sol";
 import "../view/CrydrViewBaseInterface.sol";
 import "./CrydrControllerBaseInterface.sol";
 import "../common/CrydrModifiers.sol";
+import "../common/CrydrIdentifiable.sol";
 
 
 /**
  * @title CrydrControllerBase
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrModifiers {
+contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrModifiers, CrydrIdentifiable {
 
   /* Storage */
 
@@ -24,6 +25,11 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
   // optimizations
   address[] crydrViewsAddressesList;
   mapping (address => bool) isRegisteredView;
+
+
+  /* Constructor */
+
+  function CrydrControllerBase(uint _uniqueId) CrydrIdentifiable(_uniqueId) {}
 
 
   /* Selfdestruct */
@@ -133,12 +139,12 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
+  function unpauseContract()
     onlyValidCrydrStorageAddress(crydrStorage)
   {
     require(crydrViewsAddressesList.length > 0);
 
-    super.unpauseContract();
+    Pausable.unpauseContract();
   }
 
 

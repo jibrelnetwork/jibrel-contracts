@@ -21,6 +21,11 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
                                      CrydrERC20ValidatableInterface,
                                      JNTPayableServiceERC20 {
 
+  /* Constructor */
+
+  function CrydrControllerNoLicense(uint _uniqueId) CrydrControllerBase(_uniqueId) {}
+
+
   /* CrydrControllerERC20Interface */
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */

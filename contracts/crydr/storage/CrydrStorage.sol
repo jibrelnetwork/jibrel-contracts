@@ -8,6 +8,9 @@ import "../../lifecycle/Pausable.sol";
 import "./CrydrStorageBaseInterface.sol";
 import "./CrydrStorageERC20Interface.sol";
 import "../common/CrydrModifiers.sol";
+import "../controller/CrydrControllerBaseInterface.sol";
+import "../common/CrydrIdentifiable.sol";
+import "../common/CrydrIdentifiableInterface.sol";
 import "../common/CrydrBytecodeExecutable.sol";
 
 
@@ -19,7 +22,8 @@ contract CrydrStorage is CrydrStorageBaseInterface,
                          CrydrStorageERC20Interface,
                          Pausable,
                          CrydrModifiers,
-                         CrydrBytecodeExecutable {
+                         CrydrBytecodeExecutable,
+                         CrydrIdentifiable {
 
   /* Libraries */
   // todo check gas costs without lib
@@ -29,12 +33,17 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Storage */
 
-  address crydrController;
+  CrydrControllerBaseInterface crydrController;
   mapping (address => uint) balances;
   uint totalSupply;
   mapping (address => mapping (address => uint)) allowed;
   mapping (address => uint) blockedAccounts;
   mapping (address => uint) blockedFunds;
+
+
+  /* Constructor */
+
+  function CrydrStorage(uint _uniqueId) CrydrIdentifiable(_uniqueId) {}
 
 
   /* CrydrStorageBaseInterface */
@@ -48,15 +57,15 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     onlyValidCrydrControllerAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
   {
-    require(_crydrController != crydrController);
+    require(_crydrController != address(crydrController));
     require(_crydrController != address(this));
 
-    crydrController = _crydrController;
+    crydrController = CrydrControllerBaseInterface(_crydrController);
     CrydrControllerChangedEvent(_crydrController);
   }
 
   function getCrydrController() constant returns (address) {
-    return crydrController;
+    return address(crydrController);
   }
 
   /* Low-level change of balance and getters. Implied that totalSupply kept in sync. */
@@ -297,10 +306,11 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
-    onlyValidCrydrControllerAddress(crydrController)
+  function unpauseContract()
+    onlyValidCrydrControllerAddress(address(crydrController))
   {
-    super.unpauseContract();
+    require(CrydrIdentifiable.getUniqueId() == CrydrIdentifiableInterface(crydrController).getUniqueId());
+    Pausable.unpauseContract();
   }
 
 
@@ -314,7 +324,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   modifier onlyCrydrController {
     require (crydrController != address(0x0));
-    require (msg.sender == crydrController);
+    require (msg.sender == address(crydrController));
     _;
   }
 }

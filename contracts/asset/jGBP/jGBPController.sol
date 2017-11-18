@@ -6,4 +6,6 @@ pragma solidity ^0.4.15;
 import "../../crydr/controller/CrydrControllerNoLicense.sol";
 
 
-contract jGBPController is CrydrControllerNoLicense {}
+contract jGBPController is CrydrControllerNoLicense {
+  function jGBPController() CrydrControllerNoLicense(0x4) {}
+}

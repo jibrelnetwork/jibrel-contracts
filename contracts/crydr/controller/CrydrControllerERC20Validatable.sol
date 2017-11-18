@@ -43,10 +43,10 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpause()
+  function unpauseContract()
     onlyValidInvestorsRegistryAddress(address(investorsRegistry))
   {
-    super.unpauseContract();
+    Pausable.unpauseContract();
   }
 
 

@@ -27,9 +27,9 @@ global.contract('CrydrControllerBase', (accounts) => {
   const viewName = 'TestView';
 
   global.beforeEach(async () => {
-    crydrControllerBaseContract = await CrydrControllerBase.new({ from: owner });
-    crydrStorageContract        = await CrydrStorage.new({ from: owner });
-    crydrViewBaseContract       = await CrydrViewBase.new(viewName, { form: owner });
+    crydrControllerBaseContract = await CrydrControllerBase.new(1, { from: owner });
+    crydrStorageContract        = await CrydrStorage.new(1, { from: owner });
+    crydrViewBaseContract       = await CrydrViewBase.new(viewName, 1, { form: owner });
 
     await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager01,
                                                      ['pause_contract']);
@@ -83,14 +83,18 @@ global.contract('CrydrControllerBase', (accounts) => {
     viewsAddress = await crydrControllerBaseContract.getCrydrViewByNumber.call(0);
     global.assert.strictEqual(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
 
+    await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
+    isPaused = await crydrControllerBaseContract.getPaused.call();
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
+
+    await PausableRoutines.pauseContract(crydrControllerBaseContract.address, manager01);
+    isPaused = await crydrControllerBaseContract.getPaused.call();
+    global.assert.strictEqual(isPaused, true, 'Expected that contract is paused');
+
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
                                       [viewName, { from: manager05 }]);
     viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
     global.assert.strictEqual(viewsNumber.toNumber(), 0, 'Expected that controller have no any views');
-
-    await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
-    isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
@@ -144,15 +148,18 @@ global.contract('CrydrControllerBase', (accounts) => {
                                                 ['', { from: manager05 }],
                                                 'viewAPIStandardName could not be empty');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpauseContract.sendTransaction,
                                                 [{ from: manager01 }],
                                                 'Only manager should be able to unpause');
+
+    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
+                                      [crydrStorageContract.address, { from: manager03 }]);
 
     await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
     isPaused = await crydrControllerBaseContract.getPaused.call();
     global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpause.sendTransaction,
+    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpauseContract.sendTransaction,
                                                 [{ from: manager02 }],
                                                 'It should not be possible to unpause already unpaused contract');
 

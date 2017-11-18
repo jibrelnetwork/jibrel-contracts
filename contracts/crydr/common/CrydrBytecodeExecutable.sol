@@ -3,7 +3,7 @@
 pragma solidity ^0.4.15;
 
 
-import "../../lifecycle/Pausable.sol";
+import "../../lifecycle/Manageable.sol";
 import "./CrydrBytecodeExecutableInterface.sol";
 
 

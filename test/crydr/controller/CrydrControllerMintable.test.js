@@ -26,9 +26,9 @@ global.contract('CrydrControllerMintable', (accounts) => {
   const viewName = 'TestView';
 
   global.beforeEach(async () => {
-    crydrControllerMintableContract = await CrydrControllerMintable.new({ from: owner });
-    crydrStorageContract            = await CrydrStorage.new({ from: owner });
-    crydrViewBaseContract           = await CrydrViewBase.new(viewName, { from: owner });
+    crydrControllerMintableContract = await CrydrControllerMintable.new(1, { from: owner });
+    crydrStorageContract            = await CrydrStorage.new(1, { from: owner });
+    crydrViewBaseContract           = await CrydrViewBase.new(viewName, 1, { from: owner });
 
     await ManageableRoutines.grantManagerPermissions(crydrControllerMintableContract.address, owner, manager02,
                                                      ['mint_crydr']);

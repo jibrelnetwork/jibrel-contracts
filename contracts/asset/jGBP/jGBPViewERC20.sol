@@ -7,5 +7,5 @@ import '../../crydr/view/CrydrViewERC20.sol';
 
 
 contract jGBPViewERC20 is CrydrViewERC20 {
-  function jGBPViewERC20() CrydrViewERC20("Pound sterling", "jGBP", 18) {}
+  function jGBPViewERC20() CrydrViewERC20("Pound sterling", "jGBP", 18, 0x4) {}
 }

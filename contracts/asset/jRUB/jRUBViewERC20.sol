@@ -7,5 +7,5 @@ import '../../crydr/view/CrydrViewERC20.sol';
 
 
 contract jRUBViewERC20 is CrydrViewERC20 {
-  function jRUBViewERC20() CrydrViewERC20("Russian ruble", "jRUB", 18) {}
+  function jRUBViewERC20() CrydrViewERC20("Russian ruble", "jRUB", 18, 0x6) {}
 }

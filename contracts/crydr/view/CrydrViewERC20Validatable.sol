@@ -18,7 +18,7 @@ contract CrydrViewERC20Validatable is CrydrViewBase,
   /* Constructor */
 
   function CrydrViewERC20Validatable(string _name, string _symbol, uint32 _decimals)
-    CrydrViewBase('erc20__validatable')
+    CrydrViewBase('erc20__validatable', 0xffffffff)
     ERC20Named(_name, _symbol, _decimals) {}
 
 
