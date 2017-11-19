@@ -3,7 +3,7 @@
 pragma solidity ^0.4.15;
 
 
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
+import "../../third-party/zeppelin-solidity/SafeMath.sol";
 import "../../lifecycle/Pausable.sol";
 import "./CrydrStorageBaseInterface.sol";
 import "./CrydrStorageERC20Interface.sol";

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.15;
 
 
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
+import "../third-party/zeppelin-solidity/SafeMath.sol";
 
 
 contract SafeMathMock {
