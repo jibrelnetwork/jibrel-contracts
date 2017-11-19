@@ -3,7 +3,7 @@
 pragma solidity ^0.4.15;
 
 
-import "../../solidity-stringutils/strings.sol";
+import "../../third-party/solidity-stringutils/strings.sol";
 import "../../lifecycle/Manageable.sol";
 import "../../crydr/view/ERC20Named.sol";
 
