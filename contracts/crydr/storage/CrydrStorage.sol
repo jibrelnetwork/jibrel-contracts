@@ -317,7 +317,6 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   /* Helpers */
 
   modifier onlyValidCrydrControllerAddress(address _controllerAddress) {
-    require(_controllerAddress != address(0x0));
     require(isContract(_controllerAddress) == true);
     _;
   }

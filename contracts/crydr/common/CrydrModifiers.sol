@@ -14,22 +14,22 @@ contract CrydrModifiers {
   /**
    * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.
    */
-  function isContract(address _addr) internal returns (bool _isContract) {
-    _addr = _addr; // to avoid warnings during compilation
+  function isContract(address _targetAddress) internal returns (bool _isContract) {
+    require (_targetAddress != address(0x0));
 
     uint256 length;
     assembly {
       //retrieve the size of the code on target address, this needs assembly
-      length := extcodesize(_addr)
+      length := extcodesize(_targetAddress)
     }
     return (length > 0);
   }
 
   /**
-   * @dev modifier to allow actions only when the _addr is a contract.
+   * @dev modifier to allow actions only when the _targetAddress is a contract.
    */
-  modifier whenIsContractAddress(address _addr) {
-    require(isContract(_addr) == true);
+  modifier onlyContractAddress(address _targetAddress) {
+    require(isContract(_targetAddress) == true);
     _;
   }
 }

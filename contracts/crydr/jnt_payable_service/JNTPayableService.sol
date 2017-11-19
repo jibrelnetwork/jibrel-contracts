@@ -99,7 +99,6 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifie
   /* Helpers */
 
   modifier onlyValidJntControllerAddress(address _jntAddress) {
-    require(_jntAddress != address(0x0));
     require(isContract(_jntAddress) == true);
     _;
   }

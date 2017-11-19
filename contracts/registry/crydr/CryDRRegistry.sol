@@ -163,7 +163,6 @@ contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterfa
   }
 
   modifier onlyValidCrydrControllerAddress(address _crydrController) {
-    require(_crydrController != address(0x0));
     require(isContract(_crydrController) == true);
     _;
   }

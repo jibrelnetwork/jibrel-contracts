@@ -84,7 +84,6 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, Cryd
   }
 
   modifier onlyValidCrydrControllerAddress(address _storageAddress) {
-    require(_storageAddress != address(0x0));
     require(isContract(_storageAddress) == true);
     _;
   }

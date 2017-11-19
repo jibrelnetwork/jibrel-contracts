@@ -151,7 +151,6 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
   /* Helpers */
 
   modifier onlyValidCrydrStorageAddress(address _storageAddress) {
-    require(_storageAddress != address(0x0));
     require(isContract(_storageAddress) == true);
     _;
   }
@@ -162,7 +161,6 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
   }
 
   modifier onlyValidCrydrViewAddress(address _viewAddress) {
-    require(_viewAddress != address(0x0));
     require(isContract(_viewAddress) == true);
     _;
   }

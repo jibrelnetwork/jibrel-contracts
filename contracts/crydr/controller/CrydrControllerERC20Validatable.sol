@@ -53,7 +53,6 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
   /* Helpers */
 
   modifier onlyValidInvestorsRegistryAddress(address _viewAddress) {
-    require(_viewAddress != address(0x0));
     require(isContract(_viewAddress) == true);
     _;
   }
