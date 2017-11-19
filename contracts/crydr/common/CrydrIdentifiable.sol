@@ -3,11 +3,14 @@
 pragma solidity ^0.4.15;
 
 
+import "./CrydrIdentifiableInterface.sol";
+
+
 /**
  * @title CrydrIdentifiable
  * @dev Base contract implementing uniqueness.
  */
-contract CrydrIdentifiable {
+contract CrydrIdentifiable is CrydrIdentifiableInterface {
 
   /* Storage */
 
