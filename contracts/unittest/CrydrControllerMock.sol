@@ -54,19 +54,19 @@ contract CrydrControllerMock is CrydrIdentifiable {
     CrydrStorageBaseInterface(crydrStorage).blockAccount(_account);
   }
 
-  function unlockAccount(address _account)
+  function unblockAccount(address _account)
   {
-    CrydrStorageBaseInterface(crydrStorage).unlockAccount(_account);
+    CrydrStorageBaseInterface(crydrStorage).unblockAccount(_account);
   }
 
-  function blockFunds(address _account, uint _value)
+  function blockAccountFunds(address _account, uint _value)
   {
-    CrydrStorageBaseInterface(crydrStorage).blockFunds(_account, _value);
+    CrydrStorageBaseInterface(crydrStorage).blockAccountFunds(_account, _value);
   }
 
-  function unlockFunds(address _account, uint _value)
+  function unblockAccountFunds(address _account, uint _value)
   {
-    CrydrStorageBaseInterface(crydrStorage).unlockFunds(_account, _value);
+    CrydrStorageBaseInterface(crydrStorage).unblockAccountFunds(_account, _value);
   }
 
   function transfer(address _msgsender, address _to, uint _value)

@@ -24,16 +24,16 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     crydrStorage.blockAccount(_account);
   }
 
-  function unlockAccount(
+  function unblockAccount(
     address _account
   )
     onlyValidAccountAddress(_account)
     onlyAllowedManager('unlock_account')
   {
-    crydrStorage.unlockAccount(_account);
+    crydrStorage.unblockAccount(_account);
   }
 
-  function blockFunds(
+  function blockAccountFunds(
     address _account,
     uint _value
   )
@@ -42,10 +42,10 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
   {
     require(_value > 0);
 
-    crydrStorage.blockFunds(_account, _value);
+    crydrStorage.blockAccountFunds(_account, _value);
   }
 
-  function unlockFunds(
+  function unblockAccountFunds(
     address _account,
     uint _value
   )
@@ -54,7 +54,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
   {
     require(_value > 0);
 
-    crydrStorage.unlockFunds(_account, _value);
+    crydrStorage.unblockAccountFunds(_account, _value);
   }
 
   /* Helpers */

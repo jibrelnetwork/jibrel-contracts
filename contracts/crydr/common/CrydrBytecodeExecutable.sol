@@ -15,7 +15,8 @@ contract CrydrBytecodeExecutable is CrydrBytecodeExecutableInterface, Manageable
 
   /* Storage */
 
-  bool isExecuted = false;
+  bool underExecution = false;
+
 
   /* CrydrBytecodeExecutableInterface */
 
@@ -26,12 +27,12 @@ contract CrydrBytecodeExecutable is CrydrBytecodeExecutableInterface, Manageable
   )
     onlyAllowedManager('execute_bytecode')
   {
-    require(isExecuted == false);
+    require(underExecution == false);
 
-    isExecuted = true; // Avoid recursive calling
+    underExecution = true; // Avoid recursive calling
     require(_target.call.value(_ethValue)(_transactionBytecode));
-    isExecuted = false;
+    underExecution = false;
 
-    CrydrExecuteBytecodeEvent(_target, _ethValue, sha3(_transactionBytecode));
+    CrydrBytecodeExecutedEvent(_target, _ethValue, sha3(_transactionBytecode));
   }
 }

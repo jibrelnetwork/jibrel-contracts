@@ -37,8 +37,8 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   mapping (address => uint) balances;
   uint totalSupply;
   mapping (address => mapping (address => uint)) allowed;
-  mapping (address => uint) blockedAccounts;
-  mapping (address => uint) blockedFunds;
+  mapping (address => uint) accountBlocks;
+  mapping (address => uint) accountBlockedFunds;
 
 
   /* Constructor */
@@ -170,11 +170,11 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   {
     require(_account != address(0x0));
 
-    blockedAccounts[_account] = blockedAccounts[_account].add(1);
-    AccountBlockEvent(_account);
+    accountBlocks[_account] = accountBlocks[_account].add(1);
+    AccountBlockedEvent(_account);
   }
 
-  function unlockAccount(
+  function unblockAccount(
     address _account
   )
     whenContractNotPaused
@@ -182,11 +182,11 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   {
     require(_account != address(0x0));
 
-    blockedAccounts[_account] = blockedAccounts[_account].sub(1);
-    AccountUnlockEvent(_account);
+    accountBlocks[_account] = accountBlocks[_account].sub(1);
+    AccountUnblockedEvent(_account);
   }
 
-  function getBlockAccount(
+  function getAccountBlocks(
     address _account
   )
     constant
@@ -194,10 +194,10 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   {
     require(_account != address(0x0));
 
-    return blockedAccounts[_account];
+    return accountBlocks[_account];
   }
 
-  function blockFunds(
+  function blockAccountFunds(
     address _account,
     uint _value
   )
@@ -207,11 +207,11 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_account != address(0x0));
     require(_value > 0);
 
-    blockedFunds[_account] = blockedFunds[_account].add(_value);
-    AccountBlockFundsEvent(_account, _value);
+    accountBlockedFunds[_account] = accountBlockedFunds[_account].add(_value);
+    AccountFundsBlockedEvent(_account, _value);
   }
 
-  function unlockFunds(
+  function unblockAccountFunds(
     address _account,
     uint _value
   )
@@ -221,11 +221,11 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_account != address(0x0));
     require(_value > 0);
 
-    blockedFunds[_account] = blockedFunds[_account].sub(_value);
-    AccountUnlockFundsEvent(_account, _value);
+    accountBlockedFunds[_account] = accountBlockedFunds[_account].sub(_value);
+    AccountFundsUnblockedEvent(_account, _value);
   }
 
-  function getBlockFunds(
+  function getAccountBlockedFunds(
     address _account
   )
     constant
@@ -233,7 +233,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   {
     require(_account != address(0x0));
 
-    return blockedFunds[_account];
+    return accountBlockedFunds[_account];
   }
 
   /* CrydrStorageERC20Interface */
@@ -252,12 +252,12 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_to != address(0x0));
     require(_msgsender != _to);
     require(_value > 0);
-    require(getBlockAccount(_msgsender) == 0);
-    require(balances[_msgsender].sub(_value) >= getBlockFunds(_msgsender));
+    require(getAccountBlocks(_msgsender) == 0);
+    require(balances[_msgsender].sub(_value) >= getAccountBlockedFunds(_msgsender));
 
     balances[_msgsender] = balances[_msgsender].sub(_value);
     balances[_to] = balances[_to].add(_value);
-    CrydrTransferEvent(_msgsender, _to, _value);
+    CrydrTransferredEvent(_msgsender, _to, _value);
   }
 
   function transferFrom(
@@ -274,13 +274,13 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_to != address(0x0));
     require(_from != _to);
     require(_value > 0);
-    require(getBlockAccount(_from) == 0);
-    require(balances[_from].sub(_value) >= getBlockFunds(_msgsender));
+    require(getAccountBlocks(_from) == 0);
+    require(balances[_from].sub(_value) >= getAccountBlockedFunds(_msgsender));
 
     allowed[_from][_msgsender] = allowed[_from][_msgsender].sub(_value);
     balances[_from] = balances[_from].sub(_value);
     balances[_to] = balances[_to].add(_value);
-    CrydrTransferFromEvent(_msgsender, _from, _to, _value);
+    CrydrTransferredFromEvent(_msgsender, _from, _to, _value);
   }
 
   function approve(

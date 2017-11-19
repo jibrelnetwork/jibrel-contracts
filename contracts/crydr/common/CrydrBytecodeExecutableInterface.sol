@@ -11,10 +11,10 @@ contract CrydrBytecodeExecutableInterface {
 
   /* Events */
 
-  event CrydrExecuteBytecodeEvent(address target, uint ethValue, bytes32 transactionBytecodeHash);
+  event CrydrBytecodeExecutedEvent(address indexed target, uint ethValue, bytes32 transactionBytecodeHash);
 
 
-  /* executing bytecode */
+  /* Functions */
 
   function executeBytecode(address _target, uint _ethValue, bytes _transactionBytecode);
 }

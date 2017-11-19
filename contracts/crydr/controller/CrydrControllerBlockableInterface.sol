@@ -12,7 +12,7 @@ contract CrydrControllerBlockableInterface {
   /* blocking/unlocking */
 
   function blockAccount(address _account);
-  function blockFunds(address _account, uint _value);
-  function unlockAccount(address _account);
-  function unlockFunds(address _account, uint _value);
+  function blockAccountFunds(address _account, uint _value);
+  function unblockAccount(address _account);
+  function unblockAccountFunds(address _account, uint _value);
 }

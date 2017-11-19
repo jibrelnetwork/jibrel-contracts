@@ -66,18 +66,18 @@ export const approve = async (crydrStorageAddress, crydrControllerAddress,
  * Events
  */
 
-export const getCrydrTransferEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+export const getCrydrTransferredEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
   const eventObj = CrydrStorageERC20Interface
     .at(contractAddress)
-    .CrydrTransferEvent(eventDataFilter, commonFilter);
+    .CrydrTransferredEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
-export const getCrydrTransferFromEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+export const getCrydrTransferredFromEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
   const eventObj = CrydrStorageERC20Interface
     .at(contractAddress)
-    .CrydrTransferFromEvent(eventDataFilter, commonFilter);
+    .CrydrTransferredFromEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };

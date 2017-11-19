@@ -16,10 +16,10 @@ contract CrydrStorageBaseInterface {
   event AccountBalanceDecreasedEvent(address indexed account, uint value);
   event AccountAllowanceIncreasedEvent(address indexed owner, address indexed spender, uint value);
   event AccountAllowanceDecreasedEvent(address indexed owner, address indexed spender, uint value);
-  event AccountBlockEvent(address indexed account);
-  event AccountUnlockEvent(address indexed account);
-  event AccountBlockFundsEvent(address indexed account, uint value);
-  event AccountUnlockFundsEvent(address indexed account, uint value);
+  event AccountBlockedEvent(address indexed account);
+  event AccountUnblockedEvent(address indexed account);
+  event AccountFundsBlockedEvent(address indexed account, uint value);
+  event AccountFundsUnblockedEvent(address indexed account, uint value);
 
 
   /* Configuration */
@@ -46,9 +46,10 @@ contract CrydrStorageBaseInterface {
   /* Low-level change of blocks and getters */
 
   function blockAccount(address _account);
-  function unlockAccount(address _account);
-  function getBlockAccount(address _account) constant returns (uint);
-  function blockFunds(address _account, uint _value);
-  function unlockFunds(address _account, uint _value);
-  function getBlockFunds(address _account) constant returns (uint);
+  function unblockAccount(address _account);
+  function getAccountBlocks(address _account) constant returns (uint);
+
+  function blockAccountFunds(address _account, uint _value);
+  function unblockAccountFunds(address _account, uint _value);
+  function getAccountBlockedFunds(address _account) constant returns (uint);
 }
