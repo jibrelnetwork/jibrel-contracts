@@ -26,9 +26,8 @@ contract CrydrStorage is CrydrStorageBaseInterface,
                          UUID {
 
   /* Libraries */
-  // todo check gas costs without lib
 
-  using SafeMath for uint;
+  using SafeMath for uint; // todo check gas costs without lib (with inheritance)
 
 
   /* Storage */
@@ -43,7 +42,9 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Constructor */
 
-  function CrydrStorage(uint _uuid) UUID(_uuid) {}
+  function CrydrStorage(uint _uuid) UUID(_uuid) {
+    accountBlocks[0x0] = (0xffffffffffffffff - 1);
+  }
 
 
   /* CrydrStorageBaseInterface */
