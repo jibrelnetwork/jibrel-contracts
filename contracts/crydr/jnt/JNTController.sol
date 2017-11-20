@@ -6,6 +6,7 @@ pragma solidity ^0.4.15;
 import "../storage/CrydrStorageERC20Interface.sol";
 import "../view/CrydrViewERC20LoggableInterface.sol";
 import "../controller/CrydrControllerBase.sol";
+import "../controller/CrydrControllerBlockable.sol";
 import "../controller/CrydrControllerMintable.sol";
 import "../controller/CrydrControllerERC20.sol";
 import "./JNTControllerInterface.sol";
@@ -16,6 +17,7 @@ import "./JNTControllerInterface.sol";
  * @dev Mediates views and storage of JNT, provides additional methods for Jibrel contracts
  */
 contract JNTController is CrydrControllerBase,
+                          CrydrControllerBlockable,
                           CrydrControllerMintable,
                           CrydrControllerERC20,
                           JNTControllerInterface {
