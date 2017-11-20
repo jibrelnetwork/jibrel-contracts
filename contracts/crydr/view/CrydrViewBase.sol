@@ -6,8 +6,8 @@ pragma solidity ^0.4.15;
 import '../../lifecycle/Pausable.sol';
 import "../../util/CommonModifiers.sol";
 import "../../feature/bytecode/BytecodeExecutable.sol";
-import "../../feature/uuid/UUIDInterface.sol";
-import "../../feature/uuid/UUID.sol";
+import "../../feature/assetid/AssetIDInterface.sol";
+import "../../feature/assetid/AssetID.sol";
 import '../controller/CrydrControllerBaseInterface.sol';
 import './CrydrViewBaseInterface.sol';
 
@@ -16,7 +16,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
                           Pausable,
                           CommonModifiers,
                           BytecodeExecutable,
-                          UUID {
+                          AssetID {
 
   /* Storage */
 
@@ -28,9 +28,9 @@ contract CrydrViewBase is CrydrViewBaseInterface,
 
   function CrydrViewBase(
     string _standardName,
-    uint _uuid
+    uint _assetID
   )
-    UUID(_uuid)
+    AssetID(_assetID)
     onlyValidStandardName(_standardName)
   {
     crydrViewStandardName = _standardName;
@@ -73,7 +73,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
    */
   function unpauseContract() {
     require(isContract(address(crydrController)) == true);
-    require(UUID.getUUID() == UUIDInterface(crydrController).getUUID());
+    require(AssetID.getAssetID() == AssetIDInterface(crydrController).getAssetID());
 
     Pausable.unpauseContract();
   }

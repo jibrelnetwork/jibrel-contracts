@@ -7,8 +7,8 @@ import "../../third-party/zeppelin-solidity/SafeMath.sol";
 import "../../lifecycle/Pausable.sol";
 import "../../util/CommonModifiers.sol";
 import "../../feature/bytecode/BytecodeExecutable.sol";
-import "../../feature/uuid/UUIDInterface.sol";
-import "../../feature/uuid/UUID.sol";
+import "../../feature/assetid/AssetIDInterface.sol";
+import "../../feature/assetid/AssetID.sol";
 import "./CrydrStorageBaseInterface.sol";
 import "./CrydrStorageERC20Interface.sol";
 import "../controller/CrydrControllerBaseInterface.sol";
@@ -23,7 +23,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
                          Pausable,
                          CommonModifiers,
                          BytecodeExecutable,
-                         UUID {
+                         AssetID {
 
   /* Libraries */
 
@@ -42,7 +42,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Constructor */
 
-  function CrydrStorage(uint _uuid) UUID(_uuid) {
+  function CrydrStorage(uint _assetID) AssetID(_assetID) {
     accountBlocks[0x0] = (0xffffffffffffffff - 1);
   }
 
@@ -309,7 +309,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
    */
   function unpauseContract() {
     require(isContract(address(crydrController)) == true);
-    require(UUID.getUUID() == UUIDInterface(crydrController).getUUID());
+    require(AssetID.getAssetID() == AssetIDInterface(crydrController).getAssetID());
 
     Pausable.unpauseContract();
   }

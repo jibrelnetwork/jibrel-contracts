@@ -6,7 +6,7 @@ pragma solidity ^0.4.15;
 import "../../lifecycle/Pausable.sol";
 import "../../util/CommonModifiers.sol";
 import "../../feature/bytecode/BytecodeExecutable.sol";
-import "../../feature/uuid/UUID.sol";
+import "../../feature/assetid/AssetID.sol";
 import "../storage/CrydrStorageBaseInterface.sol";
 import "../view/CrydrViewBaseInterface.sol";
 import "./CrydrControllerBaseInterface.sol";
@@ -20,7 +20,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
                                 Pausable,
                                 CommonModifiers,
                                 BytecodeExecutable,
-                                UUID {
+                                AssetID {
 
   /* Storage */
 
@@ -31,7 +31,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
   /* Constructor */
 
-  function CrydrControllerBase(uint _uuid) UUID(_uuid) {}
+  function CrydrControllerBase(uint _assetID) AssetID(_assetID) {}
 
 
   /* CrydrControllerBaseInterface */

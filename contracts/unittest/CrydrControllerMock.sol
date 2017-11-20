@@ -3,7 +3,7 @@
 pragma solidity ^0.4.15;
 
 
-import "../feature/uuid/UUID.sol";
+import "../feature/assetid/AssetID.sol";
 import "../crydr/storage/CrydrStorageBaseInterface.sol";
 import "../crydr/storage/CrydrStorageERC20Interface.sol";
 
@@ -12,7 +12,7 @@ import "../crydr/storage/CrydrStorageERC20Interface.sol";
  * @title CrydrControllerMock
  * @dev This contract used only to test functions of CrydrStorage contract
  */
-contract CrydrControllerMock is UUID {
+contract CrydrControllerMock is AssetID {
 
   /* Storage */
 
@@ -20,9 +20,9 @@ contract CrydrControllerMock is UUID {
 
   function CrydrControllerMock(
     address _crydrStorage,
-    uint _uuid
+    uint _assetID
   )
-    UUID(_uuid)
+    AssetID(_assetID)
   {
     require(_crydrStorage != address(0x0));
 
