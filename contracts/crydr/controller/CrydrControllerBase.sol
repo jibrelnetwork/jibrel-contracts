@@ -51,7 +51,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
   function setCrydrStorage(
     address _crydrStorage
   )
-    onlyValidCrydrStorageAddress(_crydrStorage)
+    onlyContractAddress(_crydrStorage)
     onlyDifferentAddress(_crydrStorage)
     onlyAllowedManager('set_crydr_storage')
     whenContractPaused
@@ -71,7 +71,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
     string _viewApiStandardName, address _crydrView
   )
     onlyValidCrydrViewStandardName(_viewApiStandardName)
-    onlyValidCrydrViewAddress(_crydrView)
+    onlyContractAddress(_crydrView)
     onlyDifferentAddress(_crydrView)
     onlyAllowedManager('set_crydr_view')
     whenContractPaused
@@ -139,9 +139,8 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpauseContract()
-    onlyValidCrydrStorageAddress(crydrStorage)
-  {
+  function unpauseContract() {
+    require(isContract(address(crydrStorage)) == true);
     require(crydrViewsAddressesList.length > 0);
 
     Pausable.unpauseContract();
@@ -150,18 +149,8 @@ contract CrydrControllerBase is CrydrControllerBaseInterface, Pausable, CrydrMod
 
   /* Helpers */
 
-  modifier onlyValidCrydrStorageAddress(address _storageAddress) {
-    require(isContract(_storageAddress) == true);
-    _;
-  }
-
   modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {
     require(bytes(_viewApiStandard).length > 0);
-    _;
-  }
-
-  modifier onlyValidCrydrViewAddress(address _viewAddress) {
-    require(isContract(_viewAddress) == true);
     _;
   }
 

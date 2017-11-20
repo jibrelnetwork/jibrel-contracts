@@ -26,7 +26,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifie
   function setJntController(
     address _jntController
   )
-    onlyValidJntControllerAddress(_jntController)
+    onlyContractAddress(_jntController)
     onlyAllowedManager('set_jnt_controller')
     whenContractPaused
   {
@@ -89,7 +89,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifie
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract()
-    onlyValidJntControllerAddress(jntController)
+    onlyContractAddress(jntController)
     onlyValidJntBeneficiary(jntBeneficiary)
   {
     Pausable.unpauseContract();
@@ -97,11 +97,6 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifie
 
 
   /* Helpers */
-
-  modifier onlyValidJntControllerAddress(address _jntAddress) {
-    require(isContract(_jntAddress) == true);
-    _;
-  }
 
    modifier onlyValidJntBeneficiary(address _jntBeneficiary) {
     require(_jntBeneficiary != address(0x0));

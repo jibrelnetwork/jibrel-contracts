@@ -24,7 +24,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
     address _account, uint _value
   )
     onlyValidMintingAddress(_account)
-    onlyValidCrydrStorageAddress(address(crydrStorage))
+    onlyContractAddress(address(crydrStorage))
     onlyAllowedManager('mint_crydr')
   {
     require(_value > 0);
@@ -36,7 +36,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
     address _account, uint _value
   )
     onlyValidMintingAddress(_account)
-    onlyValidCrydrStorageAddress(address(crydrStorage))
+    onlyContractAddress(address(crydrStorage))
     onlyAllowedManager('burn_crydr')
   {
     require(_value > 0);

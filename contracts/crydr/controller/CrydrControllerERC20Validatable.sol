@@ -23,7 +23,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
   function setInvestorsRegistry(
     address _investorsRegistry
   )
-    onlyValidInvestorsRegistryAddress(_investorsRegistry)
+    onlyContractAddress(_investorsRegistry)
     onlyAllowedManager('set_investors_registry')
     whenContractPaused
   {
@@ -44,16 +44,8 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract()
-    onlyValidInvestorsRegistryAddress(address(investorsRegistry))
+    onlyContractAddress(address(investorsRegistry))
   {
     Pausable.unpauseContract();
-  }
-
-
-  /* Helpers */
-
-  modifier onlyValidInvestorsRegistryAddress(address _viewAddress) {
-    require(isContract(_viewAddress) == true);
-    _;
   }
 }

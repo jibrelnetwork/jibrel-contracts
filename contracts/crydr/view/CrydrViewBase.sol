@@ -38,7 +38,7 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, Cryd
   function setCrydrController(
     address _crydrController
   ) external
-    onlyValidCrydrControllerAddress(_crydrController)
+    onlyContractAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
     whenContractPaused
   {
@@ -67,9 +67,8 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, Cryd
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpauseContract()
-    onlyValidCrydrControllerAddress(address(crydrController))
-  {
+  function unpauseContract() {
+    require(isContract(address(crydrController)) == true);
     require(CrydrIdentifiable.getUniqueId() == CrydrIdentifiableInterface(crydrController).getUniqueId());
 
     Pausable.unpauseContract();
@@ -80,11 +79,6 @@ contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, Cryd
 
   modifier onlyValidStandardName(string _standardName) {
     require(bytes(_standardName).length > 0);
-    _;
-  }
-
-  modifier onlyValidCrydrControllerAddress(address _storageAddress) {
-    require(isContract(_storageAddress) == true);
     _;
   }
 

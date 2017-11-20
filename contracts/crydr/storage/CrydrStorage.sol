@@ -54,7 +54,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _crydrController
   )
     whenContractPaused
-    onlyValidCrydrControllerAddress(_crydrController)
+    onlyContractAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
   {
     require(_crydrController != address(crydrController));
@@ -306,20 +306,15 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpauseContract()
-    onlyValidCrydrControllerAddress(address(crydrController))
-  {
+  function unpauseContract() {
+    require(isContract(address(crydrController)) == true);
     require(CrydrIdentifiable.getUniqueId() == CrydrIdentifiableInterface(crydrController).getUniqueId());
+
     Pausable.unpauseContract();
   }
 
 
   /* Helpers */
-
-  modifier onlyValidCrydrControllerAddress(address _controllerAddress) {
-    require(isContract(_controllerAddress) == true);
-    _;
-  }
 
   modifier onlyCrydrController {
     require (crydrController != address(0x0));

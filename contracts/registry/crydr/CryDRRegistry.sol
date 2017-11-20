@@ -42,7 +42,7 @@ contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterfa
     onlyValidCrydrSymbol(_crydrSymbol)
     onlyUnknownCrydrSymbol(_crydrSymbol)
     onlyValidCrydrName(_crydrName)
-    onlyValidCrydrControllerAddress(_crydrController)
+    onlyContractAddress(_crydrController)
     onlyMatchedSymbolName(_crydrSymbol, _crydrName, _crydrController)
     onlyAllowedManager('add_crydr')
   {
@@ -63,7 +63,7 @@ contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterfa
     onlyValidCrydrSymbol(_crydrSymbol)
     onlyKnownCrydrSymbol(_crydrSymbol)
     onlyValidCrydrName(_crydrName)
-    onlyValidCrydrControllerAddress(_crydrController)
+    onlyContractAddress(_crydrController)
     onlyAllowedManager('remove_crydr')
   {
     crydrLookup[_crydrSymbol] = address(0x0);
@@ -159,11 +159,6 @@ contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterfa
 
   modifier onlyValidCrydrName(string _crydrName) {
     require(bytes(_crydrName).length > 0);
-    _;
-  }
-
-  modifier onlyValidCrydrControllerAddress(address _crydrController) {
-    require(isContract(_crydrController) == true);
     _;
   }
 
