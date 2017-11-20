@@ -12,12 +12,12 @@ contract ERC20Named is ERC20NamedInterface {
 
   string tokenName;
   string tokenSymbol;
-  uint32 tokenDecimals;
+  uint8 tokenDecimals;
 
 
   /* Storage */
 
-  function ERC20Named(string _name, string _symbol, uint32 _decimals) {
+  function ERC20Named(string _name, string _symbol, uint8 _decimals) {
     tokenName = _name;
     tokenSymbol = _symbol;
     tokenDecimals = _decimals;
@@ -34,7 +34,7 @@ contract ERC20Named is ERC20NamedInterface {
     return tokenSymbol;
   }
 
-  function decimals() external constant returns (uint32) {
+  function decimals() external constant returns (uint8) {
     return tokenDecimals;
   }
 

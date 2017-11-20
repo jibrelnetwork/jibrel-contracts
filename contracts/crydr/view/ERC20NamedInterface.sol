@@ -13,7 +13,7 @@ pragma solidity ^0.4.15;
 contract ERC20NamedInterface {
   function name() external constant returns (string);
   function symbol() external constant returns (string);
-  function decimals() external constant returns (uint32);
+  function decimals() external constant returns (uint8);
 
   function getNameHash() external constant returns (bytes32);
   function getSymbolHash() external constant returns (bytes32);
