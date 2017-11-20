@@ -1,7 +1,5 @@
-import { submitTxAndWaitConfirmation } from '../../routine/misc/SubmitTx';
-
-const Pausable         = global.artifacts.require('Pausable.sol');
-const PausableUnittest = global.artifacts.require('PausableUnittest.sol');
+const Pausable = global.artifacts.require('Pausable.sol');
+const PausableMock = global.artifacts.require('PausableMock.sol');
 
 const ManageableRoutines = require('../../routine/lifecycle/Manageable');
 
@@ -17,7 +15,7 @@ global.contract('Pausable', (accounts) => {
     const owner   = accounts[0];
     const manager = accounts[1];
 
-    const pausableContract = await PausableUnittest.new({ from: owner });
+    const pausableContract = await PausableMock.new({ from: owner });
 
     await ManageableRoutines.grantManagerPermissions(pausableContract.address, owner, manager,
                                                      ['pause_contract', 'unpause_contract']);

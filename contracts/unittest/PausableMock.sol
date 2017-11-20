@@ -7,10 +7,10 @@ import "../lifecycle/Pausable.sol";
 
 
 /**
- * @title PausableUnittest
+ * @title PausableMock
  * @dev This contract used only to test modifiers of Pausable contract
  */
-contract PausableUnittest is Pausable {
+contract PausableMock is Pausable {
 
   event WhenContractNotPausedEvent();
   event WhenContractPausedEvent();
