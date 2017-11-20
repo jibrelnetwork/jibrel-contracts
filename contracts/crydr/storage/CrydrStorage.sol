@@ -166,7 +166,6 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function blockAccount(
     address _account
   )
-    whenContractNotPaused
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -202,7 +201,6 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account,
     uint _value
   )
-    whenContractNotPaused
     onlyCrydrController
   {
     require(_account != address(0x0));
