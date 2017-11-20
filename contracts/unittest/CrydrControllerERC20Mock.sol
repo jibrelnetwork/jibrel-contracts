@@ -39,6 +39,7 @@ contract CrydrControllerERC20Mock is CrydrControllerERC20Interface {
 
   function getBalance(address _owner) constant returns (uint balance)
   {
+    require(_owner == _owner); // always true, to avoid annoying compilation warnings
     return 40 * (10 ** 18);
   }
 
@@ -50,12 +51,15 @@ contract CrydrControllerERC20Mock is CrydrControllerERC20Interface {
 
   function transferFrom(address _msgsender, address _from, address _to, uint _value)
   {
+    require(_msgsender == _msgsender); // always true, to avoid annoying compilation warnings
     transferFromCounter += 1;
     CrydrViewERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
   }
 
   function getAllowance(address _owner, address _spender) constant returns (uint remaining)
   {
+    require(_owner == _owner); // always true, to avoid annoying compilation warnings
+    require(_spender == _spender); // always true, to avoid annoying compilation warnings
     return 20 * (10 ** 18);
   }
 }
