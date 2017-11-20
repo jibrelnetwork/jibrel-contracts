@@ -3,9 +3,9 @@
 pragma solidity ^0.4.15;
 
 
-import "../../crydr/controller/CrydrControllerNoLicense.sol";
+import "../../crydr/controller/CrydrControllerJCash.sol";
 
 
-contract jUSDController is CrydrControllerNoLicense {
-  function jUSDController() CrydrControllerNoLicense(0x8) {}
+contract jUSDController is CrydrControllerJCash {
+  function jUSDController() CrydrControllerJCash(0x8) {}
 }

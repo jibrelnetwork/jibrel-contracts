@@ -11,19 +11,17 @@ import "./CrydrControllerBase.sol";
 import "./CrydrControllerBlockable.sol";
 import "./CrydrControllerMintable.sol";
 import "./CrydrControllerERC20Interface.sol";
-import "./CrydrControllerERC20Validatable.sol";
 
 
-contract CrydrControllerNoLicense is CrydrControllerBase,
-                                     CrydrControllerBlockable,
-                                     CrydrControllerMintable,
-                                     CrydrControllerERC20Interface,
-                                     CrydrERC20ValidatableInterface,
-                                     JNTPayableServiceERC20 {
+contract CrydrControllerJCash is CrydrControllerBase,
+                                 CrydrControllerBlockable,
+                                 CrydrControllerMintable,
+                                 CrydrControllerERC20Interface,
+                                 JNTPayableServiceERC20 {
 
   /* Constructor */
 
-  function CrydrControllerNoLicense(uint _uniqueId) CrydrControllerBase(_uniqueId) {}
+  function CrydrControllerJCash(uint _uniqueId) CrydrControllerBase(_uniqueId) {}
 
 
   /* CrydrControllerERC20Interface */
@@ -104,40 +102,5 @@ contract CrydrControllerNoLicense is CrydrControllerBase,
   function getAllowance(address _owner, address _spender) constant returns (uint remaining) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrStorageBaseInterface(address(crydrStorage)).getAllowance(_owner, _spender);
-  }
-
-
-  /* CrydrERC20ValidatableInterface */
-
-  /* Getters */
-
-  function isRegulated() constant returns (bool) {
-    return false;
-  }
-
-  function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
-    return true;
-  }
-
-  function isSpendingAllowed(address _account, uint _value) constant returns (bool) {
-    return true;
-  }
-
-
-  function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool) {
-    return true;
-  }
-
-
-  function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool) {
-    return true;
-  }
-
-  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool) {
-    return true;
-  }
-
-  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool) {
-    return true;
   }
 }
