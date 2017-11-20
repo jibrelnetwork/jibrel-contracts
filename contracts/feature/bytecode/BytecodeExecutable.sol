@@ -4,21 +4,21 @@ pragma solidity ^0.4.15;
 
 
 import "../../lifecycle/Manageable.sol";
-import "./CrydrBytecodeExecutableInterface.sol";
+import "./BytecodeExecutableInterface.sol";
 
 
 /**
- * @title CrydrBytecodeExecutable
+ * @title BytecodeExecutable
  * @dev Implementation of a contract that execute any bytecode using contract`s private key
  */
-contract CrydrBytecodeExecutable is CrydrBytecodeExecutableInterface, Manageable {
+contract BytecodeExecutable is BytecodeExecutableInterface, Manageable {
 
   /* Storage */
 
   bool underExecution = false;
 
 
-  /* CrydrBytecodeExecutableInterface */
+  /* BytecodeExecutableInterface */
 
   function executeBytecode(
     address _target,
@@ -33,6 +33,6 @@ contract CrydrBytecodeExecutable is CrydrBytecodeExecutableInterface, Manageable
     require(_target.call.value(_ethValue)(_transactionBytecode));
     underExecution = false;
 
-    CrydrBytecodeExecutedEvent(_target, _ethValue, sha3(_transactionBytecode));
+    BytecodeExecutedEvent(_target, _ethValue, sha3(_transactionBytecode));
   }
 }

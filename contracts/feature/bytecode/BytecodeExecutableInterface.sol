@@ -4,14 +4,14 @@ pragma solidity ^0.4.15;
 
 
 /**
- * @title CrydrBytecodeExecutableInterface interface
+ * @title BytecodeExecutableInterface interface
  * @dev Interface of a contract that implement executing any bytecode using contract`s private key
  */
-contract CrydrBytecodeExecutableInterface {
+contract BytecodeExecutableInterface {
 
   /* Events */
 
-  event CrydrBytecodeExecutedEvent(address indexed target, uint ethValue, bytes32 transactionBytecodeHash);
+  event BytecodeExecutedEvent(address indexed target, uint ethValue, bytes32 transactionBytecodeHash);
 
 
   /* Functions */
