@@ -64,6 +64,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
   function chargeJNT(address _from, address _to, uint _value) internal whenContractNotPaused {
     require(_from != address(0x0));
     require(_to != address(0x0));
+    require(_from != _to);
     require(_value > 0);
 
     jntController.chargeJNT(_from, _to, _value);
@@ -74,12 +75,15 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
    * @dev Method used to withdraw collected JNT if contract itself used to store charged JNT.
    * @dev Assumed that JNT provides 'erc20' view.
    */
-  function withdrawJnt() onlyAllowedManager('withdraw_jnt') {
+  function withdrawJnt()
+    onlyAllowedManager('withdraw_jnt')
+    onlyValidJntBeneficiary(jntBeneficiary)
+  {
     var _jntControllerAddress = address(jntController);
     var _crydrController = CrydrControllerBaseInterface(_jntControllerAddress);
     var _jntERC20ViewAddress = _crydrController.getCrydrView('erc20');
     var _jntERC20View = ERC20Interface(_jntERC20ViewAddress);
-    _jntERC20View.transfer(msg.sender, _jntERC20View.balanceOf(this));
+    _jntERC20View.transfer(jntBeneficiary, _jntERC20View.balanceOf(this));
   }
 
 

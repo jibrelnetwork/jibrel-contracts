@@ -26,8 +26,6 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
   CrydrStorageBaseInterface crydrStorage;
   mapping (string => address) crydrViewsAddresses;
-
-  // optimizations
   mapping (address => bool) isRegisteredView;
 
 
@@ -44,10 +42,10 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     address _crydrStorage
   )
     onlyContractAddress(_crydrStorage)
-    onlyDifferentAddress(_crydrStorage)
     onlyAllowedManager('set_crydr_storage')
     whenContractPaused
   {
+    require(_crydrStorage != address(this));
     require(_crydrStorage != address(crydrStorage));
 
     crydrStorage = CrydrStorageBaseInterface(_crydrStorage);
@@ -64,10 +62,10 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
   )
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     onlyContractAddress(_crydrView)
-    onlyDifferentAddress(_crydrView)
     onlyAllowedManager('set_crydr_view')
     whenContractPaused
   {
+    require(_crydrView != address(this));
     require(crydrViewsAddresses[_viewApiStandardName] == address(0x0));
 
     var crydrViewInstance = CrydrViewBaseInterface(_crydrView);
@@ -98,7 +96,15 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     CrydrViewRemovedEvent(_viewApiStandardName, removedView);
   }
 
-  function getCrydrView(string _viewApiStandardName) constant returns (address) {
+  function getCrydrView(
+    string _viewApiStandardName
+  )
+    constant
+    onlyValidCrydrViewStandardName(_viewApiStandardName)
+    returns (address)
+  {
+    require(crydrViewsAddresses[_viewApiStandardName] != address(0x0));
+
     return crydrViewsAddresses[_viewApiStandardName];
   }
 
@@ -110,18 +116,8 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     _;
   }
 
-  modifier onlyDifferentAddress(address _address) {
-    require(_address != address(this));
-    _;
-  }
-
   modifier onlyCrydrView() {
     require(isRegisteredView[msg.sender] == true);
-    _;
-  }
-
-  modifier onlyGreaterThanZero(uint _value) {
-    require(_value > 0);
     _;
   }
 }

@@ -13,12 +13,12 @@ import './CrydrControllerBlockableInterface.sol';
  */
 contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockableInterface {
 
+
   /* blocking/unlocking */
 
   function blockAccount(
     address _account
   )
-    onlyValidAccountAddress(_account)
     onlyAllowedManager('block_account')
   {
     crydrStorage.blockAccount(_account);
@@ -27,8 +27,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
   function unblockAccount(
     address _account
   )
-    onlyValidAccountAddress(_account)
-    onlyAllowedManager('unlock_account')
+    onlyAllowedManager('unblock_account')
   {
     crydrStorage.unblockAccount(_account);
   }
@@ -37,11 +36,8 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     address _account,
     uint _value
   )
-    onlyValidAccountAddress(_account)
-    onlyAllowedManager('block_funds')
+    onlyAllowedManager('block_account_funds')
   {
-    require(_value > 0);
-
     crydrStorage.blockAccountFunds(_account, _value);
   }
 
@@ -49,18 +45,8 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     address _account,
     uint _value
   )
-    onlyValidAccountAddress(_account)
-    onlyAllowedManager('unlock_funds')
+    onlyAllowedManager('unblock_account_funds')
   {
-    require(_value > 0);
-
     crydrStorage.unblockAccountFunds(_account, _value);
-  }
-
-  /* Helpers */
-
-  modifier onlyValidAccountAddress(address _account) {
-    require(_account != address(0x0));
-    _;
   }
 }

@@ -47,7 +47,6 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   )
     onlyCrydrView
     whenContractNotPaused
-    onlyGreaterThanZero(_value)
   {
     if (isTransferAllowed(_msgsender, _to, _value) == false) {
       revert();
@@ -107,7 +106,6 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   )
     onlyCrydrView
     whenContractNotPaused
-    onlyGreaterThanZero(_value)
   {
     if (isTransferFromAllowed(_msgsender, _from, _to, _value) == false) {
       revert();

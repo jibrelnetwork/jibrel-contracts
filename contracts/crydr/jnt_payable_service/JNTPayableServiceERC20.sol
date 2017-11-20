@@ -28,6 +28,10 @@ contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Inte
     onlyAllowedManager('set_jnt_price')
     whenContractPaused
   {
+    require(_jntPriceTransfer != jntPriceTransfer ||
+            _jntPriceTransferFrom != jntPriceTransferFrom ||
+            _jntPriceApprove != jntPriceApprove);
+
     if (jntPriceTransfer != _jntPriceTransfer) {
       jntPriceTransfer = _jntPriceTransfer;
       JNTPriceTransferChangedEvent(_jntPriceTransfer);

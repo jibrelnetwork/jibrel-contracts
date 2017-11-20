@@ -13,21 +13,15 @@ import './CrydrControllerMintableInterface.sol';
  */
 contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintableInterface {
 
-  /* Constructor */
-
-  function CrydrControllerMintable(uint _uniqueId) CrydrControllerBase(_uniqueId) {}
-
-
   /* minting/burning */
 
   function mint(
     address _account, uint _value
   )
-    onlyValidMintingAddress(_account)
     onlyContractAddress(address(crydrStorage))
     onlyAllowedManager('mint_crydr')
   {
-    require(_value > 0);
+    // input parameters checked by the storage
 
     crydrStorage.increaseBalance(_account, _value);
   }
@@ -35,20 +29,11 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   function burn(
     address _account, uint _value
   )
-    onlyValidMintingAddress(_account)
     onlyContractAddress(address(crydrStorage))
     onlyAllowedManager('burn_crydr')
   {
-    require(_value > 0);
+    // input parameters checked by the storage
 
     crydrStorage.decreaseBalance(_account, _value);
-  }
-
-
-  /* Helpers */
-
-  modifier onlyValidMintingAddress(address _account) {
-    require(_account != address(0x0));
-    _;
   }
 }
