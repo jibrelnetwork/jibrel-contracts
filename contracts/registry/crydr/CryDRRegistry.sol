@@ -4,17 +4,21 @@ pragma solidity ^0.4.15;
 
 
 import "../../util/JsonEncoder.sol";
+import "../../util/CommonModifiers.sol";
 import "../../crydr/controller/CrydrControllerBaseInterface.sol";
 import "./CryDRRegistryInterface.sol";
 import "./CryDRRegistryManagementInterface.sol";
-import "../../crydr/common/CrydrModifiers.sol";
 
 
 /**
  * @title CryDRRegistry
  * @dev   Stores list of tokens
  */
-contract CryDRRegistry is CryDRRegistryInterface, CryDRRegistryManagementInterface, Manageable, JsonEncoder, CrydrModifiers {
+contract CryDRRegistry is CryDRRegistryInterface,
+                          CryDRRegistryManagementInterface,
+                          Manageable,
+                          JsonEncoder,
+                          CommonModifiers {
 
   /* Libs */
 

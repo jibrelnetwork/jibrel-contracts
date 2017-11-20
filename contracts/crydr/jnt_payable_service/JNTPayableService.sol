@@ -4,14 +4,14 @@ pragma solidity ^0.4.15;
 
 
 import "../../lifecycle/Pausable.sol";
+import "../../util/CommonModifiers.sol";
 import "../controller/CrydrControllerBaseInterface.sol";
 import "../view/ERC20Interface.sol";
 import "../jnt/JNTControllerInterface.sol";
 import "./JNTPayableServiceInterface.sol";
-import "../common/CrydrModifiers.sol";
 
 
-contract JNTPayableService is JNTPayableServiceInterface, Pausable, CrydrModifiers {
+contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifiers {
 
   /* Storage */
 

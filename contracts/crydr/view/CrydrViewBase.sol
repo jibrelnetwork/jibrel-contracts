@@ -4,15 +4,19 @@ pragma solidity ^0.4.15;
 
 
 import '../../lifecycle/Pausable.sol';
+import "../../util/CommonModifiers.sol";
 import '../controller/CrydrControllerBaseInterface.sol';
 import './CrydrViewBaseInterface.sol';
-import '../common/CrydrModifiers.sol';
 import "../common/CrydrIdentifiable.sol";
 import "../common/CrydrIdentifiableInterface.sol";
 import '../common/CrydrBytecodeExecutable.sol';
 
 
-contract CrydrViewBase is CrydrViewBaseInterface, Pausable, CrydrModifiers, CrydrBytecodeExecutable, CrydrIdentifiable {
+contract CrydrViewBase is CrydrViewBaseInterface,
+                          Pausable,
+                          CommonModifiers,
+                          CrydrBytecodeExecutable,
+                          CrydrIdentifiable {
 
   /* Storage */
 

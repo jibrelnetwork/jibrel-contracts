@@ -4,12 +4,14 @@ pragma solidity ^0.4.15;
 
 
 import "../../lifecycle/Pausable.sol";
+import "../../util/CommonModifiers.sol";
 import "../../registry/investor/InvestorRegistryInterface.sol";
 import "./CrydrControllerERC20ValidatableInterface.sol";
-import "../common/CrydrModifiers.sol";
 
 
-contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface, Pausable, CrydrModifiers {
+contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface,
+                                            Pausable,
+                                            CommonModifiers {
 
   /* Storage */
 

@@ -4,10 +4,10 @@ pragma solidity ^0.4.15;
 
 
 /**
- * @title CrydrConditions
- * @dev Base contract which checks and allows some actions with contracts.
+ * @title CommonModifiers
+ * @dev Base contract which contains common checks.
  */
-contract CrydrModifiers {
+contract CommonModifiers {
 
   /* Helpers */
 
