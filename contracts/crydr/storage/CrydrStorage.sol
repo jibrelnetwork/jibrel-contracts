@@ -7,11 +7,11 @@ import "../../third-party/zeppelin-solidity/SafeMath.sol";
 import "../../lifecycle/Pausable.sol";
 import "../../util/CommonModifiers.sol";
 import "../../feature/bytecode/BytecodeExecutable.sol";
+import "../../feature/uuid/UUIDInterface.sol";
+import "../../feature/uuid/UUID.sol";
 import "./CrydrStorageBaseInterface.sol";
 import "./CrydrStorageERC20Interface.sol";
 import "../controller/CrydrControllerBaseInterface.sol";
-import "../common/CrydrIdentifiable.sol";
-import "../common/CrydrIdentifiableInterface.sol";
 
 
 /**
@@ -23,7 +23,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
                          Pausable,
                          CommonModifiers,
                          BytecodeExecutable,
-                         CrydrIdentifiable {
+                         UUID {
 
   /* Libraries */
   // todo check gas costs without lib
@@ -43,7 +43,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Constructor */
 
-  function CrydrStorage(uint _uniqueId) CrydrIdentifiable(_uniqueId) {}
+  function CrydrStorage(uint _uuid) UUID(_uuid) {}
 
 
   /* CrydrStorageBaseInterface */
@@ -308,7 +308,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
    */
   function unpauseContract() {
     require(isContract(address(crydrController)) == true);
-    require(CrydrIdentifiable.getUniqueId() == CrydrIdentifiableInterface(crydrController).getUniqueId());
+    require(UUID.getUUID() == UUIDInterface(crydrController).getUUID());
 
     Pausable.unpauseContract();
   }

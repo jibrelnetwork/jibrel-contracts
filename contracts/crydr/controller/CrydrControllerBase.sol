@@ -5,10 +5,10 @@ pragma solidity ^0.4.15;
 
 import "../../lifecycle/Pausable.sol";
 import "../../util/CommonModifiers.sol";
+import "../../feature/uuid/UUID.sol";
 import "../storage/CrydrStorageBaseInterface.sol";
 import "../view/CrydrViewBaseInterface.sol";
 import "./CrydrControllerBaseInterface.sol";
-import "../common/CrydrIdentifiable.sol";
 
 
 /**
@@ -18,7 +18,7 @@ import "../common/CrydrIdentifiable.sol";
 contract CrydrControllerBase is CrydrControllerBaseInterface,
                                 Pausable,
                                 CommonModifiers,
-                                CrydrIdentifiable {
+                                UUID {
 
   /* Storage */
 
@@ -32,7 +32,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
   /* Constructor */
 
-  function CrydrControllerBase(uint _uniqueId) CrydrIdentifiable(_uniqueId) {}
+  function CrydrControllerBase(uint _uuid) UUID(_uuid) {}
 
 
   /* Selfdestruct */
