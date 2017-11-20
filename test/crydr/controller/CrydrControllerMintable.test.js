@@ -1,5 +1,4 @@
 import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
-import {checkContractThrows} from "../../../routine/misc/UtilsTest";
 
 const CrydrControllerMintable = global.artifacts.require('CrydrControllerMintable.sol');
 const CrydrStorage            = global.artifacts.require('CrydrStorage.sol');
@@ -7,7 +6,6 @@ const CrydrViewBase           = global.artifacts.require('CrydrViewBase.sol');
 
 const UtilsTestRoutines               = require('../../../routine/misc/UtilsTest');
 const ManageableRoutines              = require('../../../routine/lifecycle/Manageable');
-const PausableRoutines                = require('../../../routine/lifecycle/Pausable');
 const CrydrControllerBaseRoutines     = require('../../../routine/crydr/controller/CrydrControllerBaseInterface');
 const crydrStorageGeneralRoutines     = require('../../../routine/crydr/storage/CrydrStorageGeneral');
 
@@ -27,8 +25,8 @@ global.contract('CrydrControllerMintable', (accounts) => {
 
   global.beforeEach(async () => {
     crydrControllerMintableContract = await CrydrControllerMintable.new(1, { from: owner });
-    crydrStorageContract            = await CrydrStorage.new(1, { from: owner });
-    crydrViewBaseContract           = await CrydrViewBase.new(viewName, 1, { from: owner });
+    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
+    crydrViewBaseContract = await CrydrViewBase.new(viewName, 1, { from: owner });
 
     await ManageableRoutines.grantManagerPermissions(crydrControllerMintableContract.address, owner, manager02,
                                                      ['mint_crydr']);
@@ -45,28 +43,22 @@ global.contract('CrydrControllerMintable', (accounts) => {
   });
 
   global.it('should test that contract works as expected', async () => {
-    global.console.log('\tcrydrControllerMintableContract: ${crydrControllerMintableContract.address}');
+    global.console.log(`\tcrydrControllerMintableContract: ${crydrControllerMintableContract.address}`);
     global.assert.notStrictEqual(crydrControllerMintableContract.address, '0x0000000000000000000000000000000000000000');
 
-    global.console.log('\tcrydrStorageContract: ${crydrStorageContract.address}');
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
     global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
 
-    global.console.log('\tcrydrViewBaseContract: ${crydrViewBaseContract.address}');
+    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
     global.assert.notStrictEqual(crydrViewBaseContract.address, '0x0000000000000000000000000000000000000000');
 
-    let isPaused = await crydrControllerMintableContract.getPaused.call();
+    const isPaused = await crydrControllerMintableContract.getPaused.call();
     global.assert.strictEqual(isPaused, false, 'Just configured crydrControllerMintable contract must be unpaused');
 
-    let storageAddress = await crydrControllerMintableContract.getCrydrStorage.call();
+    const storageAddress = await crydrControllerMintableContract.getCrydrStorage.call();
     global.assert.strictEqual(storageAddress, crydrStorageContract.address, 'Just configured crydrControllerMintable should have initialized crydrStorage address');
 
-    let viewsNumber = await crydrControllerMintableContract.getCrydrViewsNumber.call();
-    global.assert.strictEqual(viewsNumber.toNumber(), 1, 'Just configured crydrControllerMintable should have a view');
-
-    let viewAddress = await crydrControllerMintableContract.getCrydrViewByNumber.call(0);
-    global.assert.strictEqual(viewAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
-
-    viewAddress = await crydrControllerMintableContract.getCrydrView.call(viewName);
+    const viewAddress = await crydrControllerMintableContract.getCrydrView.call(viewName);
     global.assert.strictEqual(viewAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
 
     const initialBalance = await crydrStorageContract.getBalance.call(investor01);
@@ -84,16 +76,16 @@ global.contract('CrydrControllerMintable', (accounts) => {
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
-    global.console.log('\tcrydrControllerMintableContract: ${crydrControllerMintableContract.address}');
+    global.console.log(`\tcrydrControllerMintableContract: ${crydrControllerMintableContract.address}`);
     global.assert.notStrictEqual(crydrControllerMintableContract.address, '0x0000000000000000000000000000000000000000');
 
-    global.console.log('\tcrydrStorageContract: ${crydrStorageContract.address}');
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
     global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
 
-    global.console.log('\tcrydrViewBaseContract: ${crydrViewBaseContract.address}');
+    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
     global.assert.notStrictEqual(crydrViewBaseContract.address, '0x0000000000000000000000000000000000000000');
 
-    let isPaused = await crydrControllerMintableContract.getPaused.call();
+    const isPaused = await crydrControllerMintableContract.getPaused.call();
     global.assert.strictEqual(isPaused, false, 'Just configured crydrControllerBase contract must be unpaused');
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.mint.sendTransaction,

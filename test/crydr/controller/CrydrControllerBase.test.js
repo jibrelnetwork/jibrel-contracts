@@ -1,5 +1,4 @@
 import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
-import {checkContractThrows} from "../../../routine/misc/UtilsTest";
 
 const CrydrControllerBase = global.artifacts.require('CrydrControllerBase.sol');
 const CrydrStorage        = global.artifacts.require('CrydrStorage.sol');
@@ -9,7 +8,6 @@ const UtilsTestRoutines           = require('../../../routine/misc/UtilsTest');
 const ManageableRoutines          = require('../../../routine/lifecycle/Manageable');
 const PausableRoutines            = require('../../../routine/lifecycle/Pausable');
 const CrydrControllerBaseRoutines = require('../../../routine/crydr/controller/CrydrControllerBaseInterface');
-const CrydrStorageGeneral         = require('../../../routine/crydr/storage/CrydrStorageGeneral');
 
 
 global.contract('CrydrControllerBase', (accounts) => {
@@ -28,8 +26,8 @@ global.contract('CrydrControllerBase', (accounts) => {
 
   global.beforeEach(async () => {
     crydrControllerBaseContract = await CrydrControllerBase.new(1, { from: owner });
-    crydrStorageContract        = await CrydrStorage.new(1, { from: owner });
-    crydrViewBaseContract       = await CrydrViewBase.new(viewName, 1, { form: owner });
+    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
+    crydrViewBaseContract = await CrydrViewBase.new(viewName, 1, { form: owner });
 
     await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager01,
                                                      ['pause_contract']);
@@ -49,13 +47,13 @@ global.contract('CrydrControllerBase', (accounts) => {
   });
 
   global.it('should test that contract works as expected', async () => {
-    global.console.log('\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}');
+    global.console.log(`\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}`);
     global.assert.notStrictEqual(crydrControllerBaseContract.address, 0x0);
 
-    global.console.log('\tcrydrStorageContract: ${crydrStorageContract.address}');
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
     global.assert.notStrictEqual(crydrStorageContract.address, 0x0);
 
-    global.console.log('\tcrydrViewBaseContract: ${crydrViewBaseContract.address}');
+    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
     global.assert.notStrictEqual(crydrViewBaseContract.address, 0x0);
 
     let isPaused = await crydrControllerBaseContract.getPaused.call();
@@ -69,18 +67,9 @@ global.contract('CrydrControllerBase', (accounts) => {
     storageAddress = await crydrControllerBaseContract.getCrydrStorage.call();
     global.assert.strictEqual(storageAddress, crydrStorageContract.address, 'Expected that crydrStorage is set');
 
-    let viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
-    global.assert.strictEqual(viewsNumber.toNumber(), 0, 'Just deployed crydrControllerBase should have no views');
-
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
                                       [viewName, crydrViewBaseContract.address, { from: manager04 }]);
-    let viewsAddress = await crydrControllerBaseContract.getCrydrView.call(viewName);
-    global.assert.strictEqual(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
-
-    viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
-    global.assert.strictEqual(viewsNumber.toNumber(), 1, 'Expected that controller have only one view');
-
-    viewsAddress = await crydrControllerBaseContract.getCrydrViewByNumber.call(0);
+    const viewsAddress = await crydrControllerBaseContract.getCrydrView.call(viewName);
     global.assert.strictEqual(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
 
     await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
@@ -93,18 +82,16 @@ global.contract('CrydrControllerBase', (accounts) => {
 
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
                                       [viewName, { from: manager05 }]);
-    viewsNumber = await crydrControllerBaseContract.getCrydrViewsNumber.call();
-    global.assert.strictEqual(viewsNumber.toNumber(), 0, 'Expected that controller have no any views');
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
-    global.console.log('\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}');
+    global.console.log(`\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}`);
     global.assert.notStrictEqual(crydrControllerBaseContract.address, 0x0);
 
-    global.console.log('\tcrydrStorageContract: ${crydrStorageContract.address}');
+    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
     global.assert.notStrictEqual(crydrStorageContract.address, 0x0);
 
-    global.console.log('\tcrydrViewBaseContract: ${crydrViewBaseContract.address}');
+    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
     global.assert.notStrictEqual(crydrViewBaseContract.address, 0x0);
 
     let isPaused = await crydrControllerBaseContract.getPaused.call();
@@ -117,9 +104,6 @@ global.contract('CrydrControllerBase', (accounts) => {
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
                                                 [0x0, { from: manager03 }],
                                                 'Should be a valid address of CrydrStorage');
-
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.getCrydrViewByNumber.call,
-                                                [0], 'Just deployed crydrControllerBase should have no views');
 
     await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
                                                 [viewName, crydrViewBaseContract.address, { from: manager01 }],
@@ -182,44 +166,43 @@ global.contract('CrydrControllerBase', (accounts) => {
                                       [crydrStorageContract.address, { from: manager03 }]);
     const crydrStorageAddress = crydrStorageContract.address;
     let pastEvents = await CrydrControllerBaseRoutines.getCrydrStorageChangedEvents(crydrControllerBaseContract.address,
-                                                                      {
-                                                                        crydrStorageAddress,
-                                                                      },
-                                                                      {
-                                                                        fromBlock: blockNumber + 1,
-                                                                        toBlock:   blockNumber + 1,
-                                                                        address:   manager03,
-                                                                      });
+                                                                                    {
+                                                                                      crydrStorageAddress,
+                                                                                    },
+                                                                                    {
+                                                                                      fromBlock: blockNumber + 1,
+                                                                                      toBlock:   blockNumber + 1,
+                                                                                      address:   manager03,
+                                                                                    });
     global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
                                       [viewName, crydrViewBaseContract.address, { from: manager04 }]);
-    const crydrControllerAddress = crydrStorageContract.address;
+    const crydrViewAddress = crydrViewBaseContract.address;
     pastEvents = await CrydrControllerBaseRoutines.getCrydrViewAddedEvents(crydrControllerBaseContract.address,
-                                                                      {
-                                                                        viewName, crydrViewAddress,
-                                                                      },
-                                                                      {
-                                                                        fromBlock: blockNumber + 1,
-                                                                        toBlock:   blockNumber + 1,
-                                                                        address:   manager04,
-                                                                      });
+                                                                           {
+                                                                             viewName, crydrViewAddress,
+                                                                           },
+                                                                           {
+                                                                             fromBlock: blockNumber + 1,
+                                                                             toBlock:   blockNumber + 1,
+                                                                             address:   manager04,
+                                                                           });
     global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
     await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
                                       [viewName, { from: manager05 }]);
-    const crydrViewAddress = crydrViewBaseContract.address;
     pastEvents = await CrydrControllerBaseRoutines.getCrydrViewRemovedEvents(crydrControllerBaseContract.address,
-                                                                   {
-                                                                     viewName, crydrViewAddress,
-                                                                   },
-                                                                   {
-                                                                     fromBlock: blockNumber + 1,
-                                                                     toBlock:   blockNumber + 1,
-                                                                     address:   manager05,
-                                                                   });
+                                                                             {
+                                                                               viewName, crydrViewAddress,
+                                                                             },
+                                                                             {
+                                                                               fromBlock: blockNumber + 1,
+                                                                               toBlock:   blockNumber + 1,
+                                                                               address:   manager05,
+                                                                             });
     global.assert.strictEqual(pastEvents.length, 1);
   });
 });

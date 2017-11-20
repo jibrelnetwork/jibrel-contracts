@@ -28,7 +28,6 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
   mapping (string => address) crydrViewsAddresses;
 
   // optimizations
-  address[] crydrViewsAddressesList;
   mapping (address => bool) isRegisteredView;
 
 
@@ -77,7 +76,6 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
     crydrViewsAddresses[_viewApiStandardName] = _crydrView;
     isRegisteredView[_crydrView] = true;
-    crydrViewsAddressesList.push(_crydrView);
 
     CrydrViewAddedEvent(_viewApiStandardName, _crydrView);
   }
@@ -97,46 +95,11 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     crydrViewsAddresses[_viewApiStandardName] == address(0x0);
     isRegisteredView[removedView] = false;
 
-    // remove element from the list
-    uint index = 0;
-    uint i;
-    for (i = 0; i < crydrViewsAddressesList.length; i++) {
-      if (crydrViewsAddressesList[i] == removedView) {
-        index = i;
-      }
-    }
-    for (i = index; i < crydrViewsAddressesList.length - 1; i++){
-        crydrViewsAddressesList[i] = crydrViewsAddressesList[i+1];
-    }
-    delete crydrViewsAddressesList[crydrViewsAddressesList.length - 1];
-    crydrViewsAddressesList.length--;
-
     CrydrViewRemovedEvent(_viewApiStandardName, removedView);
   }
 
   function getCrydrView(string _viewApiStandardName) constant returns (address) {
     return crydrViewsAddresses[_viewApiStandardName];
-  }
-
-  function getCrydrViewsNumber() constant returns (uint) {
-    return crydrViewsAddressesList.length;
-  }
-
-  function getCrydrViewByNumber(uint _viewId) constant returns (address) {
-    return crydrViewsAddressesList[_viewId];
-  }
-
-
-  /* Pausable */
-
-  /**
-   * @dev Override method to ensure that contract properly configured before it is unpaused
-   */
-  function unpauseContract() {
-    require(isContract(address(crydrStorage)) == true);
-    require(crydrViewsAddressesList.length > 0);
-
-    Pausable.unpauseContract();
   }
 
 
