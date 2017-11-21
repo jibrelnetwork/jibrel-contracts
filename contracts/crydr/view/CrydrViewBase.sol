@@ -28,7 +28,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
 
   function CrydrViewBase(
     string _standardName,
-    uint _assetID
+    string _assetID
   )
     AssetID(_assetID)
     onlyValidStandardName(_standardName)
@@ -73,7 +73,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
    */
   function unpauseContract() {
     require(isContract(address(crydrController)) == true);
-    require(AssetID.getAssetID() == AssetIDInterface(crydrController).getAssetID());
+    require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
     Pausable.unpauseContract();
   }

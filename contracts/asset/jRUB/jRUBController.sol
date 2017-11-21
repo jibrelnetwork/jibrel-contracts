@@ -7,5 +7,5 @@ import "../../crydr/controller/CrydrControllerJCash.sol";
 
 
 contract jRUBController is CrydrControllerJCash {
-  function jRUBController() CrydrControllerJCash(0x6) {}
+  function jRUBController() CrydrControllerJCash('jRUB') {}
 }

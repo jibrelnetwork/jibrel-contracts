@@ -20,7 +20,7 @@ contract CrydrControllerMock is AssetID {
 
   function CrydrControllerMock(
     address _crydrStorage,
-    uint _assetID
+    string _assetID
   )
     AssetID(_assetID)
   {

@@ -19,7 +19,7 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   /* Constructor */
 
-  function CrydrViewERC20(string _name, string _symbol, uint8 _decimals, uint _assetID)
+  function CrydrViewERC20(string _name, string _symbol, uint8 _decimals, string _assetID)
     CrydrViewBase('erc20', _assetID)
     ERC20Named(_name, _symbol, _decimals) {}
 

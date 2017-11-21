@@ -7,5 +7,5 @@ import "../../crydr/controller/CrydrControllerJCash.sol";
 
 
 contract jGBPController is CrydrControllerJCash {
-  function jGBPController() CrydrControllerJCash(0x4) {}
+  function jGBPController() CrydrControllerJCash('jGBP') {}
 }

@@ -7,5 +7,5 @@ import "../../crydr/storage/CrydrStorage.sol";
 
 
 contract jCNYStorage is CrydrStorage {
-  function jCNYStorage() CrydrStorage(0x2) {}
+  function jCNYStorage() CrydrStorage('jCNY') {}
 }

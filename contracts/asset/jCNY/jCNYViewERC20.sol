@@ -7,5 +7,5 @@ import '../../crydr/view/CrydrViewERC20.sol';
 
 
 contract jCNYViewERC20 is CrydrViewERC20 {
-  function jCNYViewERC20() CrydrViewERC20("Chinese yuan", "jCNY", 18, 0x2) {}
+  function jCNYViewERC20() CrydrViewERC20("Chinese yuan", "jCNY", 18, 'jCNY') {}
 }

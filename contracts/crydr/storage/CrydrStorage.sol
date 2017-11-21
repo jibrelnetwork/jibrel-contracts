@@ -42,7 +42,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Constructor */
 
-  function CrydrStorage(uint _assetID) AssetID(_assetID) {
+  function CrydrStorage(string _assetID) AssetID(_assetID) {
     accountBlocks[0x0] = (0xffffffffffffffff - 1);
   }
 
@@ -307,7 +307,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
    */
   function unpauseContract() {
     require(isContract(address(crydrController)) == true);
-    require(AssetID.getAssetID() == AssetIDInterface(crydrController).getAssetID());
+    require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
     Pausable.unpauseContract();
   }

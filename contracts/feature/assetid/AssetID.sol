@@ -14,19 +14,23 @@ contract AssetID is AssetIDInterface {
 
   /* Storage */
 
-  uint assetID;
+  string assetID;
 
 
   /* Constructor */
 
-  function AssetID(uint _assetID) {
+  function AssetID(string _assetID) {
     assetID = _assetID;
   }
 
 
   /* Getters */
 
-  function getAssetID() constant returns (uint) {
+  function getAssetID() constant returns (string) {
     return assetID;
+  }
+
+  function getAssetIDHash() constant returns (bytes32) {
+    return sha3(assetID);
   }
 }

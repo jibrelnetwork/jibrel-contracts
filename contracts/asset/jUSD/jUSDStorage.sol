@@ -7,5 +7,5 @@ import "../../crydr/storage/CrydrStorage.sol";
 
 
 contract jUSDStorage is CrydrStorage {
-  function jUSDStorage() CrydrStorage(0x8) {}
+  function jUSDStorage() CrydrStorage('jUSD') {}
 }

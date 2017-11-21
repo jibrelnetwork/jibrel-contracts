@@ -10,5 +10,6 @@ pragma solidity ^0.4.15;
  * @dev This will help to avoid misconfiguration of contracts
  */
 contract AssetIDInterface {
-  function getAssetID() constant returns (uint);
+  function getAssetID() constant returns (string);
+  function getAssetIDHash() constant returns (bytes32);
 }

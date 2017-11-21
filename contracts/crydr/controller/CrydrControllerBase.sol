@@ -31,7 +31,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
   /* Constructor */
 
-  function CrydrControllerBase(uint _assetID) AssetID(_assetID) {}
+  function CrydrControllerBase(string _assetID) AssetID(_assetID) {}
 
 
   /* CrydrControllerBaseInterface */

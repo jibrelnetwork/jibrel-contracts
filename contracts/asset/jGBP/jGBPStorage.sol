@@ -7,5 +7,5 @@ import "../../crydr/storage/CrydrStorage.sol";
 
 
 contract jGBPStorage is CrydrStorage {
-  function jGBPStorage() CrydrStorage(0x4) {}
+  function jGBPStorage() CrydrStorage('jGBP') {}
 }

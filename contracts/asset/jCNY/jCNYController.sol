@@ -7,5 +7,5 @@ import "../../crydr/controller/CrydrControllerJCash.sol";
 
 
 contract jCNYController is CrydrControllerJCash {
-  function jCNYController() CrydrControllerJCash(0x2) {}
+  function jCNYController() CrydrControllerJCash('jCNY') {}
 }

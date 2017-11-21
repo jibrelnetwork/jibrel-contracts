@@ -24,7 +24,7 @@ contract JNTController is CrydrControllerBase,
 
   /* Constructor */
 
-  function JNTController() CrydrControllerBase(0xfffffffe) {}
+  function JNTController() CrydrControllerBase('JNT') {}
 
 
   /* JNTControllerInterface */

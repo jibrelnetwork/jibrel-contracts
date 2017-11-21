@@ -7,5 +7,5 @@ import "../../crydr/controller/CrydrControllerJCash.sol";
 
 
 contract jUSDController is CrydrControllerJCash {
-  function jUSDController() CrydrControllerJCash(0x8) {}
+  function jUSDController() CrydrControllerJCash('jUSD') {}
 }

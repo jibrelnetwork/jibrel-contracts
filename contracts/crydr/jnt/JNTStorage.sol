@@ -7,5 +7,5 @@ import "../storage/CrydrStorage.sol";
 
 
 contract JNTStorage is CrydrStorage {
-  function JNTStorage() CrydrStorage(0xfffffffe) {}
+  function JNTStorage() CrydrStorage('JNT') {}
 }

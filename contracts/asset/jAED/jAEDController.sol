@@ -7,5 +7,5 @@ import "../../crydr/controller/CrydrControllerJCash.sol";
 
 
 contract jAEDController is CrydrControllerJCash {
-  function jAEDController() CrydrControllerJCash(0x1) {}
+  function jAEDController() CrydrControllerJCash('jAED') {}
 }

@@ -7,5 +7,5 @@ import "../../crydr/storage/CrydrStorage.sol";
 
 
 contract jEURStorage is CrydrStorage {
-  function jEURStorage() CrydrStorage(0x3) {}
+  function jEURStorage() CrydrStorage('jEUR') {}
 }

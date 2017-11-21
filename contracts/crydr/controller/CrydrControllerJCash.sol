@@ -21,7 +21,7 @@ contract CrydrControllerJCash is CrydrControllerBase,
 
   /* Constructor */
 
-  function CrydrControllerJCash(uint _uniqueId) CrydrControllerBase(_uniqueId) {}
+  function CrydrControllerJCash(string _assetID) CrydrControllerBase(_assetID) {}
 
 
   /* CrydrControllerERC20 */
