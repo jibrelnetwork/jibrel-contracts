@@ -18,7 +18,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   function mint(
     address _account, uint _value
   )
-    onlyContractAddress(address(crydrStorage))
+    whenContractNotPaused
     onlyAllowedManager('mint_crydr')
   {
     // input parameters checked by the storage
@@ -29,7 +29,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   function burn(
     address _account, uint _value
   )
-    onlyContractAddress(address(crydrStorage))
+    whenContractNotPaused
     onlyAllowedManager('burn_crydr')
   {
     // input parameters checked by the storage

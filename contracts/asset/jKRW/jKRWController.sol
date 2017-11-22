@@ -6,6 +6,6 @@ pragma solidity ^0.4.15;
 import "../../crydr/asset/CrydrControllerJCash.sol";
 
 
-contract jUSDController is CrydrControllerJCash {
-  function jUSDController() CrydrControllerJCash('jUSD') {}
+contract jKRWController is CrydrControllerJCash {
+  function jKRWController() CrydrControllerJCash('jKRW') {}
 }

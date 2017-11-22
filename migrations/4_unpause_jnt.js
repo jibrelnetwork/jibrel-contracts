@@ -6,8 +6,6 @@ global.artifacts = artifacts; // eslint-disable-line no-undef
 
 const SubmitTx = require('../jsapi/misc/SubmitTx');
 
-const JNTStorage    = global.artifacts.require('JNTStorage.sol');
-const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
 const GlobalConfig = require('./init/GlobalConfig');
@@ -17,8 +15,7 @@ const CrydrInit = require('./init/CrydrInit');
 /* Migration actions */
 
 const executeMigration = async () => {
-  await CrydrInit.initCrydr(JNTStorage, JNTController, JNTViewERC20, 'erc20');
-  await CrydrInit.upauseCrydrControllerAndStorage(JNTStorage, JNTController);
+  await CrydrInit.upauseCrydrView(JNTViewERC20);
 };
 
 const verifyMigration = async () => {
