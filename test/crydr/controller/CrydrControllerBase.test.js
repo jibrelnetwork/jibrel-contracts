@@ -1,13 +1,14 @@
-import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
-
 const CrydrControllerBase = global.artifacts.require('CrydrControllerBase.sol');
 const CrydrStorage        = global.artifacts.require('CrydrStorage.sol');
 const CrydrViewBase       = global.artifacts.require('CrydrViewBase.sol');
 
-const UtilsTestRoutines           = require('../../../routine/misc/UtilsTest');
-const ManageableRoutines          = require('../../../routine/lifecycle/Manageable');
-const PausableRoutines            = require('../../../routine/lifecycle/Pausable');
-const CrydrControllerBaseRoutines = require('../../../routine/crydr/controller/CrydrControllerBaseInterface');
+const PausableJSAPI            = require('../../../jsapi/lifecycle/Pausable');
+const CrydrControllerBaseJSAPI = require('../../../jsapi/crydr/controller/CrydrControllerBaseInterface');
+
+const GlobalConfig = require('../../../migrations/init/GlobalConfig');
+const CrydrControllerInit = require('../../../migrations/init/CrydrControllerInit');
+
+const CheckExceptions = require('../../../test_util/CheckExceptions');
 
 
 global.contract('CrydrControllerBase', (accounts) => {
@@ -15,194 +16,206 @@ global.contract('CrydrControllerBase', (accounts) => {
   let crydrStorageContract;
   let crydrViewBaseContract;
 
-  const owner     = accounts[0];
-  const manager01 = accounts[1];
-  const manager02 = accounts[2];
-  const manager03 = accounts[3];
-  const manager04 = accounts[4];
-  const manager05 = accounts[5];
+  let crydrStorageContractStub01;
+  let crydrViewBaseContractStub01;
 
-  const viewName = 'TestView';
+
+  GlobalConfig.setAccounts(accounts);
+  const { owner, managerGeneral, managerPause, testInvestor1 } = GlobalConfig.getAccounts();
+
+
+  const viewStandard = 'TestView';
+  const assetID = 'jASSET';
+
+  const viewStandardStub01 = 'TestViewStub01';
 
   global.beforeEach(async () => {
-    crydrControllerBaseContract = await CrydrControllerBase.new(1, { from: owner });
-    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
-    crydrViewBaseContract = await CrydrViewBase.new(viewName, 1, { form: owner });
+    crydrControllerBaseContract = await CrydrControllerBase.new(assetID, { from: owner });
+    crydrStorageContract = await CrydrStorage.new(assetID, { from: owner });
+    crydrViewBaseContract = await CrydrViewBase.new(assetID, viewStandard, { form: owner });
 
-    await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager01,
-                                                     ['pause_contract']);
-    await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager02,
-                                                     ['unpause_contract']);
-    await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager03,
-                                                     ['set_crydr_storage']);
-    await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager04,
-                                                     ['set_crydr_view']);
-    await ManageableRoutines.grantManagerPermissions(crydrControllerBaseContract.address, owner, manager05,
-                                                     ['remove_crydr_view']);
-    await ManageableRoutines.enableManager(crydrControllerBaseContract.address, owner, manager01);
-    await ManageableRoutines.enableManager(crydrControllerBaseContract.address, owner, manager02);
-    await ManageableRoutines.enableManager(crydrControllerBaseContract.address, owner, manager03);
-    await ManageableRoutines.enableManager(crydrControllerBaseContract.address, owner, manager04);
-    await ManageableRoutines.enableManager(crydrControllerBaseContract.address, owner, manager05);
+    crydrStorageContractStub01 = await CrydrStorage.new(assetID, { from: owner });
+    crydrViewBaseContractStub01 = await CrydrViewBase.new(assetID, viewStandardStub01, { form: owner });
+
+    await CrydrControllerInit.configureCrydrControllerManagers(crydrControllerBaseContract.address);
+
+    global.console.log('\tContracts deployed for tests CrydrControllerBase:');
+    global.console.log(`\t\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}`);
+    global.console.log(`\t\tcrydrStorageContract: ${crydrStorageContract.address}`);
+    global.console.log(`\t\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
+    global.console.log(`\t\tcrydrStorageContractStub01: ${crydrStorageContractStub01.address}`);
+    global.console.log(`\t\tcrydrViewBaseContractStub01: ${crydrViewBaseContractStub01.address}`);
   });
 
-  global.it('should test that contract works as expected', async () => {
-    global.console.log(`\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}`);
-    global.assert.notStrictEqual(crydrControllerBaseContract.address, 0x0);
-
-    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
-    global.assert.notStrictEqual(crydrStorageContract.address, 0x0);
-
-    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
-    global.assert.notStrictEqual(crydrViewBaseContract.address, 0x0);
-
+  global.it('should test that view is configurable', async () => {
     let isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.strictEqual(isPaused, true, 'Just deployed crydrControllerBase contract must be paused');
-
-    let storageAddress = await crydrControllerBaseContract.getCrydrStorage.call();
-    global.assert.strictEqual(storageAddress, '0x0000000000000000000000000000000000000000', 'Just deployed crydrControllerBase should have noninitialized crydrStorage address');
-
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-                                      [crydrStorageContract.address, { from: manager03 }]);
-    storageAddress = await crydrControllerBaseContract.getCrydrStorage.call();
-    global.assert.strictEqual(storageAddress, crydrStorageContract.address, 'Expected that crydrStorage is set');
-
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                      [viewName, crydrViewBaseContract.address, { from: manager04 }]);
-    const viewsAddress = await crydrControllerBaseContract.getCrydrView.call(viewName);
-    global.assert.strictEqual(viewsAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
-
-    await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
-    isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
-
-    await PausableRoutines.pauseContract(crydrControllerBaseContract.address, manager01);
-    isPaused = await crydrControllerBaseContract.getPaused.call();
     global.assert.strictEqual(isPaused, true, 'Expected that contract is paused');
 
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
-                                      [viewName, { from: manager05 }]);
-  });
 
-  global.it('should test that functions throw if general conditions are not met', async () => {
-    global.console.log(`\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}`);
-    global.assert.notStrictEqual(crydrControllerBaseContract.address, 0x0);
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrView,
+                                              [crydrControllerBaseContract.address, testInvestor1,
+                                               crydrViewBaseContract.address, viewStandard],
+                                              'Only manager should be able to add a CrydrView');
 
-    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
-    global.assert.notStrictEqual(crydrStorageContract.address, 0x0);
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrView,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               0x0, viewStandard],
+                                              'Should be a valid address of CrydrView');
 
-    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
-    global.assert.notStrictEqual(crydrViewBaseContract.address, 0x0);
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrView,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               crydrViewBaseContract.address, ''],
+                                              'viewAPIviewStandard could not be empty');
 
-    let isPaused = await crydrControllerBaseContract.getPaused.call();
-    global.assert.strictEqual(isPaused, true, 'Just deployed crydrControllerBase contract must be paused');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-                                                [crydrStorageContract.address, { from: manager01 }],
-                                                'Only manager should be able to set CrydrStorage');
+    await CrydrControllerBaseJSAPI.setCrydrView(crydrControllerBaseContract.address, managerGeneral,
+                                                crydrViewBaseContract.address, viewStandard);
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-                                                [0x0, { from: manager03 }],
-                                                'Should be a valid address of CrydrStorage');
+    let crydrViewAddressReceived = await crydrControllerBaseContract.getCrydrView.call(viewStandard);
+    global.assert.strictEqual(crydrViewAddressReceived, crydrViewBaseContract.address);
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                                [viewName, crydrViewBaseContract.address, { from: manager01 }],
-                                                'Only manager should be able to add a CrydrView');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                                [viewName, 0x0, { from: manager04 }],
-                                                'Should be a valid address of CrydrView');
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrView,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               crydrViewBaseContractStub01.address, viewStandard],
+                                              'Should be a different view name');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                                ['', crydrViewBaseContract.address, { from: manager04 }],
-                                                'viewAPIStandardName could not be empty');
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrView,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               crydrViewBaseContract.address, viewStandardStub01],
+                                              'Should be a different view address');
 
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                      [viewName, crydrViewBaseContract.address, { from: manager04 }]);
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.removeCrydrView,
+                                              [crydrControllerBaseContract.address, testInvestor1,
+                                               viewStandard],
+                                              'Only manager should be able to remove a CrydrView');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                                [viewName, crydrViewBaseContract.address, { from: manager04 }],
-                                                'Should be a different view address');
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.removeCrydrView,
+                                              [crydrControllerBaseContract.address, testInvestor1,
+                                               ''],
+                                              'viewAPIviewStandard could not be empty');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.removeCrydrView.sendTransaction,
-                                                [viewName, { from: manager01 }],
-                                                'Only manager should be able to remove a CrydrView');
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.removeCrydrView,
+                                              [crydrControllerBaseContract.address, testInvestor1,
+                                               'xxx'],
+                                              'viewAPIviewStandard must be known');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.removeCrydrView.sendTransaction,
-                                                ['', { from: manager05 }],
-                                                'viewAPIStandardName could not be empty');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpauseContract.sendTransaction,
-                                                [{ from: manager01 }],
-                                                'Only manager should be able to unpause');
+    await PausableJSAPI.unpauseContract(crydrControllerBaseContract.address, managerPause);
 
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-                                      [crydrStorageContract.address, { from: manager03 }]);
-
-    await PausableRoutines.unpauseContract(crydrControllerBaseContract.address, manager02);
     isPaused = await crydrControllerBaseContract.getPaused.call();
     global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.unpauseContract.sendTransaction,
-                                                [{ from: manager02 }],
-                                                'It should not be possible to unpause already unpaused contract');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-                                                [crydrStorageContract.address, { from: manager03 }],
-                                                'It should no be possible to set crydrStorage if contract is unpaused');
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrView,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               crydrViewBaseContractStub01.address, viewStandard],
+                                              'It should no be possible to set crydrView if contract is unpaused');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                                [viewName, crydrViewBaseContract.address, { from: manager04 }],
-                                                'It should no be possible to set crydrView if contract is unpaused');
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.removeCrydrView,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               viewStandard],
+                                              'It should no be possible to remove a view if contract is unpaused');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerBaseContract.removeCrydrView.sendTransaction,
-                                                [viewName, { from: manager05 }],
-                                                'It should no be possible to remove a view if contract is unpaused');
+
+    crydrViewAddressReceived = await crydrControllerBaseContract.getCrydrView.call(viewStandard);
+    global.assert.strictEqual(crydrViewAddressReceived, crydrViewBaseContract.address);
   });
+
+
+  global.it('should test that storage is configurable', async () => {
+    let isPaused = await crydrControllerBaseContract.getPaused.call();
+    global.assert.strictEqual(isPaused, true, 'Expected that contract is paused');
+
+
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrStorage,
+                                              [crydrControllerBaseContract.address, testInvestor1,
+                                               crydrStorageContract.address],
+                                              'Only manager should be able to set CrydrStorage');
+
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrStorage,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               0x0],
+                                              'Should be a valid address of CrydrStorage');
+
+
+    await CrydrControllerBaseJSAPI.setCrydrStorage(crydrControllerBaseContract.address, managerGeneral,
+                                                   crydrStorageContract.address);
+
+    let crydrStorageAddressReceived = await CrydrControllerBaseJSAPI
+      .getCrydrStorage(crydrControllerBaseContract.address);
+    global.assert.strictEqual(crydrStorageAddressReceived, crydrStorageContract.address);
+
+
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrStorage,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               crydrStorageContract.address],
+                                              'Should be a different storage address');
+
+
+    await PausableJSAPI.unpauseContract(crydrControllerBaseContract.address, managerPause);
+
+    isPaused = await crydrControllerBaseContract.getPaused.call();
+    global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
+
+
+    await CheckExceptions.checkContractThrows(CrydrControllerBaseJSAPI.setCrydrStorage,
+                                              [crydrControllerBaseContract.address, managerGeneral,
+                                               crydrStorageContractStub01.address],
+                                              'It should no be possible to set storage if contract is unpaused');
+
+
+    crydrStorageAddressReceived = await crydrControllerBaseContract.getCrydrStorage.call();
+    global.assert.strictEqual(crydrStorageAddressReceived, crydrStorageContract.address);
+  });
+
 
   global.it('should test that functions fire events', async () => {
     let blockNumber = global.web3.eth.blockNumber;
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrStorage.sendTransaction,
-                                      [crydrStorageContract.address, { from: manager03 }]);
+    await CrydrControllerBaseJSAPI.setCrydrStorage(crydrControllerBaseContract.address, managerGeneral,
+                                                   crydrStorageContract.address);
     const crydrStorageAddress = crydrStorageContract.address;
-    let pastEvents = await CrydrControllerBaseRoutines.getCrydrStorageChangedEvents(crydrControllerBaseContract.address,
-                                                                                    {
-                                                                                      crydrStorageAddress,
-                                                                                    },
-                                                                                    {
-                                                                                      fromBlock: blockNumber + 1,
-                                                                                      toBlock:   blockNumber + 1,
-                                                                                      address:   manager03,
-                                                                                    });
+    let pastEvents = await CrydrControllerBaseJSAPI
+      .getCrydrStorageChangedEvents(crydrControllerBaseContract.address,
+                                    {
+                                      crydrStorageAddress,
+                                    },
+                                    {
+                                      fromBlock: blockNumber + 1,
+                                      toBlock:   blockNumber + 1,
+                                      address:   managerGeneral,
+                                    });
     global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.setCrydrView.sendTransaction,
-                                      [viewName, crydrViewBaseContract.address, { from: manager04 }]);
+    await CrydrControllerBaseJSAPI.setCrydrView(crydrControllerBaseContract.address, managerGeneral,
+                                                crydrViewBaseContract.address, viewStandard);
     const crydrViewAddress = crydrViewBaseContract.address;
-    pastEvents = await CrydrControllerBaseRoutines.getCrydrViewAddedEvents(crydrControllerBaseContract.address,
-                                                                           {
-                                                                             viewName, crydrViewAddress,
-                                                                           },
-                                                                           {
-                                                                             fromBlock: blockNumber + 1,
-                                                                             toBlock:   blockNumber + 1,
-                                                                             address:   manager04,
-                                                                           });
+    pastEvents = await CrydrControllerBaseJSAPI
+      .getCrydrViewAddedEvents(crydrControllerBaseContract.address,
+                               {
+                                 viewStandard, crydrViewAddress,
+                               },
+                               {
+                                 fromBlock: blockNumber + 1,
+                                 toBlock:   blockNumber + 1,
+                                 address:   managerGeneral,
+                               });
     global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
-    await submitTxAndWaitConfirmation(crydrControllerBaseContract.removeCrydrView.sendTransaction,
-                                      [viewName, { from: manager05 }]);
-    pastEvents = await CrydrControllerBaseRoutines.getCrydrViewRemovedEvents(crydrControllerBaseContract.address,
-                                                                             {
-                                                                               viewName, crydrViewAddress,
-                                                                             },
-                                                                             {
-                                                                               fromBlock: blockNumber + 1,
-                                                                               toBlock:   blockNumber + 1,
-                                                                               address:   manager05,
-                                                                             });
+    await CrydrControllerBaseJSAPI.removeCrydrView(crydrControllerBaseContract.address, managerGeneral,
+                                                   viewStandard);
+    pastEvents = await CrydrControllerBaseJSAPI
+      .getCrydrViewRemovedEvents(crydrControllerBaseContract.address,
+                                 {
+                                   viewStandard, crydrViewAddress,
+                                 },
+                                 {
+                                   fromBlock: blockNumber + 1,
+                                   toBlock:   blockNumber + 1,
+                                   address:   managerGeneral,
+                                 });
     global.assert.strictEqual(pastEvents.length, 1);
   });
 });

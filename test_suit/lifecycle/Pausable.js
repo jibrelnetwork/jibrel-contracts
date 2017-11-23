@@ -1,151 +1,152 @@
-import { submitTxAndWaitConfirmation } from '../../routine/misc/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../jsapi/misc/SubmitTx';
 
 // const Pausable = global.artifacts.require('Pausable.sol');
 
-const UtilsTestRoutines  = require('../../routine/misc/UtilsTest');
-const ManageableRoutines = require('../../routine/lifecycle/Manageable');
-const PausableRoutines   = require('../../routine/lifecycle/Pausable');
+const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
+const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
+
+const CheckExceptions = require('../../test_util/CheckExceptions');
 
 
 export const testContractIsPausable = async (contractArtifact, constructorArgs, accounts) => {
   global.console.log('\tTest that contract is pausable and unpausable');
 
-  const owner       = accounts[0];
-  const manager01   = accounts[1];
-  const manager02   = accounts[2];
+  const ownerAddress     = accounts[0];
+  const managerAddress01 = accounts[1];
+  const managerAddress02 = accounts[2];
   const miscAddress = accounts[3];
 
 
-  const pausableContract = await contractArtifact.new(...constructorArgs, { from: owner });
+  const pausableContract = await contractArtifact.new(...constructorArgs, { from: ownerAddress });
 
-  await ManageableRoutines.grantManagerPermissions(pausableContract.address, owner, manager01,
-                                                   ['pause_contract']);
-  await ManageableRoutines.grantManagerPermissions(pausableContract.address, owner, manager02,
-                                                   ['unpause_contract']);
-  await ManageableRoutines.enableManager(pausableContract.address, owner, manager01);
-  await ManageableRoutines.enableManager(pausableContract.address, owner, manager02);
+  await ManageableJSAPI.grantManagerPermissions(pausableContract.address, ownerAddress, managerAddress01,
+                                                ['pause_contract']);
+  await ManageableJSAPI.grantManagerPermissions(pausableContract.address, ownerAddress, managerAddress02,
+                                                ['unpause_contract']);
+  await ManageableJSAPI.enableManager(pausableContract.address, ownerAddress, managerAddress01);
+  await ManageableJSAPI.enableManager(pausableContract.address, ownerAddress, managerAddress02);
 
 
-  let isPaused = await PausableRoutines.getPaused(pausableContract.address);
+  let isPaused = await PausableJSAPI.getPaused(pausableContract.address);
   global.assert.strictEqual(isPaused, true, 'New deployed contract should be paused');
 
-  await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
-                                              [{ from: owner }],
-                                              'Only allowed manager should be able to unpause contract');
-  await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
-                                              [{ from: manager01 }],
-                                              'Only allowed manager should be able to unpause contract');
-  await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
-                                              [{ from: miscAddress }],
-                                              'Only allowed manager should be able to unpause contract');
-  await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
-                                              [{ from: manager01 }],
-                                              'Contract can not be paused again');
+  await CheckExceptions.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
+                                            [{ from: ownerAddress }],
+                                            'Only allowed manager should be able to unpause contract');
+  await CheckExceptions.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
+                                            [{ from: managerAddress01 }],
+                                            'Only allowed manager should be able to unpause contract');
+  await CheckExceptions.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
+                                            [{ from: miscAddress }],
+                                            'Only allowed manager should be able to unpause contract');
+  await CheckExceptions.checkContractThrows(pausableContract.pauseContract.sendTransaction,
+                                            [{ from: managerAddress01 }],
+                                            'Contract can not be paused again');
 
 
   let blockNumber = global.web3.eth.blockNumber;
 
-  await PausableRoutines.unpauseContract(pausableContract.address, manager02);
+  await PausableJSAPI.unpauseContract(pausableContract.address, managerAddress02);
 
-  let pastEvents = await PausableRoutines.getUnpauseEvents(pausableContract.address,
-                                                           {},
-                                                           {
-                                                             fromBlock: blockNumber + 1,
-                                                             toBlock:   blockNumber + 1,
-                                                             address:   manager02,
-                                                           });
+  let pastEvents = await PausableJSAPI.getUnpauseEvents(pausableContract.address,
+                                                        {},
+                                                        {
+                                                          fromBlock: blockNumber + 1,
+                                                          toBlock:   blockNumber + 1,
+                                                          address:   managerAddress02,
+                                                        });
   global.assert.strictEqual(pastEvents.length, 1);
 
 
-  isPaused = await PausableRoutines.getPaused(pausableContract.address);
+  isPaused = await PausableJSAPI.getPaused(pausableContract.address);
   global.assert.strictEqual(isPaused, false, 'Manager should be able to unpause contract');
 
-  await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
-                                              [{ from: owner }],
-                                              'Only allowed manager should be able to pause contract');
-  await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
-                                              [{ from: manager02 }],
-                                              'Only allowed manager should be able to pause contract');
-  await UtilsTestRoutines.checkContractThrows(pausableContract.pauseContract.sendTransaction,
-                                              [{ from: miscAddress }],
-                                              'Only allowed manager should be able to pause contract');
-  await UtilsTestRoutines.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
-                                              [{ from: manager02 }],
-                                              'Contract can not be unpaused again');
+  await CheckExceptions.checkContractThrows(pausableContract.pauseContract.sendTransaction,
+                                            [{ from: ownerAddress }],
+                                            'Only allowed manager should be able to pause contract');
+  await CheckExceptions.checkContractThrows(pausableContract.pauseContract.sendTransaction,
+                                            [{ from: managerAddress02 }],
+                                            'Only allowed manager should be able to pause contract');
+  await CheckExceptions.checkContractThrows(pausableContract.pauseContract.sendTransaction,
+                                            [{ from: miscAddress }],
+                                            'Only allowed manager should be able to pause contract');
+  await CheckExceptions.checkContractThrows(pausableContract.unpauseContract.sendTransaction,
+                                            [{ from: managerAddress02 }],
+                                            'Contract can not be unpaused again');
 
 
   blockNumber = global.web3.eth.blockNumber;
 
-  await PausableRoutines.pauseContract(pausableContract.address, manager01);
+  await PausableJSAPI.pauseContract(pausableContract.address, managerAddress01);
 
-  pastEvents = await PausableRoutines.getPauseEvents(pausableContract.address,
-                                                     {},
-                                                     {
-                                                       fromBlock: blockNumber + 1,
-                                                       toBlock:   blockNumber + 1,
-                                                       address:   manager01,
-                                                     });
+  pastEvents = await PausableJSAPI.getPauseEvents(pausableContract.address,
+                                                  {},
+                                                  {
+                                                    fromBlock: blockNumber + 1,
+                                                    toBlock:   blockNumber + 1,
+                                                    address:   managerAddress01,
+                                                  });
   global.assert.strictEqual(pastEvents.length, 1);
 
 
-  isPaused = await PausableRoutines.getPaused(pausableContract.address);
+  isPaused = await PausableJSAPI.getPaused(pausableContract.address);
   global.assert.strictEqual(isPaused, true, 'Manager should be able to pause contract');
 };
 
 export const assertWhenContractPaused = async (
-  contractAddress, manager, contractFunction, functionArgs = []) => {
+  pausableContractAddress, managerPause, testedContractFunction, functionArgs = []) => {
   global.console.log('\tTest that function works when contract is paused and throws when contract is unpaused');
 
-  let isPaused = await PausableRoutines.getPaused(contractAddress);
+  let isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
   if (isPaused) {
-    await PausableRoutines.unpauseContract(contractAddress, manager);
+    await PausableJSAPI.unpauseContract(pausableContractAddress, managerPause);
   }
 
 
   global.console.log('\t\tTest that function throws when contract is unpaused');
-  await UtilsTestRoutines.checkContractThrows(contractFunction, functionArgs,
-                                              'Function must throw when contract is unpaused');
+  await CheckExceptions.checkContractThrows(testedContractFunction, functionArgs,
+                                            'Function must throw when contract is unpaused');
 
-  await PausableRoutines.pauseContract(contractAddress, manager);
-  isPaused = await PausableRoutines.getPaused(contractAddress);
+  await PausableJSAPI.pauseContract(pausableContractAddress, managerPause);
+  isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
   global.assert.strictEqual(isPaused, true);
 
 
   global.console.log('\tTest that function works when contract is paused');
-  await submitTxAndWaitConfirmation(contractFunction, functionArgs);
+  await submitTxAndWaitConfirmation(testedContractFunction, functionArgs);
 
 
   // restore state
   if (isPaused === false) {
-    await PausableRoutines.unpauseContract(contractAddress, manager);
+    await PausableJSAPI.unpauseContract(pausableContractAddress, managerPause);
   }
 };
 
 export const assertWhenContractNotPaused = async (
-  contractAddress, manager, contractFunction, functionArgs = []) => {
+  pausableContractAddress, managerPause, testedContractFunction, functionArgs = []) => {
   global.console.log('\tTest that function works when contract is unpaused and throws when contract is paused');
 
-  let isPaused = await PausableRoutines.getPaused(contractAddress);
+  let isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
   if (isPaused === false) {
-    await PausableRoutines.pauseContract(contractAddress, manager);
+    await PausableJSAPI.pauseContract(pausableContractAddress, managerPause);
   }
 
 
   global.console.log('\tTest that function throws when contract is paused');
-  await UtilsTestRoutines.checkContractThrows(contractFunction, functionArgs,
-                                              'Function must throw when contract is paused');
+  await CheckExceptions.checkContractThrows(testedContractFunction, functionArgs,
+                                            'Function must throw when contract is paused');
 
-  await PausableRoutines.unpauseContract(contractAddress, manager);
-  isPaused = await PausableRoutines.getPaused(contractAddress);
+  await PausableJSAPI.unpauseContract(pausableContractAddress, managerPause);
+  isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
   global.assert.strictEqual(isPaused, false);
 
 
   global.console.log('\tTest that function works when contract is unpaused');
-  await submitTxAndWaitConfirmation(contractFunction, functionArgs);
+  await submitTxAndWaitConfirmation(testedContractFunction, functionArgs);
 
 
   // restore state
   if (isPaused === false) {
-    await PausableRoutines.pauseContract(contractAddress, manager);
+    await PausableJSAPI.pauseContract(pausableContractAddress, managerPause);
   }
 };

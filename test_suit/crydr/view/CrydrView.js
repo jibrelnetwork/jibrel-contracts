@@ -1,6 +1,3 @@
-import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
-
-const CrydrViewBase             = global.artifacts.require('CrydrViewBase.sol');
 const CrydrViewERC20Validatable = global.artifacts.require('CrydrViewERC20Validatable.sol');
 const CrydrViewERC20Named       = global.artifacts.require('ERC20Named.sol');
 

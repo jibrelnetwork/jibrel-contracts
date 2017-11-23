@@ -1,115 +1,131 @@
-import { submitTxAndWaitConfirmation } from '../../../routine/misc/SubmitTx';
+const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
+const CrydrStorage                = global.artifacts.require('CrydrStorage.sol');
+const CrydrViewBase               = global.artifacts.require('CrydrViewBase.sol');
 
-const CrydrControllerMintable = global.artifacts.require('CrydrControllerMintable.sol');
-const CrydrStorage            = global.artifacts.require('CrydrStorage.sol');
-const CrydrViewBase           = global.artifacts.require('CrydrViewBase.sol');
+const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
+const CrydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
+const CrydrControllerMintableJSAPI = require('../../../jsapi/crydr/controller/CrydrControllerMintableInterface');
 
-const UtilsTestRoutines               = require('../../../routine/misc/UtilsTest');
-const ManageableRoutines              = require('../../../routine/lifecycle/Manageable');
-const CrydrControllerBaseRoutines     = require('../../../routine/crydr/controller/CrydrControllerBaseInterface');
-const crydrStorageGeneralRoutines     = require('../../../routine/crydr/storage/CrydrStorageGeneral');
+const GlobalConfig = require('../../../migrations/init/GlobalConfig');
+const CrydrInit = require('../../../migrations/init/CrydrInit');
+
+const CheckExceptions = require('../../../test_util/CheckExceptions');
 
 
 global.contract('CrydrControllerMintable', (accounts) => {
-  let crydrControllerMintableContract;
-  let crydrStorageContract;
-  let crydrViewBaseContract;
+  let crydrControllerMintableInstance;
+  let crydrStorageInstance;
+  let crydrViewBaseInstance;
 
-  const owner      = accounts[0];
-  const manager01  = accounts[1];
-  const manager02  = accounts[2];
-  const manager03  = accounts[3];
-  const investor01 = accounts[4];
+  GlobalConfig.setAccounts(accounts);
+  const { owner, managerPause, managerMint, testInvestor1 } = GlobalConfig.getAccounts();
 
-  const viewName = 'TestView';
+  const viewStandard = 'erc20';
+  const assetID = 'jASSET';
 
   global.beforeEach(async () => {
-    crydrControllerMintableContract = await CrydrControllerMintable.new(1, { from: owner });
-    crydrStorageContract = await CrydrStorage.new(1, { from: owner });
-    crydrViewBaseContract = await CrydrViewBase.new(viewName, 1, { from: owner });
+    crydrControllerMintableInstance = await CrydrControllerMintableMock.new(assetID, { from: owner });
+    crydrStorageInstance = await CrydrStorage.new(assetID, { from: owner });
+    crydrViewBaseInstance = await CrydrViewBase.new(assetID, viewStandard, { from: owner });
 
-    await ManageableRoutines.grantManagerPermissions(crydrControllerMintableContract.address, owner, manager02,
-                                                     ['mint_crydr']);
-    await ManageableRoutines.grantManagerPermissions(crydrControllerMintableContract.address, owner, manager03,
-                                                     ['burn_crydr']);
-    await ManageableRoutines.enableManager(crydrControllerMintableContract.address, owner, manager02);
-    await ManageableRoutines.enableManager(crydrControllerMintableContract.address, owner, manager03);
-    await CrydrControllerBaseRoutines.configureCrydrController(crydrControllerMintableContract.address, owner, manager01,
-                                                               crydrStorageContract.address,
-                                                               new Map([[viewName, crydrViewBaseContract.address]]),
-                                                               false, false, []);
-    await crydrStorageGeneralRoutines.configureCrydrStorage(crydrStorageContract.address, owner, manager02,
-                                                            crydrControllerMintableContract.address);
+    global.console.log('\tContracts deployed for tests CrydrControllerMintable:');
+    global.console.log(`\t\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
+    global.console.log(`\t\tcrydrStorageInstance: ${crydrStorageInstance.address}`);
+    global.console.log(`\t\tcrydrViewBaseInstance: ${crydrViewBaseInstance.address}`);
+
+    await CrydrInit.configureCrydr(crydrStorageInstance.address,
+                                   crydrControllerMintableInstance.address,
+                                   crydrViewBaseInstance.address,
+                                   viewStandard);
   });
 
-  global.it('should test that contract works as expected', async () => {
-    global.console.log(`\tcrydrControllerMintableContract: ${crydrControllerMintableContract.address}`);
-    global.assert.notStrictEqual(crydrControllerMintableContract.address, '0x0000000000000000000000000000000000000000');
+  global.it('should test that contract allows to mint tokens', async () => {
+    global.console.log(`\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
+    global.assert.notStrictEqual(crydrControllerMintableInstance.address,
+                                 '0x0000000000000000000000000000000000000000');
 
-    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
-    global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
+    global.console.log(`\tcrydrStorageInstance: ${crydrStorageInstance.address}`);
+    global.assert.notStrictEqual(crydrStorageInstance.address,
+                                 '0x0000000000000000000000000000000000000000');
 
-    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
-    global.assert.notStrictEqual(crydrViewBaseContract.address, '0x0000000000000000000000000000000000000000');
+    global.console.log(`\tcrydrViewBaseInstance: ${crydrViewBaseInstance.address}`);
+    global.assert.notStrictEqual(crydrViewBaseInstance.address,
+                                 '0x0000000000000000000000000000000000000000');
 
-    const isPaused = await crydrControllerMintableContract.getPaused.call();
-    global.assert.strictEqual(isPaused, false, 'Just configured crydrControllerMintable contract must be unpaused');
+    const isPaused = await crydrControllerMintableInstance.getPaused.call();
+    global.assert.strictEqual(isPaused, true,
+                              'Just configured crydrControllerMintable contract must be paused');
 
-    const storageAddress = await crydrControllerMintableContract.getCrydrStorage.call();
-    global.assert.strictEqual(storageAddress, crydrStorageContract.address, 'Just configured crydrControllerMintable should have initialized crydrStorage address');
+    const storageAddress = await crydrControllerMintableInstance.getCrydrStorage.call();
+    global.assert.strictEqual(storageAddress, crydrStorageInstance.address,
+                              'Just configured crydrControllerMintable should have initialized crydrStorage address');
 
-    const viewAddress = await crydrControllerMintableContract.getCrydrView.call(viewName);
-    global.assert.strictEqual(viewAddress, crydrViewBaseContract.address, 'Expected that crydrView is set');
+    const viewAddress = await crydrControllerMintableInstance.getCrydrView.call(viewStandard);
+    global.assert.strictEqual(viewAddress, crydrViewBaseInstance.address,
+                              'Expected that crydrView is set');
 
-    const initialBalance = await crydrStorageContract.getBalance.call(investor01);
-    global.assert.strictEqual(initialBalance.toNumber(), 0, 'Expected that initial balance is 0');
+    const initialBalance = await crydrStorageInstance.getBalance.call(testInvestor1);
+    global.assert.strictEqual(initialBalance.toNumber(), 0,
+                              'Expected that initial balance is 0');
 
-    await submitTxAndWaitConfirmation(crydrControllerMintableContract.mint.sendTransaction,
-                                      [investor01, 10 * (10 ** 18), { from: manager02 }]);
-    let balance = await crydrStorageContract.getBalance.call(investor01);
-    global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18), 'Expected that balance has increased');
 
-    await submitTxAndWaitConfirmation(crydrControllerMintableContract.burn.sendTransaction,
-                                      [investor01, 10 * (10 ** 18), { from: manager03 }]);
-    balance = await crydrStorageContract.getBalance.call(investor01);
-    global.assert.strictEqual(balance.toNumber(), 0, 'Expected that balance has decreased');
+    await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
+    await PausableJSAPI.unpauseContract(crydrControllerMintableInstance.address, managerPause);
+
+
+    await CrydrControllerMintableJSAPI.mint(crydrControllerMintableInstance.address, managerMint,
+                                            testInvestor1, 10 * (10 ** 18));
+    let balance = await CrydrStorageBaseJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
+                              'Expected that balance has increased');
+
+    await CrydrControllerMintableJSAPI.burn(crydrControllerMintableInstance.address, managerMint,
+                                            testInvestor1, 5 * (10 ** 18));
+    balance = await CrydrStorageBaseJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    global.assert.strictEqual(balance.toNumber(), 5 * (10 ** 18),
+                              'Expected that balance has decreased');
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
-    global.console.log(`\tcrydrControllerMintableContract: ${crydrControllerMintableContract.address}`);
-    global.assert.notStrictEqual(crydrControllerMintableContract.address, '0x0000000000000000000000000000000000000000');
+    global.console.log(`\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
+    global.assert.notStrictEqual(crydrControllerMintableInstance.address,
+                                 '0x0000000000000000000000000000000000000000');
 
-    global.console.log(`\tcrydrStorageContract: ${crydrStorageContract.address}`);
-    global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
+    global.console.log(`\tcrydrStorageInstance: ${crydrStorageInstance.address}`);
+    global.assert.notStrictEqual(crydrStorageInstance.address,
+                                 '0x0000000000000000000000000000000000000000');
 
-    global.console.log(`\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
-    global.assert.notStrictEqual(crydrViewBaseContract.address, '0x0000000000000000000000000000000000000000');
+    global.console.log(`\tcrydrViewBaseInstance: ${crydrViewBaseInstance.address}`);
+    global.assert.notStrictEqual(crydrViewBaseInstance.address,
+                                 '0x0000000000000000000000000000000000000000');
 
-    const isPaused = await crydrControllerMintableContract.getPaused.call();
-    global.assert.strictEqual(isPaused, false, 'Just configured crydrControllerBase contract must be unpaused');
+    const isPaused = await crydrControllerMintableInstance.getPaused.call();
+    global.assert.strictEqual(isPaused, true,
+                              'Just configured crydrControllerBase contract must be paused');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.mint.sendTransaction,
-                                                [0x0, 100 * (10 ** 18), { from: manager02 }],
-                                                'Should be a valid account address');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.mint.sendTransaction,
-                                                [investor01, 0, { from: manager02 }],
-                                                'Should be a positive value');
+    await CheckExceptions.checkContractThrows(crydrControllerMintableInstance.mint.sendTransaction,
+                                              [0x0, 100 * (10 ** 18), { from: managerMint }],
+                                              'Should be a valid account address');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.mint.sendTransaction,
-                                                [investor01, 100 * (10 ** 18), { from: manager03 }],
-                                                'Only manager should be able to mint');
+    await CheckExceptions.checkContractThrows(crydrControllerMintableInstance.mint.sendTransaction,
+                                              [testInvestor1, 0, { from: managerMint }],
+                                              'Should be a positive value');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.burn.sendTransaction,
-                                                [0x0, 100 * (10 ** 18), { from: manager03 }],
-                                                'Should be a valid account address');
+    await CheckExceptions.checkContractThrows(crydrControllerMintableInstance.mint.sendTransaction,
+                                              [testInvestor1, 100 * (10 ** 18), { from: managerMint }],
+                                              'Only manager should be able to mint');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.burn.sendTransaction,
-                                                [investor01, 0, { from: manager03 }],
-                                                'Should be a positive value');
+    await CheckExceptions.checkContractThrows(crydrControllerMintableInstance.burn.sendTransaction,
+                                              [0x0, 100 * (10 ** 18), { from: managerMint }],
+                                              'Should be a valid account address');
 
-    await UtilsTestRoutines.checkContractThrows(crydrControllerMintableContract.burn.sendTransaction,
-                                                [investor01, 100 * (10 ** 18), { from: manager02 }],
-                                                'Only manager should be able to burn');
+    await CheckExceptions.checkContractThrows(crydrControllerMintableInstance.burn.sendTransaction,
+                                              [testInvestor1, 0, { from: managerMint }],
+                                              'Should be a positive value');
+
+    await CheckExceptions.checkContractThrows(crydrControllerMintableInstance.burn.sendTransaction,
+                                              [testInvestor1, 100 * (10 ** 18), { from: testInvestor1 }],
+                                              'Only manager should be able to burn');
   });
 });
