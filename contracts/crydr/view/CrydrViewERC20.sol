@@ -35,16 +35,16 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(2 * 32)
     returns (bool success)
   {
-    CrydrControllerERC20Interface(address(crydrController)).transfer(msg.sender, _to, _value);
+    CrydrControllerERC20Interface(crydrController).transfer(msg.sender, _to, _value);
     return true;
   }
 
   function totalSupply() external constant returns (uint) {
-    return CrydrControllerERC20Interface(address(crydrController)).getTotalSupply();
+    return CrydrControllerERC20Interface(crydrController).getTotalSupply();
   }
 
   function balanceOf(address _owner) external constant onlyPayloadSize(1 * 32) returns (uint balance) {
-    return CrydrControllerERC20Interface(address(crydrController)).getBalance(_owner);
+    return CrydrControllerERC20Interface(crydrController).getBalance(_owner);
   }
 
 
@@ -57,7 +57,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(2 * 32)
     returns (bool success)
   {
-    CrydrControllerERC20Interface(address(crydrController)).approve(msg.sender, _spender, _value);
+    CrydrControllerERC20Interface(crydrController).approve(msg.sender, _spender, _value);
     return true;
   }
 
@@ -71,7 +71,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(3 * 32)
     returns (bool success)
   {
-    CrydrControllerERC20Interface(address(crydrController)).transferFrom(msg.sender, _from, _to, _value);
+    CrydrControllerERC20Interface(crydrController).transferFrom(msg.sender, _from, _to, _value);
     return true;
   }
 
@@ -84,7 +84,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(2 * 32)
     returns (uint remaining)
   {
-    return CrydrControllerERC20Interface(address(crydrController)).getAllowance(_owner, _spender);
+    return CrydrControllerERC20Interface(crydrController).getAllowance(_owner, _spender);
   }
 
 

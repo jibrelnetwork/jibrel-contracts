@@ -8,7 +8,6 @@ import "../../util/CommonModifiers.sol";
 import "../../feature/bytecode/BytecodeExecutable.sol";
 import "../../feature/assetid/AssetIDInterface.sol";
 import "../../feature/assetid/AssetID.sol";
-import '../controller/CrydrControllerBaseInterface.sol';
 import './CrydrViewBaseInterface.sol';
 
 
@@ -20,7 +19,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
 
   /* Storage */
 
-  CrydrControllerBaseInterface crydrController;
+  address crydrController;
   string crydrViewStandardName;
 
 
@@ -46,14 +45,14 @@ contract CrydrViewBase is CrydrViewBaseInterface,
     onlyAllowedManager('set_crydr_controller')
     whenContractPaused
   {
-    require(address(crydrController) != _crydrController);
+    require(crydrController != _crydrController);
 
-    crydrController = CrydrControllerBaseInterface(_crydrController);
+    crydrController = _crydrController;
     CrydrControllerChangedEvent(_crydrController);
   }
 
-  function getCrydrController() external constant returns (address controllerAddress) {
-    return address(crydrController);
+  function getCrydrController() external constant returns (address) {
+    return crydrController;
   }
 
 
@@ -72,7 +71,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract() {
-    require(isContract(address(crydrController)) == true);
+    require(isContract(crydrController) == true);
     require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
     Pausable.unpauseContract();
@@ -87,7 +86,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
   }
 
   modifier onlyCrydrController() {
-    require(msg.sender == address(crydrController));
+    require(msg.sender == crydrController);
     _;
   }
 }
