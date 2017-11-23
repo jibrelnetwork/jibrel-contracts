@@ -8,5 +8,5 @@ import "../../crydr/view/CrydrViewERC20.sol";
 
 contract JNTViewERC20 is CrydrViewERC20 {
 
-  function JNTViewERC20() CrydrViewERC20('Jibrel Network Token', 'JNT', 18, 'JNT') {}
+  function JNTViewERC20() CrydrViewERC20('JNT', 'Jibrel Network Token', 'JNT', 18) {}
 }

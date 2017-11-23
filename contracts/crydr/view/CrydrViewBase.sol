@@ -27,8 +27,8 @@ contract CrydrViewBase is CrydrViewBaseInterface,
   /* Constructor */
 
   function CrydrViewBase(
-    string _standardName,
-    string _assetID
+    string _assetID,
+    string _standardName
   )
     AssetID(_assetID)
     onlyValidStandardName(_standardName)
