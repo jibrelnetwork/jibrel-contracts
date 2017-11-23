@@ -61,7 +61,6 @@ module.exports = (deployer, network, accounts) => {
   GlobalConfig.setAccounts(accounts);
 
   deployer.then(() => executeMigration())
-          .then(() => verifyMigration());
-
-  global.console.log('  Migration finished');
+          .then(() => verifyMigration())
+          .then(() => global.console.log('  Migration finished'));
 };
