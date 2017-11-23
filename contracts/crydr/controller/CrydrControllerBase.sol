@@ -58,24 +58,24 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
 
   function setCrydrView(
-    string _viewApiStandardName, address _crydrView
+    address _newCrydrView, string _viewApiStandardName
   )
+    onlyContractAddress(_newCrydrView)
     onlyValidCrydrViewStandardName(_viewApiStandardName)
-    onlyContractAddress(_crydrView)
     onlyAllowedManager('set_crydr_view')
     whenContractPaused
   {
-    require(_crydrView != address(this));
+    require(_newCrydrView != address(this));
     require(crydrViewsAddresses[_viewApiStandardName] == address(0x0));
 
-    var crydrViewInstance = CrydrViewBaseInterface(_crydrView);
+    var crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
     var standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
     require(standardNameHash == sha3(_viewApiStandardName));
 
-    crydrViewsAddresses[_viewApiStandardName] = _crydrView;
-    isRegisteredView[_crydrView] = true;
+    crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
+    isRegisteredView[_newCrydrView] = true;
 
-    CrydrViewAddedEvent(_viewApiStandardName, _crydrView);
+    CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);
   }
 
   function removeCrydrView(
@@ -93,7 +93,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     crydrViewsAddresses[_viewApiStandardName] == address(0x0);
     isRegisteredView[removedView] = false;
 
-    CrydrViewRemovedEvent(_viewApiStandardName, removedView);
+    CrydrViewRemovedEvent(removedView, _viewApiStandardName);
   }
 
   function getCrydrView(

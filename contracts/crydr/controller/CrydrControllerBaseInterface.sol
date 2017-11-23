@@ -12,8 +12,8 @@ contract CrydrControllerBaseInterface {
   /* Events */
 
   event CrydrStorageChangedEvent(address indexed crydrstorage);
-  event CrydrViewAddedEvent(string standardname, address indexed crydrview);
-  event CrydrViewRemovedEvent(string standardname, address indexed crydrview);
+  event CrydrViewAddedEvent(address indexed crydrview, string standardname);
+  event CrydrViewRemovedEvent(address indexed crydrview, string standardname);
 
 
   /* Configuration */
@@ -21,7 +21,7 @@ contract CrydrControllerBaseInterface {
   function setCrydrStorage(address _newStorage);
   function getCrydrStorage() constant returns (address);
 
-  function setCrydrView(string _viewApiStandardName, address _newCrydrView);
+  function setCrydrView(address _newCrydrView, string _viewApiStandardName);
   function removeCrydrView(string _viewApiStandardName);
   function getCrydrView(string _viewApiStandard) constant returns (address);
 }

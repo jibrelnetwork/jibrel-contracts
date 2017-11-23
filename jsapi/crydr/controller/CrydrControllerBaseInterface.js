@@ -30,18 +30,19 @@ export const getCrydrStorage = async (contractAddress) =>
 
 
 export const setCrydrView = async (crydrControllerAddress, managerAddress,
-                                   crydrViewAddress, crydrViewApiStandardName) => {
+                                   crydrViewAddress, crydrViewStandardName) => {
   global.console.log('\tSet view of CryDR controller:');
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
-  global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
+  global.console.log(`\t\tcrydrViewStandardName - ${crydrViewStandardName}`);
+
   await submitTxAndWaitConfirmation(
     CrydrControllerBaseInterface
       .at(crydrControllerAddress)
       .setCrydrView
       .sendTransaction,
-    [crydrViewApiStandardName, crydrViewAddress, { from: managerAddress }]);
+    [crydrViewAddress, crydrViewStandardName, { from: managerAddress }]);
   global.console.log('\tView of CryDR controller successfully set');
   return null;
 };
@@ -62,8 +63,8 @@ export const removeCrydrView = async (crydrControllerAddress, managerAddress,
   return null;
 };
 
-export const getCrydrView = async (contractAddress) =>
-  CrydrControllerBaseInterface.at(contractAddress).getCrydrView.call();
+export const getCrydrView = async (contractAddress, crydrViewApiStandardName) =>
+  CrydrControllerBaseInterface.at(contractAddress).getCrydrView.call(crydrViewApiStandardName);
 
 
 /**
