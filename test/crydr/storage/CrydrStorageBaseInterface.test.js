@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js');
 
 const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
-const CrydrController = global.artifacts.require('CrydrControllerMock.sol');
+const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
 
 const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
 const crydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
@@ -19,9 +19,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   const { owner, managerPause, managerGeneral, testInvestor1, testInvestor2 } = GlobalConfig.getAccounts();
 
   let crydrStorageContract;
-  let crydrControllerContract01;
-  let crydrControllerContract02;
-  let crydrControllerContract03;
+  let storageProxyInstance01;
+  let storageProxyInstance02;
+  let storageProxyInstance03;
 
 
   /**
@@ -36,16 +36,16 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                               '0x0000000000000000000000000000000000000000',
                               'Default controller address should be zero');
 
-    crydrControllerContract01 = await CrydrController.new(crydrStorageContract.address, 'jXYZ',
-                                                          { from: owner });
-    crydrControllerContract02 = await CrydrController.new(crydrStorageContract.address, 'jXYZ',
-                                                          { from: owner });
-    crydrControllerContract03 = await CrydrController.new(crydrStorageContract.address, 'jZZZ',
-                                                          { from: owner });
+    storageProxyInstance01 = await CrydrStorageERC20Proxy.new('jXYZ', crydrStorageContract.address,
+                                                              { from: owner });
+    storageProxyInstance02 = await CrydrStorageERC20Proxy.new('jXYZ', crydrStorageContract.address,
+                                                              { from: owner });
+    storageProxyInstance03 = await CrydrStorageERC20Proxy.new('jZZZ', crydrStorageContract.address,
+                                                              { from: owner });
 
     await CrydrStorageInit.configureCrydrStorageManagers(crydrStorageContract.address);
     await CrydrStorageBaseInterfaceJSAPI
-      .setCrydrController(crydrStorageContract.address, managerGeneral, crydrControllerContract01.address);
+      .setCrydrController(crydrStorageContract.address, managerGeneral, storageProxyInstance01.address);
     await PausableJSAPI.unpauseContract(crydrStorageContract.address, managerPause);
   });
 
@@ -56,27 +56,27 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                               [0x0, { from: managerGeneral }],
                                               'Should reject invalid crydr controller address');
     await CheckExceptions.checkContractThrows(crydrStorageContract.setCrydrController.sendTransaction,
-                                              [crydrControllerContract01.address, { from: testInvestor1 }],
+                                              [storageProxyInstance01.address, { from: testInvestor1 }],
                                               'Only allowed manager should be able to configure crydr storage');
 
     await crydrStorageBaseJSAPI.setCrydrController(crydrStorageContract.address, managerGeneral,
-                                                   crydrControllerContract02.address);
+                                                   storageProxyInstance02.address);
 
     let crydrControllerAddress = await crydrStorageContract.getCrydrController.call();
-    global.assert.strictEqual(crydrControllerAddress, crydrControllerContract02.address,
+    global.assert.strictEqual(crydrControllerAddress, storageProxyInstance02.address,
                               'Manager should be able to configure crydr storage and set controller');
 
     await CheckExceptions.checkContractThrows(crydrStorageContract.setCrydrController.sendTransaction,
-                                              [crydrControllerContract02.address, { from: managerGeneral }],
+                                              [storageProxyInstance02.address, { from: managerGeneral }],
                                               'New crydr controller should be different from the previous one');
 
     await PausableJSAPI.unpauseContract(crydrStorageContract.address, managerPause);
     await PausableJSAPI.pauseContract(crydrStorageContract.address, managerPause);
 
     await crydrStorageBaseJSAPI.setCrydrController(crydrStorageContract.address, managerGeneral,
-                                                   crydrControllerContract03.address);
+                                                   storageProxyInstance03.address);
     crydrControllerAddress = await crydrStorageContract.getCrydrController.call();
-    global.assert.strictEqual(crydrControllerAddress, crydrControllerContract03.address,
+    global.assert.strictEqual(crydrControllerAddress, storageProxyInstance03.address,
                               'Manager should be able to change crydr controller at any time');
     await CheckExceptions.checkContractThrows(crydrStorageContract.unpauseContract.sendTransaction,
                                               [{ from: managerPause }],
@@ -85,9 +85,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(isPaused, true, 'Contract should be paused');
 
     await crydrStorageBaseJSAPI.setCrydrController(crydrStorageContract.address, managerGeneral,
-                                                   crydrControllerContract02.address);
+                                                   storageProxyInstance02.address);
     const crydrController02Received = await crydrStorageContract.getCrydrController.call();
-    global.assert.strictEqual(crydrController02Received, crydrControllerContract02.address,
+    global.assert.strictEqual(crydrController02Received, storageProxyInstance02.address,
                               'Manager should be able to change crydr controller at any time');
 
     await PausableJSAPI.unpauseContract(crydrStorageContract.address, managerPause);
@@ -96,16 +96,16 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   global.it('check that crydr storage has correct pausable modifiers for configuration functions', async () => {
     await PausableJSAPI.pauseContract(crydrStorageContract.address, managerPause);
     await crydrStorageBaseJSAPI.setCrydrController(crydrStorageContract.address, managerGeneral,
-                                                   crydrControllerContract02.address);
+                                                   storageProxyInstance02.address);
 
     await PausableTestSuite.assertWhenContractPaused(
       crydrStorageContract.address,
       managerPause,
       crydrStorageContract.setCrydrController.sendTransaction,
-      [crydrControllerContract01.address, { from: managerGeneral }]);
+      [storageProxyInstance01.address, { from: managerGeneral }]);
 
     let crydrController01Received = await crydrStorageContract.getCrydrController.call();
-    global.assert.strictEqual(crydrController01Received, crydrControllerContract01.address,
+    global.assert.strictEqual(crydrController01Received, storageProxyInstance01.address,
                               'Manager should be able to configure crydr storage and set controller');
 
 
@@ -116,10 +116,10 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
       crydrStorageContract.address,
       managerPause,
       crydrStorageContract.setCrydrController.sendTransaction,
-      [crydrControllerContract02.address, { from: managerGeneral }]);
+      [storageProxyInstance02.address, { from: managerGeneral }]);
 
     crydrController01Received = await crydrStorageContract.getCrydrController.call();
-    global.assert.strictEqual(crydrController01Received, crydrControllerContract02.address,
+    global.assert.strictEqual(crydrController01Received, storageProxyInstance02.address,
                               'Manager should be able to reconfigure crydr storage and set different controller');
   });
 
@@ -127,8 +127,8 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     await PausableJSAPI.pauseContract(crydrStorageContract.address, managerPause);
     const blockNumber = global.web3.eth.blockNumber;
     await crydrStorageBaseJSAPI.setCrydrController(crydrStorageContract.address, managerGeneral,
-                                                   crydrControllerContract02.address);
-    const controllerAddress = crydrControllerContract02.address;
+                                                   storageProxyInstance02.address);
+    const controllerAddress = storageProxyInstance02.address;
     const pastEvents = await crydrStorageBaseJSAPI.getCrydrControllerChangedEvents(
       crydrStorageContract.address,
       {
@@ -159,7 +159,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let crydrStorageTotalSupply = await crydrStorageContract.getTotalSupply.call();
     global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 0);
 
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 10 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
@@ -167,7 +167,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     crydrStorageTotalSupply = await crydrStorageContract.getTotalSupply.call();
     global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageBaseJSAPI.decreaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.decreaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 5 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
@@ -181,13 +181,13 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let testInvestor1to02Allowance = await crydrStorageContract.getAllowance.call(testInvestor1, testInvestor2);
     global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 0);
 
-    await crydrStorageBaseJSAPI.increaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 10 * (10 ** 18));
 
     testInvestor1to02Allowance = await crydrStorageContract.getAllowance.call(testInvestor1, testInvestor2);
     global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageBaseJSAPI.decreaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.decreaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 5 * (10 ** 18));
 
     testInvestor1to02Allowance = await crydrStorageContract.getAllowance.call(testInvestor1, testInvestor2);
@@ -196,9 +196,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
   global.it('should test that low-level setters fire events', async () => {
     let blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 10 * (10 ** 18));
-    const controllerAddress = crydrControllerContract01.address;
+    const controllerAddress = storageProxyInstance01.address;
     let pastEvents = await crydrStorageBaseJSAPI.getAccountBalanceIncreasedEvents(
       crydrStorageContract.address,
       {
@@ -213,7 +213,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.decreaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.decreaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 5 * (10 ** 18));
     pastEvents = await crydrStorageBaseJSAPI.getAccountBalanceDecreasedEvents(
       crydrStorageContract.address,
@@ -229,7 +229,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.increaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 10 * (10 ** 18));
     pastEvents = await crydrStorageBaseJSAPI.getAccountAllowanceIncreasedEvents(
       crydrStorageContract.address,
@@ -246,7 +246,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.decreaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.decreaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 5 * (10 ** 18));
     pastEvents = await crydrStorageBaseJSAPI.getAccountAllowanceDecreasedEvents(
       crydrStorageContract.address,
@@ -267,9 +267,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.notStrictEqual(crydrStorageContract.address, '0x0000000000000000000000000000000000000000');
 
     // set non-zero values
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 10 * (10 ** 18));
-    await crydrStorageBaseJSAPI.increaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 10 * (10 ** 18));
 
     // test that only crydr controller is able to invoke setters
@@ -290,31 +290,31 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   });
 
   global.it('check that crydr storage has correct pausable modifiers for low-level setters', async () => {
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 100 * (10 ** 18));
-    await crydrStorageBaseJSAPI.increaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 100 * (10 ** 18));
 
 
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageContract.address,
       managerPause,
-      crydrControllerContract01.increaseBalance.sendTransaction,
+      storageProxyInstance01.increaseBalance.sendTransaction,
       [testInvestor1, 5 * (10 ** 18), { from: owner }]);
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageContract.address,
       managerPause,
-      crydrControllerContract01.decreaseBalance.sendTransaction,
+      storageProxyInstance01.decreaseBalance.sendTransaction,
       [testInvestor1, 5 * (10 ** 18), { from: owner }]);
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageContract.address,
       managerPause,
-      crydrControllerContract01.increaseAllowance.sendTransaction,
+      storageProxyInstance01.increaseAllowance.sendTransaction,
       [testInvestor1, testInvestor2, 5 * (10 ** 18), { from: owner }]);
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageContract.address,
       managerPause,
-      crydrControllerContract01.decreaseAllowance.sendTransaction,
+      storageProxyInstance01.decreaseAllowance.sendTransaction,
       [testInvestor1, testInvestor2, 5 * (10 ** 18), { from: owner }]);
   });
 
@@ -332,25 +332,25 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let investorAllowance = await crydrStorageContract.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.decreaseBalance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseBalance.sendTransaction,
                                               [testInvestor1, 1, { from: owner }],
                                               'decreaseBalance should throw if integer overflow');
 
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 1000);
     investorBalance = await crydrStorageContract.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(), 1000);
     investorAllowance = await crydrStorageContract.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.decreaseBalance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseBalance.sendTransaction,
                                               [testInvestor1, 1001, { from: owner }],
                                               'decreaseBalance should throw if integer overflow');
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.increaseBalance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
                                               [testInvestor1, uint256Max.minus(999), { from: owner }],
                                               'increaseBalance should throw if integer overflow');
 
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, uint256Max.minus(1000));
     investorBalance = await crydrStorageContract.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(),
@@ -358,10 +358,10 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageContract.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.increaseBalance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
                                               [testInvestor1, 1, { from: owner }],
                                               'increaseBalance should throw if integer overflow');
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.increaseBalance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
                                               [testInvestor2, 1, { from: owner }],
                                               'increaseBalance should throw if integer overflow of total supply');
 
@@ -374,11 +374,11 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageContract.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.decreaseAllowance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseAllowance.sendTransaction,
                                               [testInvestor1, testInvestor2, 1, { from: owner }],
                                               'decreaseAllowance should throw if integer overflow');
 
-    await crydrStorageBaseJSAPI.increaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 1000);
     investorBalance = await crydrStorageContract.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(),
@@ -386,17 +386,17 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageContract.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 1000);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.decreaseAllowance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseAllowance.sendTransaction,
                                               [testInvestor1, testInvestor2, 1001, { from: owner }],
                                               'decreaseAllowance should throw if integer overflow');
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.increaseAllowance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseAllowance.sendTransaction,
                                               [testInvestor1,
                                                testInvestor2,
                                                uint256Max.minus(999),
                                                { from: owner }],
                                               'increaseAllowance should throw if integer overflow');
 
-    await crydrStorageBaseJSAPI.increaseAllowance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, uint256Max.minus(1000));
     investorBalance = await crydrStorageContract.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(),
@@ -405,7 +405,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(investorAllowance.toNumber(),
                               0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.increaseAllowance.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseAllowance.sendTransaction,
                                               [testInvestor1, testInvestor2, 1, { from: owner }],
                                               'increaseAllowance should throw if integer overflow');
 
@@ -428,32 +428,32 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let investorBalance = await crydrStorageContract.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(), 0);
 
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 1000);
     investorBalance = await crydrStorageContract.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(), 1000);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.blockAccount.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccount.sendTransaction,
                                               ['0x0', { from: owner }],
                                               'blockAccount should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.unblockAccount.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccount.sendTransaction,
                                               ['0x0', { from: owner }],
                                               'unblockAccount should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.blockAccountFunds.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
                                               ['0x0', 1000, { from: owner }],
                                               'blockAccountFunds should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.blockAccountFunds.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
                                               [testInvestor1, 0, { from: owner }],
                                               'blockAccountFunds should throw if value is 0');
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.unblockAccountFunds.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
                                               ['0x0', 1000, { from: owner }],
                                               'unblockAccountFunds should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.unblockAccountFunds.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
                                               [testInvestor1, 0, { from: owner }],
                                               'unblockAccountFunds should throw if value is 0');
   });
@@ -465,35 +465,35 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     const uint256Max = new BigNumber('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
 
-    await crydrStorageBaseJSAPI.blockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.blockAccountFunds(storageProxyInstance01.address, owner,
                                                   testInvestor1, uint256Max);
     let investorBlockFunds = await crydrStorageContract.getAccountBlockedFunds(testInvestor1);
     global.assert.strictEqual(investorBlockFunds.toNumber(),
                               0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.blockAccountFunds.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
                                               [testInvestor1, 1, { from: owner }],
                                               'blockAccountFunds should throw if integer overflow');
 
-    await crydrStorageBaseJSAPI.unblockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.unblockAccountFunds(storageProxyInstance01.address, owner,
                                                     testInvestor1, uint256Max);
     investorBlockFunds = await crydrStorageContract.getAccountBlockedFunds(testInvestor1);
     global.assert.strictEqual(investorBlockFunds.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(crydrControllerContract01.unblockAccountFunds.sendTransaction,
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
                                               [testInvestor1, 1, { from: owner }],
                                               'blockAccountFunds should throw if integer overflow');
   });
 
   global.it('should test that block/unlock functions fire events', async () => {
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 10 * (10 ** 18));
 
-    const controllerAddress = crydrControllerContract01.address;
+    const controllerAddress = storageProxyInstance01.address;
 
 
     let blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.blockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.blockAccountFunds(storageProxyInstance01.address, owner,
                                                   testInvestor1, 10 * (10 ** 18));
     let pastEvents = await crydrStorageBaseJSAPI.getAccountFundsBlockedEvents(
       crydrStorageContract.address,
@@ -509,7 +509,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.unblockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.unblockAccountFunds(storageProxyInstance01.address, owner,
                                                     testInvestor1, 5 * (10 ** 18));
     pastEvents = await crydrStorageBaseJSAPI.getAccountFundsUnblockedEvents(
       crydrStorageContract.address,
@@ -525,7 +525,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.blockAccount(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.blockAccount(storageProxyInstance01.address, owner,
                                              testInvestor1);
     pastEvents = await crydrStorageBaseJSAPI.getAccountBlockedEvents(
       crydrStorageContract.address,
@@ -541,7 +541,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageBaseJSAPI.unblockAccount(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.unblockAccount(storageProxyInstance01.address, owner,
                                                testInvestor1);
     pastEvents = await crydrStorageBaseJSAPI.getAccountUnblockedEvents(
       crydrStorageContract.address,
@@ -563,33 +563,33 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 0);
 
-    await crydrStorageBaseJSAPI.increaseBalance(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                 testInvestor1, 10 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageBaseJSAPI.blockAccount(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.blockAccount(storageProxyInstance01.address, owner,
                                              testInvestor1);
     let accountBlock = await crydrStorageContract.getAccountBlocks.call(testInvestor1);
     global.assert.strictEqual(accountBlock.toNumber(), 1);
 
-    await crydrStorageBaseJSAPI.unblockAccount(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.unblockAccount(storageProxyInstance01.address, owner,
                                                testInvestor1);
     accountBlock = await crydrStorageContract.getAccountBlocks.call(testInvestor1);
     global.assert.strictEqual(accountBlock.toNumber(), 0);
 
-    await crydrStorageBaseJSAPI.blockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.blockAccountFunds(storageProxyInstance01.address, owner,
                                                   testInvestor1, 10 * (10 ** 18));
     let blockAccountFunds = await crydrStorageContract.getAccountBlockedFunds.call(testInvestor1);
     global.assert.strictEqual(blockAccountFunds.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageBaseJSAPI.unblockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.unblockAccountFunds(storageProxyInstance01.address, owner,
                                                     testInvestor1, 5 * (10 ** 18));
     blockAccountFunds = await crydrStorageContract.getAccountBlockedFunds.call(testInvestor1);
     global.assert.strictEqual(blockAccountFunds.toNumber(), 5 * (10 ** 18));
 
-    await crydrStorageBaseJSAPI.unblockAccountFunds(crydrControllerContract01.address, owner,
+    await crydrStorageBaseJSAPI.unblockAccountFunds(storageProxyInstance01.address, owner,
                                                     testInvestor1, 5 * (10 ** 18));
     blockAccountFunds = await crydrStorageContract.getAccountBlockedFunds.call(testInvestor1);
     global.assert.strictEqual(blockAccountFunds.toNumber(), 0);

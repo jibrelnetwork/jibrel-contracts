@@ -3,15 +3,18 @@
 pragma solidity ^0.4.15;
 
 
+import "../feature/assetid/AssetID.sol";
 import "../../contracts/crydr/controller/CrydrControllerERC20Interface.sol";
 import "../../contracts/crydr/view/CrydrViewERC20LoggableInterface.sol";
 
 
 /**
- * @title CrydrControllerERC20Mock
+ * @title CrydrControllerERC20Stub
  * @dev This contract used only to test contracts
  */
-contract CrydrControllerERC20Mock is CrydrControllerERC20Interface {
+contract CrydrControllerERC20Stub is AssetID,
+                                     CrydrControllerERC20Interface,
+                                     CrydrViewERC20LoggableInterface {
 
   /* Storage */
 
@@ -20,16 +23,19 @@ contract CrydrControllerERC20Mock is CrydrControllerERC20Interface {
   uint public transferFromCounter = 0;
   address crydrView;
 
-  function CrydrControllerERC20Mock(address _crydrView) {
+
+  /* Constructor */
+
+  function CrydrControllerERC20Stub(string _assetID, address _crydrView) AssetID(_assetID) {
     crydrView = _crydrView;
   }
+
 
   /* CrydrControllerERC20Interface */
 
   function transfer(address _msgsender, address _to, uint _value)
   {
     transferCounter += 1;
-    CrydrViewERC20LoggableInterface(crydrView).emitTransferEvent(_msgsender, _to, _value);
   }
 
   function getTotalSupply() constant returns (uint)
@@ -46,14 +52,12 @@ contract CrydrControllerERC20Mock is CrydrControllerERC20Interface {
   function approve(address _msgsender, address _spender, uint _value)
   {
     approveCounter += 1;
-    CrydrViewERC20LoggableInterface(crydrView).emitApprovalEvent(_msgsender, _spender, _value);
   }
 
   function transferFrom(address _msgsender, address _from, address _to, uint _value)
   {
     require(_msgsender == _msgsender); // always true, to avoid annoying compilation warnings
     transferFromCounter += 1;
-    CrydrViewERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
   }
 
   function getAllowance(address _owner, address _spender) constant returns (uint remaining)
@@ -61,5 +65,18 @@ contract CrydrControllerERC20Mock is CrydrControllerERC20Interface {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
     require(_spender == _spender); // always true, to avoid annoying compilation warnings
     return 20 * (10 ** 18);
+  }
+
+
+  /* CrydrViewERC20LoggableInterface */
+
+  function emitTransferEvent(address _from, address _to, uint _value) external
+  {
+    CrydrViewERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
+  }
+
+  function emitApprovalEvent(address _owner, address _spender, uint _value) external
+  {
+    CrydrViewERC20LoggableInterface(crydrView).emitApprovalEvent(_owner, _spender, _value);
   }
 }

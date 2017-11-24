@@ -32,7 +32,7 @@ export const emitApprovalEvent = async (crydrViewAddress, managerAddress,
   await submitTxAndWaitConfirmation(
     CrydrViewERC20LoggableInterface
       .at(crydrViewAddress)
-      .emitTransferEvent
+      .emitApprovalEvent
       .sendTransaction,
     [ownerAddress, spenderAddress, valueTransferred, { from: managerAddress }]);
   global.console.log('\tEven Approval successfully emitted');

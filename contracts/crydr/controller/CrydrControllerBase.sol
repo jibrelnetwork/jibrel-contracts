@@ -36,8 +36,6 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
   /* CrydrControllerBaseInterface */
 
-  /* Configuration */
-
   function setCrydrStorage(
     address _crydrStorage
   )

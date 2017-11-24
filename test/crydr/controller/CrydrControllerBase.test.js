@@ -37,14 +37,14 @@ global.contract('CrydrControllerBase', (accounts) => {
     crydrStorageContractStub01 = await CrydrStorage.new(assetID, { from: owner });
     crydrViewBaseContractStub01 = await CrydrViewBase.new(assetID, viewStandardStub01, { form: owner });
 
-    await CrydrControllerInit.configureCrydrControllerManagers(crydrControllerBaseContract.address);
-
     global.console.log('\tContracts deployed for tests CrydrControllerBase:');
     global.console.log(`\t\tcrydrControllerBaseContract: ${crydrControllerBaseContract.address}`);
     global.console.log(`\t\tcrydrStorageContract: ${crydrStorageContract.address}`);
     global.console.log(`\t\tcrydrViewBaseContract: ${crydrViewBaseContract.address}`);
     global.console.log(`\t\tcrydrStorageContractStub01: ${crydrStorageContractStub01.address}`);
     global.console.log(`\t\tcrydrViewBaseContractStub01: ${crydrViewBaseContractStub01.address}`);
+
+    await CrydrControllerInit.configureCrydrControllerManagers(crydrControllerBaseContract.address);
   });
 
   global.it('should test that view is configurable', async () => {
