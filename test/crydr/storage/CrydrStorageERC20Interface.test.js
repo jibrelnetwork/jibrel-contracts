@@ -3,7 +3,7 @@ const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.
 
 const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
 const crydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
-const crydrStorageERC20Routines = require('../../../jsapi/crydr/storage/CrydrStorageERC20Interface');
+const crydrStorageERC20JSAPI = require('../../../jsapi/crydr/storage/CrydrStorageERC20Interface');
 const CrydrStorageBaseInterfaceJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
 
 const CrydrStorageInit = require('../../../migrations/init/CrydrStorageInit');
@@ -70,8 +70,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
     // transfer
 
-    await crydrStorageERC20Routines.transfer(storageProxyInstance01.address, owner,
-                                             testInvestor1, testInvestor2, 2 * (10 ** 18));
+    await crydrStorageERC20JSAPI.transfer(storageProxyInstance01.address, owner,
+                                          testInvestor1, testInvestor2, 2 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 8 * (10 ** 18));
@@ -84,8 +84,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     crydrStorageTotalSupply = await crydrStorageContract.getTotalSupply.call();
     global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageERC20Routines.transfer(storageProxyInstance01.address, owner,
-                                             testInvestor1, testInvestor2, 1 * (10 ** 18));
+    await crydrStorageERC20JSAPI.transfer(storageProxyInstance01.address, owner,
+                                          testInvestor1, testInvestor2, 1 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 7 * (10 ** 18));
@@ -101,8 +101,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
     // approve
 
-    await crydrStorageERC20Routines.approve(storageProxyInstance01.address, owner,
-                                            testInvestor1, testInvestor2, 3 * (10 ** 18));
+    await crydrStorageERC20JSAPI.approve(storageProxyInstance01.address, owner,
+                                         testInvestor1, testInvestor2, 3 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 7 * (10 ** 18));
@@ -115,8 +115,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     crydrStorageTotalSupply = await crydrStorageContract.getTotalSupply.call();
     global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageERC20Routines.approve(storageProxyInstance01.address, owner,
-                                            testInvestor1, testInvestor2, 5 * (10 ** 18));
+    await crydrStorageERC20JSAPI.approve(storageProxyInstance01.address, owner,
+                                         testInvestor1, testInvestor2, 5 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 7 * (10 ** 18));
@@ -132,8 +132,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
     // transferFrom
 
-    await crydrStorageERC20Routines.transferFrom(storageProxyInstance01.address, owner,
-                                                 testInvestor2, testInvestor1, testInvestor3, 1 * (10 ** 18));
+    await crydrStorageERC20JSAPI.transferFrom(storageProxyInstance01.address, owner,
+                                              testInvestor2, testInvestor1, testInvestor3, 1 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 6 * (10 ** 18));
@@ -146,8 +146,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     crydrStorageTotalSupply = await crydrStorageContract.getTotalSupply.call();
     global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageERC20Routines.transferFrom(storageProxyInstance01.address, owner,
-                                                 testInvestor2, testInvestor1, testInvestor3, 2 * (10 ** 18));
+    await crydrStorageERC20JSAPI.transferFrom(storageProxyInstance01.address, owner,
+                                              testInvestor2, testInvestor1, testInvestor3, 2 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 4 * (10 ** 18));
@@ -160,8 +160,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     crydrStorageTotalSupply = await crydrStorageContract.getTotalSupply.call();
     global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
 
-    await crydrStorageERC20Routines.transferFrom(storageProxyInstance01.address, owner,
-                                                 testInvestor2, testInvestor1, testInvestor2, 1 * (10 ** 18));
+    await crydrStorageERC20JSAPI.transferFrom(storageProxyInstance01.address, owner,
+                                              testInvestor2, testInvestor1, testInvestor2, 1 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageContract.getBalance.call(testInvestor1);
     global.assert.strictEqual(testInvestor1Balance.toNumber(), 3 * (10 ** 18));
@@ -182,10 +182,10 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
 
     let blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageERC20Routines.transfer(storageProxyInstance01.address, owner,
-                                             testInvestor1, testInvestor2, 5 * (10 ** 18));
+    await crydrStorageERC20JSAPI.transfer(storageProxyInstance01.address, owner,
+                                          testInvestor1, testInvestor2, 5 * (10 ** 18));
     const controllerAddress = storageProxyInstance01.address;
-    let pastEvents = await crydrStorageERC20Routines.getCrydrTransferredEvents(
+    let pastEvents = await crydrStorageERC20JSAPI.getCrydrTransferredEvents(
       crydrStorageContract.address,
       {
         from: testInvestor1,
@@ -200,9 +200,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageERC20Routines.approve(storageProxyInstance01.address, owner,
-                                            testInvestor1, testInvestor2, 5 * (10 ** 18));
-    pastEvents = await crydrStorageERC20Routines.getCrydrSpendingApprovedEvents(
+    await crydrStorageERC20JSAPI.approve(storageProxyInstance01.address, owner,
+                                         testInvestor1, testInvestor2, 5 * (10 ** 18));
+    pastEvents = await crydrStorageERC20JSAPI.getCrydrSpendingApprovedEvents(
       crydrStorageContract.address,
       {
         owner:   testInvestor1,
@@ -217,9 +217,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
 
     blockNumber = global.web3.eth.blockNumber;
-    await crydrStorageERC20Routines.transferFrom(storageProxyInstance01.address, owner,
-                                                 testInvestor2, testInvestor1, testInvestor2, 5 * (10 ** 18));
-    pastEvents = await crydrStorageERC20Routines.getCrydrTransferredFromEvents(
+    await crydrStorageERC20JSAPI.transferFrom(storageProxyInstance01.address, owner,
+                                              testInvestor2, testInvestor1, testInvestor2, 5 * (10 ** 18));
+    pastEvents = await crydrStorageERC20JSAPI.getCrydrTransferredFromEvents(
       crydrStorageContract.address,
       {
         spender: testInvestor2,
@@ -273,8 +273,8 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
                                               [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
                                               'transfer should throw if account is blocked');
-    await crydrStorageERC20Routines.approve(storageProxyInstance01.address, owner,
-                                            testInvestor1, testInvestor2, 2 * (10 ** 18));
+    await crydrStorageERC20JSAPI.approve(storageProxyInstance01.address, owner,
+                                         testInvestor1, testInvestor2, 2 * (10 ** 18));
     await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
                                               [
                                                 testInvestor2,
