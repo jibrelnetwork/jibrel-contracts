@@ -84,7 +84,7 @@ contract Ownable {
     address _oldProposedOwner = proposedOwner;
     proposedOwner = address(0x0);
 
-    OwnershipOfferAcceptedEvent(owner, _oldProposedOwner);
+    OwnershipOfferCancelledEvent(owner, _oldProposedOwner);
   }
 
 

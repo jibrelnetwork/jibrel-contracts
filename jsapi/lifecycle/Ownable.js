@@ -58,7 +58,7 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
  * Getters
  */
 
-export const getPaused = async (contractAddress) => Ownable.at(contractAddress).getOwner.call();
+export const getOwner = async (contractAddress) => Ownable.at(contractAddress).getOwner.call();
 
 export const getProposedOwner = async (contractAddress) => Ownable.at(contractAddress).getProposedOwner.call();
 
