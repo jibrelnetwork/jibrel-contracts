@@ -4,8 +4,8 @@ const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20S
 const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
 const CrydrViewBaseJSAPI = require('../../../jsapi/crydr/view/CrydrViewBaseInterface');
 
-const GlobalConfig = require('../../../migrations/init/GlobalConfig');
-const CrydrViewInit = require('../../../migrations/init/CrydrViewInit');
+const GlobalConfig = require('../../../jsinit/GlobalConfig');
+const CrydrViewInit = require('../../../jsinit/CrydrViewInit');
 
 const CheckExceptions = require('../../../test_util/CheckExceptions');
 

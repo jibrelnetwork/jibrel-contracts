@@ -1,6 +1,6 @@
-const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
-const PausableJSAPI = require('../../jsapi/lifecycle/Pausable');
-const CrydrStorageBaseInterfaceJSAPI = require('../../jsapi/crydr/storage/CrydrStorageBaseInterface');
+const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
+const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
+const CrydrStorageBaseInterfaceJSAPI = require('../jsapi/crydr/storage/CrydrStorageBaseInterface');
 
 const GlobalConfig = require('./GlobalConfig');
 

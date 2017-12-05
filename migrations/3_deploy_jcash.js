@@ -16,9 +16,9 @@ const jKRWStorage    = global.artifacts.require('jKRWStorage.sol');
 const jKRWController = global.artifacts.require('jKRWController.sol');
 const jKRWViewERC20  = global.artifacts.require('jKRWViewERC20.sol');
 
-const GlobalConfig = require('./init/GlobalConfig');
-const CrydrInit = require('./init/CrydrInit');
-const CrydrControllerInit = require('./init/CrydrControllerInit');
+const GlobalConfig = require('../jsinit/GlobalConfig');
+const CrydrInit = require('../jsinit/CrydrInit');
+const CrydrControllerInit = require('../jsinit/CrydrControllerInit');
 
 
 /* Migration actions */

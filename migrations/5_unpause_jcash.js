@@ -9,8 +9,8 @@ const SubmitTx = require('../jsapi/misc/SubmitTx');
 const jUSDViewERC20  = global.artifacts.require('jUSDViewERC20.sol');
 const jKRWViewERC20  = global.artifacts.require('jKRWViewERC20.sol');
 
-const GlobalConfig = require('./init/GlobalConfig');
-const CrydrInit = require('./init/CrydrInit');
+const GlobalConfig = require('../jsinit/GlobalConfig');
+const CrydrInit = require('../jsinit/CrydrInit');
 
 
 /* Migration actions */

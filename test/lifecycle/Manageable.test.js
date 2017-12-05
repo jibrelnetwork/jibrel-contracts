@@ -2,7 +2,7 @@ const Manageable = global.artifacts.require('Manageable.sol');
 
 const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
 
-const GlobalConfig = require('../../migrations/init/GlobalConfig');
+const GlobalConfig = require('../../jsinit/GlobalConfig');
 
 const CheckExceptions = require('../../test_util/CheckExceptions');
 

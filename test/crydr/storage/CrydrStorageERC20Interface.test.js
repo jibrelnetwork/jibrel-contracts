@@ -6,8 +6,8 @@ const crydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorage
 const crydrStorageERC20JSAPI = require('../../../jsapi/crydr/storage/CrydrStorageERC20Interface');
 const CrydrStorageBaseInterfaceJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
 
-const CrydrStorageInit = require('../../../migrations/init/CrydrStorageInit');
-const GlobalConfig = require('../../../migrations/init/GlobalConfig');
+const CrydrStorageInit = require('../../../jsinit/CrydrStorageInit');
+const GlobalConfig = require('../../../jsinit/GlobalConfig');
 
 const CheckExceptions = require('../../../test_util/CheckExceptions');
 

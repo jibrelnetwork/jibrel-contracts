@@ -10,8 +10,8 @@ const JNTStorage    = global.artifacts.require('JNTStorage.sol');
 const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
-const GlobalConfig = require('./init/GlobalConfig');
-const CrydrInit = require('./init/CrydrInit');
+const GlobalConfig = require('../jsinit/GlobalConfig');
+const CrydrInit = require('../jsinit/CrydrInit');
 
 
 /* Migration actions */

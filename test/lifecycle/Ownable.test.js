@@ -2,7 +2,7 @@ const Ownable = global.artifacts.require('Ownable.sol');
 
 const OwnableJSAPI = require('../../jsapi/lifecycle/Ownable');
 
-const GlobalConfig = require('../../migrations/init/GlobalConfig');
+const GlobalConfig = require('../../jsinit/GlobalConfig');
 
 const CheckExceptions  = require('../../test_util/CheckExceptions');
 

@@ -5,8 +5,8 @@ const CrydrViewBase       = global.artifacts.require('CrydrViewBase.sol');
 const PausableJSAPI            = require('../../../jsapi/lifecycle/Pausable');
 const CrydrControllerBaseJSAPI = require('../../../jsapi/crydr/controller/CrydrControllerBaseInterface');
 
-const GlobalConfig = require('../../../migrations/init/GlobalConfig');
-const CrydrControllerInit = require('../../../migrations/init/CrydrControllerInit');
+const GlobalConfig = require('../../../jsinit/GlobalConfig');
+const CrydrControllerInit = require('../../../jsinit/CrydrControllerInit');
 
 const CheckExceptions = require('../../../test_util/CheckExceptions');
 

@@ -6,7 +6,7 @@ const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
 
 const PausableTestSuite = require('../../test_suit/lifecycle/Pausable');
 
-const GlobalConfig = require('../../migrations/init/GlobalConfig');
+const GlobalConfig = require('../../jsinit/GlobalConfig');
 
 
 global.contract('Pausable', (accounts) => {

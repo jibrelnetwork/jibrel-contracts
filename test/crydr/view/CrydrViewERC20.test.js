@@ -8,8 +8,8 @@ const CrydrViewERC20LoggableJSAPI = require('../../../jsapi/crydr/view/CrydrView
 
 const PausableTestSuite = require('../../../test_suit/lifecycle/Pausable');
 
-const GlobalConfig = require('../../../migrations/init/GlobalConfig');
-const CrydrViewInit = require('../../../migrations/init/CrydrViewInit');
+const GlobalConfig = require('../../../jsinit/GlobalConfig');
+const CrydrViewInit = require('../../../jsinit/CrydrViewInit');
 
 const CheckExceptions = require('../../../test_util/CheckExceptions');
 

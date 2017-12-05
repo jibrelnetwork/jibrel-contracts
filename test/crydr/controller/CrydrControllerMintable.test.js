@@ -6,8 +6,8 @@ const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
 const CrydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
 const CrydrControllerMintableJSAPI = require('../../../jsapi/crydr/controller/CrydrControllerMintableInterface');
 
-const GlobalConfig = require('../../../migrations/init/GlobalConfig');
-const CrydrInit = require('../../../migrations/init/CrydrInit');
+const GlobalConfig = require('../../../jsinit/GlobalConfig');
+const CrydrInit = require('../../../jsinit/CrydrInit');
 
 const CheckExceptions = require('../../../test_util/CheckExceptions');
 

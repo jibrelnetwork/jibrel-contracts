@@ -1,10 +1,10 @@
-const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
-const PausableJSAPI = require('../../jsapi/lifecycle/Pausable');
-const CrydrControllerBaseInterfaceJSAPI = require('../../jsapi/crydr/controller/CrydrControllerBaseInterface');
-const CrydrControllerBlockableInterfaceJSAPI = require('../../jsapi/crydr/controller/CrydrControllerBlockableInterface');
-const CrydrControllerMintableInterfaceJSAPI = require('../../jsapi/crydr/controller/CrydrControllerMintableInterface');
-const JNTControllerInterfaceJSAPI = require('../../jsapi/crydr/jnt/JNTControllerInterface');
-const JNTPayableServiceInterfaceJSAPI = require('../../jsapi/crydr/jnt/JNTPayableServiceInterface');
+const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
+const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
+const CrydrControllerBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBaseInterface');
+const CrydrControllerBlockableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBlockableInterface');
+const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
+const JNTControllerInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTControllerInterface');
+const JNTPayableServiceInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTPayableServiceInterface');
 
 const GlobalConfig = require('./GlobalConfig');
 

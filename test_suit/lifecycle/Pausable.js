@@ -5,7 +5,7 @@ import { submitTxAndWaitConfirmation } from '../../jsapi/misc/SubmitTx';
 const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
 const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
 
-const GlobalConfig = require('../../migrations/init/GlobalConfig');
+const GlobalConfig = require('../../jsinit/GlobalConfig');
 
 const CheckExceptions = require('../../test_util/CheckExceptions');
 
