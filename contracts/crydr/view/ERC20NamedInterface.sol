@@ -15,6 +15,9 @@ contract ERC20NamedInterface {
   function symbol() external constant returns (string);
   function decimals() external constant returns (uint8);
 
+  function setName(string _name) external;
+  function setSymbol(string _symbol) external;
+
   function getNameHash() external constant returns (bytes32);
   function getSymbolHash() external constant returns (bytes32);
 }

@@ -3,10 +3,12 @@
 pragma solidity ^0.4.15;
 
 
+import '../../lifecycle/Manageable.sol';
 import './ERC20NamedInterface.sol';
 
 
-contract ERC20Named is ERC20NamedInterface {
+contract ERC20Named is Manageable,
+                       ERC20NamedInterface {
 
   /* Storage */
 
@@ -37,6 +39,18 @@ contract ERC20Named is ERC20NamedInterface {
   function decimals() external constant returns (uint8) {
     return tokenDecimals;
   }
+
+
+  /* Setters */
+
+  function setName(string _name) external onlyAllowedManager('set_crydr_name') {
+    tokenName = _name;
+  }
+
+  function setSymbol(string _symbol) external onlyAllowedManager('set_crydr_symbol') {
+    tokenSymbol = _symbol;
+  }
+
 
   /**
    * @dev Function to calculate hash of the token`s name.
