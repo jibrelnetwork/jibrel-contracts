@@ -4,7 +4,7 @@ const CrydrViewERC20                 = global.artifacts.require('CrydrViewERC20.
 const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
 const CrydrViewBaseJSAPI = require('../../../jsapi/crydr/view/CrydrViewBaseInterface');
 const CrydrViewERC20JSAPI = require('../../../jsapi/crydr/view/ERC20Interface');
-const CrydrViewERC20LoggableJSAPI = require('../../../jsapi/crydr/view/CrydrViewERC20LoggableInterface');
+const CrydrViewERC20LoggableJSAPI = require('../../../jsapi/crydr/view/ERC20LoggableInterface');
 
 const PausableTestSuite = require('../../../test_suit/lifecycle/Pausable');
 
@@ -22,15 +22,18 @@ global.contract('CrydrViewERC20', (accounts) => {
   GlobalConfig.setAccounts(accounts);
   const { owner, managerGeneral, managerPause, testInvestor1, testInvestor2 } = GlobalConfig.getAccounts();
 
-  const name = 'testName';
-  const symbol = 'testSymbol';
-  const decimals = 18;
+  const originalName = 'testName';
+  const originalSymbol = 'testSymbol';
+  const originalDecimals = 18;
+  const originalNameHash = '0x698c8efcda9e563cf153563941b60fc5ac88336fc58d361eb0888686fadb9976';
+  const originalSymbolHash = '0x6a2f03a1dba5e9dbeb18b55ac2076e1af9f5f2b7411cb1dbef111c70934e1686';
 
   const assetID = 'jASSET';
 
 
   global.beforeEach(async () => {
-    CrydrViewERC20Instance = await CrydrViewERC20.new(assetID, name, symbol, decimals, { from: owner });
+    CrydrViewERC20Instance = await CrydrViewERC20.new(assetID, originalName, originalSymbol, originalDecimals,
+                                                      { from: owner });
     controllerStubInstance = await CrydrControllerERC20Stub.new(assetID,
                                                                 CrydrViewERC20Instance.address,
                                                                 { from: owner });
@@ -56,6 +59,23 @@ global.contract('CrydrViewERC20', (accounts) => {
   });
 
   global.it('should test that contract works as expected', async () => {
+    const contractName = await CrydrViewERC20Instance.name.call();
+    global.assert.strictEqual(contractName, originalName);
+
+    const contractSymbol = await CrydrViewERC20Instance.symbol.call();
+    global.assert.strictEqual(contractSymbol, originalSymbol);
+
+    const contractDecimals = await CrydrViewERC20Instance.decimals.call();
+    global.assert.strictEqual(contractDecimals.toNumber(), originalDecimals);
+
+
+    const contractNameHash = await CrydrViewERC20Instance.getNameHash.call();
+    global.assert.strictEqual(contractNameHash, originalNameHash);
+
+    const contractSymbolHash = await CrydrViewERC20Instance.getSymbolHash.call();
+    global.assert.strictEqual(contractSymbolHash, originalSymbolHash);
+
+
     await CrydrViewERC20JSAPI.transfer(CrydrViewERC20Instance.address, testInvestor1,
                                        testInvestor1, 10 * (10 ** 18));
     const transferCounter = await controllerStubInstance.transferCounter.call();

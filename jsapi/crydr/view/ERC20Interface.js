@@ -9,6 +9,16 @@ const ERC20Interface = global.artifacts.require('ERC20Interface.sol');
  * ERC20
  */
 
+export const name = async (contractAddress) =>
+  ERC20Interface.at(contractAddress).name.call();
+
+export const symbol = async (contractAddress) =>
+  ERC20Interface.at(contractAddress).symbol.call();
+
+export const decimals = async (contractAddress) =>
+  ERC20Interface.at(contractAddress).decimals.call();
+
+
 export const transfer = async (crydrViewAddress, spenderAddress,
                                toAddress, valueTransferred) => {
   global.console.log('\tTransfer tokens:');

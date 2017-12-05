@@ -5,7 +5,7 @@ pragma solidity ^0.4.15;
 
 import "../feature/assetid/AssetID.sol";
 import "../../contracts/crydr/controller/CrydrControllerERC20Interface.sol";
-import "../../contracts/crydr/view/CrydrViewERC20LoggableInterface.sol";
+import "../../contracts/crydr/view/ERC20LoggableInterface.sol";
 
 
 /**
@@ -14,13 +14,18 @@ import "../../contracts/crydr/view/CrydrViewERC20LoggableInterface.sol";
  */
 contract CrydrControllerERC20Stub is AssetID,
                                      CrydrControllerERC20Interface,
-                                     CrydrViewERC20LoggableInterface {
+                                     ERC20LoggableInterface {
 
   /* Storage */
+
+  string public tokenName = 'tokenName';
+  string public tokenSymbol = 'tokenSymbol';
+  uint8 public tokenDecimals = 18;
 
   uint public transferCounter = 0;
   uint public approveCounter = 0;
   uint public transferFromCounter = 0;
+
   address crydrView;
 
 
@@ -35,6 +40,10 @@ contract CrydrControllerERC20Stub is AssetID,
 
   function transfer(address _msgsender, address _to, uint _value)
   {
+    require(_msgsender == _msgsender); // always true, to avoid annoying compilation warnings
+    require(_to == _to); // always true, to avoid annoying compilation warnings
+    require(_value == _value); // always true, to avoid annoying compilation warnings
+
     transferCounter += 1;
   }
 
@@ -46,6 +55,7 @@ contract CrydrControllerERC20Stub is AssetID,
   function getBalance(address _owner) constant returns (uint balance)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
+
     return 40 * (10 ** 18);
   }
 
@@ -57,6 +67,10 @@ contract CrydrControllerERC20Stub is AssetID,
   function transferFrom(address _msgsender, address _from, address _to, uint _value)
   {
     require(_msgsender == _msgsender); // always true, to avoid annoying compilation warnings
+    require(_from == _from); // always true, to avoid annoying compilation warnings
+    require(_to == _to); // always true, to avoid annoying compilation warnings
+    require(_value == _value); // always true, to avoid annoying compilation warnings
+
     transferFromCounter += 1;
   }
 
@@ -64,19 +78,20 @@ contract CrydrControllerERC20Stub is AssetID,
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
     require(_spender == _spender); // always true, to avoid annoying compilation warnings
+
     return 20 * (10 ** 18);
   }
 
 
-  /* CrydrViewERC20LoggableInterface */
+  /* ERC20LoggableInterface */
 
   function emitTransferEvent(address _from, address _to, uint _value) external
   {
-    CrydrViewERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
+    ERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
   }
 
   function emitApprovalEvent(address _owner, address _spender, uint _value) external
   {
-    CrydrViewERC20LoggableInterface(crydrView).emitApprovalEvent(_owner, _spender, _value);
+    ERC20LoggableInterface(crydrView).emitApprovalEvent(_owner, _spender, _value);
   }
 }

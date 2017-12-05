@@ -5,7 +5,7 @@ pragma solidity ^0.4.15;
 
 import "../storage/CrydrStorageBaseInterface.sol";
 import "../storage/CrydrStorageERC20Interface.sol";
-import "../view/CrydrViewERC20LoggableInterface.sol";
+import "../view/ERC20LoggableInterface.sol";
 import "../controller/CrydrControllerBase.sol";
 import "../controller/CrydrControllerBlockable.sol";
 import "../controller/CrydrControllerMintable.sol";

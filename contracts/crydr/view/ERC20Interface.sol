@@ -8,14 +8,18 @@ pragma solidity ^0.4.15;
  * @dev ERC20 interface to use in applications
  */
 contract ERC20Interface {
-  event Transfer(address indexed from, address indexed to, uint value);
-  event Approval(address indexed owner, address indexed spender, uint value);
+  event Transfer(address indexed from, address indexed to, uint256 value);
+  event Approval(address indexed owner, address indexed spender, uint256 value);
 
-  function transfer(address _to, uint _value) external returns (bool success);
-  function totalSupply() external constant returns (uint);
-  function balanceOf(address _owner) external constant returns (uint balance);
+  function name() external constant returns (string);
+  function symbol() external constant returns (string);
+  function decimals() external constant returns (uint8);
 
-  function approve(address _spender, uint _value) external returns (bool success);
-  function transferFrom(address _from, address _to, uint _value) external returns (bool success);
-  function allowance(address _owner, address _spender) external constant returns (uint remaining);
+  function transfer(address _to, uint256 _value) external returns (bool);
+  function totalSupply() external constant returns (uint256);
+  function balanceOf(address _owner) external constant returns (uint256);
+
+  function approve(address _spender, uint256 _value) external returns (bool);
+  function transferFrom(address _from, address _to, uint256 _value) external returns (bool);
+  function allowance(address _owner, address _spender) external constant returns (uint256);
 }

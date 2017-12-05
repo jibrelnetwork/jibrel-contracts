@@ -3,9 +3,11 @@
 pragma solidity ^0.4.15;
 
 
-contract CrydrViewERC20LoggableInterface {
-
-  /* Actions */
+/**
+ * @title ERC20LoggableInterface
+ * @dev Contract is able to create Transfer/Approval events with the cal from controller
+ */
+contract ERC20LoggableInterface {
 
   function emitTransferEvent(address _from, address _to, uint _value) external;
   function emitApprovalEvent(address _owner, address _spender, uint _value) external;
