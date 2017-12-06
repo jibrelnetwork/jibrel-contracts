@@ -11,10 +11,10 @@ contract BytecodeExecutableInterface {
 
   /* Events */
 
-  event BytecodeExecutedEvent(address indexed target, uint ethValue, bytes32 transactionBytecodeHash);
+  event BytecodeExecutedEvent(address indexed target, uint256 ethValue, bytes32 transactionBytecodeHash);
 
 
   /* Functions */
 
-  function executeBytecode(address _target, uint _ethValue, bytes _transactionBytecode);
+  function executeBytecode(address _target, uint256 _ethValue, bytes _transactionBytecode);
 }

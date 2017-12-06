@@ -61,7 +61,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
 
   /* Actions */
 
-  function chargeJNT(address _from, address _to, uint _value) internal whenContractNotPaused {
+  function chargeJNT(address _from, address _to, uint256 _value) internal whenContractNotPaused {
     require(_from != address(0x0));
     require(_to != address(0x0));
     require(_from != _to);

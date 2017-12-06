@@ -11,6 +11,6 @@ contract ERC20MintableInterface {
   event MintEvent(address indexed owner, uint256 value);
   event BurnEvent(address indexed owner, uint256 value);
 
-  function emitMintEvent(address _owner, uint _value) external;
-  function emitBurnEvent(address _owner, uint _value) external;
+  function emitMintEvent(address _owner, uint256 _value) external;
+  function emitBurnEvent(address _owner, uint256 _value) external;
 }

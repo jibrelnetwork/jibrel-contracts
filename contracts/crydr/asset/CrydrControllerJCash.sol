@@ -34,7 +34,7 @@ contract CrydrControllerJCash is CrydrControllerBase,
   function transfer(
     address _msgsender,
     address _to,
-    uint _value
+    uint256 _value
   ) {
     CrydrControllerERC20.transfer(_msgsender, _to, _value);
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransfer);
@@ -43,7 +43,7 @@ contract CrydrControllerJCash is CrydrControllerBase,
   function approve(
     address _msgsender,
     address _spender,
-    uint _value
+    uint256 _value
   ) {
     CrydrControllerERC20.approve(_msgsender, _spender, _value);
     chargeJNT(_msgsender, jntBeneficiary, jntPriceApprove);
@@ -53,7 +53,7 @@ contract CrydrControllerJCash is CrydrControllerBase,
     address _msgsender,
     address _from,
     address _to,
-    uint _value
+    uint256 _value
   ) {
     CrydrControllerERC20.transferFrom(_msgsender, _from, _to, _value);
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransferFrom);

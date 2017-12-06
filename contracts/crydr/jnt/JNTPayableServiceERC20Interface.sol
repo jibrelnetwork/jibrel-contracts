@@ -12,15 +12,15 @@ contract JNTPayableServiceERC20Interface {
 
   /* Events */
 
-  event JNTPriceTransferChangedEvent(uint value);
-  event JNTPriceTransferFromChangedEvent(uint value);
-  event JNTPriceApproveChangedEvent(uint value);
+  event JNTPriceTransferChangedEvent(uint256 value);
+  event JNTPriceTransferFromChangedEvent(uint256 value);
+  event JNTPriceApproveChangedEvent(uint256 value);
 
 
   /* Configuration */
 
-  function setJntPrice(uint _jntPriceTransfer, uint _jntPriceTransferFrom, uint _jntPriceApprove);
-  function getJntPriceForTransfer() constant returns (uint);
-  function getJntPriceForTransferFrom() constant returns (uint);
-  function getJntPriceForApprove() constant returns (uint);
+  function setJntPrice(uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove);
+  function getJntPriceForTransfer() constant returns (uint256);
+  function getJntPriceForTransferFrom() constant returns (uint256);
+  function getJntPriceForApprove() constant returns (uint256);
 }

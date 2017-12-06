@@ -18,7 +18,7 @@ contract InvestorRegistry is InvestorRegistryManagementInterface, Manageable, Js
 
   mapping (address => bool) investorAdmitted;
   mapping (address => mapping (string => bool)) investorLicenses;
-  mapping (address => mapping (string => uint)) investorLicensesExpiration;
+  mapping (address => mapping (string => uint256)) investorLicensesExpiration;
   mapping (address => string[]) investorLicensesList;
 
 
@@ -49,7 +49,7 @@ contract InvestorRegistry is InvestorRegistryManagementInterface, Manageable, Js
   }
 
   function grantInvestorLicense(
-    address _investor, string _licenseName, uint _expireTimestamp
+    address _investor, string _licenseName, uint256 _expireTimestamp
   )
     onlyValidInvestorAddress(_investor)
     onlyValidLicenseName(_licenseName)
@@ -66,7 +66,7 @@ contract InvestorRegistry is InvestorRegistryManagementInterface, Manageable, Js
   }
 
   function renewInvestorLicense(
-    address _investor, string _licenseName, uint _expireTimestamp
+    address _investor, string _licenseName, uint256 _expireTimestamp
   )
     onlyValidInvestorAddress(_investor)
     onlyValidLicenseName(_licenseName)
@@ -135,7 +135,7 @@ contract InvestorRegistry is InvestorRegistryManagementInterface, Manageable, Js
     jsonSlices[0] = '{"admittance": '.toSlice();
     jsonSlices[1] = boolToAsciiString(investorAdmitted[_investor]).toSlice();
     jsonSlices[2] = ', "licenses": ['.toSlice();
-    for (uint i = 0; i < investorLicensesList[_investor].length; i++) {
+    for (uint256 i = 0; i < investorLicensesList[_investor].length; i++) {
       jsonSlices[i * 2 + 3] = encodeLicenseInfo(_investor, investorLicensesList[_investor][i]).toSlice();
       jsonSlices[i * 2 + 4] = ','.toSlice();
     }
@@ -159,7 +159,7 @@ contract InvestorRegistry is InvestorRegistryManagementInterface, Manageable, Js
     ];
 
     strings.slice[] memory jsonSlices = new strings.slice[](jsonParts.length);
-    for (uint i = 0; i < jsonParts.length; i += 1) {
+    for (uint256 i = 0; i < jsonParts.length; i += 1) {
       jsonSlices[i] = jsonParts[i].toSlice();
     }
     return "".toSlice().join(jsonSlices);

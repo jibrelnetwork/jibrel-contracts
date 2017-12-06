@@ -28,7 +28,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
 
   /* Constructor */
 
-  function CrydrControllerSingleLicense(string _singleLicenseName, uint _uniqueId) CrydrControllerBase(_uniqueId)
+  function CrydrControllerSingleLicense(string _singleLicenseName, uint256 _uniqueId) CrydrControllerBase(_uniqueId)
   {
     require(bytes(_singleLicenseName).length > 0);
 
@@ -43,7 +43,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   function transfer(
     address _msgsender,
     address _to,
-    uint _value
+    uint256 _value
   )
     onlyCrydrView
     whenContractNotPaused
@@ -62,12 +62,12 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     }
   }
 
-  function getTotalSupply() constant returns (uint) {
+  function getTotalSupply() constant returns (uint256) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrStorageBaseInterface(address(crydrStorage)).getTotalSupply();
   }
 
-  function getBalance(address _owner) constant returns (uint balance) {
+  function getBalance(address _owner) constant returns (uint256 balance) {
     // todo check gas consumption, do we need to optimise these type conversions ?
     return CrydrStorageBaseInterface(address(crydrStorage)).getBalance(_owner);
   }
@@ -75,7 +75,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
   function approve(
     address _msgsender,
     address _spender,
-    uint _value
+    uint256 _value
   )
     onlyCrydrView
     whenContractNotPaused
@@ -102,7 +102,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     address _msgsender,
     address _from,
     address _to,
-    uint _value
+    uint256 _value
   )
     onlyCrydrView
     whenContractNotPaused
@@ -121,7 +121,7 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     }
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint remaining) {
+  function getAllowance(address _owner, address _spender) constant returns (uint256 remaining) {
     return CrydrStorageBaseInterface(address(crydrStorage)).getAllowance(_owner, _spender);
   }
 
@@ -134,32 +134,32 @@ contract CrydrControllerSingleLicense is CrydrControllerBase,
     return true;
   }
 
-  function isReceivingAllowed(address _account, uint _value) constant returns (bool) {
+  function isReceivingAllowed(address _account, uint256 _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }
 
-  function isSpendingAllowed(address _account, uint _value) constant returns (bool) {
+  function isSpendingAllowed(address _account, uint256 _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_account, singleLicenseName);
   }
 
 
-  function isTransferAllowed(address _from, address _to, uint _value) constant returns (bool) {
+  function isTransferAllowed(address _from, address _to, uint256 _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_to, singleLicenseName);
   }
 
 
-  function isApproveAllowed(address _from, address _spender, uint _value) constant returns (bool) {
+  function isApproveAllowed(address _from, address _spender, uint256 _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName);
   }
 
-  function isApprovedSpendingAllowed(address _from, address _spender, uint _value) constant returns (bool) {
+  function isApprovedSpendingAllowed(address _from, address _spender, uint256 _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName);
   }
 
-  function isTransferFromAllowed(address _spender, address _from, address _to, uint _value) constant returns (bool) {
+  function isTransferFromAllowed(address _spender, address _from, address _to, uint256 _value) constant returns (bool) {
     return investorsRegistry.isInvestorAllowed(_from, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_spender, singleLicenseName) &&
            investorsRegistry.isInvestorAllowed(_to, singleLicenseName);

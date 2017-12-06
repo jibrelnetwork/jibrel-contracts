@@ -27,17 +27,17 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Libraries */
 
-  using SafeMath for uint; // todo check gas costs without lib (with inheritance)
+  using SafeMath for uint256; // todo check gas costs without lib (with inheritance)
 
 
   /* Storage */
 
   CrydrControllerBaseInterface crydrController;
-  mapping (address => uint) balances;
-  uint totalSupply;
-  mapping (address => mapping (address => uint)) allowed;
-  mapping (address => uint) accountBlocks;
-  mapping (address => uint) accountBlockedFunds;
+  mapping (address => uint256) balances;
+  uint256 totalSupply;
+  mapping (address => mapping (address => uint256)) allowed;
+  mapping (address => uint256) accountBlocks;
+  mapping (address => uint256) accountBlockedFunds;
 
 
   /* Constructor */
@@ -73,7 +73,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   function increaseBalance(
     address _account,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -88,7 +88,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   function decreaseBalance(
     address _account,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -101,13 +101,13 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     AccountBalanceDecreasedEvent(_account, _value);
   }
 
-  function getBalance(address _account) constant returns (uint) {
+  function getBalance(address _account) constant returns (uint256) {
     require(_account != address(0x0));
 
     return balances[_account];
   }
 
-  function getTotalSupply() constant returns (uint) {
+  function getTotalSupply() constant returns (uint256) {
     return totalSupply;
   }
 
@@ -116,7 +116,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function increaseAllowance(
     address _owner,
     address _spender,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -133,7 +133,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function decreaseAllowance(
     address _owner,
     address _spender,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -152,7 +152,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _spender
   )
     constant
-    returns (uint)
+    returns (uint256)
   {
     require(_owner != address(0x0));
     require(_spender != address(0x0));
@@ -190,7 +190,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account
   )
     constant
-    returns (uint)
+    returns (uint256)
   {
     require(_account != address(0x0));
 
@@ -199,7 +199,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   function blockAccountFunds(
     address _account,
-    uint _value
+    uint256 _value
   )
     onlyCrydrController
   {
@@ -212,7 +212,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   function unblockAccountFunds(
     address _account,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -228,7 +228,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account
   )
     constant
-    returns (uint)
+    returns (uint256)
   {
     require(_account != address(0x0));
 
@@ -242,7 +242,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function transfer(
     address _msgsender,
     address _to,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -263,7 +263,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _msgsender,
     address _from,
     address _to,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController
@@ -285,7 +285,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function approve(
     address _msgsender,
     address _spender,
-    uint _value
+    uint256 _value
   )
     whenContractNotPaused
     onlyCrydrController

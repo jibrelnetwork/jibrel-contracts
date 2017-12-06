@@ -56,7 +56,7 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   function transfer(
     address _to,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused
@@ -67,18 +67,18 @@ contract CrydrViewERC20 is CrydrViewBase,
     return true;
   }
 
-  function totalSupply() external constant returns (uint) {
+  function totalSupply() external constant returns (uint256) {
     return CrydrControllerERC20Interface(crydrController).getTotalSupply();
   }
 
-  function balanceOf(address _owner) external constant onlyPayloadSize(1 * 32) returns (uint) {
+  function balanceOf(address _owner) external constant onlyPayloadSize(1 * 32) returns (uint256) {
     return CrydrControllerERC20Interface(crydrController).getBalance(_owner);
   }
 
 
   function approve(
     address _spender,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused
@@ -92,7 +92,7 @@ contract CrydrViewERC20 is CrydrViewBase,
   function transferFrom(
     address _from,
     address _to,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused
@@ -110,7 +110,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     external
     constant
     onlyPayloadSize(2 * 32)
-    returns (uint)
+    returns (uint256)
   {
     return CrydrControllerERC20Interface(crydrController).getAllowance(_owner, _spender);
   }
@@ -147,7 +147,7 @@ contract CrydrViewERC20 is CrydrViewBase,
   function emitTransferEvent(
     address _from,
     address _to,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused
@@ -159,7 +159,7 @@ contract CrydrViewERC20 is CrydrViewBase,
   function emitApprovalEvent(
     address _owner,
     address _spender,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused
@@ -173,7 +173,7 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   function emitMintEvent(
     address _owner,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused
@@ -184,7 +184,7 @@ contract CrydrViewERC20 is CrydrViewBase,
 
   function emitBurnEvent(
     address _owner,
-    uint _value
+    uint256 _value
   )
     external
     whenContractNotPaused

@@ -22,9 +22,9 @@ contract CrydrControllerERC20Stub is AssetID,
   string public tokenSymbol = 'tokenSymbol';
   uint8 public tokenDecimals = 18;
 
-  uint public transferCounter = 0;
-  uint public approveCounter = 0;
-  uint public transferFromCounter = 0;
+  uint256 public transferCounter = 0;
+  uint256 public approveCounter = 0;
+  uint256 public transferFromCounter = 0;
 
   address crydrView;
 
@@ -38,7 +38,7 @@ contract CrydrControllerERC20Stub is AssetID,
 
   /* CrydrControllerERC20Interface */
 
-  function transfer(address _msgsender, address _to, uint _value)
+  function transfer(address _msgsender, address _to, uint256 _value)
   {
     require(_msgsender == _msgsender); // always true, to avoid annoying compilation warnings
     require(_to == _to); // always true, to avoid annoying compilation warnings
@@ -47,24 +47,24 @@ contract CrydrControllerERC20Stub is AssetID,
     transferCounter += 1;
   }
 
-  function getTotalSupply() constant returns (uint)
+  function getTotalSupply() constant returns (uint256)
   {
     return 60 * (10 ** 18);
   }
 
-  function getBalance(address _owner) constant returns (uint)
+  function getBalance(address _owner) constant returns (uint256)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
 
     return 40 * (10 ** 18);
   }
 
-  function approve(address _msgsender, address _spender, uint _value)
+  function approve(address _msgsender, address _spender, uint256 _value)
   {
     approveCounter += 1;
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value)
+  function transferFrom(address _msgsender, address _from, address _to, uint256 _value)
   {
     require(_msgsender == _msgsender); // always true, to avoid annoying compilation warnings
     require(_from == _from); // always true, to avoid annoying compilation warnings
@@ -74,7 +74,7 @@ contract CrydrControllerERC20Stub is AssetID,
     transferFromCounter += 1;
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint)
+  function getAllowance(address _owner, address _spender) constant returns (uint256)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
     require(_spender == _spender); // always true, to avoid annoying compilation warnings
@@ -85,12 +85,12 @@ contract CrydrControllerERC20Stub is AssetID,
 
   /* ERC20LoggableInterface */
 
-  function emitTransferEvent(address _from, address _to, uint _value) external
+  function emitTransferEvent(address _from, address _to, uint256 _value) external
   {
     ERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
   }
 
-  function emitApprovalEvent(address _owner, address _spender, uint _value) external
+  function emitApprovalEvent(address _owner, address _spender, uint256 _value) external
   {
     ERC20LoggableInterface(crydrView).emitApprovalEvent(_owner, _spender, _value);
   }

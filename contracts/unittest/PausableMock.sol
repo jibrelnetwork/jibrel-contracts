@@ -15,7 +15,7 @@ contract PausableMock is Pausable {
   event WhenContractNotPausedEvent();
   event WhenContractPausedEvent();
 
-  uint public counter = 0;
+  uint256 public counter = 0;
 
   function worksWhenContractNotPaused() whenContractNotPaused {
     counter += 1;

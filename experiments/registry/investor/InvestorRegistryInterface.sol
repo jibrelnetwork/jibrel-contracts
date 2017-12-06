@@ -13,8 +13,8 @@ contract InvestorRegistryInterface {
 
   event InvestorAdmittedEvent(address indexed investoraddress);
   event InvestorDeniedEvent(address indexed investoraddress);
-  event InvestorLicenseGrantedEvent(address indexed investoraddress, string licensename, uint indexed expirationtimestamp);
-  event InvestorLicenseRenewedEvent(address indexed investoraddress, string licensename, uint indexed expirationtimestamp);
+  event InvestorLicenseGrantedEvent(address indexed investoraddress, string licensename, uint256 indexed expirationtimestamp);
+  event InvestorLicenseRenewedEvent(address indexed investoraddress, string licensename, uint256 indexed expirationtimestamp);
   event InvestorLicenseRevokedEvent(address indexed investoraddress, string licensename);
 
 

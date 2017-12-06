@@ -39,22 +39,22 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   /* Low-level change of balance. Implied that totalSupply kept in sync. */
 
-  function increaseBalance(address _account, uint _value)
+  function increaseBalance(address _account, uint256 _value)
   {
     CrydrStorageBaseInterface(crydrStorage).increaseBalance(_account, _value);
   }
 
-  function decreaseBalance(address _account, uint _value)
+  function decreaseBalance(address _account, uint256 _value)
   {
     CrydrStorageBaseInterface(crydrStorage).decreaseBalance(_account, _value);
   }
 
-  function getBalance(address _account) constant returns (uint)
+  function getBalance(address _account) constant returns (uint256)
   {
     return CrydrStorageBaseInterface(crydrStorage).getBalance(_account);
   }
 
-  function getTotalSupply() constant returns (uint)
+  function getTotalSupply() constant returns (uint256)
   {
     return CrydrStorageBaseInterface(crydrStorage).getTotalSupply();
   }
@@ -62,17 +62,17 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   /* Low-level change of allowance */
 
-  function increaseAllowance(address _owner, address _spender, uint _value)
+  function increaseAllowance(address _owner, address _spender, uint256 _value)
   {
     CrydrStorageBaseInterface(crydrStorage).increaseAllowance(_owner, _spender, _value);
   }
 
-  function decreaseAllowance(address _owner, address _spender, uint _value)
+  function decreaseAllowance(address _owner, address _spender, uint256 _value)
   {
     CrydrStorageBaseInterface(crydrStorage).decreaseAllowance(_owner, _spender, _value);
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint)
+  function getAllowance(address _owner, address _spender) constant returns (uint256)
   {
     return CrydrStorageBaseInterface(crydrStorage).getAllowance(_owner, _spender);
   }
@@ -90,23 +90,23 @@ contract CrydrStorageERC20Proxy is AssetID,
     CrydrStorageBaseInterface(crydrStorage).unblockAccount(_account);
   }
 
-  function getAccountBlocks(address _account) constant returns (uint)
+  function getAccountBlocks(address _account) constant returns (uint256)
   {
     return CrydrStorageBaseInterface(crydrStorage).getAccountBlocks(_account);
   }
 
 
-  function blockAccountFunds(address _account, uint _value)
+  function blockAccountFunds(address _account, uint256 _value)
   {
     CrydrStorageBaseInterface(crydrStorage).blockAccountFunds(_account, _value);
   }
 
-  function unblockAccountFunds(address _account, uint _value)
+  function unblockAccountFunds(address _account, uint256 _value)
   {
     CrydrStorageBaseInterface(crydrStorage).unblockAccountFunds(_account, _value);
   }
 
-  function getAccountBlockedFunds(address _account) constant returns (uint)
+  function getAccountBlockedFunds(address _account) constant returns (uint256)
   {
     return CrydrStorageBaseInterface(crydrStorage).getAccountBlockedFunds(_account);
   }
@@ -114,17 +114,17 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   /* CrydrStorageERC20Interface */
 
-  function transfer(address _msgsender, address _to, uint _value)
+  function transfer(address _msgsender, address _to, uint256 _value)
   {
     CrydrStorageERC20Interface(crydrStorage).transfer(_msgsender, _to, _value);
   }
 
-  function transferFrom(address _msgsender, address _from, address _to, uint _value)
+  function transferFrom(address _msgsender, address _from, address _to, uint256 _value)
   {
     CrydrStorageERC20Interface(crydrStorage).transferFrom(_msgsender, _from, _to, _value);
   }
 
-  function approve(address _msgsender, address _spender, uint _value)
+  function approve(address _msgsender, address _spender, uint256 _value)
   {
     CrydrStorageERC20Interface(crydrStorage).approve(_msgsender, _spender, _value);
   }

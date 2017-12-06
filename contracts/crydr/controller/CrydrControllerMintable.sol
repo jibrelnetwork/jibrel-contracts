@@ -19,7 +19,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   /* minting/burning */
 
   function mint(
-    address _account, uint _value
+    address _account, uint256 _value
   )
     whenContractNotPaused
     onlyAllowedManager('mint_crydr')
@@ -34,7 +34,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   }
 
   function burn(
-    address _account, uint _value
+    address _account, uint256 _value
   )
     whenContractNotPaused
     onlyAllowedManager('burn_crydr')

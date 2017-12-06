@@ -16,7 +16,7 @@ contract InvestorRegistryManagementInterface is InvestorRegistryInterface {
 
   function admitInvestor(address _investor);
   function denyInvestor(address _investor);
-  function grantInvestorLicense(address _investor, string _licenseName, uint _expireTimestamp);
-  function renewInvestorLicense(address _investor, string _licenseName, uint _expireTimestamp);
+  function grantInvestorLicense(address _investor, string _licenseName, uint256 _expireTimestamp);
+  function renewInvestorLicense(address _investor, string _licenseName, uint256 _expireTimestamp);
   function revokeInvestorLicense(address _investor, string _licenseName);
 }

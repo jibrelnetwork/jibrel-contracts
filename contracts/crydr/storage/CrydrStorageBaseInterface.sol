@@ -12,14 +12,14 @@ contract CrydrStorageBaseInterface {
   /* Events */
 
   event CrydrControllerChangedEvent(address indexed crydrcontroller);
-  event AccountBalanceIncreasedEvent(address indexed account, uint value);
-  event AccountBalanceDecreasedEvent(address indexed account, uint value);
-  event AccountAllowanceIncreasedEvent(address indexed owner, address indexed spender, uint value);
-  event AccountAllowanceDecreasedEvent(address indexed owner, address indexed spender, uint value);
+  event AccountBalanceIncreasedEvent(address indexed account, uint256 value);
+  event AccountBalanceDecreasedEvent(address indexed account, uint256 value);
+  event AccountAllowanceIncreasedEvent(address indexed owner, address indexed spender, uint256 value);
+  event AccountAllowanceDecreasedEvent(address indexed owner, address indexed spender, uint256 value);
   event AccountBlockedEvent(address indexed account);
   event AccountUnblockedEvent(address indexed account);
-  event AccountFundsBlockedEvent(address indexed account, uint value);
-  event AccountFundsUnblockedEvent(address indexed account, uint value);
+  event AccountFundsBlockedEvent(address indexed account, uint256 value);
+  event AccountFundsUnblockedEvent(address indexed account, uint256 value);
 
 
   /* Configuration */
@@ -30,26 +30,26 @@ contract CrydrStorageBaseInterface {
 
   /* Low-level change of balance. Implied that totalSupply kept in sync. */
 
-  function increaseBalance(address _account, uint _value);
-  function decreaseBalance(address _account, uint _value);
-  function getBalance(address _account) constant returns (uint);
-  function getTotalSupply() constant returns (uint);
+  function increaseBalance(address _account, uint256 _value);
+  function decreaseBalance(address _account, uint256 _value);
+  function getBalance(address _account) constant returns (uint256);
+  function getTotalSupply() constant returns (uint256);
 
 
   /* Low-level change of allowance */
 
-  function increaseAllowance(address _owner, address _spender, uint _value);
-  function decreaseAllowance(address _owner, address _spender, uint _value);
-  function getAllowance(address _owner, address _spender) constant returns (uint);
+  function increaseAllowance(address _owner, address _spender, uint256 _value);
+  function decreaseAllowance(address _owner, address _spender, uint256 _value);
+  function getAllowance(address _owner, address _spender) constant returns (uint256);
 
 
   /* Low-level change of blocks and getters */
 
   function blockAccount(address _account);
   function unblockAccount(address _account);
-  function getAccountBlocks(address _account) constant returns (uint);
+  function getAccountBlocks(address _account) constant returns (uint256);
 
-  function blockAccountFunds(address _account, uint _value);
-  function unblockAccountFunds(address _account, uint _value);
-  function getAccountBlockedFunds(address _account) constant returns (uint);
+  function blockAccountFunds(address _account, uint256 _value);
+  function unblockAccountFunds(address _account, uint256 _value);
+  function getAccountBlockedFunds(address _account) constant returns (uint256);
 }

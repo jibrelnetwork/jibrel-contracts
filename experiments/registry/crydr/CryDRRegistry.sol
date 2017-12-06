@@ -73,13 +73,13 @@ contract CryDRRegistry is CryDRRegistryInterface,
     crydrLookup[_crydrSymbol] = address(0x0);
 
     bool _isDeleted = false;
-    for (uint i = 0; i < crydrInfoList.length; i++) {
+    for (uint256 i = 0; i < crydrInfoList.length; i++) {
       if (
         sha3(crydrInfoList[i].crydrSymbol) == sha3(_crydrSymbol) &&
         sha3(crydrInfoList[i].crydrName) == sha3(_crydrName) &&
         crydrInfoList[i].crydrController == _crydrController
       ) {
-        for (uint z = i; z < crydrInfoList.length - 1; z++) {
+        for (uint256 z = i; z < crydrInfoList.length - 1; z++) {
           crydrInfoList[z] = crydrInfoList[z + 1];
         }
         delete crydrInfoList[crydrInfoList.length - 1];
@@ -110,7 +110,7 @@ contract CryDRRegistry is CryDRRegistryInterface,
   function getCryDRData() constant returns (string) {
     strings.slice[] memory jsonSlices = new strings.slice[](crydrInfoList.length * 2 - 1 + 2);
     jsonSlices[0] = '['.toSlice();
-    for (uint i = 0; i < crydrInfoList.length; i++) {
+    for (uint256 i = 0; i < crydrInfoList.length; i++) {
       jsonSlices[i * 2 + 1] = encodeCrydrInfo(i).toSlice();
       if (i < crydrInfoList.length - 1) {
         jsonSlices[i * 2 + 2] = ','.toSlice();
@@ -124,7 +124,7 @@ contract CryDRRegistry is CryDRRegistryInterface,
 
   /* JSON methods */
 
-  function encodeCrydrInfo(uint _crydrId) internal constant returns (string) {
+  function encodeCrydrInfo(uint256 _crydrId) internal constant returns (string) {
     string[7] memory jsonParts = [
       '{"symbol": "',
       crydrInfoList[_crydrId].crydrSymbol,
@@ -136,7 +136,7 @@ contract CryDRRegistry is CryDRRegistryInterface,
     ];
 
     strings.slice[] memory jsonSlices = new strings.slice[](jsonParts.length);
-    for (uint i = 0; i < jsonParts.length; i += 1) {
+    for (uint256 i = 0; i < jsonParts.length; i += 1) {
       jsonSlices[i] = jsonParts[i].toSlice();
     }
     return "".toSlice().join(jsonSlices);

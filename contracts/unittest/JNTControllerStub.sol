@@ -13,12 +13,12 @@ contract JNTControllerStub is JNTControllerInterface {
 
   /* Storage */
 
-  uint public counter = 0;
+  uint256 public counter = 0;
 
 
   /* JNTControllerInterface */
 
-  function chargeJNT(address _from, address _to, uint _value) {
+  function chargeJNT(address _from, address _to, uint256 _value) {
     counter += 1;
     JNTChargedEvent(msg.sender, _from, _to, _value);
   }

@@ -34,7 +34,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
 
   function blockAccountFunds(
     address _account,
-    uint _value
+    uint256 _value
   )
     onlyAllowedManager('block_account_funds')
   {
@@ -43,7 +43,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
 
   function unblockAccountFunds(
     address _account,
-    uint _value
+    uint256 _value
   )
     onlyAllowedManager('unblock_account_funds')
   {

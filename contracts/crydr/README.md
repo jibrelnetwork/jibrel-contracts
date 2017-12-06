@@ -11,7 +11,7 @@ This means that naive implementation of ERC20 do not fit our needs.
 
 Workable approach:
 - View - ERC20 contract. We can have more than one View that support different standards.
-- Model - contract with the storage, holds data structure `mapping(address => uint) balances;`
+- Model - contract with the storage, holds data structure `mapping(address => uint256) balances;`
 - Controller - contract that receives calls from View, checks validity, calls Model to change storage.
 Model accepts calls only from Controller.
 Controller implements features to manage token (like mint/burn tokens).

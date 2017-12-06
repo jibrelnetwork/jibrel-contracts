@@ -9,6 +9,6 @@ pragma solidity ^0.4.15;
  */
 contract ERC20LoggableInterface {
 
-  function emitTransferEvent(address _from, address _to, uint _value) external;
-  function emitApprovalEvent(address _owner, address _spender, uint _value) external;
+  function emitTransferEvent(address _from, address _to, uint256 _value) external;
+  function emitApprovalEvent(address _owner, address _spender, uint256 _value) external;
 }

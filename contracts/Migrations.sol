@@ -2,7 +2,7 @@ pragma solidity ^0.4.15;
 
 contract Migrations {
   address owner;
-  uint last_completed_migration;
+  uint256 last_completed_migration;
 
   modifier restricted() {
     if (msg.sender == owner) _;
@@ -12,7 +12,7 @@ contract Migrations {
     owner = msg.sender;
   }
 
-  function setCompleted(uint completed) restricted {
+  function setCompleted(uint256 completed) restricted {
     last_completed_migration = completed;
   }
 
@@ -25,7 +25,7 @@ contract Migrations {
     return owner;
   }
 
-  function getLastCompletedMigration() constant returns (uint) {
+  function getLastCompletedMigration() constant returns (uint256) {
     return last_completed_migration;
   }
 }

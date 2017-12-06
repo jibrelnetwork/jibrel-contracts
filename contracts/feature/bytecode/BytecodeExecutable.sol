@@ -22,7 +22,7 @@ contract BytecodeExecutable is BytecodeExecutableInterface, Manageable {
 
   function executeBytecode(
     address _target,
-    uint _ethValue,
+    uint256 _ethValue,
     bytes _transactionBytecode
   )
     onlyAllowedManager('execute_bytecode')

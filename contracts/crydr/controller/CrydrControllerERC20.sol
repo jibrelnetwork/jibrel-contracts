@@ -21,7 +21,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
   function transfer(
     address _msgsender,
     address _to,
-    uint _value
+    uint256 _value
   )
     onlyCrydrView
     whenContractNotPaused
@@ -33,18 +33,18 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     }
   }
 
-  function getTotalSupply() constant returns (uint) {
+  function getTotalSupply() constant returns (uint256) {
     return CrydrStorageBaseInterface(address(crydrStorage)).getTotalSupply();
   }
 
-  function getBalance(address _owner) constant returns (uint) {
+  function getBalance(address _owner) constant returns (uint256) {
     return CrydrStorageBaseInterface(address(crydrStorage)).getBalance(_owner);
   }
 
   function approve(
     address _msgsender,
     address _spender,
-    uint _value
+    uint256 _value
   )
     onlyCrydrView
     whenContractNotPaused
@@ -66,7 +66,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     address _msgsender,
     address _from,
     address _to,
-    uint _value
+    uint256 _value
   )
     onlyCrydrView
     whenContractNotPaused
@@ -78,7 +78,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     }
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint ) {
+  function getAllowance(address _owner, address _spender) constant returns (uint256 ) {
     return CrydrStorageBaseInterface(address(crydrStorage)).getAllowance(_owner, _spender);
   }
 }
