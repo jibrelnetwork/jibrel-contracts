@@ -48,7 +48,7 @@ contract Pausable is Manageable {
   /**
    * @dev called by the manager to pause, triggers stopped state
    */
-  function pauseContract() onlyAllowedManager('pause_contract') whenContractNotPaused {
+  function pauseContract() public onlyAllowedManager('pause_contract') whenContractNotPaused {
     paused = true;
     PauseEvent();
   }
@@ -56,7 +56,7 @@ contract Pausable is Manageable {
   /**
    * @dev called by the manager to unpause, returns to normal state
    */
-  function unpauseContract() onlyAllowedManager('unpause_contract') whenContractPaused {
+  function unpauseContract() public onlyAllowedManager('unpause_contract') whenContractPaused {
     paused = false;
     UnpauseEvent();
   }
@@ -64,7 +64,7 @@ contract Pausable is Manageable {
   /**
    * @dev The getter for "paused" contract variable
    */
-  function getPaused() constant returns (bool) {
+  function getPaused() public constant returns (bool) {
     return paused;
   }
 }

@@ -42,7 +42,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
 
   /* Constructor */
 
-  function CrydrStorage(string _assetID) AssetID(_assetID) {
+  function CrydrStorage(string _assetID) AssetID(_assetID) public {
     accountBlocks[0x0] = (0xffffffffffffffff - 1);
   }
 
@@ -54,6 +54,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function setCrydrController(
     address _crydrController
   )
+    external
     whenContractPaused
     onlyContractAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
@@ -65,7 +66,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     CrydrControllerChangedEvent(_crydrController);
   }
 
-  function getCrydrController() constant returns (address) {
+  function getCrydrController() public constant returns (address) {
     return address(crydrController);
   }
 
@@ -75,6 +76,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -90,6 +92,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -101,13 +104,13 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     AccountBalanceDecreasedEvent(_account, _value);
   }
 
-  function getBalance(address _account) constant returns (uint256) {
+  function getBalance(address _account) public constant returns (uint256) {
     require(_account != address(0x0));
 
     return balances[_account];
   }
 
-  function getTotalSupply() constant returns (uint256) {
+  function getTotalSupply() public constant returns (uint256) {
     return totalSupply;
   }
 
@@ -118,6 +121,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _spender,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -135,6 +139,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _spender,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -151,6 +156,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _owner,
     address _spender
   )
+    public
     constant
     returns (uint256)
   {
@@ -166,6 +172,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function blockAccount(
     address _account
   )
+    external
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -177,6 +184,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function unblockAccount(
     address _account
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -189,6 +197,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function getAccountBlocks(
     address _account
   )
+    public
     constant
     returns (uint256)
   {
@@ -201,6 +210,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account,
     uint256 _value
   )
+    external
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -214,6 +224,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _account,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -227,6 +238,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   function getAccountBlockedFunds(
     address _account
   )
+    public
     constant
     returns (uint256)
   {
@@ -244,6 +256,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _to,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -265,6 +278,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _to,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -287,6 +301,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     address _spender,
     uint256 _value
   )
+    external
     whenContractNotPaused
     onlyCrydrController
   {
@@ -305,7 +320,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpauseContract() {
+  function unpauseContract() public {
     require(isContract(address(crydrController)) == true);
     require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 

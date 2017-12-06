@@ -27,7 +27,7 @@ contract Ownable {
   /**
    * @dev The constructor sets the initial `owner` to the passed account.
    */
-  function Ownable() { // todo fix this - add new owner as parameter
+  function Ownable() public { // todo fix this - add new owner as parameter
     owner = msg.sender;
 
     OwnerAssignedEvent(owner);
@@ -47,9 +47,10 @@ contract Ownable {
    * @dev Old owner requests transfer ownership to the new owner.
    * @param _proposedOwner The address to transfer ownership to.
    */
-  function createOwnershipOffer(address _proposedOwner) onlyOwner {
+  function createOwnershipOffer(address _proposedOwner) external onlyOwner {
     require (proposedOwner == address(0x0));
     require (_proposedOwner != address(0x0));
+    require (_proposedOwner != address(this));
 
     proposedOwner = _proposedOwner;
 
@@ -61,7 +62,7 @@ contract Ownable {
    * @dev Allows the new owner to accept an ownership offer to contract control.
    */
   //noinspection UnprotectedFunction
-  function acceptOwnershipOffer() {
+  function acceptOwnershipOffer() external {
     require (proposedOwner != address(0x0));
     require (msg.sender == proposedOwner);
 
@@ -77,7 +78,7 @@ contract Ownable {
   /**
    * @dev Old owner cancels transfer ownership to the new owner.
    */
-  function cancelOwnershipOffer() {
+  function cancelOwnershipOffer() external {
     require (proposedOwner != address(0x0));
     require (msg.sender == owner || msg.sender == proposedOwner);
 
@@ -91,14 +92,14 @@ contract Ownable {
   /**
    * @dev The getter for "owner" contract variable
    */
-  function getOwner() constant returns (address) {
+  function getOwner() public constant returns (address) {
     return owner;
   }
 
   /**
    * @dev The getter for "proposedOwner" contract variable
    */
-  function getProposedOwner() constant returns (address) {
+  function getProposedOwner() public constant returns (address) {
     return proposedOwner;
   }
 }

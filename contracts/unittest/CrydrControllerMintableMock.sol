@@ -14,5 +14,5 @@ contract CrydrControllerMintableMock is CrydrControllerMintable {
 
   /* Constructor */
 
-  function CrydrControllerMintableMock(string _assetID) CrydrControllerBase(_assetID) {}
+  function CrydrControllerMintableMock(string _assetID) public CrydrControllerBase(_assetID) {}
 }

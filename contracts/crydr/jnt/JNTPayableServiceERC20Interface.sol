@@ -19,8 +19,8 @@ contract JNTPayableServiceERC20Interface {
 
   /* Configuration */
 
-  function setJntPrice(uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove);
-  function getJntPriceForTransfer() constant returns (uint256);
-  function getJntPriceForTransferFrom() constant returns (uint256);
-  function getJntPriceForApprove() constant returns (uint256);
+  function setJntPrice(uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove) external;
+  function getJntPriceForTransfer() public constant returns (uint256);
+  function getJntPriceForTransferFrom() public constant returns (uint256);
+  function getJntPriceForApprove() public constant returns (uint256);
 }

@@ -46,11 +46,11 @@ contract JsonEncoder {
     return string(bytesString);
   }
 
-  function uintToAsciiString(uint _num) constant returns (string) {
+  function uintToAsciiString(uint _num) public constant returns (string) {
     return bytes32ToString(uintToBytes(_num));
   }
 
-  function boolToAsciiString(bool _val) constant returns (string) {
+  function boolToAsciiString(bool _val) public constant returns (string) {
     return (_val == true) ? "true" : "false";
   }
 

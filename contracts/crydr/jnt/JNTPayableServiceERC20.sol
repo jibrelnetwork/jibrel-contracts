@@ -20,7 +20,13 @@ contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Inte
 
   /* Constructor */
 
-  function JNTPayableServiceERC20(uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove) {
+  function JNTPayableServiceERC20(
+    uint256 _jntPriceTransfer,
+    uint256 _jntPriceTransferFrom,
+    uint256 _jntPriceApprove
+  )
+    public
+  {
     jntPriceTransfer = _jntPriceTransfer;
     jntPriceTransferFrom = _jntPriceTransferFrom;
     jntPriceApprove = _jntPriceApprove;
@@ -34,6 +40,7 @@ contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Inte
   function setJntPrice(
     uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove
   )
+    external
     onlyAllowedManager('set_jnt_price')
     whenContractPaused
   {
@@ -55,15 +62,15 @@ contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Inte
     }
   }
 
-  function getJntPriceForTransfer() constant returns (uint256) {
+  function getJntPriceForTransfer() public constant returns (uint256) {
     return jntPriceTransfer;
   }
 
-  function getJntPriceForTransferFrom() constant returns (uint256) {
+  function getJntPriceForTransferFrom() public constant returns (uint256) {
     return jntPriceTransferFrom;
   }
 
-  function getJntPriceForApprove() constant returns (uint256) {
+  function getJntPriceForApprove() public constant returns (uint256) {
     return jntPriceApprove;
   }
 }

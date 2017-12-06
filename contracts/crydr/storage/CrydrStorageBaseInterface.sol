@@ -24,32 +24,32 @@ contract CrydrStorageBaseInterface {
 
   /* Configuration */
 
-  function setCrydrController(address _newController);
-  function getCrydrController() constant returns (address);
+  function setCrydrController(address _newController) external;
+  function getCrydrController() public constant returns (address);
 
 
   /* Low-level change of balance. Implied that totalSupply kept in sync. */
 
-  function increaseBalance(address _account, uint256 _value);
-  function decreaseBalance(address _account, uint256 _value);
-  function getBalance(address _account) constant returns (uint256);
-  function getTotalSupply() constant returns (uint256);
+  function increaseBalance(address _account, uint256 _value) external;
+  function decreaseBalance(address _account, uint256 _value) external;
+  function getBalance(address _account) public constant returns (uint256);
+  function getTotalSupply() public constant returns (uint256);
 
 
   /* Low-level change of allowance */
 
-  function increaseAllowance(address _owner, address _spender, uint256 _value);
-  function decreaseAllowance(address _owner, address _spender, uint256 _value);
-  function getAllowance(address _owner, address _spender) constant returns (uint256);
+  function increaseAllowance(address _owner, address _spender, uint256 _value) external;
+  function decreaseAllowance(address _owner, address _spender, uint256 _value) external;
+  function getAllowance(address _owner, address _spender) public constant returns (uint256);
 
 
   /* Low-level change of blocks and getters */
 
-  function blockAccount(address _account);
-  function unblockAccount(address _account);
-  function getAccountBlocks(address _account) constant returns (uint256);
+  function blockAccount(address _account) external;
+  function unblockAccount(address _account) external;
+  function getAccountBlocks(address _account) public constant returns (uint256);
 
-  function blockAccountFunds(address _account, uint256 _value);
-  function unblockAccountFunds(address _account, uint256 _value);
-  function getAccountBlockedFunds(address _account) constant returns (uint256);
+  function blockAccountFunds(address _account, uint256 _value) external;
+  function unblockAccountFunds(address _account, uint256 _value) external;
+  function getAccountBlockedFunds(address _account) public constant returns (uint256);
 }

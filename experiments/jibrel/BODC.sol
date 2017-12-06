@@ -60,7 +60,7 @@ contract BODC {
    * @dev Function to get number of active members
    * @return Number of active BODC members
    */
-  function getActiveMembersNumber() constant returns (uint256 _number) {
+  function getActiveMembersNumber() public constant returns (uint256 _number) {
     _number = 0;
     for (uint256 i = 0; i < membersNumber; i++) {
       if (memberInfo[i].isActive) {
@@ -75,7 +75,7 @@ contract BODC {
    * @param _member address Target address
    * @return Name of the member
    */
-  function getBODCMemberName(address _member) constant returns (string _memberName) {
+  function getBODCMemberName(address _member) public constant returns (string _memberName) {
     for (uint256 i = 0; i < membersNumber; i++) {
       if (memberInfo[i].memberAddress == _member) {
         return memberInfo[i].memberName;
@@ -89,7 +89,7 @@ contract BODC {
    * @param _member address Target address
    * @return True if address is the active member of BODC
    */
-  function isActiveMember(address _member) constant returns (bool _isActive) {
+  function isActiveMember(address _member) public constant returns (bool _isActive) {
     for (uint256 i = 0; i < membersNumber; i++) {
       if (memberInfo[i].memberAddress == _member) {
         return memberInfo[i].isActive;
@@ -101,14 +101,14 @@ contract BODC {
   /**
    * @dev Function to get membersNumber of BODC member
    */
-  function getMembersNumber() constant returns (uint256) {
+  function getMembersNumber() public constant returns (uint256) {
     return membersNumber;
   }
 
   /**
    * @dev Function to get proposalsNumber of BODC member
    */
-  function getProposalsNumber() constant returns (uint256) {
+  function getProposalsNumber() public constant returns (uint256) {
     return proposalsNumber;
   }
 

@@ -31,6 +31,7 @@ contract CrydrViewERC20 is CrydrViewBase,
   /* Constructor */
 
   function CrydrViewERC20(string _assetID, string _name, string _symbol, uint8 _decimals)
+    public
     CrydrViewBase(_assetID, 'erc20')
   {
     tokenName = _name;
@@ -134,11 +135,11 @@ contract CrydrViewERC20 is CrydrViewBase,
   /* ERC20HashedInterface */
 
   function getNameHash() external constant returns (bytes32){
-    return sha3(tokenName);
+    return keccak256(tokenName);
   }
 
   function getSymbolHash() external constant returns (bytes32){
-    return sha3(tokenSymbol);
+    return keccak256(tokenSymbol);
   }
 
 

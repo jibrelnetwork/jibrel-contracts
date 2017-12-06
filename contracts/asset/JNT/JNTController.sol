@@ -24,12 +24,18 @@ contract JNTController is CrydrControllerBase,
 
   /* Constructor */
 
-  function JNTController() CrydrControllerBase('JNT') {}
+  function JNTController() CrydrControllerBase('JNT') public {}
 
 
   /* JNTControllerInterface */
 
-  function chargeJNT(address _from, address _to, uint256 _value) onlyAllowedManager('jnt_payable_service') {
+  function chargeJNT(
+    address _from,
+    address _to,
+    uint256 _value
+  )
+    public
+    onlyAllowedManager('jnt_payable_service') {
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_from, _to, _value);
     JNTChargedEvent(msg.sender, _from, _to, _value);
   }

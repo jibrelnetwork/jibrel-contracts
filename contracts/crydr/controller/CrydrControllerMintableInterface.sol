@@ -11,6 +11,6 @@ contract CrydrControllerMintableInterface {
 
   /* minting/burning */
 
-  function mint(address _account, uint256 _value);
-  function burn(address _account, uint256 _value);
+  function mint(address _account, uint256 _value) public;
+  function burn(address _account, uint256 _value) public;
 }

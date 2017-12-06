@@ -130,7 +130,7 @@ contract InvestorRegistry is InvestorRegistryManagementInterface, Manageable, Js
            (investorLicensesExpiration[_investor][_licenseName] > now);
   }
 
-  function getInvestorAdmittance(address _investor) constant returns (string) {
+  function getInvestorAdmittance(address _investor) public constant returns (string) {
     strings.slice[] memory jsonSlices = new strings.slice[](investorLicensesList[_investor].length * 2 - 1 + 4);
     jsonSlices[0] = '{"admittance": '.toSlice();
     jsonSlices[1] = boolToAsciiString(investorAdmitted[_investor]).toSlice();

@@ -14,7 +14,7 @@ contract CommonModifiers {
   /**
    * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.
    */
-  function isContract(address _targetAddress) internal returns (bool) {
+  function isContract(address _targetAddress) internal constant returns (bool) {
     require (_targetAddress != address(0x0));
 
     uint256 length;

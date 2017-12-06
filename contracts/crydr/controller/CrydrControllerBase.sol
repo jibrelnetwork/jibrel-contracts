@@ -31,7 +31,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
   /* Constructor */
 
-  function CrydrControllerBase(string _assetID) AssetID(_assetID) {}
+  function CrydrControllerBase(string _assetID) AssetID(_assetID) public {}
 
 
   /* CrydrControllerBaseInterface */
@@ -39,6 +39,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
   function setCrydrStorage(
     address _crydrStorage
   )
+    external
     onlyContractAddress(_crydrStorage)
     onlyAllowedManager('set_crydr_storage')
     whenContractPaused
@@ -50,7 +51,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     CrydrStorageChangedEvent(_crydrStorage);
   }
 
-  function getCrydrStorage() constant returns (address) {
+  function getCrydrStorage() public constant returns (address) {
     return address(crydrStorage);
   }
 
@@ -58,6 +59,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
   function setCrydrView(
     address _newCrydrView, string _viewApiStandardName
   )
+    external
     onlyContractAddress(_newCrydrView)
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     onlyAllowedManager('set_crydr_view')
@@ -68,7 +70,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
 
     var crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
     var standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
-    require(standardNameHash == sha3(_viewApiStandardName));
+    require(standardNameHash == keccak256(_viewApiStandardName));
 
     crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
     isRegisteredView[_newCrydrView] = true;
@@ -79,6 +81,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
   function removeCrydrView(
     string _viewApiStandardName
   )
+    external
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     onlyAllowedManager('remove_crydr_view')
     whenContractPaused
@@ -97,6 +100,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
   function getCrydrView(
     string _viewApiStandardName
   )
+    public
     constant
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     returns (address)

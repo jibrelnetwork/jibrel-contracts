@@ -18,7 +18,7 @@ contract CrydrStorageERC20Interface {
 
   /* ERC20 optimization. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint256 _value);
-  function transferFrom(address _msgsender, address _from, address _to, uint256 _value);
-  function approve(address _msgsender, address _spender, uint256 _value);
+  function transfer(address _msgsender, address _to, uint256 _value) external;
+  function transferFrom(address _msgsender, address _from, address _to, uint256 _value) external;
+  function approve(address _msgsender, address _spender, uint256 _value) external;
 }

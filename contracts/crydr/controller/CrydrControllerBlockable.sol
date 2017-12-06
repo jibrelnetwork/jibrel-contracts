@@ -19,6 +19,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
   function blockAccount(
     address _account
   )
+    public
     onlyAllowedManager('block_account')
   {
     crydrStorage.blockAccount(_account);
@@ -27,6 +28,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
   function unblockAccount(
     address _account
   )
+    public
     onlyAllowedManager('unblock_account')
   {
     crydrStorage.unblockAccount(_account);
@@ -36,6 +38,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     address _account,
     uint256 _value
   )
+    public
     onlyAllowedManager('block_account_funds')
   {
     crydrStorage.blockAccountFunds(_account, _value);
@@ -45,6 +48,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     address _account,
     uint256 _value
   )
+    public
     onlyAllowedManager('unblock_account_funds')
   {
     crydrStorage.unblockAccountFunds(_account, _value);

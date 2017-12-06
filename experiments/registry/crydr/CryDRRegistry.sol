@@ -75,8 +75,8 @@ contract CryDRRegistry is CryDRRegistryInterface,
     bool _isDeleted = false;
     for (uint256 i = 0; i < crydrInfoList.length; i++) {
       if (
-        sha3(crydrInfoList[i].crydrSymbol) == sha3(_crydrSymbol) &&
-        sha3(crydrInfoList[i].crydrName) == sha3(_crydrName) &&
+        keccak256(crydrInfoList[i].crydrSymbol) == sha3(_crydrSymbol) &&
+        keccak256(crydrInfoList[i].crydrName) == sha3(_crydrName) &&
         crydrInfoList[i].crydrController == _crydrController
       ) {
         for (uint256 z = i; z < crydrInfoList.length - 1; z++) {
@@ -107,7 +107,7 @@ contract CryDRRegistry is CryDRRegistryInterface,
     return CrydrControllerBaseInterface(crydrLookup[_crydrSymbol]).getCrydrView(_viewApiStandard);
   }
 
-  function getCryDRData() constant returns (string) {
+  function getCryDRData() public constant returns (string) {
     strings.slice[] memory jsonSlices = new strings.slice[](crydrInfoList.length * 2 - 1 + 2);
     jsonSlices[0] = '['.toSlice();
     for (uint256 i = 0; i < crydrInfoList.length; i++) {
@@ -179,8 +179,8 @@ contract CryDRRegistry is CryDRRegistryInterface,
     // todo rework it, check name and symbol of controller directly
     var _crydrViewAddress = CrydrControllerBaseInterface(_crydrController).getCrydrView('erc20');
     var _crydrNamedView = ERC20NamedInterface(_crydrViewAddress);
-    require(sha3(_crydrSymbol) == _crydrNamedView.getSymbolHash());
-    require(sha3(_crydrName) == _crydrNamedView.getNameHash());
+    require(keccak256(_crydrSymbol) == _crydrNamedView.getSymbolHash());
+    require(keccak256(_crydrName) == _crydrNamedView.getNameHash());
     _;
   }
 }

@@ -22,9 +22,10 @@ contract CrydrControllerJCash is CrydrControllerBase,
   /* Constructor */
 
   function CrydrControllerJCash(string _assetID)
-      CrydrControllerBase(_assetID)
-      JNTPayableServiceERC20(10^18, 10^18, 10^18) {}
-      // assumes that JNT has decimals==18, 1JNT per operation
+    public
+    CrydrControllerBase(_assetID)
+    JNTPayableServiceERC20(10^18, 10^18, 10^18) {}
+    // assumes that JNT has decimals==18, 1JNT per operation
 
 
   /* CrydrControllerERC20 */
@@ -35,7 +36,9 @@ contract CrydrControllerJCash is CrydrControllerBase,
     address _msgsender,
     address _to,
     uint256 _value
-  ) {
+  )
+    public
+  {
     CrydrControllerERC20.transfer(_msgsender, _to, _value);
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransfer);
   }
@@ -44,7 +47,9 @@ contract CrydrControllerJCash is CrydrControllerBase,
     address _msgsender,
     address _spender,
     uint256 _value
-  ) {
+  )
+    public
+  {
     CrydrControllerERC20.approve(_msgsender, _spender, _value);
     chargeJNT(_msgsender, jntBeneficiary, jntPriceApprove);
   }
@@ -54,7 +59,9 @@ contract CrydrControllerJCash is CrydrControllerBase,
     address _from,
     address _to,
     uint256 _value
-  ) {
+  )
+    public
+  {
     CrydrControllerERC20.transferFrom(_msgsender, _from, _to, _value);
     chargeJNT(_msgsender, jntBeneficiary, jntPriceTransferFrom);
   }

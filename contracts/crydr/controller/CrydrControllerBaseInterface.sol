@@ -18,10 +18,10 @@ contract CrydrControllerBaseInterface {
 
   /* Configuration */
 
-  function setCrydrStorage(address _newStorage);
-  function getCrydrStorage() constant returns (address);
+  function setCrydrStorage(address _newStorage) external;
+  function getCrydrStorage() public constant returns (address);
 
-  function setCrydrView(address _newCrydrView, string _viewApiStandardName);
-  function removeCrydrView(string _viewApiStandardName);
-  function getCrydrView(string _viewApiStandard) constant returns (address);
+  function setCrydrView(address _newCrydrView, string _viewApiStandardName) external;
+  function removeCrydrView(string _viewApiStandardName) external;
+  function getCrydrView(string _viewApiStandard) public constant returns (address);
 }

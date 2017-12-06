@@ -25,6 +25,7 @@ contract BytecodeExecutable is BytecodeExecutableInterface, Manageable {
     uint256 _ethValue,
     bytes _transactionBytecode
   )
+    external
     onlyAllowedManager('execute_bytecode')
   {
     require(underExecution == false);
@@ -33,6 +34,6 @@ contract BytecodeExecutable is BytecodeExecutableInterface, Manageable {
     require(_target.call.value(_ethValue)(_transactionBytecode));
     underExecution = false;
 
-    BytecodeExecutedEvent(_target, _ethValue, sha3(_transactionBytecode));
+    BytecodeExecutedEvent(_target, _ethValue, keccak256(_transactionBytecode));
   }
 }

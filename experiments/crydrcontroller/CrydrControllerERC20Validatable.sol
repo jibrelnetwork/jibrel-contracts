@@ -35,7 +35,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
     InvestorsRegistryChangedEvent(_investorsRegistry);
   }
 
-  function getInvestorsRegistry() constant returns (address) {
+  function getInvestorsRegistry() public constant returns (address) {
     return address(investorsRegistry);
   }
 
@@ -46,6 +46,7 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract()
+    public
     onlyContractAddress(address(investorsRegistry))
   {
     Pausable.unpauseContract();

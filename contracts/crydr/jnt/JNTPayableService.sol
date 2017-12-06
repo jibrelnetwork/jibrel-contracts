@@ -26,6 +26,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
   function setJntController(
     address _jntController
   )
+    external
     onlyContractAddress(_jntController)
     onlyAllowedManager('set_jnt_controller')
     whenContractPaused
@@ -36,7 +37,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
     JNTControllerChangedEvent(_jntController);
   }
 
-  function getJntController() constant returns (address) {
+  function getJntController() public constant returns (address) {
     return address(jntController);
   }
 
@@ -44,6 +45,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
   function setJntBeneficiary(
     address _jntBeneficiary
   )
+    external
     onlyValidJntBeneficiary(_jntBeneficiary)
     onlyAllowedManager('set_jnt_beneficiary')
     whenContractPaused
@@ -54,7 +56,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
     JNTBeneficiaryChangedEvent(jntBeneficiary);
   }
 
-  function getJntBeneficiary() constant returns (address) {
+  function getJntBeneficiary() public constant returns (address) {
     return jntBeneficiary;
   }
 
@@ -76,6 +78,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
    * @dev Assumed that JNT provides 'erc20' view.
    */
   function withdrawJnt()
+    external
     onlyAllowedManager('withdraw_jnt')
     onlyValidJntBeneficiary(jntBeneficiary)
   {
@@ -93,6 +96,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract()
+    public
     onlyContractAddress(jntController)
     onlyValidJntBeneficiary(jntBeneficiary)
   {

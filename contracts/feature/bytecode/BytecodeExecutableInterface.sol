@@ -16,5 +16,5 @@ contract BytecodeExecutableInterface {
 
   /* Functions */
 
-  function executeBytecode(address _target, uint256 _ethValue, bytes _transactionBytecode);
+  function executeBytecode(address _target, uint256 _ethValue, bytes _transactionBytecode) external;
 }

@@ -17,12 +17,12 @@ contract PausableMock is Pausable {
 
   uint256 public counter = 0;
 
-  function worksWhenContractNotPaused() whenContractNotPaused {
+  function worksWhenContractNotPaused() public whenContractNotPaused {
     counter += 1;
     WhenContractNotPausedEvent();
   }
 
-  function worksWhenContractPaused() whenContractPaused {
+  function worksWhenContractPaused() public whenContractPaused {
     counter += 10;
     WhenContractPausedEvent();
   }

@@ -28,7 +28,7 @@ contract CryDRRegistryInterface {
    * @param _viewApiStandard string Name of standard of the CryDR view
    * @return Address of the CryDR view
    */
-  function lookupCrydrView(string _crydrSymbol, string _viewApiStandard) constant returns (address);
+  function lookupCrydrView(string _crydrSymbol, string _viewApiStandard) public constant returns (address);
 
   /**
    * @dev Function returns data about all known CryDR in JSON format
@@ -39,5 +39,5 @@ contract CryDRRegistryInterface {
    * @dev IMPORTANT This is a kind of experiment and can be changed at any time
    * @return JSON with listed CryDR
    */
-  function getCryDRData() constant returns (string);
+  function getCryDRData() public constant returns (string);
 }

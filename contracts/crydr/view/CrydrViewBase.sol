@@ -29,6 +29,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
     string _assetID,
     string _standardName
   )
+    public
     AssetID(_assetID)
     onlyValidStandardName(_standardName)
   {
@@ -40,7 +41,8 @@ contract CrydrViewBase is CrydrViewBaseInterface,
 
   function setCrydrController(
     address _crydrController
-  ) external
+  )
+    external
     onlyContractAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
     whenContractPaused
@@ -51,17 +53,17 @@ contract CrydrViewBase is CrydrViewBaseInterface,
     CrydrControllerChangedEvent(_crydrController);
   }
 
-  function getCrydrController() external constant returns (address) {
+  function getCrydrController() public constant returns (address) {
     return crydrController;
   }
 
 
-  function getCrydrViewStandardName() external constant returns (string) {
+  function getCrydrViewStandardName() public constant returns (string) {
     return crydrViewStandardName;
   }
 
-  function getCrydrViewStandardNameHash() external constant returns (bytes32) {
-    return sha3(crydrViewStandardName);
+  function getCrydrViewStandardNameHash() public constant returns (bytes32) {
+    return keccak256(crydrViewStandardName);
   }
 
 
@@ -70,7 +72,7 @@ contract CrydrViewBase is CrydrViewBaseInterface,
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
-  function unpauseContract() {
+  function unpauseContract() public {
     require(isContract(crydrController) == true);
     require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 

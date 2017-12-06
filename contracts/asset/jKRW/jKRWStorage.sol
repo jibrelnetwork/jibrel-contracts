@@ -7,5 +7,5 @@ import "../../crydr/storage/CrydrStorage.sol";
 
 
 contract jKRWStorage is CrydrStorage {
-  function jKRWStorage() CrydrStorage('jKRW') {}
+  function jKRWStorage() public CrydrStorage('jKRW') {}
 }

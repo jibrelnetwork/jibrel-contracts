@@ -25,7 +25,7 @@ contract InvestorRegistryInterface {
    * @param _investor address Investor`s address
    * @return True if investor is in the registry and admitted
    */
-  function isInvestorAdmitted(address _investor) constant returns (bool);
+  function isInvestorAdmitted(address _investor) public constant returns (bool);
 
   /**
    * @dev Function to check licenses of investor
@@ -33,7 +33,7 @@ contract InvestorRegistryInterface {
    * @param _licenseName string  License name
    * @return True if investor has been granted needed license (admittance not taken into account)
    */
-  function isInvestorGranted(address _investor, string _licenseName) constant returns (bool);
+  function isInvestorGranted(address _investor, string _licenseName) public constant returns (bool);
 
   /**
    * @dev Function to check licenses of investor
@@ -41,7 +41,7 @@ contract InvestorRegistryInterface {
    * @param _licenseName string  License name
    * @return True if investor is admitted and granted with needed license
    */
-  function isInvestorAllowed(address _investor, string _licenseName) constant returns (bool);
+  function isInvestorAllowed(address _investor, string _licenseName) public constant returns (bool);
 
   /**
    * @dev Function returns data about admittance of arbitrary investor
@@ -53,5 +53,5 @@ contract InvestorRegistryInterface {
    * @param _investor address Investor`s address
    * @return JSON with all investor's licenses
    */
-  function getInvestorAdmittance(address _investor) constant returns (string);
+  function getInvestorAdmittance(address _investor) public constant returns (string);
 }

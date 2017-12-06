@@ -11,11 +11,11 @@ contract CrydrControllerERC20Interface {
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
-  function transfer(address _msgsender, address _to, uint256 _value);
-  function getTotalSupply() constant returns (uint256);
-  function getBalance(address _owner) constant returns (uint256);
+  function transfer(address _msgsender, address _to, uint256 _value) public;
+  function getTotalSupply() public constant returns (uint256);
+  function getBalance(address _owner) public constant returns (uint256);
 
-  function approve(address _msgsender, address _spender, uint256 _value);
-  function transferFrom(address _msgsender, address _from, address _to, uint256 _value);
-  function getAllowance(address _owner, address _spender) constant returns (uint256);
+  function approve(address _msgsender, address _spender, uint256 _value) public;
+  function transferFrom(address _msgsender, address _from, address _to, uint256 _value) public;
+  function getAllowance(address _owner, address _spender) public constant returns (uint256);
 }

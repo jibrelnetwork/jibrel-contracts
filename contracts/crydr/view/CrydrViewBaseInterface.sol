@@ -13,8 +13,8 @@ contract CrydrViewBaseInterface {
   /* Configuration */
 
   function setCrydrController(address _crydrController) external;
-  function getCrydrController() external constant returns (address);
+  function getCrydrController() public constant returns (address);
 
-  function getCrydrViewStandardName() external constant returns (string);
-  function getCrydrViewStandardNameHash() external constant returns (bytes32);
+  function getCrydrViewStandardName() public constant returns (string);
+  function getCrydrViewStandardNameHash() public constant returns (bytes32);
 }

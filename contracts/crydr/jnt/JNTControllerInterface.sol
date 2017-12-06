@@ -16,5 +16,5 @@ contract JNTControllerInterface {
 
   /* Actions */
 
-  function chargeJNT(address _from, address _to, uint256 _value);
+  function chargeJNT(address _from, address _to, uint256 _value) public;
 }
