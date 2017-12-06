@@ -10,13 +10,15 @@ import './ERC20Interface.sol';
 import './ERC20ConfigurableInterface.sol';
 import './ERC20HashedInterface.sol';
 import './ERC20LoggableInterface.sol';
+import './ERC20MintableInterface.sol';
 
 
 contract CrydrViewERC20 is CrydrViewBase,
                            ERC20Interface,
                            ERC20ConfigurableInterface,
                            ERC20HashedInterface,
-                           ERC20LoggableInterface {
+                           ERC20LoggableInterface,
+                           ERC20MintableInterface {
 
 
   /* Storage */
@@ -164,6 +166,31 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyCrydrController
   {
     Approval(_owner, _spender, _value);
+  }
+
+
+  /* ERC20MintableInterface */
+
+  function emitMintEvent(
+    address _owner,
+    uint _value
+  )
+    external
+    whenContractNotPaused
+    onlyCrydrController
+  {
+    MintEvent(_owner, _value);
+  }
+
+  function emitBurnEvent(
+    address _owner,
+    uint _value
+  )
+    external
+    whenContractNotPaused
+    onlyCrydrController
+  {
+    BurnEvent(_owner, _value);
   }
 
 

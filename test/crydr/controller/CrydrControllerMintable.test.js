@@ -1,6 +1,6 @@
 const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
 const CrydrStorage                = global.artifacts.require('CrydrStorage.sol');
-const CrydrViewBase               = global.artifacts.require('CrydrViewBase.sol');
+const CrydrViewERC20              = global.artifacts.require('CrydrViewERC20.sol');
 
 const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
 const CrydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
@@ -21,12 +21,15 @@ global.contract('CrydrControllerMintable', (accounts) => {
   const { owner, managerPause, managerMint, testInvestor1 } = GlobalConfig.getAccounts();
 
   const viewStandard = 'erc20';
+  const viewName = 'viewName';
+  const viewSymbol = 'viewSymbol';
+  const viewDecimals = 18;
   const assetID = 'jASSET';
 
   global.beforeEach(async () => {
     crydrControllerMintableInstance = await CrydrControllerMintableMock.new(assetID, { from: owner });
     crydrStorageInstance = await CrydrStorage.new(assetID, { from: owner });
-    crydrViewBaseInstance = await CrydrViewBase.new(assetID, viewStandard, { from: owner });
+    crydrViewBaseInstance = await CrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals, { from: owner });
 
     global.console.log('\tContracts deployed for tests CrydrControllerMintable:');
     global.console.log(`\t\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
@@ -40,7 +43,7 @@ global.contract('CrydrControllerMintable', (accounts) => {
   });
 
   global.it('should test that contract allows to mint tokens', async () => {
-    global.console.log(`\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
+    global.console.log(`\tcrydrControllerMintable address: ${crydrControllerMintableInstance.address}`);
     global.assert.notStrictEqual(crydrControllerMintableInstance.address,
                                  '0x0000000000000000000000000000000000000000');
 
@@ -71,6 +74,7 @@ global.contract('CrydrControllerMintable', (accounts) => {
 
     await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
     await PausableJSAPI.unpauseContract(crydrControllerMintableInstance.address, managerPause);
+    await PausableJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
 
 
     await CrydrControllerMintableJSAPI.mint(crydrControllerMintableInstance.address, managerMint,
