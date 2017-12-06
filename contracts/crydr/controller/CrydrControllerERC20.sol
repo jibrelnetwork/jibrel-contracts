@@ -49,7 +49,9 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     onlyCrydrView
     whenContractNotPaused
   {
+    // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+    // We decided to enforce users to set 0 before set new value
     var allowance = crydrStorage.getAllowance(_msgsender, _spender);
     require((allowance > 0 && _value == 0) || (allowance == 0 && _value > 0));
 
