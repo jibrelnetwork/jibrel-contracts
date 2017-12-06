@@ -52,7 +52,7 @@ contract CrydrControllerERC20Stub is AssetID,
     return 60 * (10 ** 18);
   }
 
-  function getBalance(address _owner) constant returns (uint balance)
+  function getBalance(address _owner) constant returns (uint)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
 
@@ -74,7 +74,7 @@ contract CrydrControllerERC20Stub is AssetID,
     transferFromCounter += 1;
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint remaining)
+  function getAllowance(address _owner, address _spender) constant returns (uint)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
     require(_spender == _spender); // always true, to avoid annoying compilation warnings

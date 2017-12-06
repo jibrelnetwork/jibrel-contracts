@@ -37,7 +37,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     return CrydrStorageBaseInterface(address(crydrStorage)).getTotalSupply();
   }
 
-  function getBalance(address _owner) constant returns (uint balance) {
+  function getBalance(address _owner) constant returns (uint) {
     return CrydrStorageBaseInterface(address(crydrStorage)).getBalance(_owner);
   }
 
@@ -78,7 +78,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     }
   }
 
-  function getAllowance(address _owner, address _spender) constant returns (uint remaining) {
+  function getAllowance(address _owner, address _spender) constant returns (uint ) {
     return CrydrStorageBaseInterface(address(crydrStorage)).getAllowance(_owner, _spender);
   }
 }

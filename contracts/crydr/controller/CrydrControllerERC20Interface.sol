@@ -13,9 +13,9 @@ contract CrydrControllerERC20Interface {
 
   function transfer(address _msgsender, address _to, uint _value);
   function getTotalSupply() constant returns (uint);
-  function getBalance(address _owner) constant returns (uint balance);
+  function getBalance(address _owner) constant returns (uint);
 
   function approve(address _msgsender, address _spender, uint _value);
   function transferFrom(address _msgsender, address _from, address _to, uint _value);
-  function getAllowance(address _owner, address _spender) constant returns (uint remaining);
+  function getAllowance(address _owner, address _spender) constant returns (uint);
 }
