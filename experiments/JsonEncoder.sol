@@ -22,7 +22,7 @@ contract JsonEncoder {
     bytes memory s = new bytes(42);
     s[0] = 0x30;
     s[1] = 0x78;
-    for (uint i = 0; i < 20; i++) {
+    for (uint256 i = 0; i < 20; i++) {
       byte b = byte(uint8(uint(x) / (2 ** (8 * (19 - i)))));
       byte hi = byte(uint8(b) / 16);
       byte lo = byte(uint8(b) - 16 * uint8(hi));
@@ -36,7 +36,7 @@ contract JsonEncoder {
     bytes memory bytesString = new bytes(2 + 32 * 2);
     bytesString[0] = 0x30;
     bytesString[1] = 0x78;
-    for (uint j = 0; j < 32; j++) {
+    for (uint256 j = 0; j < 32; j++) {
       byte b = x[j];
       byte hi = byte(uint8(b) / 16);
       byte lo = byte(uint8(b) - 16 * uint8(hi));
@@ -46,7 +46,7 @@ contract JsonEncoder {
     return string(bytesString);
   }
 
-  function uintToAsciiString(uint _num) public constant returns (string) {
+  function uintToAsciiString(uint256 _num) public constant returns (string) {
     return bytes32ToString(uintToBytes(_num));
   }
 
@@ -68,8 +68,8 @@ contract JsonEncoder {
 
   function bytes32ToString(bytes32 x) internal constant returns (string) {
     bytes memory bytesString = new bytes(32);
-    uint charCount = 0;
-    for (uint j = 0; j < 32; j++) {
+    uint256 charCount = 0;
+    for (uint256 j = 0; j < 32; j++) {
       byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));
       if (char != 0) {
         bytesString[charCount] = char;
@@ -83,7 +83,7 @@ contract JsonEncoder {
     return string(bytesStringTrimmed);
   }
 
-  function uintToBytes(uint _num) internal constant returns (bytes32 ret) {
+  function uintToBytes(uint256 _num) internal constant returns (bytes32 ret) {
     if (_num == 0) {
       ret = '0';
     }
