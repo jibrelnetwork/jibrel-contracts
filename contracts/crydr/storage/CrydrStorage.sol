@@ -23,12 +23,8 @@ contract CrydrStorage is CrydrStorageBaseInterface,
                          Pausable,
                          CommonModifiers,
                          BytecodeExecutable,
-                         AssetID {
-
-  /* Libraries */
-
-  using SafeMath for uint256; // todo check gas costs without lib (with inheritance)
-
+                         AssetID,
+                         SafeMath {
 
   /* Storage */
 
@@ -83,8 +79,8 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_account != address(0x0));
     require(_value > 0);
 
-    balances[_account] = balances[_account].add(_value);
-    totalSupply = totalSupply.add(_value);
+    balances[_account] = safeAdd(balances[_account], _value);
+    totalSupply = safeAdd(totalSupply, _value);
     AccountBalanceIncreasedEvent(_account, _value);
   }
 
@@ -99,8 +95,8 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_account != address(0x0));
     require(_value > 0);
 
-    balances[_account] = balances[_account].sub(_value);
-    totalSupply = totalSupply.sub(_value);
+    balances[_account] = safeSub(balances[_account], _value);
+    totalSupply = safeSub(totalSupply, _value);
     AccountBalanceDecreasedEvent(_account, _value);
   }
 
@@ -130,7 +126,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_owner != _spender);
     require(_value > 0);
 
-    allowed[_owner][_spender] = allowed[_owner][_spender].add(_value);
+    allowed[_owner][_spender] = safeAdd(allowed[_owner][_spender], _value);
     AccountAllowanceIncreasedEvent(_owner, _spender, _value);
   }
 
@@ -148,7 +144,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_owner != _spender);
     require(_value > 0);
 
-    allowed[_owner][_spender] = allowed[_owner][_spender].sub(_value);
+    allowed[_owner][_spender] = safeSub(allowed[_owner][_spender], _value);
     AccountAllowanceDecreasedEvent(_owner, _spender, _value);
   }
 
@@ -177,7 +173,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   {
     require(_account != address(0x0));
 
-    accountBlocks[_account] = accountBlocks[_account].add(1);
+    accountBlocks[_account] = safeAdd(accountBlocks[_account], 1);
     AccountBlockedEvent(_account);
   }
 
@@ -190,7 +186,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
   {
     require(_account != address(0x0));
 
-    accountBlocks[_account] = accountBlocks[_account].sub(1);
+    accountBlocks[_account] = safeSub(accountBlocks[_account], 1);
     AccountUnblockedEvent(_account);
   }
 
@@ -216,7 +212,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_account != address(0x0));
     require(_value > 0);
 
-    accountBlockedFunds[_account] = accountBlockedFunds[_account].add(_value);
+    accountBlockedFunds[_account] = safeAdd(accountBlockedFunds[_account], _value);
     AccountFundsBlockedEvent(_account, _value);
   }
 
@@ -231,7 +227,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_account != address(0x0));
     require(_value > 0);
 
-    accountBlockedFunds[_account] = accountBlockedFunds[_account].sub(_value);
+    accountBlockedFunds[_account] = safeSub(accountBlockedFunds[_account], _value);
     AccountFundsUnblockedEvent(_account, _value);
   }
 
@@ -265,10 +261,10 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_msgsender != _to);
     require(_value > 0);
     require(getAccountBlocks(_msgsender) == 0);
-    require(balances[_msgsender].sub(_value) >= getAccountBlockedFunds(_msgsender));
+    require(safeSub(balances[_msgsender], _value) >= getAccountBlockedFunds(_msgsender));
 
-    balances[_msgsender] = balances[_msgsender].sub(_value);
-    balances[_to] = balances[_to].add(_value);
+    balances[_msgsender] = safeSub(balances[_msgsender], _value);
+    balances[_to] = safeAdd(balances[_to], _value);
     CrydrTransferredEvent(_msgsender, _to, _value);
   }
 
@@ -288,11 +284,11 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_from != _to);
     require(_value > 0);
     require(getAccountBlocks(_from) == 0);
-    require(balances[_from].sub(_value) >= getAccountBlockedFunds(_msgsender));
+    require(safeSub(balances[_from], _value) >= getAccountBlockedFunds(_msgsender));
 
-    allowed[_from][_msgsender] = allowed[_from][_msgsender].sub(_value);
-    balances[_from] = balances[_from].sub(_value);
-    balances[_to] = balances[_to].add(_value);
+    allowed[_from][_msgsender] = safeSub(allowed[_from][_msgsender], _value);
+    balances[_from] = safeSub(balances[_from], _value);
+    balances[_to] = safeAdd(balances[_to], _value);
     CrydrTransferredFromEvent(_msgsender, _from, _to, _value);
   }
 
