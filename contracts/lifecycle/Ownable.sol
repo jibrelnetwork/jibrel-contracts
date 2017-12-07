@@ -12,7 +12,7 @@ contract Ownable {
 
   /* Storage */
 
-  address owner;
+  address owner = address(0x0);
   address proposedOwner = address(0x0);
 
 
@@ -27,7 +27,7 @@ contract Ownable {
   /**
    * @dev The constructor sets the initial `owner` to the passed account.
    */
-  function Ownable() public { // todo fix this - add new owner as parameter
+  function Ownable() public {
     owner = msg.sender;
 
     OwnerAssignedEvent(owner);
