@@ -3,7 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import "../crydr/controller/CrydrControllerMintable.sol";
+import '../crydr/controller/CrydrControllerMintable.sol';
 
 
 /**

@@ -3,10 +3,10 @@
 pragma solidity ^0.4.18;
 
 
-import "../../lifecycle/Pausable.sol";
-import "../../util/CommonModifiers.sol";
-import "../../registry/investor/InvestorRegistryInterface.sol";
-import "./CrydrControllerERC20ValidatableInterface.sol";
+import '../../lifecycle/Pausable.sol';
+import '../../util/CommonModifiers.sol';
+import '../../registry/investor/InvestorRegistryInterface.sol';
+import './CrydrControllerERC20ValidatableInterface.sol';
 
 
 contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface,

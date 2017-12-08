@@ -3,11 +3,11 @@
 pragma solidity ^0.4.18;
 
 
-import "../../util/JsonEncoder.sol";
-import "../../util/CommonModifiers.sol";
-import "../../crydr/controller/CrydrControllerBaseInterface.sol";
-import "./CryDRRegistryInterface.sol";
-import "./CryDRRegistryManagementInterface.sol";
+import '../../util/JsonEncoder.sol';
+import '../../util/CommonModifiers.sol';
+import '../../crydr/controller/CrydrControllerBaseInterface.sol';
+import './CryDRRegistryInterface.sol';
+import './CryDRRegistryManagementInterface.sol';
 
 
 /**

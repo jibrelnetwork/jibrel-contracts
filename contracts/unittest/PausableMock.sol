@@ -3,7 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import "../lifecycle/Pausable.sol";
+import '../lifecycle/Pausable.sol';
 
 
 /**

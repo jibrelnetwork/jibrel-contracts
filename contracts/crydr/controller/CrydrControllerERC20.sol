@@ -5,9 +5,9 @@ pragma solidity ^0.4.18;
 
 import './CrydrControllerBase.sol';
 import './CrydrControllerERC20Interface.sol';
-import "../storage/CrydrStorageBaseInterface.sol";
-import "../storage/CrydrStorageERC20Interface.sol";
-import "../view/ERC20LoggableInterface.sol";
+import '../storage/CrydrStorageBaseInterface.sol';
+import '../storage/CrydrStorageERC20Interface.sol';
+import '../view/ERC20LoggableInterface.sol';
 
 
 /**
@@ -30,7 +30,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_msgsender, _to, _value);
 
     if (crydrViewsAddresses['erc20'] != 0x0) {
-        ERC20LoggableInterface(crydrViewsAddresses['erc20']).emitTransferEvent(_msgsender, _to, _value);
+      ERC20LoggableInterface(crydrViewsAddresses['erc20']).emitTransferEvent(_msgsender, _to, _value);
     }
   }
 
@@ -60,7 +60,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     CrydrStorageERC20Interface(address(crydrStorage)).approve(_msgsender, _spender, _value);
 
     if (crydrViewsAddresses['erc20'] != 0x0) {
-        ERC20LoggableInterface(crydrViewsAddresses['erc20']).emitApprovalEvent(_msgsender, _spender, _value);
+      ERC20LoggableInterface(crydrViewsAddresses['erc20']).emitApprovalEvent(_msgsender, _spender, _value);
     }
   }
 
@@ -77,7 +77,7 @@ contract CrydrControllerERC20 is CrydrControllerBase, CrydrControllerERC20Interf
     CrydrStorageERC20Interface(address(crydrStorage)).transferFrom(_msgsender, _from, _to, _value);
 
     if (crydrViewsAddresses['erc20'] != 0x0) {
-        ERC20LoggableInterface(crydrViewsAddresses['erc20']).emitTransferEvent(_from, _to, _value);
+      ERC20LoggableInterface(crydrViewsAddresses['erc20']).emitTransferEvent(_from, _to, _value);
     }
   }
 

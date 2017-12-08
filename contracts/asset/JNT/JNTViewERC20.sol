@@ -3,7 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import "../../crydr/view/CrydrViewERC20.sol";
+import '../../crydr/view/CrydrViewERC20.sol';
 
 
 contract JNTViewERC20 is CrydrViewERC20 {

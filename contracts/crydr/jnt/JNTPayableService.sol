@@ -3,12 +3,12 @@
 pragma solidity ^0.4.18;
 
 
-import "../../lifecycle/Pausable.sol";
-import "../../util/CommonModifiers.sol";
-import "../controller/CrydrControllerBaseInterface.sol";
-import "../view/ERC20Interface.sol";
-import "../jnt/JNTControllerInterface.sol";
-import "./JNTPayableServiceInterface.sol";
+import '../../lifecycle/Pausable.sol';
+import '../../util/CommonModifiers.sol';
+import '../controller/CrydrControllerBaseInterface.sol';
+import '../view/ERC20Interface.sol';
+import '../jnt/JNTControllerInterface.sol';
+import './JNTPayableServiceInterface.sol';
 
 
 contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifiers {
@@ -106,7 +106,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
 
   /* Helpers */
 
-   modifier onlyValidJntBeneficiary(address _jntBeneficiary) {
+  modifier onlyValidJntBeneficiary(address _jntBeneficiary) {
     require(_jntBeneficiary != address(0x0));
     _;
   }

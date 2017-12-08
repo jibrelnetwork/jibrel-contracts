@@ -3,7 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import "../crydr/jnt/JNTControllerInterface.sol";
+import '../crydr/jnt/JNTControllerInterface.sol';
 
 
 /**

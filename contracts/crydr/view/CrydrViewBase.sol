@@ -4,10 +4,10 @@ pragma solidity ^0.4.18;
 
 
 import '../../lifecycle/Pausable.sol';
-import "../../util/CommonModifiers.sol";
-import "../../feature/bytecode/BytecodeExecutable.sol";
-import "../../feature/assetid/AssetIDInterface.sol";
-import "../../feature/assetid/AssetID.sol";
+import '../../util/CommonModifiers.sol';
+import '../../feature/bytecode/BytecodeExecutable.sol';
+import '../../feature/assetid/AssetIDInterface.sol';
+import '../../feature/assetid/AssetID.sol';
 import './CrydrViewBaseInterface.sol';
 
 

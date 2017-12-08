@@ -3,7 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import "../../crydr/storage/CrydrStorage.sol";
+import '../../crydr/storage/CrydrStorage.sol';
 
 
 contract jUSDStorage is CrydrStorage {

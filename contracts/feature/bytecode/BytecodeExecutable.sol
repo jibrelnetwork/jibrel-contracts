@@ -3,8 +3,8 @@
 pragma solidity ^0.4.18;
 
 
-import "../../lifecycle/Manageable.sol";
-import "./BytecodeExecutableInterface.sol";
+import '../../lifecycle/Manageable.sol';
+import './BytecodeExecutableInterface.sol';
 
 
 /**

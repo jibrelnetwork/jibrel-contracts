@@ -3,14 +3,14 @@
 pragma solidity ^0.4.18;
 
 
-import "../storage/CrydrStorageBaseInterface.sol";
-import "../storage/CrydrStorageERC20Interface.sol";
-import "../view/ERC20LoggableInterface.sol";
-import "../controller/CrydrControllerBase.sol";
-import "../controller/CrydrControllerBlockable.sol";
-import "../controller/CrydrControllerMintable.sol";
-import "../controller/CrydrControllerERC20.sol";
-import "../jnt/JNTPayableServiceERC20.sol";
+import '../storage/CrydrStorageBaseInterface.sol';
+import '../storage/CrydrStorageERC20Interface.sol';
+import '../view/ERC20LoggableInterface.sol';
+import '../controller/CrydrControllerBase.sol';
+import '../controller/CrydrControllerBlockable.sol';
+import '../controller/CrydrControllerMintable.sol';
+import '../controller/CrydrControllerERC20.sol';
+import '../jnt/JNTPayableServiceERC20.sol';
 
 
 contract CrydrControllerJCash is CrydrControllerBase,
@@ -24,8 +24,8 @@ contract CrydrControllerJCash is CrydrControllerBase,
   function CrydrControllerJCash(string _assetID)
     public
     CrydrControllerBase(_assetID)
-    JNTPayableServiceERC20(10^18, 10^18, 10^18) {}
-    // assumes that JNT has decimals==18, 1JNT per operation
+    JNTPayableServiceERC20(10^18, 10^18, 10^18) // assumes that JNT has decimals==18, 1JNT per operation
+  {}
 
 
   /* CrydrControllerERC20 */

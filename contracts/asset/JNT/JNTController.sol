@@ -3,13 +3,13 @@
 pragma solidity ^0.4.18;
 
 
-import "../../crydr/storage/CrydrStorageERC20Interface.sol";
-import "../../crydr/view/ERC20LoggableInterface.sol";
-import "../../crydr/controller/CrydrControllerBase.sol";
-import "../../crydr/controller/CrydrControllerBlockable.sol";
-import "../../crydr/controller/CrydrControllerMintable.sol";
-import "../../crydr/controller/CrydrControllerERC20.sol";
-import "../../crydr/jnt/JNTControllerInterface.sol";
+import '../../crydr/storage/CrydrStorageERC20Interface.sol';
+import '../../crydr/view/ERC20LoggableInterface.sol';
+import '../../crydr/controller/CrydrControllerBase.sol';
+import '../../crydr/controller/CrydrControllerBlockable.sol';
+import '../../crydr/controller/CrydrControllerMintable.sol';
+import '../../crydr/controller/CrydrControllerERC20.sol';
+import '../../crydr/jnt/JNTControllerInterface.sol';
 
 
 /**

@@ -3,10 +3,10 @@
 pragma solidity ^0.4.18;
 
 
-import "../controller/CrydrControllerBaseInterface.sol";
-import "../view/ERC20Interface.sol";
-import "./JNTPayableService.sol";
-import "./JNTPayableServiceERC20Interface.sol";
+import '../controller/CrydrControllerBaseInterface.sol';
+import '../view/ERC20Interface.sol';
+import './JNTPayableService.sol';
+import './JNTPayableServiceERC20Interface.sol';
 
 
 contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Interface {

@@ -5,7 +5,7 @@ pragma solidity ^0.4.18;
 
 import './CrydrControllerBase.sol';
 import './CrydrControllerMintableInterface.sol';
-import "../view/ERC20MintableInterface.sol";
+import '../view/ERC20MintableInterface.sol';
 
 
 /**
@@ -30,7 +30,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
     crydrStorage.increaseBalance(_account, _value);
 
     if (crydrViewsAddresses['erc20'] != 0x0) {
-        ERC20MintableInterface(crydrViewsAddresses['erc20']).emitMintEvent(_account, _value);
+      ERC20MintableInterface(crydrViewsAddresses['erc20']).emitMintEvent(_account, _value);
     }
   }
 
@@ -46,7 +46,7 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
     crydrStorage.decreaseBalance(_account, _value);
 
     if (crydrViewsAddresses['erc20'] != 0x0) {
-        ERC20MintableInterface(crydrViewsAddresses['erc20']).emitBurnEvent(_account, _value);
+      ERC20MintableInterface(crydrViewsAddresses['erc20']).emitBurnEvent(_account, _value);
     }
   }
 }
