@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@mgmail.com */
 
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.18;
 
 
 import "../feature/assetid/AssetID.sol";

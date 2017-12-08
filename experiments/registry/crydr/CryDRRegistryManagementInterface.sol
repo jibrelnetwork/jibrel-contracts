@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.18;
 
 
 import "./CryDRRegistryInterface.sol";
