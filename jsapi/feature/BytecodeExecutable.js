@@ -9,21 +9,39 @@ const BytecodeExecutable = global.artifacts.require('BytecodeExecutable.sol');
  * Setters
  */
 
-export const executeBytecode = async (contractAddress, managerAddress,
-                                      targetAddress, ethValue, transactionBytecode) => {
-  global.console.log('\tExecute bytecode:');
+export const executeCall = async (contractAddress, managerAddress,
+                                  targetAddress, suppliedGas, ethValue, transactionBytecode) => {
+  global.console.log('\tExecute "call" opcode:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\ttargetAddress - ${targetAddress}`);
+  global.console.log(`\t\tsuppliedGas - ${suppliedGas}`);
   global.console.log(`\t\tethValue - ${ethValue}`);
   await submitTxAndWaitConfirmation(
     BytecodeExecutable
       .at(contractAddress)
-      .executeBytecode
+      .executeCall
       .sendTransaction,
-    [targetAddress, ethValue, transactionBytecode, { from: managerAddress }],
+    [targetAddress, suppliedGas, ethValue, transactionBytecode, { from: managerAddress }],
   );
-  global.console.log('\t\tBytecode successfully executed');
+  global.console.log('\t\t"call" opcode successfully executed');
+};
+
+export const executeDelegatecall = async (contractAddress, managerAddress,
+                                          targetAddress, suppliedGas, transactionBytecode) => {
+  global.console.log('\tExecute "delegatecall" opcode:');
+  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
+  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
+  global.console.log(`\t\ttargetAddress - ${targetAddress}`);
+  global.console.log(`\t\tsuppliedGas - ${suppliedGas}`);
+  await submitTxAndWaitConfirmation(
+    BytecodeExecutable
+      .at(contractAddress)
+      .executeDelegatecall
+      .sendTransaction,
+    [targetAddress, suppliedGas, transactionBytecode, { from: managerAddress }],
+  );
+  global.console.log('\t\t"delegatecall" opcode successfully executed');
 };
 
 
@@ -31,8 +49,14 @@ export const executeBytecode = async (contractAddress, managerAddress,
  * Events
  */
 
-export const getBytecodeExecutedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = BytecodeExecutable.at(contractAddress).BytecodeExecutedEvent(eventDataFilter, commonFilter);
+export const getCallExecutedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = BytecodeExecutable.at(contractAddress).CallExecutedEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getDelegatecallExecutedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = BytecodeExecutable.at(contractAddress).DelegatecallExecutedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
