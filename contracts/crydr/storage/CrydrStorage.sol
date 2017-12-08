@@ -6,7 +6,7 @@ pragma solidity ^0.4.18;
 import '../../third-party/zeppelin-solidity/SafeMath.sol';
 import '../../lifecycle/Pausable.sol';
 import '../../util/CommonModifiers.sol';
-import '../../feature/bytecode/BytecodeExecutable.sol';
+import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../../feature/assetid/AssetIDInterface.sol';
 import '../../feature/assetid/AssetID.sol';
 import './CrydrStorageBaseInterface.sol';
@@ -22,7 +22,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
                          CrydrStorageERC20Interface,
                          Pausable,
                          CommonModifiers,
-                         BytecodeExecutable,
+                         BytecodeExecutor,
                          AssetID,
                          SafeMath {
 

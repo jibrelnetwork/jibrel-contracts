@@ -4,22 +4,22 @@ pragma solidity ^0.4.18;
 
 
 import '../../lifecycle/Manageable.sol';
-import './BytecodeExecutableInterface.sol';
+import './BytecodeExecutorInterface.sol';
 
 
 /**
- * @title BytecodeExecutable
+ * @title BytecodeExecutor
  * @dev Implementation of a contract that execute any bytecode on behalf of the contract
  * @dev Last resort for the immutable and not-replaceable contract :)
  */
-contract BytecodeExecutable is BytecodeExecutableInterface, Manageable {
+contract BytecodeExecutor is BytecodeExecutorInterface, Manageable {
 
   /* Storage */
 
   bool underExecution = false;
 
 
-  /* BytecodeExecutableInterface */
+  /* BytecodeExecutorInterface */
 
   function executeCall(
     address _target,

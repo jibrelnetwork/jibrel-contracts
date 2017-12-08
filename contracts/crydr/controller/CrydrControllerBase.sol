@@ -5,7 +5,7 @@ pragma solidity ^0.4.18;
 
 import '../../lifecycle/Pausable.sol';
 import '../../util/CommonModifiers.sol';
-import '../../feature/bytecode/BytecodeExecutable.sol';
+import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../../feature/assetid/AssetID.sol';
 import '../storage/CrydrStorageBaseInterface.sol';
 import '../view/CrydrViewBaseInterface.sol';
@@ -19,7 +19,7 @@ import './CrydrControllerBaseInterface.sol';
 contract CrydrControllerBase is CrydrControllerBaseInterface,
                                 Pausable,
                                 CommonModifiers,
-                                BytecodeExecutable,
+                                BytecodeExecutor,
                                 AssetID {
 
   /* Storage */
