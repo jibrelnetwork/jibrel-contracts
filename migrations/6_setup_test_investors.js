@@ -5,7 +5,7 @@ global.artifacts = artifacts; // eslint-disable-line no-undef
 
 
 const CrydrControllerMintableInterfaceJSAPI = require('../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
-const SubmitTx = require('../jsroutines/jsapi/misc/SubmitTx');
+const TxConfig = require('../jsroutines/jsconfig/TxConfig');
 
 const DeployConfig = require('../jsroutines/jsconfig/DeployConfig');
 
@@ -84,10 +84,8 @@ module.exports = (deployer, network, accounts) => {
   global.console.log(`  Accounts: ${accounts}`);
   global.console.log(`  Network:  ${network}`);
 
-  SubmitTx.setWeb3(web3); // eslint-disable-line no-undef
-  if (network === 'development' || network === 'coverage') {
-    SubmitTx.setDefaultWaitParamsForTestNetwork();
-  }
+  TxConfig.setWeb3(web3); // eslint-disable-line no-undef
+  TxConfig.setNetworkType(network);
 
   DeployConfig.setDeployer(deployer);
   DeployConfig.setAccounts(accounts);

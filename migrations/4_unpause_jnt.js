@@ -4,7 +4,7 @@ require('babel-polyfill');
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
 
-const SubmitTx = require('../jsroutines/jsapi/misc/SubmitTx');
+const TxConfig = require('../jsroutines/jsconfig/TxConfig');
 
 const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
@@ -30,10 +30,8 @@ module.exports = (deployer, network, accounts) => {
   global.console.log(`  Accounts: ${accounts}`);
   global.console.log(`  Network:  ${network}`);
 
-  SubmitTx.setWeb3(web3); // eslint-disable-line no-undef
-  if (network === 'development' || network === 'coverage') {
-    SubmitTx.setDefaultWaitParamsForTestNetwork();
-  }
+  TxConfig.setWeb3(web3); // eslint-disable-line no-undef
+  TxConfig.setNetworkType(network);
 
   DeployConfig.setDeployer(deployer);
   DeployConfig.setAccounts(accounts);
