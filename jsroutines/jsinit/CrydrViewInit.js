@@ -4,21 +4,15 @@ const CrydrViewBaseInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewBaseIn
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 
+const DeployUtils = require('../util/DeployUtils');
+
 
 export const deployCrydrView = async (crydrViewContractArtifact) => {
   global.console.log('\tDeploying view of a crydr.');
 
-  const deployer = DeployConfig.getDeployer();
-  const { owner } = DeployConfig.getAccounts();
-  global.console.log(`\t\towner - ${owner}`);
+  const contractAddress = await DeployUtils.deployContract(crydrViewContractArtifact);
 
-  await deployer.deploy(crydrViewContractArtifact, { from: owner });
-
-  const crydrViewContractInstance = await crydrViewContractArtifact.deployed();
-  const crydrViewContractAddress = crydrViewContractInstance.address;
-
-  global.console.log(`\tView of a crydr successfully deployed: ${crydrViewContractAddress}`);
-
+  global.console.log(`\tView of a crydr successfully deployed: ${contractAddress}`);
   return null;
 };
 

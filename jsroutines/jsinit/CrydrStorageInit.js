@@ -4,20 +4,16 @@ const CrydrStorageBaseInterfaceJSAPI = require('../jsapi/crydr/storage/CrydrStor
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 
+const DeployUtils = require('../util/DeployUtils');
+
 
 export const deployCrydrStorage = async (crydrStorageContractArtifact) => {
   global.console.log('\tDeploying storage of a crydr.');
 
-  const deployer = DeployConfig.getDeployer();
-  const { owner } = DeployConfig.getAccounts();
-  global.console.log(`\t\towner - ${owner}`);
+  const contractAddress = await DeployUtils.deployContract(crydrStorageContractArtifact);
 
-  await deployer.deploy(crydrStorageContractArtifact, { from: owner });
+  global.console.log(`\tStorage of a crydr successfully deployed: ${contractAddress}`);
 
-  const crydrStorageContractInstance = await crydrStorageContractArtifact.deployed();
-  const crydrStorageContractAddress = crydrStorageContractInstance.address;
-
-  global.console.log(`\tStorage of a crydr successfully deployed: ${crydrStorageContractAddress}`);
   return null;
 };
 

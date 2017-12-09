@@ -8,20 +8,15 @@ const JNTPayableServiceInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTPayableSe
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 
+const DeployUtils = require('../util/DeployUtils');
+
 
 export const deployCrydrController = async (crydrControllerContractArtifact) => {
   global.console.log('\tDeploying controller of a crydr');
 
-  const deployer = DeployConfig.getDeployer();
-  const { owner } = DeployConfig.getAccounts();
-  global.console.log(`\t\towner - ${owner}`);
+  const contractAddress = await DeployUtils.deployContract(crydrControllerContractArtifact);
 
-  await deployer.deploy(crydrControllerContractArtifact, { from: owner });
-
-  const crydrControllerContractInstance = await crydrControllerContractArtifact.deployed();
-  const crydrControllerContractAddress = crydrControllerContractInstance.address;
-
-  global.console.log(`\tController of a crydr successfully deployed: ${crydrControllerContractAddress}`);
+  global.console.log(`\tController of a crydr successfully deployed: ${contractAddress}`);
   return null;
 };
 
