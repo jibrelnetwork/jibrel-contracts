@@ -6,7 +6,7 @@ const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const CrydrStorageBaseJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
 const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
 
-const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrInit = require('../../../jsroutines/jsinit/CrydrInit');
 
 const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
@@ -17,8 +17,8 @@ global.contract('CrydrControllerMintable', (accounts) => {
   let crydrStorageInstance;
   let crydrViewBaseInstance;
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, managerPause, managerMint, testInvestor1 } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, managerPause, managerMint, testInvestor1 } = DeployConfig.getAccounts();
 
   const viewStandard = 'erc20';
   const viewName = 'viewName';

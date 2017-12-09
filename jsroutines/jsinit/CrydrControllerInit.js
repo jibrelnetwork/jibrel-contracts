@@ -6,14 +6,14 @@ const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller
 const JNTControllerInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTControllerInterface');
 const JNTPayableServiceInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTPayableServiceInterface');
 
-const GlobalConfig = require('./GlobalConfig');
+const DeployConfig = require('../jsconfig/DeployConfig');
 
 
 export const deployCrydrController = async (crydrControllerContractArtifact) => {
   global.console.log('\tDeploying controller of a crydr');
 
-  const deployer = GlobalConfig.getDeployer();
-  const { owner } = GlobalConfig.getAccounts();
+  const deployer = DeployConfig.getDeployer();
+  const { owner } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
 
   await deployer.deploy(crydrControllerContractArtifact, { from: owner });
@@ -29,7 +29,7 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress) =
   global.console.log('\tConfiguring managers of crydr controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  const { owner, managerPause, managerGeneral, managerBlock, managerMint } = GlobalConfig.getAccounts();
+  const { owner, managerPause, managerGeneral, managerBlock, managerMint } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
@@ -60,7 +60,7 @@ export const configureJntPayableService = async (jntPayableServiceAddress, jntCo
   global.console.log(`\t\tjntPayableServiceAddress - ${jntPayableServiceAddress}`);
   global.console.log(`\t\tjntControllerAddress - ${jntControllerAddress}`);
 
-  const { owner, managerJNT, jntBeneficiary } = GlobalConfig.getAccounts();
+  const { owner, managerJNT, jntBeneficiary } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
 
   await JNTPayableServiceInterfaceJSAPI.grantManagerPermissions(jntPayableServiceAddress, owner, managerJNT);

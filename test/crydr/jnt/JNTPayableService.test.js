@@ -5,7 +5,7 @@ const ManageableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Manageable'
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const JNTPayableServiceJSAPI = require('../../../jsroutines/jsapi/crydr/jnt/JNTPayableServiceInterface');
 
-const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 
 const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
 
@@ -15,8 +15,8 @@ global.contract('JNTPayableService', (accounts) => {
   let jntControllerStubInstance01;
   let jntControllerStubInstance02;
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, managerPause, managerJNT, jntBeneficiary, testInvestor1, testInvestor2 } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, managerPause, managerJNT, jntBeneficiary, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
 
   // const manager01   = accounts[1];
   // const manager02   = accounts[2];

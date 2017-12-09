@@ -2,14 +2,14 @@ const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
 const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
 const CrydrViewBaseInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewBaseInterface');
 
-const GlobalConfig = require('./GlobalConfig');
+const DeployConfig = require('../jsconfig/DeployConfig');
 
 
 export const deployCrydrView = async (crydrViewContractArtifact) => {
   global.console.log('\tDeploying view of a crydr.');
 
-  const deployer = GlobalConfig.getDeployer();
-  const { owner } = GlobalConfig.getAccounts();
+  const deployer = DeployConfig.getDeployer();
+  const { owner } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
 
   await deployer.deploy(crydrViewContractArtifact, { from: owner });
@@ -26,7 +26,7 @@ export const configureCrydrViewManagers = async (crydrViewAddress) => {
   global.console.log('\tConfiguring managers of crydr view...');
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
 
-  const { owner, managerPause, managerGeneral } = GlobalConfig.getAccounts();
+  const { owner, managerPause, managerGeneral } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);

@@ -8,7 +8,7 @@ const CrydrViewERC20LoggableJSAPI = require('../../../jsroutines/jsapi/crydr/vie
 
 const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausable');
 
-const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
 
 const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
@@ -19,8 +19,8 @@ global.contract('CrydrViewERC20', (accounts) => {
   let controllerStubInstance;
 
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, managerGeneral, managerPause, testInvestor1, testInvestor2 } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, managerGeneral, managerPause, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
 
   const originalName = 'testName';
   const originalSymbol = 'testSymbol';

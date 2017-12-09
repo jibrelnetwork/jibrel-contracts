@@ -16,7 +16,7 @@ const jKRWStorage    = global.artifacts.require('jKRWStorage.sol');
 const jKRWController = global.artifacts.require('jKRWController.sol');
 const jKRWViewERC20  = global.artifacts.require('jKRWViewERC20.sol');
 
-const GlobalConfig = require('../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../jsroutines/jsconfig/DeployConfig');
 const CrydrInit = require('../jsroutines/jsinit/CrydrInit');
 const CrydrControllerInit = require('../jsroutines/jsinit/CrydrControllerInit');
 
@@ -57,8 +57,8 @@ module.exports = (deployer, network, accounts) => {
     SubmitTx.setDefaultWaitParamsForTestNetwork();
   }
 
-  GlobalConfig.setDeployer(deployer);
-  GlobalConfig.setAccounts(accounts);
+  DeployConfig.setDeployer(deployer);
+  DeployConfig.setAccounts(accounts);
 
   deployer.then(() => executeMigration())
           .then(() => verifyMigration())

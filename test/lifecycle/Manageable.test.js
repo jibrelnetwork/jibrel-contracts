@@ -2,7 +2,7 @@ const Manageable = global.artifacts.require('Manageable.sol');
 
 const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
 
-const GlobalConfig = require('../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
 
 const CheckExceptions = require('../../jsroutines/test_util/CheckExceptions');
 
@@ -10,8 +10,8 @@ const CheckExceptions = require('../../jsroutines/test_util/CheckExceptions');
 global.contract('Manageable', (accounts) => {
   let manageableInstanceAddress;
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, managerGeneral } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, managerGeneral } = DeployConfig.getAccounts();
 
   global.beforeEach(async () => {
     const testContract = await Manageable.new({ from: owner });

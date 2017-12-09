@@ -4,7 +4,7 @@ const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20S
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const CrydrViewBaseJSAPI = require('../../../jsroutines/jsapi/crydr/view/CrydrViewBaseInterface');
 
-const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
 
 const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
@@ -14,8 +14,8 @@ global.contract('CrydrViewBase', (accounts) => {
   let controllerStubInstance01;
   let controllerStubInstance02;
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, managerGeneral, managerPause, testInvestor1 } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, managerGeneral, managerPause, testInvestor1 } = DeployConfig.getAccounts();
 
   const viewStandard = 'testName';
   const viewStandardHash = '0x698c8efcda9e563cf153563941b60fc5ac88336fc58d361eb0888686fadb9976';

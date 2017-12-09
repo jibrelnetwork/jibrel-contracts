@@ -5,7 +5,7 @@ const CrydrViewBase       = global.artifacts.require('CrydrViewBase.sol');
 const PausableJSAPI            = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerBaseInterface');
 
-const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrControllerInit = require('../../../jsroutines/jsinit/CrydrControllerInit');
 
 const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
@@ -20,8 +20,8 @@ global.contract('CrydrControllerBase', (accounts) => {
   let crydrViewBaseInstanceStub01;
 
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, managerGeneral, managerPause, testInvestor1 } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, managerGeneral, managerPause, testInvestor1 } = DeployConfig.getAccounts();
 
 
   const viewStandard = 'TestView';

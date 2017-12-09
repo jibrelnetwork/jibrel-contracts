@@ -2,14 +2,14 @@ const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
 const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
 const CrydrStorageBaseInterfaceJSAPI = require('../jsapi/crydr/storage/CrydrStorageBaseInterface');
 
-const GlobalConfig = require('./GlobalConfig');
+const DeployConfig = require('../jsconfig/DeployConfig');
 
 
 export const deployCrydrStorage = async (crydrStorageContractArtifact) => {
   global.console.log('\tDeploying storage of a crydr.');
 
-  const deployer = GlobalConfig.getDeployer();
-  const { owner } = GlobalConfig.getAccounts();
+  const deployer = DeployConfig.getDeployer();
+  const { owner } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
 
   await deployer.deploy(crydrStorageContractArtifact, { from: owner });
@@ -25,7 +25,7 @@ export const configureCrydrStorageManagers = async (crydrStorageAddress) => {
   global.console.log('\tConfiguring managers of crydr storage...');
   global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
 
-  const { owner, managerPause, managerGeneral } = GlobalConfig.getAccounts();
+  const { owner, managerPause, managerGeneral } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);

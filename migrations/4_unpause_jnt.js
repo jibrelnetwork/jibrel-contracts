@@ -8,7 +8,7 @@ const SubmitTx = require('../jsroutines/jsapi/misc/SubmitTx');
 
 const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
-const GlobalConfig = require('../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../jsroutines/jsconfig/DeployConfig');
 const CrydrInit = require('../jsroutines/jsinit/CrydrInit');
 
 
@@ -35,8 +35,8 @@ module.exports = (deployer, network, accounts) => {
     SubmitTx.setDefaultWaitParamsForTestNetwork();
   }
 
-  GlobalConfig.setDeployer(deployer);
-  GlobalConfig.setAccounts(accounts);
+  DeployConfig.setDeployer(deployer);
+  DeployConfig.setAccounts(accounts);
 
   deployer.then(() => executeMigration())
           .then(() => verifyMigration())

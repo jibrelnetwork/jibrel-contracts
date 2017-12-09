@@ -7,7 +7,7 @@ global.artifacts = artifacts; // eslint-disable-line no-undef
 const CrydrControllerMintableInterfaceJSAPI = require('../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
 const SubmitTx = require('../jsroutines/jsapi/misc/SubmitTx');
 
-const GlobalConfig = require('../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../jsroutines/jsconfig/DeployConfig');
 
 const JNTController = global.artifacts.require('JNTController.sol');
 const jUSDController = global.artifacts.require('jUSDController.sol');
@@ -17,7 +17,7 @@ const jKRWController = global.artifacts.require('jKRWController.sol');
 /* Migration actions */
 
 const executeMigration = async () => {
-  const { managerMint, testInvestor1, testInvestor2, testInvestor3 } = GlobalConfig.getAccounts();
+  const { managerMint, testInvestor1, testInvestor2, testInvestor3 } = DeployConfig.getAccounts();
   global.console.log(`\t\tmanagerPause - ${managerMint}`);
   global.console.log(`\t\tmanagerPause - ${testInvestor1}`);
   global.console.log(`\t\tmanagerPause - ${testInvestor2}`);
@@ -89,8 +89,8 @@ module.exports = (deployer, network, accounts) => {
     SubmitTx.setDefaultWaitParamsForTestNetwork();
   }
 
-  GlobalConfig.setDeployer(deployer);
-  GlobalConfig.setAccounts(accounts);
+  DeployConfig.setDeployer(deployer);
+  DeployConfig.setAccounts(accounts);
 
   deployer.then(() => executeMigration())
           .then(() => verifyMigration())

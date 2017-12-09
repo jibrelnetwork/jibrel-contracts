@@ -7,15 +7,15 @@ const crydrStorageERC20JSAPI = require('../../../jsroutines/jsapi/crydr/storage/
 const CrydrStorageBaseInterfaceJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
 
 const CrydrStorageInit = require('../../../jsroutines/jsinit/CrydrStorageInit');
-const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 
 const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
 
 
 global.contract('CrydrStorageERC20Interface', (accounts) => {
-  GlobalConfig.setAccounts(accounts);
+  DeployConfig.setAccounts(accounts);
   const { owner, managerPause, managerGeneral, testInvestor1, testInvestor2, testInvestor3 } =
-    GlobalConfig.getAccounts();
+    DeployConfig.getAccounts();
 
   let crydrStorageInstance;
   let storageProxyInstance01;

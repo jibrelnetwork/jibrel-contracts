@@ -6,19 +6,19 @@ const PausableJSAPI   = require('../../jsroutines/jsapi/lifecycle/Pausable');
 
 const PausableTestSuite = require('../../jsroutines/test_suit/lifecycle/Pausable');
 
-const GlobalConfig = require('../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
 
 
 global.contract('Pausable', (accounts) => {
   global.it('should test that contract is pausable and unpausable', async () => {
-    GlobalConfig.setAccounts(accounts);
+    DeployConfig.setAccounts(accounts);
 
     await PausableTestSuite.testContractIsPausable(Pausable, []);
   });
 
   global.it('should test that modifiers work as expected', async () => {
-    GlobalConfig.setAccounts(accounts);
-    const { owner, managerPause } = GlobalConfig.getAccounts();
+    DeployConfig.setAccounts(accounts);
+    const { owner, managerPause } = DeployConfig.getAccounts();
 
     const pausableInstance = await PausableMock.new({ from: owner });
     const pausableInstanceAddress = pausableInstance.address;

@@ -3,10 +3,11 @@ const CrydrStorageBaseInterfaceJSAPI = require('../jsapi/crydr/storage/CrydrStor
 const CrydrControllerBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBaseInterface');
 const CrydrViewBaseInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewBaseInterface');
 
+const DeployConfig = require('../jsconfig/DeployConfig');
+
 const CrydrStorageInitJSAPI = require('./CrydrStorageInit');
 const CrydrControllerInitJSAPI = require('./CrydrControllerInit');
 const CrydrViewInitJSAPI = require('./CrydrViewInit');
-const GlobalConfig = require('./GlobalConfig');
 
 
 export const deployCrydrContracts = async (crydrStorageContractArtifact,
@@ -42,7 +43,7 @@ export const linkCrydrStorage = async (crydrStorageAddress,
   global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  const { managerGeneral } = GlobalConfig.getAccounts();
+  const { managerGeneral } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${managerGeneral}`);
 
   await CrydrStorageBaseInterfaceJSAPI
@@ -62,7 +63,7 @@ export const linkCrydrView = async (crydrControllerAddress,
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
-  const { managerGeneral } = GlobalConfig.getAccounts();
+  const { managerGeneral } = DeployConfig.getAccounts();
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
 
   await CrydrViewBaseInterfaceJSAPI
@@ -125,7 +126,7 @@ export const upauseCrydrControllerAndStorage = async (crydrStorageContractArtifa
                                       crydrControllerContractArtifact) => {
   global.console.log('\tUnpause controller and storage of JCash crydr...');
 
-  const { managerPause } = GlobalConfig.getAccounts();
+  const { managerPause } = DeployConfig.getAccounts();
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
 
   const crydrStorageInstance = await crydrStorageContractArtifact.deployed();
@@ -143,7 +144,7 @@ export const upauseCrydrControllerAndStorage = async (crydrStorageContractArtifa
 export const upauseCrydrView = async (crydrViewContractArtifact) => {
   global.console.log('\tUnpause view of JCash crydr...');
 
-  const { managerPause } = GlobalConfig.getAccounts();
+  const { managerPause } = DeployConfig.getAccounts();
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
 
   const crydrViewInstance = await crydrViewContractArtifact.deployed();

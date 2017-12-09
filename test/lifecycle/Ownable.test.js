@@ -2,7 +2,7 @@ const Ownable = global.artifacts.require('Ownable.sol');
 
 const OwnableJSAPI = require('../../jsroutines/jsapi/lifecycle/Ownable');
 
-const GlobalConfig = require('../../jsroutines/jsinit/GlobalConfig');
+const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
 
 const CheckExceptions  = require('../../jsroutines/test_util/CheckExceptions');
 
@@ -10,8 +10,8 @@ const CheckExceptions  = require('../../jsroutines/test_util/CheckExceptions');
 global.contract('Ownable', (accounts) => {
   let ownableInstanceAddress;
 
-  GlobalConfig.setAccounts(accounts);
-  const { owner, testInvestor1, testInvestor2 } = GlobalConfig.getAccounts();
+  DeployConfig.setAccounts(accounts);
+  const { owner, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
 
   global.beforeEach(async () => {
     const ownableInstance = await Ownable.new({ from: owner });

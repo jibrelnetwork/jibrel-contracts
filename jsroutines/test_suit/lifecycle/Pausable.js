@@ -5,7 +5,7 @@ import { submitTxAndWaitConfirmation } from '../../jsapi/misc/SubmitTx';
 const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
 const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
 
-const GlobalConfig = require('../../jsinit/GlobalConfig');
+const DeployConfig = require('../../jsconfig/DeployConfig');
 
 const CheckExceptions = require('../../test_util/CheckExceptions');
 
@@ -13,7 +13,7 @@ const CheckExceptions = require('../../test_util/CheckExceptions');
 export const testContractIsPausable = async (contractArtifact, constructorArgs) => {
   global.console.log('\tTest that contract is pausable and unpausable');
 
-  const { owner, managerPause, testInvestor1 } = GlobalConfig.getAccounts();
+  const { owner, managerPause, testInvestor1 } = DeployConfig.getAccounts();
 
   const pausableInstance = await contractArtifact.new(...constructorArgs, { from: owner });
   const pausableInstanceAddress = pausableInstance.address;
