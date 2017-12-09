@@ -11,7 +11,7 @@ const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausa
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
 
-const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 
 global.contract('CrydrViewERC20', (accounts) => {

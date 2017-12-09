@@ -9,7 +9,7 @@ const CrydrStorageBaseInterfaceJSAPI = require('../../../jsroutines/jsapi/crydr/
 const CrydrStorageInit = require('../../../jsroutines/jsinit/CrydrStorageInit');
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 
-const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 
 global.contract('CrydrStorageERC20Interface', (accounts) => {

@@ -8,7 +8,7 @@ const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/contro
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrControllerInit = require('../../../jsroutines/jsinit/CrydrControllerInit');
 
-const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 
 global.contract('CrydrControllerBase', (accounts) => {

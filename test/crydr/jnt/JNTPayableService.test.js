@@ -7,7 +7,7 @@ const JNTPayableServiceJSAPI = require('../../../jsroutines/jsapi/crydr/jnt/JNTP
 
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 
-const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 
 global.contract('JNTPayableService', (accounts) => {

@@ -7,7 +7,7 @@ const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
 
 const DeployConfig = require('../../jsconfig/DeployConfig');
 
-const CheckExceptions = require('../../test_util/CheckExceptions');
+const CheckExceptions = require('../../util/CheckExceptions');
 
 
 export const testContractIsPausable = async (contractArtifact, constructorArgs) => {

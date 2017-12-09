@@ -4,7 +4,7 @@ const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
 
 const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
 
-const CheckExceptions = require('../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../jsroutines/util/CheckExceptions');
 
 
 global.contract('Manageable', (accounts) => {

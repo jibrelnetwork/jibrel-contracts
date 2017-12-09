@@ -4,7 +4,7 @@ const OwnableJSAPI = require('../../jsroutines/jsapi/lifecycle/Ownable');
 
 const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
 
-const CheckExceptions  = require('../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions  = require('../../jsroutines/util/CheckExceptions');
 
 
 global.contract('Ownable', (accounts) => {

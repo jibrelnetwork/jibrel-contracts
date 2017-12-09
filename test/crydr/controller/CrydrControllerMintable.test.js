@@ -9,7 +9,7 @@ const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/co
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrInit = require('../../../jsroutines/jsinit/CrydrInit');
 
-const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 
 global.contract('CrydrControllerMintable', (accounts) => {

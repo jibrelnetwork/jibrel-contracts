@@ -7,7 +7,7 @@ const CrydrViewBaseJSAPI = require('../../../jsroutines/jsapi/crydr/view/CrydrVi
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
 
-const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 global.contract('CrydrViewBase', (accounts) => {
   let CrydrViewBaseInstance;
