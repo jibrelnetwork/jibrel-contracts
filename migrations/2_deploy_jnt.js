@@ -4,14 +4,14 @@ require('babel-polyfill');
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
 
-const SubmitTx = require('../jsapi/misc/SubmitTx');
+const SubmitTx = require('../jsroutines/jsapi/misc/SubmitTx');
 
 const JNTStorage    = global.artifacts.require('JNTStorage.sol');
 const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
 
-const GlobalConfig = require('../jsinit/GlobalConfig');
-const CrydrInit = require('../jsinit/CrydrInit');
+const GlobalConfig = require('../jsroutines/jsinit/GlobalConfig');
+const CrydrInit = require('../jsroutines/jsinit/CrydrInit');
 
 
 /* Migration actions */

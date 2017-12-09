@@ -1,13 +1,13 @@
 const JNTPayableService = global.artifacts.require('JNTPayableService.sol');
 const JNTControllerStub = global.artifacts.require('JNTControllerStub.sol');
 
-const ManageableJSAPI = require('../../../jsapi/lifecycle/Manageable');
-const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
-const JNTPayableServiceJSAPI = require('../../../jsapi/crydr/jnt/JNTPayableServiceInterface');
+const ManageableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Manageable');
+const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
+const JNTPayableServiceJSAPI = require('../../../jsroutines/jsapi/crydr/jnt/JNTPayableServiceInterface');
 
-const GlobalConfig = require('../../../jsinit/GlobalConfig');
+const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
 
-const CheckExceptions = require('../../../test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
 
 
 global.contract('JNTPayableService', (accounts) => {

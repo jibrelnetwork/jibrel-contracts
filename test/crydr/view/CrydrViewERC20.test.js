@@ -1,17 +1,17 @@
 const CrydrControllerERC20Stub       = global.artifacts.require('CrydrControllerERC20Stub.sol');
 const CrydrViewERC20                 = global.artifacts.require('CrydrViewERC20.sol');
 
-const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
-const CrydrViewBaseJSAPI = require('../../../jsapi/crydr/view/CrydrViewBaseInterface');
-const CrydrViewERC20JSAPI = require('../../../jsapi/crydr/view/ERC20Interface');
-const CrydrViewERC20LoggableJSAPI = require('../../../jsapi/crydr/view/ERC20LoggableInterface');
+const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
+const CrydrViewBaseJSAPI = require('../../../jsroutines/jsapi/crydr/view/CrydrViewBaseInterface');
+const CrydrViewERC20JSAPI = require('../../../jsroutines/jsapi/crydr/view/ERC20Interface');
+const CrydrViewERC20LoggableJSAPI = require('../../../jsroutines/jsapi/crydr/view/ERC20LoggableInterface');
 
-const PausableTestSuite = require('../../../test_suit/lifecycle/Pausable');
+const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausable');
 
-const GlobalConfig = require('../../../jsinit/GlobalConfig');
-const CrydrViewInit = require('../../../jsinit/CrydrViewInit');
+const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
 
-const CheckExceptions = require('../../../test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
 
 
 global.contract('CrydrViewERC20', (accounts) => {

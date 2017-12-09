@@ -1,12 +1,12 @@
 const Pausable = global.artifacts.require('Pausable.sol');
 const PausableMock = global.artifacts.require('PausableMock.sol');
 
-const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
-const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
+const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
+const PausableJSAPI   = require('../../jsroutines/jsapi/lifecycle/Pausable');
 
-const PausableTestSuite = require('../../test_suit/lifecycle/Pausable');
+const PausableTestSuite = require('../../jsroutines/test_suit/lifecycle/Pausable');
 
-const GlobalConfig = require('../../jsinit/GlobalConfig');
+const GlobalConfig = require('../../jsroutines/jsinit/GlobalConfig');
 
 
 global.contract('Pausable', (accounts) => {

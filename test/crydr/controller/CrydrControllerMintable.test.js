@@ -2,14 +2,14 @@ const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMin
 const CrydrStorage                = global.artifacts.require('CrydrStorage.sol');
 const CrydrViewERC20              = global.artifacts.require('CrydrViewERC20.sol');
 
-const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
-const CrydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
-const CrydrControllerMintableJSAPI = require('../../../jsapi/crydr/controller/CrydrControllerMintableInterface');
+const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
+const CrydrStorageBaseJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
+const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
 
-const GlobalConfig = require('../../../jsinit/GlobalConfig');
-const CrydrInit = require('../../../jsinit/CrydrInit');
+const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const CrydrInit = require('../../../jsroutines/jsinit/CrydrInit');
 
-const CheckExceptions = require('../../../test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
 
 
 global.contract('CrydrControllerMintable', (accounts) => {

@@ -2,13 +2,13 @@ const CrydrControllerBase = global.artifacts.require('CrydrControllerBase.sol');
 const CrydrStorage        = global.artifacts.require('CrydrStorage.sol');
 const CrydrViewBase       = global.artifacts.require('CrydrViewBase.sol');
 
-const PausableJSAPI            = require('../../../jsapi/lifecycle/Pausable');
-const CrydrControllerBaseJSAPI = require('../../../jsapi/crydr/controller/CrydrControllerBaseInterface');
+const PausableJSAPI            = require('../../../jsroutines/jsapi/lifecycle/Pausable');
+const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerBaseInterface');
 
-const GlobalConfig = require('../../../jsinit/GlobalConfig');
-const CrydrControllerInit = require('../../../jsinit/CrydrControllerInit');
+const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
+const CrydrControllerInit = require('../../../jsroutines/jsinit/CrydrControllerInit');
 
-const CheckExceptions = require('../../../test_util/CheckExceptions');
+const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
 
 
 global.contract('CrydrControllerBase', (accounts) => {

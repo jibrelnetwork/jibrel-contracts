@@ -1,10 +1,10 @@
 const Manageable = global.artifacts.require('Manageable.sol');
 
-const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
+const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
 
-const GlobalConfig = require('../../jsinit/GlobalConfig');
+const GlobalConfig = require('../../jsroutines/jsinit/GlobalConfig');
 
-const CheckExceptions = require('../../test_util/CheckExceptions');
+const CheckExceptions = require('../../jsroutines/test_util/CheckExceptions');
 
 
 global.contract('Manageable', (accounts) => {

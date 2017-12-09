@@ -3,15 +3,15 @@ const BigNumber = require('bignumber.js');
 const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
 const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
 
-const PausableJSAPI = require('../../../jsapi/lifecycle/Pausable');
-const crydrStorageBaseJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
-const CrydrStorageBaseInterfaceJSAPI = require('../../../jsapi/crydr/storage/CrydrStorageBaseInterface');
+const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
+const crydrStorageBaseJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
+const CrydrStorageBaseInterfaceJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
 
-const CrydrStorageInit = require('../../../jsinit/CrydrStorageInit');
-const GlobalConfig = require('../../../jsinit/GlobalConfig');
+const CrydrStorageInit = require('../../../jsroutines/jsinit/CrydrStorageInit');
+const GlobalConfig = require('../../../jsroutines/jsinit/GlobalConfig');
 
-const CheckExceptions = require('../../../test_util/CheckExceptions');
-const PausableTestSuite = require('../../../test_suit/lifecycle/Pausable');
+const CheckExceptions = require('../../../jsroutines/test_util/CheckExceptions');
+const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausable');
 
 
 global.contract('CrydrStorageBaseInterface', (accounts) => {

@@ -4,10 +4,10 @@ require('babel-polyfill');
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
 
-const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
-const SubmitTx = require('../jsapi/misc/SubmitTx');
+const CrydrControllerMintableInterfaceJSAPI = require('../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
+const SubmitTx = require('../jsroutines/jsapi/misc/SubmitTx');
 
-const GlobalConfig = require('../jsinit/GlobalConfig');
+const GlobalConfig = require('../jsroutines/jsinit/GlobalConfig');
 
 const JNTController = global.artifacts.require('JNTController.sol');
 const jUSDController = global.artifacts.require('jUSDController.sol');
