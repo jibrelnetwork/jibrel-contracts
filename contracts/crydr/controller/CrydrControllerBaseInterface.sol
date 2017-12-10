@@ -19,9 +19,25 @@ contract CrydrControllerBaseInterface {
   /* Configuration */
 
   function setCrydrStorage(address _newStorage) external;
-  function getCrydrStorage() public constant returns (address);
+  function getCrydrStorageAddress() public constant returns (address);
 
   function setCrydrView(address _newCrydrView, string _viewApiStandardName) external;
   function removeCrydrView(string _viewApiStandardName) external;
-  function getCrydrView(string _viewApiStandard) public constant returns (address);
+  function getCrydrViewAddress(string _viewApiStandardName) public constant returns (address);
+
+  function isCrydrViewAddress(address _crydrViewAddress) public constant returns (bool);
+  function isCrydrViewRegistered(string _viewApiStandardName) public constant returns (bool);
+
+
+  /* Helpers */
+
+  modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {
+    require(bytes(_viewApiStandard).length > 0);
+    _;
+  }
+
+  modifier onlyCrydrView() {
+    require(isCrydrViewAddress(msg.sender) == true);
+    _;
+  }
 }

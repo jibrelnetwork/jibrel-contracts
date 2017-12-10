@@ -3,57 +3,18 @@
 pragma solidity ^0.4.18;
 
 
+import '../../lifecycle/PausableInterface.sol';
+import './CrydrViewBaseInterface.sol';
+import './CrydrViewERC20Interface.sol';
+
 import '../controller/CrydrControllerERC20Interface.sol';
 
-import './CrydrViewBase.sol';
-import './ERC20Interface.sol';
-import './ERC20ConfigurableInterface.sol';
-import './ERC20HashedInterface.sol';
-import './ERC20LoggableInterface.sol';
-import './ERC20MintableInterface.sol';
 
-
-contract CrydrViewERC20 is CrydrViewBase,
-                           ERC20Interface,
-                           ERC20ConfigurableInterface,
-                           ERC20HashedInterface,
-                           ERC20LoggableInterface,
-                           ERC20MintableInterface {
-
-
-  /* Storage */
-
-  string tokenName = '';
-  string tokenSymbol = '';
-  uint8 tokenDecimals = 0;
-
-
-  /* Constructor */
-
-  function CrydrViewERC20(string _assetID, string _name, string _symbol, uint8 _decimals)
-    public
-    CrydrViewBase(_assetID, 'erc20')
-  {
-    tokenName = _name;
-    tokenSymbol = _symbol;
-    tokenDecimals = _decimals;
-  }
-
+contract CrydrViewERC20 is PausableInterface,
+                           CrydrViewBaseInterface,
+                           CrydrViewERC20Interface {
 
   /* ERC20Interface */
-
-  function name() external constant returns (string) {
-    return tokenName;
-  }
-
-  function symbol() external constant returns (string) {
-    return tokenSymbol;
-  }
-
-  function decimals() external constant returns (uint8) {
-    return tokenDecimals;
-  }
-
 
   function transfer(
     address _to,
@@ -64,16 +25,16 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(2 * 32)
     returns (bool)
   {
-    CrydrControllerERC20Interface(crydrController).transfer(msg.sender, _to, _value);
+    CrydrControllerERC20Interface(getCrydrController()).transfer(msg.sender, _to, _value);
     return true;
   }
 
   function totalSupply() external constant returns (uint256) {
-    return CrydrControllerERC20Interface(crydrController).getTotalSupply();
+    return CrydrControllerERC20Interface(getCrydrController()).getTotalSupply();
   }
 
   function balanceOf(address _owner) external constant onlyPayloadSize(1 * 32) returns (uint256) {
-    return CrydrControllerERC20Interface(crydrController).getBalance(_owner);
+    return CrydrControllerERC20Interface(getCrydrController()).getBalance(_owner);
   }
 
 
@@ -86,7 +47,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(2 * 32)
     returns (bool)
   {
-    CrydrControllerERC20Interface(crydrController).approve(msg.sender, _spender, _value);
+    CrydrControllerERC20Interface(getCrydrController()).approve(msg.sender, _spender, _value);
     return true;
   }
 
@@ -100,7 +61,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(3 * 32)
     returns (bool)
   {
-    CrydrControllerERC20Interface(crydrController).transferFrom(msg.sender, _from, _to, _value);
+    CrydrControllerERC20Interface(getCrydrController()).transferFrom(msg.sender, _from, _to, _value);
     return true;
   }
 
@@ -113,85 +74,7 @@ contract CrydrViewERC20 is CrydrViewBase,
     onlyPayloadSize(2 * 32)
     returns (uint256)
   {
-    return CrydrControllerERC20Interface(crydrController).getAllowance(_owner, _spender);
-  }
-
-
-  /* ERC20ConfigurableInterface */
-
-  function setName(string _name) external onlyAllowedManager('set_crydr_name') {
-    tokenName = _name;
-  }
-
-  function setSymbol(string _symbol) external onlyAllowedManager('set_crydr_symbol') {
-    tokenSymbol = _symbol;
-  }
-
-  function setDecimals(uint8 _decimals) external onlyAllowedManager('set_crydr_decimals') {
-    tokenDecimals = _decimals;
-  }
-
-
-  /* ERC20HashedInterface */
-
-  function getNameHash() external constant returns (bytes32){
-    return keccak256(tokenName);
-  }
-
-  function getSymbolHash() external constant returns (bytes32){
-    return keccak256(tokenSymbol);
-  }
-
-
-  /* ERC20LoggableInterface */
-
-  function emitTransferEvent(
-    address _from,
-    address _to,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    Transfer(_from, _to, _value);
-  }
-
-  function emitApprovalEvent(
-    address _owner,
-    address _spender,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    Approval(_owner, _spender, _value);
-  }
-
-
-  /* ERC20MintableInterface */
-
-  function emitMintEvent(
-    address _owner,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    MintEvent(_owner, _value);
-  }
-
-  function emitBurnEvent(
-    address _owner,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    BurnEvent(_owner, _value);
+    return CrydrControllerERC20Interface(getCrydrController()).getAllowance(_owner, _spender);
   }
 
 

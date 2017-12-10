@@ -4,10 +4,10 @@ pragma solidity ^0.4.18;
 
 
 /**
- * @title ERC20MintableInterface
+ * @title CrydrViewERC20MintableInterface
  * @dev Contract is able to create Mint/Burn events with the cal from controller
  */
-contract ERC20MintableInterface {
+contract CrydrViewERC20MintableInterface {
   event MintEvent(address indexed owner, uint256 value);
   event BurnEvent(address indexed owner, uint256 value);
 

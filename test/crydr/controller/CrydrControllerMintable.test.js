@@ -1,9 +1,10 @@
 const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
 const CrydrStorage                = global.artifacts.require('CrydrStorage.sol');
-const CrydrViewERC20              = global.artifacts.require('CrydrViewERC20.sol');
+const JCashCrydrViewERC20         = global.artifacts.require('JCashCrydrViewERC20.sol');
 
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const CrydrStorageBaseJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
+const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerBaseInterface');
 const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
 
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
@@ -15,7 +16,7 @@ const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 global.contract('CrydrControllerMintable', (accounts) => {
   let crydrControllerMintableInstance;
   let crydrStorageInstance;
-  let crydrViewBaseInstance;
+  let jcashCrydrViewERC20Instance;
 
   DeployConfig.setAccounts(accounts);
   const { owner, managerPause, managerMint, testInvestor1 } = DeployConfig.getAccounts();
@@ -29,16 +30,17 @@ global.contract('CrydrControllerMintable', (accounts) => {
   global.beforeEach(async () => {
     crydrControllerMintableInstance = await CrydrControllerMintableMock.new(assetID, { from: owner });
     crydrStorageInstance = await CrydrStorage.new(assetID, { from: owner });
-    crydrViewBaseInstance = await CrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals, { from: owner });
+    jcashCrydrViewERC20Instance = await JCashCrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals,
+                                                                { from: owner });
 
     global.console.log('\tContracts deployed for tests CrydrControllerMintable:');
     global.console.log(`\t\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
     global.console.log(`\t\tcrydrStorageInstance: ${crydrStorageInstance.address}`);
-    global.console.log(`\t\tcrydrViewBaseInstance: ${crydrViewBaseInstance.address}`);
+    global.console.log(`\t\tjcashCrydrViewERC20Instance: ${jcashCrydrViewERC20Instance.address}`);
 
     await CrydrInit.configureCrydr(crydrStorageInstance.address,
                                    crydrControllerMintableInstance.address,
-                                   crydrViewBaseInstance.address,
+                                   jcashCrydrViewERC20Instance.address,
                                    viewStandard);
   });
 
@@ -51,20 +53,22 @@ global.contract('CrydrControllerMintable', (accounts) => {
     global.assert.notStrictEqual(crydrStorageInstance.address,
                                  '0x0000000000000000000000000000000000000000');
 
-    global.console.log(`\tcrydrViewBaseInstance: ${crydrViewBaseInstance.address}`);
-    global.assert.notStrictEqual(crydrViewBaseInstance.address,
+    global.console.log(`\tjcashCrydrViewERC20Instance: ${jcashCrydrViewERC20Instance.address}`);
+    global.assert.notStrictEqual(jcashCrydrViewERC20Instance.address,
                                  '0x0000000000000000000000000000000000000000');
 
-    const isPaused = await crydrControllerMintableInstance.getPaused.call();
+    const isPaused = await PausableJSAPI.getPaused(crydrControllerMintableInstance.address);
     global.assert.strictEqual(isPaused, true,
                               'Just configured crydrControllerMintable contract must be paused');
 
-    const storageAddress = await crydrControllerMintableInstance.getCrydrStorage.call();
+    const storageAddress = await CrydrControllerBaseJSAPI
+      .getCrydrStorageAddress(crydrControllerMintableInstance.address);
     global.assert.strictEqual(storageAddress, crydrStorageInstance.address,
                               'Just configured crydrControllerMintable should have initialized crydrStorage address');
 
-    const viewAddress = await crydrControllerMintableInstance.getCrydrView.call(viewStandard);
-    global.assert.strictEqual(viewAddress, crydrViewBaseInstance.address,
+    const viewAddress = await CrydrControllerBaseJSAPI
+      .getCrydrViewAddress(crydrControllerMintableInstance.address, viewStandard);
+    global.assert.strictEqual(viewAddress, jcashCrydrViewERC20Instance.address,
                               'Expected that crydrView is set');
 
     const initialBalance = await crydrStorageInstance.getBalance.call(testInvestor1);
@@ -74,7 +78,7 @@ global.contract('CrydrControllerMintable', (accounts) => {
 
     await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
     await PausableJSAPI.unpauseContract(crydrControllerMintableInstance.address, managerPause);
-    await PausableJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
 
 
     await CrydrControllerMintableJSAPI.mint(crydrControllerMintableInstance.address, managerMint,
@@ -99,8 +103,8 @@ global.contract('CrydrControllerMintable', (accounts) => {
     global.assert.notStrictEqual(crydrStorageInstance.address,
                                  '0x0000000000000000000000000000000000000000');
 
-    global.console.log(`\tcrydrViewBaseInstance: ${crydrViewBaseInstance.address}`);
-    global.assert.notStrictEqual(crydrViewBaseInstance.address,
+    global.console.log(`\tjcashCrydrViewERC20Instance: ${jcashCrydrViewERC20Instance.address}`);
+    global.assert.notStrictEqual(jcashCrydrViewERC20Instance.address,
                                  '0x0000000000000000000000000000000000000000');
 
     const isPaused = await crydrControllerMintableInstance.getPaused.call();

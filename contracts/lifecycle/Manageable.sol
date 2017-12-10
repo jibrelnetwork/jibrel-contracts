@@ -3,31 +3,17 @@
 pragma solidity ^0.4.18;
 
 
-import './Ownable.sol';
+import './OwnableInterface.sol';
+import './ManageableInterface.sol';
 
 
-/**
- * @title Manageable
- * @dev Contract that allows to grant permissions to any address
- * @dev In real life we are no able to perform all actions with just one Ethereum address
- * @dev because risks are too high.
- * @dev Instead owner delegates rights to manage an contract to the different addresses and
- * @dev stay able to revoke permissions at any time.
- */
-contract Manageable is Ownable {
+contract Manageable is OwnableInterface,
+                       ManageableInterface {
 
   /* Storage */
 
   mapping (address => bool) managerEnabled;  // hard switch for a manager - on/off
   mapping (address => mapping (string => bool)) managerPermissions;  // detailed info about manager`s permissions
-
-
-  /* Events */
-
-  event ManagerEnabledEvent(address indexed manager);
-  event ManagerDisabledEvent(address indexed manager);
-  event ManagerPermissionGrantedEvent(address indexed manager, string permission);
-  event ManagerPermissionRevokedEvent(address indexed manager, string permission);
 
 
   /* Configure contract */
@@ -156,17 +142,6 @@ contract Manageable is Ownable {
    */
   modifier onlyValidPermissionName(string _permissionName) {
     require(bytes(_permissionName).length != 0);
-    _;
-  }
-
-
-  /* Outcome */
-
-  /**
-   * @dev Modifier to use in derived contracts
-   */
-  modifier onlyAllowedManager(string _permissionName) {
-    require(isManagerAllowed(msg.sender, _permissionName) == true);
     _;
   }
 }

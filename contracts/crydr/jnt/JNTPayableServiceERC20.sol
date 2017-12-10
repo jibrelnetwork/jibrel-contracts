@@ -3,13 +3,14 @@
 pragma solidity ^0.4.18;
 
 
-import '../controller/CrydrControllerBaseInterface.sol';
-import '../view/ERC20Interface.sol';
-import './JNTPayableService.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
 import './JNTPayableServiceERC20Interface.sol';
 
 
-contract JNTPayableServiceERC20 is JNTPayableService, JNTPayableServiceERC20Interface {
+contract JNTPayableServiceERC20 is ManageableInterface,
+                                   PausableInterface,
+                                   JNTPayableServiceERC20Interface {
 
   /* Storage */
 

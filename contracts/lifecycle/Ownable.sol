@@ -2,13 +2,15 @@
 
 pragma solidity ^0.4.18;
 
+import './OwnableInterface.sol';
+
 
 /**
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
  */
-contract Ownable {
+contract Ownable is OwnableInterface {
 
   /* Storage */
 
@@ -31,15 +33,6 @@ contract Ownable {
     owner = msg.sender;
 
     OwnerAssignedEvent(owner);
-  }
-
-
-  /**
-   * @dev Throws if called by any account other than the current owner.
-   */
-  modifier onlyOwner() {
-    require (msg.sender == owner);
-    _;
   }
 
 

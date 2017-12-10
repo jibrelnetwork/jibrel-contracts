@@ -1,4 +1,4 @@
-const Manageable = global.artifacts.require('Manageable.sol');
+const ManageableMock = global.artifacts.require('ManageableMock.sol');
 
 const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
 
@@ -14,8 +14,8 @@ global.contract('Manageable', (accounts) => {
   const { owner, managerGeneral } = DeployConfig.getAccounts();
 
   global.beforeEach(async () => {
-    const testContract = await Manageable.new({ from: owner });
-    manageableInstanceAddress = testContract.address;
+    const manageableInstance = await ManageableMock.new({ from: owner });
+    manageableInstanceAddress = manageableInstance.address;
   });
 
   global.it('should test that contract works as expected', async () => {

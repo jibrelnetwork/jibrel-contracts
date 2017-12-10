@@ -1,5 +1,5 @@
-const Pausable = global.artifacts.require('Pausable.sol');
-const PausableMock = global.artifacts.require('PausableMock.sol');
+const PausableMockV1 = global.artifacts.require('PausableMockV1.sol');
+const PausableMockV2 = global.artifacts.require('PausableMockV2.sol');
 
 const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
 const PausableJSAPI   = require('../../jsroutines/jsapi/lifecycle/Pausable');
@@ -13,14 +13,14 @@ global.contract('Pausable', (accounts) => {
   global.it('should test that contract is pausable and unpausable', async () => {
     DeployConfig.setAccounts(accounts);
 
-    await PausableTestSuite.testContractIsPausable(Pausable, []);
+    await PausableTestSuite.testContractIsPausable(PausableMockV1, []);
   });
 
   global.it('should test that modifiers work as expected', async () => {
     DeployConfig.setAccounts(accounts);
     const { owner, managerPause } = DeployConfig.getAccounts();
 
-    const pausableInstance = await PausableMock.new({ from: owner });
+    const pausableInstance = await PausableMockV2.new({ from: owner });
     const pausableInstanceAddress = pausableInstance.address;
 
     await PausableJSAPI.grantManagerPermissions(pausableInstanceAddress, owner, managerPause);

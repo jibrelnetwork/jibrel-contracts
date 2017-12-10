@@ -3,35 +3,28 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/Pausable.sol';
-import '../../util/CommonModifiers.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../../feature/assetid/AssetID.sol';
-import '../storage/CrydrStorageBaseInterface.sol';
-import '../view/CrydrViewBaseInterface.sol';
+import '../../util/CommonModifiersInterface.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
 import './CrydrControllerBaseInterface.sol';
+
+import '../view/CrydrViewBaseInterface.sol';
 
 
 /**
  * @title CrydrControllerBase
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBase is CrydrControllerBaseInterface,
-                                Pausable,
-                                CommonModifiers,
-                                BytecodeExecutor,
-                                AssetID {
+contract CrydrControllerBase is CommonModifiersInterface,
+                                ManageableInterface,
+                                PausableInterface,
+                                CrydrControllerBaseInterface {
 
   /* Storage */
 
-  CrydrStorageBaseInterface crydrStorage;
+  address crydrStorage;
   mapping (string => address) crydrViewsAddresses;
   mapping (address => bool) isRegisteredView;
-
-
-  /* Constructor */
-
-  function CrydrControllerBase(string _assetID) AssetID(_assetID) public {}
 
 
   /* CrydrControllerBaseInterface */
@@ -47,11 +40,11 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     require(_crydrStorage != address(this));
     require(_crydrStorage != address(crydrStorage));
 
-    crydrStorage = CrydrStorageBaseInterface(_crydrStorage);
+    crydrStorage = _crydrStorage;
     CrydrStorageChangedEvent(_crydrStorage);
   }
 
-  function getCrydrStorage() public constant returns (address) {
+  function getCrydrStorageAddress() public constant returns (address) {
     return address(crydrStorage);
   }
 
@@ -97,7 +90,7 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     CrydrViewRemovedEvent(removedView, _viewApiStandardName);
   }
 
-  function getCrydrView(
+  function getCrydrViewAddress(
     string _viewApiStandardName
   )
     public
@@ -110,16 +103,26 @@ contract CrydrControllerBase is CrydrControllerBaseInterface,
     return crydrViewsAddresses[_viewApiStandardName];
   }
 
+  function isCrydrViewAddress(
+    address _crydrViewAddress
+  )
+    public
+    constant
+    returns (bool)
+  {
+    require(_crydrViewAddress != address(0x0));
 
-  /* Helpers */
-
-  modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {
-    require(bytes(_viewApiStandard).length > 0);
-    _;
+    return isRegisteredView[_crydrViewAddress];
   }
 
-  modifier onlyCrydrView() {
-    require(isRegisteredView[msg.sender] == true);
-    _;
+  function isCrydrViewRegistered(
+    string _viewApiStandardName
+  )
+    public
+    constant
+    onlyValidCrydrViewStandardName(_viewApiStandardName)
+    returns (bool)
+  {
+    return (crydrViewsAddresses[_viewApiStandardName] != address(0x0));
   }
 }

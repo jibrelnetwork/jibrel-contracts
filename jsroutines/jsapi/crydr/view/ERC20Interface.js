@@ -2,7 +2,7 @@ import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
 const Promise = require('bluebird');
 
-const ERC20Interface = global.artifacts.require('ERC20Interface.sol');
+const ERC20Interface = global.artifacts.require('CrydrViewERC20Interface.sol');
 
 
 /**

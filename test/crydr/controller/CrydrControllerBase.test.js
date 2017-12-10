@@ -1,6 +1,6 @@
-const CrydrControllerBase = global.artifacts.require('CrydrControllerBase.sol');
-const CrydrStorage        = global.artifacts.require('CrydrStorage.sol');
-const CrydrViewBase       = global.artifacts.require('CrydrViewBase.sol');
+const CrydrControllerBaseMock = global.artifacts.require('CrydrControllerBaseMock.sol');
+const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
+const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 
 const PausableJSAPI            = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerBaseInterface');
@@ -30,12 +30,12 @@ global.contract('CrydrControllerBase', (accounts) => {
   const viewStandardStub01 = 'TestViewStub01';
 
   global.beforeEach(async () => {
-    crydrControllerBaseInstance = await CrydrControllerBase.new(assetID, { from: owner });
+    crydrControllerBaseInstance = await CrydrControllerBaseMock.new(assetID, { from: owner });
     crydrStorageInstance = await CrydrStorage.new(assetID, { from: owner });
-    crydrViewBaseInstance = await CrydrViewBase.new(assetID, viewStandard, { form: owner });
+    crydrViewBaseInstance = await CrydrViewBaseMock.new(assetID, viewStandard, { form: owner });
 
     crydrStorageInstanceStub01 = await CrydrStorage.new(assetID, { from: owner });
-    crydrViewBaseInstanceStub01 = await CrydrViewBase.new(assetID, viewStandardStub01, { form: owner });
+    crydrViewBaseInstanceStub01 = await CrydrViewBaseMock.new(assetID, viewStandardStub01, { form: owner });
 
     global.console.log('\tContracts deployed for tests CrydrControllerBase:');
     global.console.log(`\t\tcrydrControllerBaseInstance: ${crydrControllerBaseInstance.address}`);
@@ -48,7 +48,7 @@ global.contract('CrydrControllerBase', (accounts) => {
   });
 
   global.it('should test that view is configurable', async () => {
-    let isPaused = await crydrControllerBaseInstance.getPaused.call();
+    let isPaused = await PausableJSAPI.getPaused(crydrControllerBaseInstance.address);
     global.assert.strictEqual(isPaused, true, 'Expected that contract is paused');
 
 
@@ -71,7 +71,8 @@ global.contract('CrydrControllerBase', (accounts) => {
     await CrydrControllerBaseJSAPI.setCrydrView(crydrControllerBaseInstance.address, managerGeneral,
                                                 crydrViewBaseInstance.address, viewStandard);
 
-    let crydrViewAddressReceived = await crydrControllerBaseInstance.getCrydrView.call(viewStandard);
+    let crydrViewAddressReceived = await CrydrControllerBaseJSAPI
+      .getCrydrViewAddress(crydrControllerBaseInstance.address, viewStandard);
     global.assert.strictEqual(crydrViewAddressReceived, crydrViewBaseInstance.address);
 
 
@@ -103,7 +104,7 @@ global.contract('CrydrControllerBase', (accounts) => {
 
     await PausableJSAPI.unpauseContract(crydrControllerBaseInstance.address, managerPause);
 
-    isPaused = await crydrControllerBaseInstance.getPaused.call();
+    isPaused = await PausableJSAPI.getPaused(crydrControllerBaseInstance.address);
     global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
 
@@ -118,7 +119,8 @@ global.contract('CrydrControllerBase', (accounts) => {
                                               'It should no be possible to remove a view if contract is unpaused');
 
 
-    crydrViewAddressReceived = await crydrControllerBaseInstance.getCrydrView.call(viewStandard);
+    crydrViewAddressReceived = await CrydrControllerBaseJSAPI
+      .getCrydrViewAddress(crydrControllerBaseInstance.address, viewStandard);
     global.assert.strictEqual(crydrViewAddressReceived, crydrViewBaseInstance.address);
   });
 
@@ -143,7 +145,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                                    crydrStorageInstance.address);
 
     let crydrStorageAddressReceived = await CrydrControllerBaseJSAPI
-      .getCrydrStorage(crydrControllerBaseInstance.address);
+      .getCrydrStorageAddress(crydrControllerBaseInstance.address);
     global.assert.strictEqual(crydrStorageAddressReceived, crydrStorageInstance.address);
 
 
@@ -165,7 +167,8 @@ global.contract('CrydrControllerBase', (accounts) => {
                                               'It should no be possible to set storage if contract is unpaused');
 
 
-    crydrStorageAddressReceived = await crydrControllerBaseInstance.getCrydrStorage.call();
+    crydrStorageAddressReceived = await CrydrControllerBaseJSAPI
+      .getCrydrStorageAddress(crydrControllerBaseInstance.address);
     global.assert.strictEqual(crydrStorageAddressReceived, crydrStorageInstance.address);
   });
 

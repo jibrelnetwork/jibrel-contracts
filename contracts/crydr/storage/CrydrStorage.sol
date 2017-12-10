@@ -4,31 +4,33 @@ pragma solidity ^0.4.18;
 
 
 import '../../third-party/zeppelin-solidity/SafeMath.sol';
-import '../../lifecycle/Pausable.sol';
 import '../../util/CommonModifiers.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../../feature/assetid/AssetIDInterface.sol';
 import '../../feature/assetid/AssetID.sol';
+import '../../lifecycle/Ownable.sol';
+import '../../lifecycle/Manageable.sol';
+import '../../lifecycle/Pausable.sol';
+import '../../feature/bytecode/BytecodeExecutor.sol';
 import './CrydrStorageBaseInterface.sol';
 import './CrydrStorageERC20Interface.sol';
-import '../controller/CrydrControllerBaseInterface.sol';
 
 
 /**
  * @title CrydrStorage
  * @dev Implementation of a contract that manages data of an CryDR
  */
-contract CrydrStorage is CrydrStorageBaseInterface,
-                         CrydrStorageERC20Interface,
-                         Pausable,
+contract CrydrStorage is SafeMath,
                          CommonModifiers,
-                         BytecodeExecutor,
                          AssetID,
-                         SafeMath {
+                         Ownable,
+                         Manageable,
+                         Pausable,
+                         BytecodeExecutor,
+                         CrydrStorageBaseInterface,
+                         CrydrStorageERC20Interface {
 
   /* Storage */
 
-  CrydrControllerBaseInterface crydrController;
+  address crydrController;
   mapping (address => uint256) balances;
   uint256 totalSupply;
   mapping (address => mapping (address => uint256)) allowed;
@@ -58,7 +60,7 @@ contract CrydrStorage is CrydrStorageBaseInterface,
     require(_crydrController != address(crydrController));
     require(_crydrController != address(this));
 
-    crydrController = CrydrControllerBaseInterface(_crydrController);
+    crydrController = _crydrController;
     CrydrControllerChangedEvent(_crydrController);
   }
 
@@ -317,10 +319,10 @@ contract CrydrStorage is CrydrStorageBaseInterface,
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract() public {
-    require(isContract(address(crydrController)) == true);
-    require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
+    require(isContract(crydrController) == true);
+    require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
-    Pausable.unpauseContract();
+    super.unpauseContract();
   }
 
 

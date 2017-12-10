@@ -3,15 +3,15 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/Pausable.sol';
-import '../../util/CommonModifiers.sol';
+import '../../lifecycle/PausableInterface.sol';
+import '../../util/CommonModifiersInterface.sol';
 import '../../registry/investor/InvestorRegistryInterface.sol';
 import './CrydrControllerERC20ValidatableInterface.sol';
 
 
-contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInterface,
-                                            Pausable,
-                                            CommonModifiers {
+contract CrydrControllerERC20Validatable is CommonModifiersInterface,
+                                            PausableInterface,
+                                            CrydrControllerERC20ValidatableInterface {
 
   /* Storage */
 
@@ -49,6 +49,6 @@ contract CrydrControllerERC20Validatable is CrydrControllerERC20ValidatableInter
     public
     onlyContractAddress(address(investorsRegistry))
   {
-    Pausable.unpauseContract();
+    super.unpauseContract();
   }
 }

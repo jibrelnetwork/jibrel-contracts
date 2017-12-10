@@ -3,9 +3,13 @@
 pragma solidity ^0.4.18;
 
 
-import './CrydrControllerBase.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
+import './CrydrControllerBaseInterface.sol';
 import './CrydrControllerMintableInterface.sol';
-import '../view/ERC20MintableInterface.sol';
+
+import '../storage/CrydrStorageBaseInterface.sol';
+import '../view/CrydrViewERC20MintableInterface.sol';
 
 
 /**
@@ -14,7 +18,10 @@ import '../view/ERC20MintableInterface.sol';
  * @dev We do not use events Transfer(0x0, owner, amount) for minting as described in the EIP20
  * @dev because that are not transfers
  */
-contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintableInterface {
+contract CrydrControllerMintable is ManageableInterface,
+                                    PausableInterface,
+                                    CrydrControllerBaseInterface,
+                                    CrydrControllerMintableInterface {
 
   /* minting/burning */
 
@@ -27,10 +34,10 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   {
     // input parameters checked by the storage
 
-    crydrStorage.increaseBalance(_account, _value);
+    CrydrStorageBaseInterface(getCrydrStorageAddress()).increaseBalance(_account, _value);
 
-    if (crydrViewsAddresses['erc20'] != 0x0) {
-      ERC20MintableInterface(crydrViewsAddresses['erc20']).emitMintEvent(_account, _value);
+    if (isCrydrViewRegistered('erc20') == true) {
+      CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitMintEvent(_account, _value);
     }
   }
 
@@ -43,10 +50,10 @@ contract CrydrControllerMintable is CrydrControllerBase, CrydrControllerMintable
   {
     // input parameters checked by the storage
 
-    crydrStorage.decreaseBalance(_account, _value);
+    CrydrStorageBaseInterface(getCrydrStorageAddress()).decreaseBalance(_account, _value);
 
-    if (crydrViewsAddresses['erc20'] != 0x0) {
-      ERC20MintableInterface(crydrViewsAddresses['erc20']).emitBurnEvent(_account, _value);
+    if (isCrydrViewRegistered('erc20') == true) {
+      CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitBurnEvent(_account, _value);
     }
   }
 }

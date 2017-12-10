@@ -5,7 +5,7 @@ pragma solidity ^0.4.18;
 
 import '../feature/assetid/AssetID.sol';
 import '../../contracts/crydr/controller/CrydrControllerERC20Interface.sol';
-import '../../contracts/crydr/view/ERC20LoggableInterface.sol';
+import '../../contracts/crydr/view/CrydrViewERC20LoggableInterface.sol';
 
 
 /**
@@ -14,7 +14,7 @@ import '../../contracts/crydr/view/ERC20LoggableInterface.sol';
  */
 contract CrydrControllerERC20Stub is AssetID,
                                      CrydrControllerERC20Interface,
-                                     ERC20LoggableInterface {
+                                     CrydrViewERC20LoggableInterface {
 
   /* Storage */
 
@@ -87,15 +87,15 @@ contract CrydrControllerERC20Stub is AssetID,
   }
 
 
-  /* ERC20LoggableInterface */
+  /* CrydrViewERC20LoggableInterface */
 
   function emitTransferEvent(address _from, address _to, uint256 _value) external
   {
-    ERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
+    CrydrViewERC20LoggableInterface(crydrView).emitTransferEvent(_from, _to, _value);
   }
 
   function emitApprovalEvent(address _owner, address _spender, uint256 _value) external
   {
-    ERC20LoggableInterface(crydrView).emitApprovalEvent(_owner, _spender, _value);
+    CrydrViewERC20LoggableInterface(crydrView).emitApprovalEvent(_owner, _spender, _value);
   }
 }

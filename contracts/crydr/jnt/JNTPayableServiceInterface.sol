@@ -27,5 +27,6 @@ contract JNTPayableServiceInterface {
 
   /* Actions */
 
+  function chargeJNTForService(address _from, address _to, uint256 _value) internal;
   function withdrawJnt() external;
 }

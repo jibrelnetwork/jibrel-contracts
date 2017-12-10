@@ -1,11 +1,13 @@
 pragma solidity ^0.4.18;
 
+import './SafeMathInterface.sol';
+
 
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that throw on error
  */
-contract SafeMath {
+contract SafeMath is SafeMathInterface {
   function safeMul(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a * b;
     assert(a == 0 || c / a == b);

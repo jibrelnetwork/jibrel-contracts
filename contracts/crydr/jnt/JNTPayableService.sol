@@ -3,15 +3,20 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/Pausable.sol';
-import '../../util/CommonModifiers.sol';
-import '../controller/CrydrControllerBaseInterface.sol';
-import '../view/ERC20Interface.sol';
-import '../jnt/JNTControllerInterface.sol';
+import '../../util/CommonModifiersInterface.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
 import './JNTPayableServiceInterface.sol';
 
+import '../view/CrydrViewERC20Interface.sol';
+import '../controller/CrydrControllerBaseInterface.sol';
+import '../jnt/JNTControllerInterface.sol';
 
-contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifiers {
+
+contract JNTPayableService is CommonModifiersInterface,
+                              ManageableInterface,
+                              PausableInterface,
+                              JNTPayableServiceInterface {
 
   /* Storage */
 
@@ -63,7 +68,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
 
   /* Actions */
 
-  function chargeJNT(address _from, address _to, uint256 _value) internal whenContractNotPaused {
+  function chargeJNTForService(address _from, address _to, uint256 _value) internal whenContractNotPaused {
     require(_from != address(0x0));
     require(_to != address(0x0));
     require(_from != _to);
@@ -84,8 +89,8 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
   {
     var _jntControllerAddress = address(jntController);
     var _crydrController = CrydrControllerBaseInterface(_jntControllerAddress);
-    var _jntERC20ViewAddress = _crydrController.getCrydrView('erc20');
-    var _jntERC20View = ERC20Interface(_jntERC20ViewAddress);
+    var _jntERC20ViewAddress = _crydrController.getCrydrViewAddress('erc20');
+    var _jntERC20View = CrydrViewERC20Interface(_jntERC20ViewAddress);
     _jntERC20View.transfer(jntBeneficiary, _jntERC20View.balanceOf(this));
   }
 
@@ -100,7 +105,7 @@ contract JNTPayableService is JNTPayableServiceInterface, Pausable, CommonModifi
     onlyContractAddress(jntController)
     onlyValidJntBeneficiary(jntBeneficiary)
   {
-    Pausable.unpauseContract();
+    super.unpauseContract();
   }
 
 

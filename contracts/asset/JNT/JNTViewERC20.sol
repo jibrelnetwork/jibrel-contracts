@@ -2,11 +2,9 @@
 
 pragma solidity ^0.4.18;
 
+import '../../crydr/asset/JCashCrydrViewERC20.sol';
 
-import '../../crydr/view/CrydrViewERC20.sol';
 
-
-contract JNTViewERC20 is CrydrViewERC20 {
-
-  function JNTViewERC20() public CrydrViewERC20('JNT', 'Jibrel Network Token', 'JNT', 18) {}
+contract JNTViewERC20 is JCashCrydrViewERC20 {
+  function JNTViewERC20() public JCashCrydrViewERC20('JNT', 'Jibrel Network Token', 'JNT', 18) {}
 }

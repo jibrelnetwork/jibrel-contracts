@@ -2,12 +2,14 @@
 
 pragma solidity ^0.4.18;
 
+import './CommonModifiersInterface.sol';
+
 
 /**
  * @title CommonModifiers
  * @dev Base contract which contains common checks.
  */
-contract CommonModifiers {
+contract CommonModifiers is CommonModifiersInterface {
 
   /* Helpers */
 
@@ -23,13 +25,5 @@ contract CommonModifiers {
       length := extcodesize(_targetAddress)
     }
     return (length > 0);
-  }
-
-  /**
-   * @dev modifier to allow actions only when the _targetAddress is a contract.
-   */
-  modifier onlyContractAddress(address _targetAddress) {
-    require(isContract(_targetAddress) == true);
-    _;
   }
 }

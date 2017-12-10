@@ -3,19 +3,18 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/Pausable.sol';
-import '../../util/CommonModifiers.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../../feature/assetid/AssetIDInterface.sol';
+import '../../util/CommonModifiersInterface.sol';
 import '../../feature/assetid/AssetID.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
 import './CrydrViewBaseInterface.sol';
 
 
-contract CrydrViewBase is CrydrViewBaseInterface,
-                          Pausable,
-                          CommonModifiers,
-                          BytecodeExecutor,
-                          AssetID {
+contract CrydrViewBase is CommonModifiersInterface,
+                          AssetIDInterface,
+                          ManageableInterface,
+                          PausableInterface,
+                          CrydrViewBaseInterface {
 
   /* Storage */
 
@@ -25,15 +24,10 @@ contract CrydrViewBase is CrydrViewBaseInterface,
 
   /* Constructor */
 
-  function CrydrViewBase(
-    string _assetID,
-    string _standardName
-  )
-    public
-    AssetID(_assetID)
-    onlyValidStandardName(_standardName)
-  {
-    crydrViewStandardName = _standardName;
+  function CrydrViewBase(string _crydrViewStandardName) public {
+    require(bytes(_crydrViewStandardName).length > 0);
+
+    crydrViewStandardName = _crydrViewStandardName;
   }
 
 
@@ -67,28 +61,15 @@ contract CrydrViewBase is CrydrViewBaseInterface,
   }
 
 
-  /* Pausable */
+  /* PausableInterface */
 
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
    */
   function unpauseContract() public {
     require(isContract(crydrController) == true);
-    require(AssetID.getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
+    require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
-    Pausable.unpauseContract();
-  }
-
-
-  /* Helpers */
-
-  modifier onlyValidStandardName(string _standardName) {
-    require(bytes(_standardName).length > 0);
-    _;
-  }
-
-  modifier onlyCrydrController() {
-    require(msg.sender == crydrController);
-    _;
+    super.unpauseContract();
   }
 }

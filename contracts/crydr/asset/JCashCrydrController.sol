@@ -3,28 +3,40 @@
 pragma solidity ^0.4.18;
 
 
-import '../storage/CrydrStorageBaseInterface.sol';
-import '../storage/CrydrStorageERC20Interface.sol';
-import '../view/ERC20LoggableInterface.sol';
+import '../../util/CommonModifiers.sol';
+import '../../feature/assetid/AssetID.sol';
+import '../../lifecycle/Ownable.sol';
+import '../../lifecycle/Manageable.sol';
+import '../../lifecycle/Pausable.sol';
+import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../controller/CrydrControllerBase.sol';
 import '../controller/CrydrControllerBlockable.sol';
 import '../controller/CrydrControllerMintable.sol';
 import '../controller/CrydrControllerERC20.sol';
+import '../jnt/JNTPayableService.sol';
 import '../jnt/JNTPayableServiceERC20.sol';
 
 
-contract CrydrControllerJCash is CrydrControllerBase,
+contract JCashCrydrController is CommonModifiers,
+                                 AssetID,
+                                 Ownable,
+                                 Manageable,
+                                 Pausable,
+                                 BytecodeExecutor,
+                                 CrydrControllerBase,
                                  CrydrControllerBlockable,
                                  CrydrControllerMintable,
                                  CrydrControllerERC20,
+                                 JNTPayableService,
                                  JNTPayableServiceERC20 {
 
   /* Constructor */
+  // 10^18 - assumes that JNT has decimals==18, 1JNT per operation
 
-  function CrydrControllerJCash(string _assetID)
+  function JCashCrydrController(string _assetID)
     public
-    CrydrControllerBase(_assetID)
-    JNTPayableServiceERC20(10^18, 10^18, 10^18) // assumes that JNT has decimals==18, 1JNT per operation
+    AssetID(_assetID)
+    JNTPayableServiceERC20(10^18, 10^18, 10^18)
   {}
 
 
@@ -40,7 +52,7 @@ contract CrydrControllerJCash is CrydrControllerBase,
     public
   {
     CrydrControllerERC20.transfer(_msgsender, _to, _value);
-    chargeJNT(_msgsender, jntBeneficiary, jntPriceTransfer);
+    chargeJNTForService(_msgsender, getJntBeneficiary(), getJntPriceForTransfer());
   }
 
   function approve(
@@ -51,7 +63,7 @@ contract CrydrControllerJCash is CrydrControllerBase,
     public
   {
     CrydrControllerERC20.approve(_msgsender, _spender, _value);
-    chargeJNT(_msgsender, jntBeneficiary, jntPriceApprove);
+    chargeJNTForService(_msgsender, getJntBeneficiary(), getJntPriceForApprove());
   }
 
   function transferFrom(
@@ -63,6 +75,6 @@ contract CrydrControllerJCash is CrydrControllerBase,
     public
   {
     CrydrControllerERC20.transferFrom(_msgsender, _from, _to, _value);
-    chargeJNT(_msgsender, jntBeneficiary, jntPriceTransferFrom);
+    chargeJNTForService(_msgsender, getJntBeneficiary(), getJntPriceForTransferFrom());
   }
 }

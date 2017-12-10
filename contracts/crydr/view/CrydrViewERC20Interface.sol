@@ -4,16 +4,12 @@ pragma solidity ^0.4.18;
 
 
 /**
- * @title ERC20Interface
+ * @title CrydrViewERC20Interface
  * @dev ERC20 interface to use in applications
  */
-contract ERC20Interface {
+contract CrydrViewERC20Interface {
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
-
-  function name() external constant returns (string);
-  function symbol() external constant returns (string);
-  function decimals() external constant returns (uint8);
 
   function transfer(address _to, uint256 _value) external returns (bool);
   function totalSupply() external constant returns (uint256);

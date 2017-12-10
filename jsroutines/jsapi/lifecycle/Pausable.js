@@ -44,7 +44,12 @@ export const pauseContract = async (contractAddress, managerAddress) => {
  * Getters
  */
 
-export const getPaused = async (contractAddress) => Pausable.at(contractAddress).getPaused.call();
+export const getPaused = async (contractAddress) => {
+  global.console.log('\tFetch whether contract is paused or not');
+  const isPaused = await Pausable.at(contractAddress).getPaused.call();
+  global.console.log(`\t\tContracts is paused: ${isPaused}`);
+  return isPaused;
+};
 
 
 /**

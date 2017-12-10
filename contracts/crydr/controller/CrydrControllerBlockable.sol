@@ -3,15 +3,20 @@
 pragma solidity ^0.4.18;
 
 
-import './CrydrControllerBase.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import './CrydrControllerBaseInterface.sol';
 import './CrydrControllerBlockableInterface.sol';
+
+import '../storage/CrydrStorageBaseInterface.sol';
 
 
 /**
  * @title CrydrControllerBlockable interface
  * @dev Implementation of a contract that allows blocking/unlocking accounts
  */
-contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockableInterface {
+contract CrydrControllerBlockable is ManageableInterface,
+                                     CrydrControllerBaseInterface,
+                                     CrydrControllerBlockableInterface {
 
 
   /* blocking/unlocking */
@@ -22,7 +27,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     public
     onlyAllowedManager('block_account')
   {
-    crydrStorage.blockAccount(_account);
+    CrydrStorageBaseInterface(getCrydrStorageAddress()).blockAccount(_account);
   }
 
   function unblockAccount(
@@ -31,7 +36,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     public
     onlyAllowedManager('unblock_account')
   {
-    crydrStorage.unblockAccount(_account);
+    CrydrStorageBaseInterface(getCrydrStorageAddress()).unblockAccount(_account);
   }
 
   function blockAccountFunds(
@@ -41,7 +46,7 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     public
     onlyAllowedManager('block_account_funds')
   {
-    crydrStorage.blockAccountFunds(_account, _value);
+    CrydrStorageBaseInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);
   }
 
   function unblockAccountFunds(
@@ -51,6 +56,6 @@ contract CrydrControllerBlockable is CrydrControllerBase, CrydrControllerBlockab
     public
     onlyAllowedManager('unblock_account_funds')
   {
-    crydrStorage.unblockAccountFunds(_account, _value);
+    CrydrStorageBaseInterface(getCrydrStorageAddress()).unblockAccountFunds(_account, _value);
   }
 }

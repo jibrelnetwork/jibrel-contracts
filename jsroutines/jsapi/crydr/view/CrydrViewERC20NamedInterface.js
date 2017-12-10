@@ -1,6 +1,6 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
-const ERC20ConfigurableInterface = global.artifacts.require('ERC20ConfigurableInterface.sol');
+const CrydrViewERC20NamedInterface = global.artifacts.require('CrydrViewERC20NamedInterface.sol');
 
 
 export const setName = async (crydrViewAddress, managerAddress,
@@ -10,7 +10,7 @@ export const setName = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tnewName - ${newName}`);
   await submitTxAndWaitConfirmation(
-    ERC20ConfigurableInterface
+    CrydrViewERC20NamedInterface
       .at(crydrViewAddress)
       .setName
       .sendTransaction,
@@ -26,7 +26,7 @@ export const setSymbol = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tnewSymbol - ${newSymbol}`);
   await submitTxAndWaitConfirmation(
-    ERC20ConfigurableInterface
+    CrydrViewERC20NamedInterface
       .at(crydrViewAddress)
       .setSymbol
       .sendTransaction,
@@ -42,7 +42,7 @@ export const setDecimals = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tnewSymbol - ${newDecimals}`);
   await submitTxAndWaitConfirmation(
-    ERC20ConfigurableInterface
+    CrydrViewERC20NamedInterface
       .at(crydrViewAddress)
       .setDecimals
       .sendTransaction,

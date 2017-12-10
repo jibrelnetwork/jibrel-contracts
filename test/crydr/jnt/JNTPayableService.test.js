@@ -1,4 +1,4 @@
-const JNTPayableService = global.artifacts.require('JNTPayableService.sol');
+const JNTPayableServiceMock = global.artifacts.require('JNTPayableServiceMock.sol');
 const JNTControllerStub = global.artifacts.require('JNTControllerStub.sol');
 
 const ManageableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Manageable');
@@ -18,15 +18,9 @@ global.contract('JNTPayableService', (accounts) => {
   DeployConfig.setAccounts(accounts);
   const { owner, managerPause, managerJNT, jntBeneficiary, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
 
-  // const manager01   = accounts[1];
-  // const manager02   = accounts[2];
-  // const manager03   = accounts[3];
-  // const manager04   = accounts[4];
-  // const manager05   = accounts[5];
-  // const beneficiary = accounts[6];
 
   global.beforeEach(async () => {
-    jntPayableServiceInstance = await JNTPayableService.new({ from: owner });
+    jntPayableServiceInstance = await JNTPayableServiceMock.new({ from: owner });
     jntControllerStubInstance01 = await JNTControllerStub.new({ from: owner });  // we need to mock it
     jntControllerStubInstance02 = await JNTControllerStub.new({ from: owner });  // we need to mock it
 

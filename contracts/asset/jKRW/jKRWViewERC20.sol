@@ -2,10 +2,9 @@
 
 pragma solidity ^0.4.18;
 
+import '../../crydr/asset/JCashCrydrViewERC20.sol';
 
-import '../../crydr/view/CrydrViewERC20.sol';
 
-
-contract jKRWViewERC20 is CrydrViewERC20 {
-  function jKRWViewERC20() public CrydrViewERC20('jKRW', 'South Korean Won', 'jKRW', 18) {}
+contract jKRWViewERC20 is JCashCrydrViewERC20 {
+  function jKRWViewERC20() public JCashCrydrViewERC20('jKRW', 'South Korean Won', 'jKRW', 18) {}
 }

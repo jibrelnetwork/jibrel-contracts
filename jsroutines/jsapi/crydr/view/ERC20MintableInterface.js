@@ -1,6 +1,6 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
-const ERC20LoggableInterface = global.artifacts.require('ERC20LoggableInterface.sol');
+const CrydrViewERC20MintableInterface = global.artifacts.require('CrydrViewERC20MintableInterface.sol');
 
 
 export const emitMintEvent = async (crydrViewAddress, managerAddress,
@@ -11,7 +11,7 @@ export const emitMintEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\t_owner - ${_owner}`);
   global.console.log(`\t\t_value - ${_value}`);
   await submitTxAndWaitConfirmation(
-    ERC20LoggableInterface
+    CrydrViewERC20MintableInterface
       .at(crydrViewAddress)
       .emitMintEvent
       .sendTransaction,
@@ -28,7 +28,7 @@ export const emitBurnEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\t_owner - ${_owner}`);
   global.console.log(`\t\t_value - ${_value}`);
   await submitTxAndWaitConfirmation(
-    ERC20LoggableInterface
+    CrydrViewERC20MintableInterface
       .at(crydrViewAddress)
       .emitBurnEvent
       .sendTransaction,
