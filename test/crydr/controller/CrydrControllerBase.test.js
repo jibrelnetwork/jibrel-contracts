@@ -1,5 +1,5 @@
 const CrydrControllerBaseMock = global.artifacts.require('CrydrControllerBaseMock.sol');
-const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 
 const PausableJSAPI            = require('../../../jsroutines/jsapi/lifecycle/Pausable');
@@ -31,10 +31,10 @@ global.contract('CrydrControllerBase', (accounts) => {
 
   global.beforeEach(async () => {
     crydrControllerBaseInstance = await CrydrControllerBaseMock.new(assetID, { from: owner });
-    crydrStorageInstance = await CrydrStorage.new(assetID, { from: owner });
+    crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: owner });
     crydrViewBaseInstance = await CrydrViewBaseMock.new(assetID, viewStandard, { form: owner });
 
-    crydrStorageInstanceStub01 = await CrydrStorage.new(assetID, { from: owner });
+    crydrStorageInstanceStub01 = await JCashCrydrStorage.new(assetID, { from: owner });
     crydrViewBaseInstanceStub01 = await CrydrViewBaseMock.new(assetID, viewStandardStub01, { form: owner });
 
     global.console.log('\tContracts deployed for tests CrydrControllerBase:');

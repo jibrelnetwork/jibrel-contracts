@@ -3,30 +3,23 @@
 pragma solidity ^0.4.18;
 
 
-import '../../third-party/zeppelin-solidity/SafeMath.sol';
-import '../../util/CommonModifiers.sol';
-import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
+import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
+import '../../util/CommonModifiersInterface.sol';
+import '../../feature/assetid/AssetIDInterface.sol';
+import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
 import './CrydrStorageBaseInterface.sol';
-import './CrydrStorageERC20Interface.sol';
 
 
 /**
- * @title CrydrStorage
- * @dev Implementation of a contract that manages data of an CryDR
+ * @title CrydrStorageBase
  */
-contract CrydrStorage is SafeMath,
-                         CommonModifiers,
-                         AssetID,
-                         Ownable,
-                         Manageable,
-                         Pausable,
-                         BytecodeExecutor,
-                         CrydrStorageBaseInterface,
-                         CrydrStorageERC20Interface {
+contract CrydrStorageBase is SafeMathInterface,
+                             CommonModifiersInterface,
+                             AssetIDInterface,
+                             ManageableInterface,
+                             PausableInterface,
+                             CrydrStorageBaseInterface {
 
   /* Storage */
 
@@ -40,7 +33,7 @@ contract CrydrStorage is SafeMath,
 
   /* Constructor */
 
-  function CrydrStorage(string _assetID) AssetID(_assetID) public {
+  function CrydrStorageBase() public {
     accountBlocks[0x0] = (0xffffffffffffffff - 1);
   }
 
@@ -52,7 +45,7 @@ contract CrydrStorage is SafeMath,
   function setCrydrController(
     address _crydrController
   )
-    external
+    public
     whenContractPaused
     onlyContractAddress(_crydrController)
     onlyAllowedManager('set_crydr_controller')
@@ -74,7 +67,7 @@ contract CrydrStorage is SafeMath,
     address _account,
     uint256 _value
   )
-    external
+    public
     whenContractNotPaused
     onlyCrydrController
   {
@@ -90,7 +83,7 @@ contract CrydrStorage is SafeMath,
     address _account,
     uint256 _value
   )
-    external
+    public
     whenContractNotPaused
     onlyCrydrController
   {
@@ -119,7 +112,7 @@ contract CrydrStorage is SafeMath,
     address _spender,
     uint256 _value
   )
-    external
+    public
     whenContractNotPaused
     onlyCrydrController
   {
@@ -137,7 +130,7 @@ contract CrydrStorage is SafeMath,
     address _spender,
     uint256 _value
   )
-    external
+    public
     whenContractNotPaused
     onlyCrydrController
   {
@@ -165,12 +158,13 @@ contract CrydrStorage is SafeMath,
     return allowed[_owner][_spender];
   }
 
+
   /* Low-level change of blocks and getters */
 
   function blockAccount(
     address _account
   )
-    external
+    public
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -182,7 +176,7 @@ contract CrydrStorage is SafeMath,
   function unblockAccount(
     address _account
   )
-    external
+    public
     whenContractNotPaused
     onlyCrydrController
   {
@@ -208,7 +202,7 @@ contract CrydrStorage is SafeMath,
     address _account,
     uint256 _value
   )
-    external
+    public
     onlyCrydrController
   {
     require(_account != address(0x0));
@@ -222,7 +216,7 @@ contract CrydrStorage is SafeMath,
     address _account,
     uint256 _value
   )
-    external
+    public
     whenContractNotPaused
     onlyCrydrController
   {
@@ -245,75 +239,8 @@ contract CrydrStorage is SafeMath,
     return accountBlockedFunds[_account];
   }
 
-  /* CrydrStorageERC20Interface */
 
-  /* ERC20 optimization. _msgsender - account that invoked CrydrView */
-
-  function transfer(
-    address _msgsender,
-    address _to,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    require(_msgsender != address(0x0));
-    require(_to != address(0x0));
-    require(_msgsender != _to);
-    require(_value > 0);
-    require(getAccountBlocks(_msgsender) == 0);
-    require(safeSub(balances[_msgsender], _value) >= getAccountBlockedFunds(_msgsender));
-
-    balances[_msgsender] = safeSub(balances[_msgsender], _value);
-    balances[_to] = safeAdd(balances[_to], _value);
-    CrydrTransferredEvent(_msgsender, _to, _value);
-  }
-
-  function transferFrom(
-    address _msgsender,
-    address _from,
-    address _to,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    require(_msgsender != address(0x0));
-    require(_from != address(0x0));
-    require(_to != address(0x0));
-    require(_from != _to);
-    require(_value > 0);
-    require(getAccountBlocks(_from) == 0);
-    require(safeSub(balances[_from], _value) >= getAccountBlockedFunds(_msgsender));
-
-    allowed[_from][_msgsender] = safeSub(allowed[_from][_msgsender], _value);
-    balances[_from] = safeSub(balances[_from], _value);
-    balances[_to] = safeAdd(balances[_to], _value);
-    CrydrTransferredFromEvent(_msgsender, _from, _to, _value);
-  }
-
-  function approve(
-    address _msgsender,
-    address _spender,
-    uint256 _value
-  )
-    external
-    whenContractNotPaused
-    onlyCrydrController
-  {
-    require(_msgsender != address(0x0));
-    require(_spender != address(0x0));
-    require(_msgsender != _spender);
-    require(_value > 0);
-
-    allowed[_msgsender][_spender] = _value;
-    CrydrSpendingApprovedEvent(_msgsender, _spender, _value);
-  }
-
-
-  /* Pausable */
+  /* PausableInterface */
 
   /**
    * @dev Override method to ensure that contract properly configured before it is unpaused
@@ -329,8 +256,8 @@ contract CrydrStorage is SafeMath,
   /* Helpers */
 
   modifier onlyCrydrController {
-    require (crydrController != address(0x0));
-    require (msg.sender == address(crydrController));
+    require (msg.sender != address(0x0));
+    require (msg.sender == crydrController);
     _;
   }
 }

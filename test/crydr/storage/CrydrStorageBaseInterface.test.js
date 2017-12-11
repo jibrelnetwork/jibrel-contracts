@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js');
 
-const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
 
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
@@ -29,7 +29,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
    */
 
   global.beforeEach(async () => {
-    crydrStorageInstance = await CrydrStorage.new('jXYZ', { from: owner });
+    crydrStorageInstance = await JCashCrydrStorage.new('jXYZ', { from: owner });
 
     const crydrController01Received = await crydrStorageInstance.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received,

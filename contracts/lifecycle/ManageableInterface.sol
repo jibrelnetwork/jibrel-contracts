@@ -13,16 +13,6 @@ pragma solidity ^0.4.18;
  */
 contract ManageableInterface {
 
-  /* Events */
-
-  event ManagerEnabledEvent(address indexed manager);
-  event ManagerDisabledEvent(address indexed manager);
-  event ManagerPermissionGrantedEvent(address indexed manager, string permission);
-  event ManagerPermissionRevokedEvent(address indexed manager, string permission);
-
-
-  /* Funcs */
-
   /**
    * @dev Function to check if the manager can perform the action or not
    * @param _manager        address Manager`s address

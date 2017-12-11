@@ -1,6 +1,6 @@
 const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
-const CrydrStorage                = global.artifacts.require('CrydrStorage.sol');
-const JCashCrydrViewERC20         = global.artifacts.require('JCashCrydrViewERC20.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
+const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
 const CrydrStorageBaseJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
@@ -29,7 +29,7 @@ global.contract('CrydrControllerMintable', (accounts) => {
 
   global.beforeEach(async () => {
     crydrControllerMintableInstance = await CrydrControllerMintableMock.new(assetID, { from: owner });
-    crydrStorageInstance = await CrydrStorage.new(assetID, { from: owner });
+    crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: owner });
     jcashCrydrViewERC20Instance = await JCashCrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals,
                                                                 { from: owner });
 

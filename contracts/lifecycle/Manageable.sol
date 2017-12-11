@@ -15,6 +15,13 @@ contract Manageable is OwnableInterface,
   mapping (address => bool) managerEnabled;  // hard switch for a manager - on/off
   mapping (address => mapping (string => bool)) managerPermissions;  // detailed info about manager`s permissions
 
+  /* Events */
+
+  event ManagerEnabledEvent(address indexed manager);
+  event ManagerDisabledEvent(address indexed manager);
+  event ManagerPermissionGrantedEvent(address indexed manager, string permission);
+  event ManagerPermissionRevokedEvent(address indexed manager, string permission);
+
 
   /* Configure contract */
 

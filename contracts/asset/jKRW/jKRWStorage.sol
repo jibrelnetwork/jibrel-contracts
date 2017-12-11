@@ -2,10 +2,9 @@
 
 pragma solidity ^0.4.18;
 
+import '../../crydr/asset/JCashCrydrStorage.sol';
 
-import '../../crydr/storage/CrydrStorage.sol';
 
-
-contract jKRWStorage is CrydrStorage {
-  function jKRWStorage() public CrydrStorage('jKRW') {}
+contract jKRWStorage is JCashCrydrStorage {
+  function jKRWStorage() public JCashCrydrStorage('jKRW') {}
 }

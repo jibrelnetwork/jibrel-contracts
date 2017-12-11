@@ -23,8 +23,20 @@ contract PausableInterface {
 
 
   /**
-   * Funcs
+   * @dev called by the manager to pause, triggers stopped state
    */
+  function pauseContract() public;
+
+  /**
+   * @dev called by the manager to unpause, returns to normal state
+   */
+  function unpauseContract() public;
+
+  /**
+   * @dev The getter for "paused" contract variable
+   */
+  function getPaused() public constant returns (bool);
+
 
   /**
    * @dev modifier to allow actions only when the contract IS paused
@@ -41,19 +53,4 @@ contract PausableInterface {
     require(getPaused() == true);
     _;
   }
-
-  /**
-   * @dev called by the manager to pause, triggers stopped state
-   */
-  function pauseContract() public;
-
-  /**
-   * @dev called by the manager to unpause, returns to normal state
-   */
-  function unpauseContract() public;
-
-  /**
-   * @dev The getter for "paused" contract variable
-   */
-  function getPaused() public constant returns (bool);
 }

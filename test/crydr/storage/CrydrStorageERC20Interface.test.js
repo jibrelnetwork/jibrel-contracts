@@ -1,4 +1,4 @@
-const CrydrStorage = global.artifacts.require('CrydrStorage.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
 
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
@@ -22,7 +22,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
   let storageProxyInstance02;
 
   global.beforeEach(async () => {
-    crydrStorageInstance = await CrydrStorage.new('jXYZ', { from: owner });
+    crydrStorageInstance = await JCashCrydrStorage.new('jXYZ', { from: owner });
     storageProxyInstance01 = await CrydrStorageERC20Proxy.new('jXYZ', crydrStorageInstance.address,
                                                               { from: owner });
     storageProxyInstance02 = await CrydrStorageERC20Proxy.new('jXYZ', crydrStorageInstance.address,
@@ -268,13 +268,28 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
 
     // block/unlock
+    global.console.log(`\t\tBlock account: ${testInvestor1}`);
     await crydrStorageBaseJSAPI.blockAccount(storageProxyInstance01.address, owner,
                                              testInvestor1);
+    global.console.log('\t\tCheck that blocked account is not able to spend');
     await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
                                               [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
                                               'transfer should throw if account is blocked');
+    global.console.log('\t\tCheck that blocked account is not able to approve spendings');
+    await CheckExceptions.checkContractThrows(storageProxyInstance01.approve.sendTransaction,
+                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
+                                              'approve should throw if account is blocked');
+
+    global.console.log(`\t\tUnblock account: ${testInvestor1}`);
+    await crydrStorageBaseJSAPI.unblockAccount(storageProxyInstance01.address, owner,
+                                               testInvestor1);
+    global.console.log('\t\tApprove spendings');
     await crydrStorageERC20JSAPI.approve(storageProxyInstance01.address, owner,
                                          testInvestor1, testInvestor2, 2 * (10 ** 18));
+    global.console.log(`\t\tBlock account: ${testInvestor1}`);
+    await crydrStorageBaseJSAPI.blockAccount(storageProxyInstance01.address, owner,
+                                             testInvestor1);
+    global.console.log('\t\tCheck that nobody can spend on behalf of blocked account');
     await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
                                               [
                                                 testInvestor2,
