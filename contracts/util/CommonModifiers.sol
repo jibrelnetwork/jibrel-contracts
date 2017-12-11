@@ -11,8 +11,6 @@ import './CommonModifiersInterface.sol';
  */
 contract CommonModifiers is CommonModifiersInterface {
 
-  /* Helpers */
-
   /**
    * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.
    */

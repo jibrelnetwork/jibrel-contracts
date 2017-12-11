@@ -15,6 +15,7 @@ contract Manageable is OwnableInterface,
   mapping (address => bool) managerEnabled;  // hard switch for a manager - on/off
   mapping (address => mapping (string => bool)) managerPermissions;  // detailed info about manager`s permissions
 
+
   /* Events */
 
   event ManagerEnabledEvent(address indexed manager);
@@ -29,7 +30,7 @@ contract Manageable is OwnableInterface,
    * @dev Function to add new manager
    * @param _manager address New manager
    */
-  function enableManager(address _manager) external onlyOwner onlyValidAddress(_manager) {
+  function enableManager(address _manager) external onlyOwner onlyValidManagerAddress(_manager) {
     require(managerEnabled[_manager] == false);
 
     managerEnabled[_manager] = true;
@@ -40,7 +41,7 @@ contract Manageable is OwnableInterface,
    * @dev Function to remove existing manager
    * @param _manager address Existing manager
    */
-  function disableManager(address _manager) external onlyOwner onlyValidAddress(_manager) {
+  function disableManager(address _manager) external onlyOwner onlyValidManagerAddress(_manager) {
     require(managerEnabled[_manager] == true);
 
     managerEnabled[_manager] = false;
@@ -57,7 +58,7 @@ contract Manageable is OwnableInterface,
   )
     external
     onlyOwner
-    onlyValidAddress(_manager)
+    onlyValidManagerAddress(_manager)
     onlyValidPermissionName(_permissionName)
   {
     require(managerPermissions[_manager][_permissionName] == false);
@@ -76,7 +77,7 @@ contract Manageable is OwnableInterface,
   )
     external
     onlyOwner
-    onlyValidAddress(_manager)
+    onlyValidManagerAddress(_manager)
     onlyValidPermissionName(_permissionName)
   {
     require(managerPermissions[_manager][_permissionName] == true);
@@ -93,7 +94,14 @@ contract Manageable is OwnableInterface,
    * @param _manager address Manager`s address
    * @return True if manager is enabled
    */
-  function isManagerEnabled(address _manager) public constant onlyValidAddress(_manager) returns (bool) {
+  function isManagerEnabled(
+    address _manager
+  )
+    public
+    constant
+    onlyValidManagerAddress(_manager)
+    returns (bool)
+  {
     return managerEnabled[_manager];
   }
 
@@ -108,7 +116,7 @@ contract Manageable is OwnableInterface,
   )
     public
     constant
-    onlyValidAddress(_manager)
+    onlyValidManagerAddress(_manager)
     onlyValidPermissionName(_permissionName)
     returns (bool)
   {
@@ -126,7 +134,7 @@ contract Manageable is OwnableInterface,
   )
     public
     constant
-    onlyValidAddress(_manager)
+    onlyValidManagerAddress(_manager)
     onlyValidPermissionName(_permissionName)
     returns (bool)
   {
@@ -139,7 +147,7 @@ contract Manageable is OwnableInterface,
   /**
    * @dev Modifier to check manager address
    */
-  modifier onlyValidAddress(address _manager) {
+  modifier onlyValidManagerAddress(address _manager) {
     require(_manager != address(0x0));
     _;
   }
