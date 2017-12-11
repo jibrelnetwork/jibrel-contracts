@@ -7,7 +7,7 @@ import '../../lifecycle/ManageableInterface.sol';
 import './CrydrControllerBaseInterface.sol';
 import './CrydrControllerBlockableInterface.sol';
 
-import '../storage/CrydrStorageBaseInterface.sol';
+import '../storage/CrydrStorageBlocksInterface.sol';
 
 
 /**
@@ -27,7 +27,7 @@ contract CrydrControllerBlockable is ManageableInterface,
     public
     onlyAllowedManager('block_account')
   {
-    CrydrStorageBaseInterface(getCrydrStorageAddress()).blockAccount(_account);
+    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccount(_account);
   }
 
   function unblockAccount(
@@ -36,7 +36,7 @@ contract CrydrControllerBlockable is ManageableInterface,
     public
     onlyAllowedManager('unblock_account')
   {
-    CrydrStorageBaseInterface(getCrydrStorageAddress()).unblockAccount(_account);
+    CrydrStorageBlocksInterface(getCrydrStorageAddress()).unblockAccount(_account);
   }
 
   function blockAccountFunds(
@@ -46,7 +46,7 @@ contract CrydrControllerBlockable is ManageableInterface,
     public
     onlyAllowedManager('block_account_funds')
   {
-    CrydrStorageBaseInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);
+    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);
   }
 
   function unblockAccountFunds(
@@ -56,6 +56,6 @@ contract CrydrControllerBlockable is ManageableInterface,
     public
     onlyAllowedManager('unblock_account_funds')
   {
-    CrydrStorageBaseInterface(getCrydrStorageAddress()).unblockAccountFunds(_account, _value);
+    CrydrStorageBlocksInterface(getCrydrStorageAddress()).unblockAccountFunds(_account, _value);
   }
 }

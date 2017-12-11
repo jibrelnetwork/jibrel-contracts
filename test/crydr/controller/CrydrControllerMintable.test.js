@@ -3,7 +3,7 @@ const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
 const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
-const CrydrStorageBaseJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBaseInterface');
+const CrydrStorageBalanceJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBalanceInterface');
 const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerBaseInterface');
 const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
 
@@ -83,13 +83,13 @@ global.contract('CrydrControllerMintable', (accounts) => {
 
     await CrydrControllerMintableJSAPI.mint(crydrControllerMintableInstance.address, managerMint,
                                             testInvestor1, 10 * (10 ** 18));
-    let balance = await CrydrStorageBaseJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    let balance = await CrydrStorageBalanceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
                               'Expected that balance has increased');
 
     await CrydrControllerMintableJSAPI.burn(crydrControllerMintableInstance.address, managerMint,
                                             testInvestor1, 5 * (10 ** 18));
-    balance = await CrydrStorageBaseJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    balance = await CrydrStorageBalanceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 5 * (10 ** 18),
                               'Expected that balance has decreased');
   });

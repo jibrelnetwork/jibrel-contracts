@@ -6,6 +6,9 @@ pragma solidity ^0.4.18;
 import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
 import '../../lifecycle/PausableInterface.sol';
 import './CrydrStorageBaseInterface.sol';
+import './CrydrStorageBalanceInterface.sol';
+import './CrydrStorageAllowanceInterface.sol';
+import './CrydrStorageBlocksInterface.sol';
 import './CrydrStorageERC20Interface.sol';
 
 
@@ -15,6 +18,9 @@ import './CrydrStorageERC20Interface.sol';
 contract CrydrStorageERC20 is SafeMathInterface,
                               PausableInterface,
                               CrydrStorageBaseInterface,
+                              CrydrStorageBalanceInterface,
+                              CrydrStorageAllowanceInterface,
+                              CrydrStorageBlocksInterface,
                               CrydrStorageERC20Interface {
 
   function transfer(

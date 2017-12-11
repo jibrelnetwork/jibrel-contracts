@@ -11,7 +11,7 @@ const CrydrStorageERC20Interface = global.artifacts.require('CrydrStorageERC20In
 
 export const transfer = async (crydrStorageAddress, crydrControllerAddress,
                                msgsenderAddress, toAddress, valueWei) => {
-  global.console.log('\tIncrease balance of account:');
+  global.console.log('\tTransfer tokens:');
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmsgsenderAddress - ${msgsenderAddress}`);
@@ -28,7 +28,7 @@ export const transfer = async (crydrStorageAddress, crydrControllerAddress,
 
 export const transferFrom = async (crydrStorageAddress, crydrControllerAddress,
                                    msgsenderAddress, fromAddress, toAddress, valueWei) => {
-  global.console.log('\tDecrease balance of account:');
+  global.console.log('\tTransfer from tokens:');
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmsgsenderAddress - ${msgsenderAddress}`);
@@ -46,7 +46,7 @@ export const transferFrom = async (crydrStorageAddress, crydrControllerAddress,
 
 export const approve = async (crydrStorageAddress, crydrControllerAddress,
                               msgsenderAddress, spenderAddress, valueWei) => {
-  global.console.log('\tSet amount for approved spending:');
+  global.console.log('\tApprove:');
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmsgsenderAddress - ${msgsenderAddress}`);

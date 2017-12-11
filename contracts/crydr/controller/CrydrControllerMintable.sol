@@ -8,7 +8,7 @@ import '../../lifecycle/PausableInterface.sol';
 import './CrydrControllerBaseInterface.sol';
 import './CrydrControllerMintableInterface.sol';
 
-import '../storage/CrydrStorageBaseInterface.sol';
+import '../storage/CrydrStorageBalanceInterface.sol';
 import '../view/CrydrViewERC20MintableInterface.sol';
 
 
@@ -34,7 +34,7 @@ contract CrydrControllerMintable is ManageableInterface,
   {
     // input parameters checked by the storage
 
-    CrydrStorageBaseInterface(getCrydrStorageAddress()).increaseBalance(_account, _value);
+    CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_account, _value);
 
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitMintEvent(_account, _value);
@@ -50,7 +50,7 @@ contract CrydrControllerMintable is ManageableInterface,
   {
     // input parameters checked by the storage
 
-    CrydrStorageBaseInterface(getCrydrStorageAddress()).decreaseBalance(_account, _value);
+    CrydrStorageBalanceInterface(getCrydrStorageAddress()).decreaseBalance(_account, _value);
 
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitBurnEvent(_account, _value);

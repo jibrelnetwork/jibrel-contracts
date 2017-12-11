@@ -5,6 +5,9 @@ pragma solidity ^0.4.18;
 
 import '../feature/assetid/AssetID.sol';
 import '../crydr/storage/CrydrStorageBaseInterface.sol';
+import '../crydr/storage/CrydrStorageBalanceInterface.sol';
+import '../crydr/storage/CrydrStorageAllowanceInterface.sol';
+import '../crydr/storage/CrydrStorageBlocksInterface.sol';
 import '../crydr/storage/CrydrStorageERC20Interface.sol';
 
 
@@ -16,6 +19,9 @@ import '../crydr/storage/CrydrStorageERC20Interface.sol';
  */
 contract CrydrStorageERC20Proxy is AssetID,
                                    CrydrStorageBaseInterface,
+                                   CrydrStorageBalanceInterface,
+                                   CrydrStorageAllowanceInterface,
+                                   CrydrStorageBlocksInterface,
                                    CrydrStorageERC20Interface {
 
   /* Storage */
@@ -42,22 +48,22 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   function increaseBalance(address _account, uint256 _value) public
   {
-    CrydrStorageBaseInterface(crydrStorage).increaseBalance(_account, _value);
+    CrydrStorageBalanceInterface(crydrStorage).increaseBalance(_account, _value);
   }
 
   function decreaseBalance(address _account, uint256 _value) public
   {
-    CrydrStorageBaseInterface(crydrStorage).decreaseBalance(_account, _value);
+    CrydrStorageBalanceInterface(crydrStorage).decreaseBalance(_account, _value);
   }
 
   function getBalance(address _account) public constant returns (uint256)
   {
-    return CrydrStorageBaseInterface(crydrStorage).getBalance(_account);
+    return CrydrStorageBalanceInterface(crydrStorage).getBalance(_account);
   }
 
   function getTotalSupply() public constant returns (uint256)
   {
-    return CrydrStorageBaseInterface(crydrStorage).getTotalSupply();
+    return CrydrStorageBalanceInterface(crydrStorage).getTotalSupply();
   }
 
 
@@ -65,17 +71,17 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   function increaseAllowance(address _owner, address _spender, uint256 _value) public
   {
-    CrydrStorageBaseInterface(crydrStorage).increaseAllowance(_owner, _spender, _value);
+    CrydrStorageAllowanceInterface(crydrStorage).increaseAllowance(_owner, _spender, _value);
   }
 
   function decreaseAllowance(address _owner, address _spender, uint256 _value) public
   {
-    CrydrStorageBaseInterface(crydrStorage).decreaseAllowance(_owner, _spender, _value);
+    CrydrStorageAllowanceInterface(crydrStorage).decreaseAllowance(_owner, _spender, _value);
   }
 
   function getAllowance(address _owner, address _spender) public constant returns (uint256)
   {
-    return CrydrStorageBaseInterface(crydrStorage).getAllowance(_owner, _spender);
+    return CrydrStorageAllowanceInterface(crydrStorage).getAllowance(_owner, _spender);
   }
 
 
@@ -83,33 +89,33 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   function blockAccount(address _account) public
   {
-    CrydrStorageBaseInterface(crydrStorage).blockAccount(_account);
+    CrydrStorageBlocksInterface(crydrStorage).blockAccount(_account);
   }
 
   function unblockAccount(address _account) public
   {
-    CrydrStorageBaseInterface(crydrStorage).unblockAccount(_account);
+    CrydrStorageBlocksInterface(crydrStorage).unblockAccount(_account);
   }
 
   function getAccountBlocks(address _account) public constant returns (uint256)
   {
-    return CrydrStorageBaseInterface(crydrStorage).getAccountBlocks(_account);
+    return CrydrStorageBlocksInterface(crydrStorage).getAccountBlocks(_account);
   }
 
 
   function blockAccountFunds(address _account, uint256 _value) public
   {
-    CrydrStorageBaseInterface(crydrStorage).blockAccountFunds(_account, _value);
+    CrydrStorageBlocksInterface(crydrStorage).blockAccountFunds(_account, _value);
   }
 
   function unblockAccountFunds(address _account, uint256 _value) public
   {
-    CrydrStorageBaseInterface(crydrStorage).unblockAccountFunds(_account, _value);
+    CrydrStorageBlocksInterface(crydrStorage).unblockAccountFunds(_account, _value);
   }
 
   function getAccountBlockedFunds(address _account) public constant returns (uint256)
   {
-    return CrydrStorageBaseInterface(crydrStorage).getAccountBlockedFunds(_account);
+    return CrydrStorageBlocksInterface(crydrStorage).getAccountBlockedFunds(_account);
   }
 
 

@@ -11,6 +11,9 @@ import '../../lifecycle/Manageable.sol';
 import '../../lifecycle/Pausable.sol';
 import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../storage/CrydrStorageBase.sol';
+import '../storage/CrydrStorageBalance.sol';
+import '../storage/CrydrStorageAllowance.sol';
+import '../storage/CrydrStorageBlocks.sol';
 import '../storage/CrydrStorageERC20.sol';
 
 
@@ -26,6 +29,9 @@ contract JCashCrydrStorage is SafeMath,
                               Pausable,
                               BytecodeExecutor,
                               CrydrStorageBase,
+                              CrydrStorageBalance,
+                              CrydrStorageAllowance,
+                              CrydrStorageBlocks,
                               CrydrStorageERC20 {
 
   /* Constructor */

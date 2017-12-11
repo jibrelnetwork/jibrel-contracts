@@ -7,7 +7,8 @@ import '../../lifecycle/PausableInterface.sol';
 import './CrydrControllerBaseInterface.sol';
 import './CrydrControllerERC20Interface.sol';
 
-import '../storage/CrydrStorageBaseInterface.sol';
+import '../storage/CrydrStorageBalanceInterface.sol';
+import '../storage/CrydrStorageAllowanceInterface.sol';
 import '../storage/CrydrStorageERC20Interface.sol';
 import '../view/CrydrViewERC20LoggableInterface.sol';
 
@@ -39,11 +40,11 @@ contract CrydrControllerERC20 is PausableInterface,
   }
 
   function getTotalSupply() public constant returns (uint256) {
-    return CrydrStorageBaseInterface(address(getCrydrStorageAddress())).getTotalSupply();
+    return CrydrStorageBalanceInterface(address(getCrydrStorageAddress())).getTotalSupply();
   }
 
   function getBalance(address _owner) public constant returns (uint256) {
-    return CrydrStorageBaseInterface(address(getCrydrStorageAddress())).getBalance(_owner);
+    return CrydrStorageBalanceInterface(address(getCrydrStorageAddress())).getBalance(_owner);
   }
 
   function approve(
@@ -58,7 +59,7 @@ contract CrydrControllerERC20 is PausableInterface,
     // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     // We decided to enforce users to set 0 before set new value
-    var allowance = CrydrStorageBaseInterface(getCrydrStorageAddress()).getAllowance(_msgsender, _spender);
+    var allowance = CrydrStorageAllowanceInterface(getCrydrStorageAddress()).getAllowance(_msgsender, _spender);
     require((allowance > 0 && _value == 0) || (allowance == 0 && _value > 0));
 
     CrydrStorageERC20Interface(address(getCrydrStorageAddress())).approve(_msgsender, _spender, _value);
@@ -86,6 +87,6 @@ contract CrydrControllerERC20 is PausableInterface,
   }
 
   function getAllowance(address _owner, address _spender) public constant returns (uint256 ) {
-    return CrydrStorageBaseInterface(address(getCrydrStorageAddress())).getAllowance(_owner, _spender);
+    return CrydrStorageAllowanceInterface(address(getCrydrStorageAddress())).getAllowance(_owner, _spender);
   }
 }
