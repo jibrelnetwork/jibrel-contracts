@@ -29,7 +29,7 @@ contract CrydrStorageBlocks is SafeMathInterface,
   /* Constructor */
 
   function CrydrStorageBlocks() public {
-    accountBlocks[0x0] = (0xffffffffffffffff - 1);
+    accountBlocks[0x0] = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
   }
 
 

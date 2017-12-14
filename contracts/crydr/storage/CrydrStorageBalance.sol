@@ -23,7 +23,7 @@ contract CrydrStorageBalance is SafeMathInterface,
   /* Storage */
 
   mapping (address => uint256) balances;
-  uint256 totalSupply;
+  uint256 totalSupply = 0;
 
 
   /* Low-level change of balance and getters. Implied that totalSupply kept in sync. */

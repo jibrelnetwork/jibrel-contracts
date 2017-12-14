@@ -22,7 +22,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
 
   /* Storage */
 
-  address crydrStorage;
+  address crydrStorage = address(0x0);
   mapping (string => address) crydrViewsAddresses;
   mapping (address => bool) isRegisteredView;
 

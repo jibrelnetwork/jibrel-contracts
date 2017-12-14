@@ -21,7 +21,7 @@ contract CrydrStorageBase is CommonModifiersInterface,
 
   /* Storage */
 
-  address crydrController;
+  address crydrController = address(0x0);
 
 
   /* CrydrStorageBaseInterface */

@@ -18,8 +18,8 @@ contract CrydrViewBase is CommonModifiersInterface,
 
   /* Storage */
 
-  address crydrController;
-  string crydrViewStandardName;
+  address crydrController = address(0x0);
+  string crydrViewStandardName = '';
 
 
   /* Constructor */
