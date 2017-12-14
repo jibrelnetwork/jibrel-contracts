@@ -52,7 +52,7 @@ contract JCashCrydrController is CommonModifiers,
     public
   {
     CrydrControllerERC20.transfer(_msgsender, _to, _value);
-    chargeJNTForService(_msgsender, getJntBeneficiary(), getJntPriceForTransfer());
+    chargeJNTForService(_msgsender, getJntPriceForTransfer());
   }
 
   function approve(
@@ -63,7 +63,7 @@ contract JCashCrydrController is CommonModifiers,
     public
   {
     CrydrControllerERC20.approve(_msgsender, _spender, _value);
-    chargeJNTForService(_msgsender, getJntBeneficiary(), getJntPriceForApprove());
+    chargeJNTForService(_msgsender, getJntPriceForApprove());
   }
 
   function transferFrom(
@@ -75,6 +75,6 @@ contract JCashCrydrController is CommonModifiers,
     public
   {
     CrydrControllerERC20.transferFrom(_msgsender, _from, _to, _value);
-    chargeJNTForService(_msgsender, getJntBeneficiary(), getJntPriceForTransferFrom());
+    chargeJNTForService(_msgsender, getJntPriceForTransferFrom());
   }
 }

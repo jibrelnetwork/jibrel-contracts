@@ -56,6 +56,7 @@ contract JNTPayableService is CommonModifiersInterface,
     whenContractPaused
   {
     require(_jntBeneficiary != jntBeneficiary);
+    require(_jntBeneficiary != address(this));
 
     jntBeneficiary = _jntBeneficiary;
     JNTBeneficiaryChangedEvent(jntBeneficiary);
@@ -68,30 +69,13 @@ contract JNTPayableService is CommonModifiersInterface,
 
   /* Actions */
 
-  function chargeJNTForService(address _from, address _to, uint256 _value) internal whenContractNotPaused {
+  function chargeJNTForService(address _from, uint256 _value) internal whenContractNotPaused {
     require(_from != address(0x0));
-    require(_to != address(0x0));
-    require(_from != _to);
+    require(_from != jntBeneficiary);
     require(_value > 0);
 
-    jntController.chargeJNT(_from, _to, _value);
-    JNTChargedEvent(_from, _to, _value);
-  }
-
-  /**
-   * @dev Method used to withdraw collected JNT if contract itself used to store charged JNT.
-   * @dev Assumed that JNT provides 'erc20' view.
-   */
-  function withdrawJnt()
-    external
-    onlyAllowedManager('withdraw_jnt')
-    onlyValidJntBeneficiary(jntBeneficiary)
-  {
-    var _jntControllerAddress = address(jntController);
-    var _crydrController = CrydrControllerBaseInterface(_jntControllerAddress);
-    var _jntERC20ViewAddress = _crydrController.getCrydrViewAddress('erc20');
-    var _jntERC20View = CrydrViewERC20Interface(_jntERC20ViewAddress);
-    _jntERC20View.transfer(jntBeneficiary, _jntERC20View.balanceOf(this));
+    jntController.chargeJNT(_from, jntBeneficiary, _value);
+    JNTChargedEvent(_from, jntBeneficiary, _value);
   }
 
 
