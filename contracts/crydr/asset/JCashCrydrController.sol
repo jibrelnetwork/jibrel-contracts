@@ -14,7 +14,7 @@ import '../controller/CrydrControllerBlockable.sol';
 import '../controller/CrydrControllerMintable.sol';
 import '../controller/CrydrControllerERC20.sol';
 import '../jnt/JNTPayableService.sol';
-import '../jnt/JNTPayableServiceERC20.sol';
+import '../jnt/JNTPayableServiceERC20Fees.sol';
 
 
 contract JCashCrydrController is CommonModifiers,
@@ -28,7 +28,7 @@ contract JCashCrydrController is CommonModifiers,
                                  CrydrControllerMintable,
                                  CrydrControllerERC20,
                                  JNTPayableService,
-                                 JNTPayableServiceERC20 {
+                                 JNTPayableServiceERC20Fees {
 
   /* Constructor */
   // 10^18 - assumes that JNT has decimals==18, 1JNT per operation
@@ -36,7 +36,7 @@ contract JCashCrydrController is CommonModifiers,
   function JCashCrydrController(string _assetID)
     public
     AssetID(_assetID)
-    JNTPayableServiceERC20(10^18, 10^18, 10^18)
+    JNTPayableServiceERC20Fees(10^18, 10^18, 10^18)
   {}
 
 

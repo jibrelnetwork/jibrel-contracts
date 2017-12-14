@@ -5,12 +5,12 @@ pragma solidity ^0.4.18;
 
 import '../../lifecycle/ManageableInterface.sol';
 import '../../lifecycle/PausableInterface.sol';
-import './JNTPayableServiceERC20Interface.sol';
+import './JNTPayableServiceERC20FeesInterface.sol';
 
 
-contract JNTPayableServiceERC20 is ManageableInterface,
-                                   PausableInterface,
-                                   JNTPayableServiceERC20Interface {
+contract JNTPayableServiceERC20Fees is ManageableInterface,
+                                       PausableInterface,
+                                       JNTPayableServiceERC20FeesInterface {
 
   /* Storage */
 
@@ -21,7 +21,7 @@ contract JNTPayableServiceERC20 is ManageableInterface,
 
   /* Constructor */
 
-  function JNTPayableServiceERC20(
+  function JNTPayableServiceERC20Fees(
     uint256 _jntPriceTransfer,
     uint256 _jntPriceTransferFrom,
     uint256 _jntPriceApprove
@@ -34,7 +34,7 @@ contract JNTPayableServiceERC20 is ManageableInterface,
   }
 
 
-  /* JNTPayableServiceERC20Interface */
+  /* JNTPayableServiceERC20FeesInterface */
 
   /* Configuration */
 

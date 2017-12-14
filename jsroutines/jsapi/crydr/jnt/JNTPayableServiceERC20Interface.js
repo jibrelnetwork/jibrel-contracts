@@ -2,7 +2,7 @@ import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
 const Promise = require('bluebird');
 
-const JNTPayableServiceERC20Interface = global.artifacts.require('JNTPayableServiceERC20Interface.sol');
+const JNTPayableServiceERC20FeesInterface = global.artifacts.require('JNTPayableServiceERC20FeesInterface.sol');
 
 const ManageableJSAPI   = require('../../lifecycle/Manageable');
 
@@ -20,7 +20,7 @@ export const setJntPrice = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tjntPriceTransferFrom - ${jntPriceTransferFrom}`);
   global.console.log(`\t\tjntPriceApprove - ${jntPriceApprove}`);
   await submitTxAndWaitConfirmation(
-    JNTPayableServiceERC20Interface
+    JNTPayableServiceERC20FeesInterface
       .at(crydrControllerAddress)
       .setJntPrice
       .sendTransaction,
@@ -30,13 +30,13 @@ export const setJntPrice = async (crydrControllerAddress, managerAddress,
 };
 
 export const getJntPriceForTransfer = async (contractAddress) =>
-  JNTPayableServiceERC20Interface.at(contractAddress).getJntPriceForTransfer.call();
+  JNTPayableServiceERC20FeesInterface.at(contractAddress).getJntPriceForTransfer.call();
 
 export const getJntPriceForTransferFrom = async (contractAddress) =>
-  JNTPayableServiceERC20Interface.at(contractAddress).getJntPriceForTransferFrom.call();
+  JNTPayableServiceERC20FeesInterface.at(contractAddress).getJntPriceForTransferFrom.call();
 
 export const getJntPriceForApprove = async (contractAddress) =>
-  JNTPayableServiceERC20Interface.at(contractAddress).getJntPriceForApprove.call();
+  JNTPayableServiceERC20FeesInterface.at(contractAddress).getJntPriceForApprove.call();
 
 
 /**
@@ -44,7 +44,7 @@ export const getJntPriceForApprove = async (contractAddress) =>
  */
 
 export const getJNTPriceTransferChangedEvents = (contractAddress, eventDataFilter, commonFilter) => {
-  const eventObj = JNTPayableServiceERC20Interface
+  const eventObj = JNTPayableServiceERC20FeesInterface
     .at(contractAddress)
     .JNTPriceTransferChangedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -52,7 +52,7 @@ export const getJNTPriceTransferChangedEvents = (contractAddress, eventDataFilte
 };
 
 export const getJNTPriceTransferFromChangedEvents = (contractAddress, eventDataFilter, commonFilter) => {
-  const eventObj = JNTPayableServiceERC20Interface
+  const eventObj = JNTPayableServiceERC20FeesInterface
     .at(contractAddress)
     .JNTPriceTransferFromChangedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -60,7 +60,7 @@ export const getJNTPriceTransferFromChangedEvents = (contractAddress, eventDataF
 };
 
 export const getJNTPriceApproveChangedEvents = (contractAddress, eventDataFilter, commonFilter) => {
-  const eventObj = JNTPayableServiceERC20Interface
+  const eventObj = JNTPayableServiceERC20FeesInterface
     .at(contractAddress)
     .JNTPriceApproveChangedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
