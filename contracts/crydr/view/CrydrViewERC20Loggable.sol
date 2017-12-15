@@ -20,7 +20,6 @@ contract CrydrViewERC20Loggable is PausableInterface,
     uint256 _value
   )
     external
-    whenContractNotPaused
   {
     require(msg.sender == getCrydrController());
 
@@ -33,7 +32,6 @@ contract CrydrViewERC20Loggable is PausableInterface,
     uint256 _value
   )
     external
-    whenContractNotPaused
   {
     require(msg.sender == getCrydrController());
 

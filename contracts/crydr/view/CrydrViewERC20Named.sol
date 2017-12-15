@@ -4,10 +4,12 @@ pragma solidity ^0.4.18;
 
 
 import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/PausableInterface.sol';
 import './CrydrViewERC20NamedInterface.sol';
 
 
 contract CrydrViewERC20Named is ManageableInterface,
+                                PausableInterface,
                                 CrydrViewERC20NamedInterface {
 
   /* Storage */
@@ -53,19 +55,37 @@ contract CrydrViewERC20Named is ManageableInterface,
   }
 
 
-  function setName(string _name) external onlyAllowedManager('set_crydr_name') {
+  function setName(
+    string _name
+  )
+    external
+    whenContractPaused
+    onlyAllowedManager('set_crydr_name')
+  {
     require(bytes(_name).length > 0);
 
     tokenName = _name;
   }
 
-  function setSymbol(string _symbol) external onlyAllowedManager('set_crydr_symbol') {
+  function setSymbol(
+    string _symbol
+  )
+    external
+    whenContractPaused
+    onlyAllowedManager('set_crydr_symbol')
+  {
     require(bytes(_symbol).length > 0);
 
     tokenSymbol = _symbol;
   }
 
-  function setDecimals(uint8 _decimals) external onlyAllowedManager('set_crydr_decimals') {
+  function setDecimals(
+    uint8 _decimals
+  )
+    external
+    whenContractPaused
+    onlyAllowedManager('set_crydr_decimals')
+  {
     tokenDecimals = _decimals;
   }
 }

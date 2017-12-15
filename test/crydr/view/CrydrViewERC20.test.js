@@ -122,17 +122,6 @@ global.contract('CrydrViewERC20', (accounts) => {
                                    CrydrViewERC20JSAPI.transferFrom,
                                    [jcashCrydrViewERC20Instance.address, testInvestor1,
                                     testInvestor1, testInvestor2, 10 * (10 ** 18)]);
-
-    await PausableTestSuite
-      .assertWhenContractNotPaused(jcashCrydrViewERC20Instance.address, managerPause,
-                                   CrydrViewERC20LoggableJSAPI.emitTransferEvent,
-                                   [controllerStubInstance.address, testInvestor1,
-                                    testInvestor1, testInvestor2, 10 * (10 ** 18)]);
-    await PausableTestSuite
-      .assertWhenContractNotPaused(jcashCrydrViewERC20Instance.address, managerPause,
-                                   CrydrViewERC20LoggableJSAPI.emitApprovalEvent,
-                                   [controllerStubInstance.address, testInvestor1,
-                                    testInvestor1, testInvestor2, 10 * (10 ** 18)]);
   });
 
   global.it('should test that only controller is allowed to emit events', async () => {
