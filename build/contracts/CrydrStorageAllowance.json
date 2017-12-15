@@ -202,10 +202,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../third-party/zeppelin-solidity/SafeMathInterface.sol';\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../feature/assetid/AssetIDInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrStorageBaseInterface.sol';\nimport './CrydrStorageAllowanceInterface.sol';\n\n\n/**\n * @title CrydrStorageBase\n */\ncontract CrydrStorageAllowance is SafeMathInterface,\n                                  PausableInterface,\n                                  CrydrStorageBaseInterface,\n                                  CrydrStorageAllowanceInterface {\n\n  /* Storage */\n\n  mapping (address => mapping (address => uint256)) allowed;\n\n\n  /* Low-level change of allowance and getters */\n\n  function increaseAllowance(\n    address _owner,\n    address _spender,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_owner != address(0x0));\n    require(_spender != address(0x0));\n    require(_owner != _spender);\n    require(_value > 0);\n\n    allowed[_owner][_spender] = safeAdd(allowed[_owner][_spender], _value);\n    AccountAllowanceIncreasedEvent(_owner, _spender, _value);\n  }\n\n  function decreaseAllowance(\n    address _owner,\n    address _spender,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_owner != address(0x0));\n    require(_spender != address(0x0));\n    require(_owner != _spender);\n    require(_value > 0);\n\n    allowed[_owner][_spender] = safeSub(allowed[_owner][_spender], _value);\n    AccountAllowanceDecreasedEvent(_owner, _spender, _value);\n  }\n\n  function getAllowance(\n    address _owner,\n    address _spender\n  )\n    public\n    constant\n    returns (uint256)\n  {\n    require(_owner != address(0x0));\n    require(_spender != address(0x0));\n    require(_owner != _spender);\n\n    return allowed[_owner][_spender];\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageAllowance.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageAllowance.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageAllowance.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageAllowance.sol",
       "exportedSymbols": {
         "CrydrStorageAllowance": [
           1989
@@ -229,7 +229,7 @@
       {
         "attributes": {
           "SourceUnit": 4686,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
           "file": "../../third-party/zeppelin-solidity/SafeMathInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -244,7 +244,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -259,7 +259,7 @@
       {
         "attributes": {
           "SourceUnit": 3802,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/assetid/AssetIDInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/assetid/AssetIDInterface.sol",
           "file": "../../feature/assetid/AssetIDInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -274,7 +274,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -289,7 +289,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -304,7 +304,7 @@
       {
         "attributes": {
           "SourceUnit": 2356,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
           "file": "./CrydrStorageBaseInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -319,7 +319,7 @@
       {
         "attributes": {
           "SourceUnit": 2036,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageAllowanceInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageAllowanceInterface.sol",
           "file": "./CrydrStorageAllowanceInterface.sol",
           "scope": 1990,
           "symbolAliases": [
@@ -3225,5 +3225,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.049Z"
+  "updatedAt": "2017-12-15T04:55:52.606Z"
 }

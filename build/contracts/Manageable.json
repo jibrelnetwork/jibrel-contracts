@@ -208,10 +208,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport './OwnableInterface.sol';\nimport './ManageableInterface.sol';\n\n\ncontract Manageable is OwnableInterface,\n                       ManageableInterface {\n\n  /* Storage */\n\n  mapping (address => bool) managerEnabled;  // hard switch for a manager - on/off\n  mapping (address => mapping (string => bool)) managerPermissions;  // detailed info about manager`s permissions\n\n\n  /* Events */\n\n  event ManagerEnabledEvent(address indexed manager);\n  event ManagerDisabledEvent(address indexed manager);\n  event ManagerPermissionGrantedEvent(address indexed manager, string permission);\n  event ManagerPermissionRevokedEvent(address indexed manager, string permission);\n\n\n  /* Configure contract */\n\n  /**\n   * @dev Function to add new manager\n   * @param _manager address New manager\n   */\n  function enableManager(address _manager) external onlyOwner onlyValidManagerAddress(_manager) {\n    require(managerEnabled[_manager] == false);\n\n    managerEnabled[_manager] = true;\n    ManagerEnabledEvent(_manager);\n  }\n\n  /**\n   * @dev Function to remove existing manager\n   * @param _manager address Existing manager\n   */\n  function disableManager(address _manager) external onlyOwner onlyValidManagerAddress(_manager) {\n    require(managerEnabled[_manager] == true);\n\n    managerEnabled[_manager] = false;\n    ManagerDisabledEvent(_manager);\n  }\n\n  /**\n   * @dev Function to grant new permission to the manager\n   * @param _manager        address Existing manager\n   * @param _permissionName string  Granted permission name\n   */\n  function grantManagerPermission(\n    address _manager, string _permissionName\n  )\n    external\n    onlyOwner\n    onlyValidManagerAddress(_manager)\n    onlyValidPermissionName(_permissionName)\n  {\n    require(managerPermissions[_manager][_permissionName] == false);\n\n    managerPermissions[_manager][_permissionName] = true;\n    ManagerPermissionGrantedEvent(_manager, _permissionName);\n  }\n\n  /**\n   * @dev Function to revoke permission of the manager\n   * @param _manager        address Existing manager\n   * @param _permissionName string  Revoked permission name\n   */\n  function revokeManagerPermission(\n    address _manager, string _permissionName\n  )\n    external\n    onlyOwner\n    onlyValidManagerAddress(_manager)\n    onlyValidPermissionName(_permissionName)\n  {\n    require(managerPermissions[_manager][_permissionName] == true);\n\n    managerPermissions[_manager][_permissionName] = false;\n    ManagerPermissionRevokedEvent(_manager, _permissionName);\n  }\n\n\n  /* Getters */\n\n  /**\n   * @dev Function to check manager status\n   * @param _manager address Manager`s address\n   * @return True if manager is enabled\n   */\n  function isManagerEnabled(\n    address _manager\n  )\n    public\n    constant\n    onlyValidManagerAddress(_manager)\n    returns (bool)\n  {\n    return managerEnabled[_manager];\n  }\n\n  /**\n   * @dev Function to check permissions of a manager\n   * @param _manager        address Manager`s address\n   * @param _permissionName string  Permission name\n   * @return True if manager has been granted needed permission\n   */\n  function isPermissionGranted(\n    address _manager, string _permissionName\n  )\n    public\n    constant\n    onlyValidManagerAddress(_manager)\n    onlyValidPermissionName(_permissionName)\n    returns (bool)\n  {\n    return managerPermissions[_manager][_permissionName];\n  }\n\n  /**\n   * @dev Function to check if the manager can perform the action or not\n   * @param _manager        address Manager`s address\n   * @param _permissionName string  Permission name\n   * @return True if manager is enabled and has been granted needed permission\n   */\n  function isManagerAllowed(\n    address _manager, string _permissionName\n  )\n    public\n    constant\n    onlyValidManagerAddress(_manager)\n    onlyValidPermissionName(_permissionName)\n    returns (bool)\n  {\n    return (managerEnabled[_manager] && managerPermissions[_manager][_permissionName]);\n  }\n\n\n  /* Helpers */\n\n  /**\n   * @dev Modifier to check manager address\n   */\n  modifier onlyValidManagerAddress(address _manager) {\n    require(_manager != address(0x0));\n    _;\n  }\n\n  /**\n   * @dev Modifier to check name of manager permission\n   */\n  modifier onlyValidPermissionName(string _permissionName) {\n    require(bytes(_permissionName).length != 0);\n    _;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/Manageable.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/Manageable.sol",
       "exportedSymbols": {
         "Manageable": [
           4218
@@ -235,7 +235,7 @@
       {
         "attributes": {
           "SourceUnit": 4456,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/OwnableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/OwnableInterface.sol",
           "file": "./OwnableInterface.sol",
           "scope": 4219,
           "symbolAliases": [
@@ -250,7 +250,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "./ManageableInterface.sol",
           "scope": 4219,
           "symbolAliases": [
@@ -3752,5 +3752,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.058Z"
+  "updatedAt": "2017-12-15T05:17:29.611Z"
 }

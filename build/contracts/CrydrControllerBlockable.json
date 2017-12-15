@@ -257,10 +257,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../lifecycle/ManageableInterface.sol';\nimport './CrydrControllerBaseInterface.sol';\nimport './CrydrControllerBlockableInterface.sol';\n\nimport '../storage/CrydrStorageBlocksInterface.sol';\n\n\n/**\n * @title CrydrControllerBlockable interface\n * @dev Implementation of a contract that allows blocking/unlocking accounts\n */\ncontract CrydrControllerBlockable is ManageableInterface,\n                                     CrydrControllerBaseInterface,\n                                     CrydrControllerBlockableInterface {\n\n\n  /* blocking/unlocking */\n\n  function blockAccount(\n    address _account\n  )\n    public\n    onlyAllowedManager('block_account')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccount(_account);\n  }\n\n  function unblockAccount(\n    address _account\n  )\n    public\n    onlyAllowedManager('unblock_account')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).unblockAccount(_account);\n  }\n\n  function blockAccountFunds(\n    address _account,\n    uint256 _value\n  )\n    public\n    onlyAllowedManager('block_account_funds')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);\n  }\n\n  function unblockAccountFunds(\n    address _account,\n    uint256 _value\n  )\n    public\n    onlyAllowedManager('unblock_account_funds')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).unblockAccountFunds(_account, _value);\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBlockable.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBlockable.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBlockable.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBlockable.sol",
       "exportedSymbols": {
         "CrydrControllerBlockable": [
           942
@@ -284,7 +284,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 943,
           "symbolAliases": [
@@ -299,7 +299,7 @@
       {
         "attributes": {
           "SourceUnit": 856,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
           "file": "./CrydrControllerBaseInterface.sol",
           "scope": 943,
           "symbolAliases": [
@@ -314,7 +314,7 @@
       {
         "attributes": {
           "SourceUnit": 970,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBlockableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBlockableInterface.sol",
           "file": "./CrydrControllerBlockableInterface.sol",
           "scope": 943,
           "symbolAliases": [
@@ -329,7 +329,7 @@
       {
         "attributes": {
           "SourceUnit": 2659,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
           "file": "../storage/CrydrStorageBlocksInterface.sol",
           "scope": 943,
           "symbolAliases": [
@@ -1526,5 +1526,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.047Z"
+  "updatedAt": "2017-12-15T04:55:52.593Z"
 }

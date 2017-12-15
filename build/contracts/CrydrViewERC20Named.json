@@ -161,10 +161,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../lifecycle/ManageableInterface.sol';\nimport './CrydrViewERC20NamedInterface.sol';\n\n\ncontract CrydrViewERC20Named is ManageableInterface,\n                                CrydrViewERC20NamedInterface {\n\n  /* Storage */\n\n  string tokenName = '';\n  string tokenSymbol = '';\n  uint8 tokenDecimals = 0;\n\n\n  /* Constructor */\n\n  function CrydrViewERC20Named(string _name, string _symbol, uint8 _decimals) public {\n    require(bytes(_name).length > 0);\n    require(bytes(_symbol).length > 0);\n\n    tokenName = _name;\n    tokenSymbol = _symbol;\n    tokenDecimals = _decimals;\n  }\n\n\n  /* CrydrViewERC20NamedInterface */\n\n  function name() external constant returns (string) {\n    return tokenName;\n  }\n\n  function symbol() external constant returns (string) {\n    return tokenSymbol;\n  }\n\n  function decimals() external constant returns (uint8) {\n    return tokenDecimals;\n  }\n\n\n  function getNameHash() external constant returns (bytes32){\n    return keccak256(tokenName);\n  }\n\n  function getSymbolHash() external constant returns (bytes32){\n    return keccak256(tokenSymbol);\n  }\n\n\n  function setName(string _name) external onlyAllowedManager('set_crydr_name') {\n    require(bytes(_name).length > 0);\n\n    tokenName = _name;\n  }\n\n  function setSymbol(string _symbol) external onlyAllowedManager('set_crydr_symbol') {\n    require(bytes(_symbol).length > 0);\n\n    tokenSymbol = _symbol;\n  }\n\n  function setDecimals(uint8 _decimals) external onlyAllowedManager('set_crydr_decimals') {\n    tokenDecimals = _decimals;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Named.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20Named.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Named.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20Named.sol",
       "exportedSymbols": {
         "CrydrViewERC20Named": [
           3700
@@ -188,7 +188,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 3701,
           "symbolAliases": [
@@ -203,7 +203,7 @@
       {
         "attributes": {
           "SourceUnit": 3744,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20NamedInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20NamedInterface.sol",
           "file": "./CrydrViewERC20NamedInterface.sol",
           "scope": 3701,
           "symbolAliases": [
@@ -2342,5 +2342,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.057Z"
+  "updatedAt": "2017-12-15T04:55:52.623Z"
 }

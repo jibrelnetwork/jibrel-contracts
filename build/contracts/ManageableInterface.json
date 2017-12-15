@@ -30,10 +30,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title ManageableInterface\n * @dev Contract that allows to grant permissions to any address\n * @dev In real life we are no able to perform all actions with just one Ethereum address\n * @dev because risks are too high.\n * @dev Instead owner delegates rights to manage an contract to the different addresses and\n * @dev stay able to revoke permissions at any time.\n */\ncontract ManageableInterface {\n\n  /**\n   * @dev Function to check if the manager can perform the action or not\n   * @param _manager        address Manager`s address\n   * @param _permissionName string  Permission name\n   * @return True if manager is enabled and has been granted needed permission\n   */\n  function isManagerAllowed(address _manager, string _permissionName) public constant returns (bool);\n\n  /**\n   * @dev Modifier to use in derived contracts\n   */\n  modifier onlyAllowedManager(string _permissionName) {\n    require(isManagerAllowed(msg.sender, _permissionName) == true);\n    _;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
       "exportedSymbols": {
         "ManageableInterface": [
           4246
@@ -429,5 +429,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.058Z"
+  "updatedAt": "2017-12-15T04:55:52.627Z"
 }

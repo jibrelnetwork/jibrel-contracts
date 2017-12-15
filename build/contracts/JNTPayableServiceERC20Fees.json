@@ -193,10 +193,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './JNTPayableServiceERC20FeesInterface.sol';\n\n\ncontract JNTPayableServiceERC20Fees is ManageableInterface,\n                                       PausableInterface,\n                                       JNTPayableServiceERC20FeesInterface {\n\n  /* Storage */\n\n  uint256 jntPriceTransfer;\n  uint256 jntPriceTransferFrom;\n  uint256 jntPriceApprove;\n\n\n  /* Constructor */\n\n  function JNTPayableServiceERC20Fees(\n    uint256 _jntPriceTransfer,\n    uint256 _jntPriceTransferFrom,\n    uint256 _jntPriceApprove\n  )\n    public\n  {\n    jntPriceTransfer = _jntPriceTransfer;\n    jntPriceTransferFrom = _jntPriceTransferFrom;\n    jntPriceApprove = _jntPriceApprove;\n  }\n\n\n  /* JNTPayableServiceERC20FeesInterface */\n\n  /* Configuration */\n\n  function setJntPrice(\n    uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove\n  )\n    external\n    onlyAllowedManager('set_jnt_price')\n    whenContractPaused\n  {\n    require(_jntPriceTransfer != jntPriceTransfer ||\n            _jntPriceTransferFrom != jntPriceTransferFrom ||\n            _jntPriceApprove != jntPriceApprove);\n\n    if (jntPriceTransfer != _jntPriceTransfer) {\n      jntPriceTransfer = _jntPriceTransfer;\n      JNTPriceTransferChangedEvent(_jntPriceTransfer);\n    }\n    if (jntPriceTransferFrom != _jntPriceTransferFrom) {\n      jntPriceTransferFrom = _jntPriceTransferFrom;\n      JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);\n    }\n    if (jntPriceApprove != _jntPriceApprove) {\n      jntPriceApprove = _jntPriceApprove;\n      JNTPriceApproveChangedEvent(_jntPriceApprove);\n    }\n  }\n\n  function getJntPriceForTransfer() public constant returns (uint256) {\n    return jntPriceTransfer;\n  }\n\n  function getJntPriceForTransferFrom() public constant returns (uint256) {\n    return jntPriceTransferFrom;\n  }\n\n  function getJntPriceForApprove() public constant returns (uint256) {\n    return jntPriceApprove;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceERC20Fees.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTPayableServiceERC20Fees.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceERC20Fees.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTPayableServiceERC20Fees.sol",
       "exportedSymbols": {
         "JNTPayableServiceERC20Fees": [
           1704
@@ -220,7 +220,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 1705,
           "symbolAliases": [
@@ -235,7 +235,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 1705,
           "symbolAliases": [
@@ -250,7 +250,7 @@
       {
         "attributes": {
           "SourceUnit": 1744,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceERC20FeesInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTPayableServiceERC20FeesInterface.sol",
           "file": "./JNTPayableServiceERC20FeesInterface.sol",
           "scope": 1705,
           "symbolAliases": [
@@ -1953,5 +1953,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.049Z"
+  "updatedAt": "2017-12-15T04:55:52.602Z"
 }

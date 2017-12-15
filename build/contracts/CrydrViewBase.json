@@ -181,10 +181,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../feature/assetid/AssetID.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrViewBaseInterface.sol';\n\n\ncontract CrydrViewBase is CommonModifiersInterface,\n                          AssetIDInterface,\n                          ManageableInterface,\n                          PausableInterface,\n                          CrydrViewBaseInterface {\n\n  /* Storage */\n\n  address crydrController = address(0x0);\n  string crydrViewStandardName = '';\n\n\n  /* Constructor */\n\n  function CrydrViewBase(string _crydrViewStandardName) public {\n    require(bytes(_crydrViewStandardName).length > 0);\n\n    crydrViewStandardName = _crydrViewStandardName;\n  }\n\n\n  /* CrydrViewBaseInterface */\n\n  function setCrydrController(\n    address _crydrController\n  )\n    external\n    onlyContractAddress(_crydrController)\n    onlyAllowedManager('set_crydr_controller')\n    whenContractPaused\n  {\n    require(crydrController != _crydrController);\n\n    crydrController = _crydrController;\n    CrydrControllerChangedEvent(_crydrController);\n  }\n\n  function getCrydrController() public constant returns (address) {\n    return crydrController;\n  }\n\n\n  function getCrydrViewStandardName() public constant returns (string) {\n    return crydrViewStandardName;\n  }\n\n  function getCrydrViewStandardNameHash() public constant returns (bytes32) {\n    return keccak256(crydrViewStandardName);\n  }\n\n\n  /* PausableInterface */\n\n  /**\n   * @dev Override method to ensure that contract properly configured before it is unpaused\n   */\n  function unpauseContract() public {\n    require(isContract(crydrController) == true);\n    require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());\n\n    super.unpauseContract();\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewBase.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewBase.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewBase.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewBase.sol",
       "exportedSymbols": {
         "CrydrViewBase": [
           3089
@@ -208,7 +208,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 3090,
           "symbolAliases": [
@@ -223,7 +223,7 @@
       {
         "attributes": {
           "SourceUnit": 3789,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/assetid/AssetID.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/assetid/AssetID.sol",
           "file": "../../feature/assetid/AssetID.sol",
           "scope": 3090,
           "symbolAliases": [
@@ -238,7 +238,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 3090,
           "symbolAliases": [
@@ -253,7 +253,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 3090,
           "symbolAliases": [
@@ -268,7 +268,7 @@
       {
         "attributes": {
           "SourceUnit": 3117,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewBaseInterface.sol",
           "file": "./CrydrViewBaseInterface.sol",
           "scope": 3090,
           "symbolAliases": [
@@ -1983,5 +1983,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.055Z"
+  "updatedAt": "2017-12-15T04:55:52.617Z"
 }

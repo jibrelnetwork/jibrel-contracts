@@ -74,10 +74,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport './ManageableInterface.sol';\nimport './PausableInterface.sol';\n\n\n/**\n * @title Pausable\n * @dev Base contract which allows children to implement an emergency stop mechanism.\n * @dev Based on zeppelin's Pausable, but integrated with Manageable\n * @dev Contract is in paused state by default and should be explicitly unlocked\n */\ncontract Pausable is ManageableInterface,\n                     PausableInterface {\n\n  /**\n   * Storage\n   */\n\n  bool paused = true;\n\n\n  /**\n   * @dev called by the manager to pause, triggers stopped state\n   */\n  function pauseContract() public onlyAllowedManager('pause_contract') whenContractNotPaused {\n    paused = true;\n    PauseEvent();\n  }\n\n  /**\n   * @dev called by the manager to unpause, returns to normal state\n   */\n  function unpauseContract() public onlyAllowedManager('unpause_contract') whenContractPaused {\n    paused = false;\n    UnpauseEvent();\n  }\n\n  /**\n   * @dev The getter for \"paused\" contract variable\n   */\n  function getPaused() public constant returns (bool) {\n    return paused;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Pausable.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/Pausable.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Pausable.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/Pausable.sol",
       "exportedSymbols": {
         "Pausable": [
           4507
@@ -101,7 +101,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "./ManageableInterface.sol",
           "scope": 4508,
           "symbolAliases": [
@@ -116,7 +116,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "./PausableInterface.sol",
           "scope": 4508,
           "symbolAliases": [
@@ -768,5 +768,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.059Z"
+  "updatedAt": "2017-12-15T05:17:29.598Z"
 }

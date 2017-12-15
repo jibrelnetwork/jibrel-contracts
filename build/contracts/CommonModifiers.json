@@ -1,15 +1,15 @@
 {
   "contractName": "CommonModifiers",
   "abi": [],
-  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820797f05270ee5ce4efe81c44dd1a2f8dc66263ad512c898f2ecdcd4b08d0973b80029",
-  "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820797f05270ee5ce4efe81c44dd1a2f8dc66263ad512c898f2ecdcd4b08d0973b80029",
+  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820acff4ae2acace6dce3cf32fe85897a00d58d4fa78f76e07e640540e04d743d080029",
+  "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820acff4ae2acace6dce3cf32fe85897a00d58d4fa78f76e07e640540e04d743d080029",
   "sourceMap": "215:484:69:-;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "215:484:69:-;;;;;",
   "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.18;\n\nimport './CommonModifiersInterface.sol';\n\n\n/**\n * @title CommonModifiers\n * @dev Base contract which contains common checks.\n */\ncontract CommonModifiers is CommonModifiersInterface {\n\n  /**\n   * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.\n   */\n  function isContract(address _targetAddress) internal constant returns (bool) {\n    require (_targetAddress != address(0x0));\n\n    uint256 length;\n    assembly {\n      //retrieve the size of the code on target address, this needs assembly\n      length := extcodesize(_targetAddress)\n    }\n    return (length > 0);\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiers.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiers.sol",
       "exportedSymbols": {
         "CommonModifiers": [
           5564
@@ -33,7 +33,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "./CommonModifiersInterface.sol",
           "scope": 5565,
           "symbolAliases": [
@@ -475,5 +475,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.063Z"
+  "updatedAt": "2017-12-15T04:55:52.649Z"
 }

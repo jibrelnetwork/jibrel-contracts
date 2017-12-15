@@ -292,10 +292,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrViewBaseInterface.sol';\nimport './CrydrViewERC20Interface.sol';\n\nimport '../controller/CrydrControllerERC20Interface.sol';\n\n\ncontract CrydrViewERC20 is PausableInterface,\n                           CrydrViewBaseInterface,\n                           CrydrViewERC20Interface {\n\n  /* ERC20Interface */\n\n  function transfer(\n    address _to,\n    uint256 _value\n  )\n    external\n    whenContractNotPaused\n    onlyPayloadSize(2 * 32)\n    returns (bool)\n  {\n    CrydrControllerERC20Interface(getCrydrController()).transfer(msg.sender, _to, _value);\n    return true;\n  }\n\n  function totalSupply() external constant returns (uint256) {\n    return CrydrControllerERC20Interface(getCrydrController()).getTotalSupply();\n  }\n\n  function balanceOf(address _owner) external constant onlyPayloadSize(1 * 32) returns (uint256) {\n    return CrydrControllerERC20Interface(getCrydrController()).getBalance(_owner);\n  }\n\n\n  function approve(\n    address _spender,\n    uint256 _value\n  )\n    external\n    whenContractNotPaused\n    onlyPayloadSize(2 * 32)\n    returns (bool)\n  {\n    CrydrControllerERC20Interface(getCrydrController()).approve(msg.sender, _spender, _value);\n    return true;\n  }\n\n  function transferFrom(\n    address _from,\n    address _to,\n    uint256 _value\n  )\n    external\n    whenContractNotPaused\n    onlyPayloadSize(3 * 32)\n    returns (bool)\n  {\n    CrydrControllerERC20Interface(getCrydrController()).transferFrom(msg.sender, _from, _to, _value);\n    return true;\n  }\n\n  function allowance(\n    address _owner,\n    address _spender\n  )\n    external\n    constant\n    onlyPayloadSize(2 * 32)\n    returns (uint256)\n  {\n    return CrydrControllerERC20Interface(getCrydrController()).getAllowance(_owner, _spender);\n  }\n\n\n  /* Helpers */\n\n  /**\n   * @dev Fix for the ERC20 short address attack.\n   */\n  modifier onlyPayloadSize(uint256 size) {\n    require(msg.data.length == (size + 4));\n    _;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20.sol",
       "exportedSymbols": {
         "CrydrViewERC20": [
           3297
@@ -319,7 +319,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 3298,
           "symbolAliases": [
@@ -334,7 +334,7 @@
       {
         "attributes": {
           "SourceUnit": 3117,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewBaseInterface.sol",
           "file": "./CrydrViewBaseInterface.sol",
           "scope": 3298,
           "symbolAliases": [
@@ -349,7 +349,7 @@
       {
         "attributes": {
           "SourceUnit": 3367,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Interface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20Interface.sol",
           "file": "./CrydrViewERC20Interface.sol",
           "scope": 3298,
           "symbolAliases": [
@@ -364,7 +364,7 @@
       {
         "attributes": {
           "SourceUnit": 1258,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerERC20Interface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerERC20Interface.sol",
           "file": "../controller/CrydrControllerERC20Interface.sol",
           "scope": 3298,
           "symbolAliases": [
@@ -2945,5 +2945,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.056Z"
+  "updatedAt": "2017-12-15T04:55:52.619Z"
 }

@@ -194,10 +194,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../third-party/zeppelin-solidity/SafeMathInterface.sol';\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../feature/assetid/AssetIDInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrStorageBaseInterface.sol';\nimport './CrydrStorageBalanceInterface.sol';\n\n\n/**\n * @title CrydrStorageBase\n */\ncontract CrydrStorageBalance is SafeMathInterface,\n                                PausableInterface,\n                                CrydrStorageBaseInterface,\n                                CrydrStorageBalanceInterface {\n\n  /* Storage */\n\n  mapping (address => uint256) balances;\n  uint256 totalSupply = 0;\n\n\n  /* Low-level change of balance and getters. Implied that totalSupply kept in sync. */\n\n  function increaseBalance(\n    address _account,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_account != address(0x0));\n    require(_value > 0);\n\n    balances[_account] = safeAdd(balances[_account], _value);\n    totalSupply = safeAdd(totalSupply, _value);\n    AccountBalanceIncreasedEvent(_account, _value);\n  }\n\n  function decreaseBalance(\n    address _account,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_account != address(0x0));\n    require(_value > 0);\n\n    balances[_account] = safeSub(balances[_account], _value);\n    totalSupply = safeSub(totalSupply, _value);\n    AccountBalanceDecreasedEvent(_account, _value);\n  }\n\n  function getBalance(address _account) public constant returns (uint256) {\n    require(_account != address(0x0));\n\n    return balances[_account];\n  }\n\n  function getTotalSupply() public constant returns (uint256) {\n    return totalSupply;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalance.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBalance.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalance.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBalance.sol",
       "exportedSymbols": {
         "CrydrStorageBalance": [
           2198
@@ -221,7 +221,7 @@
       {
         "attributes": {
           "SourceUnit": 4686,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
           "file": "../../third-party/zeppelin-solidity/SafeMathInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -236,7 +236,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -251,7 +251,7 @@
       {
         "attributes": {
           "SourceUnit": 3802,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/assetid/AssetIDInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/assetid/AssetIDInterface.sol",
           "file": "../../feature/assetid/AssetIDInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -266,7 +266,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -281,7 +281,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -296,7 +296,7 @@
       {
         "attributes": {
           "SourceUnit": 2356,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
           "file": "./CrydrStorageBaseInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -311,7 +311,7 @@
       {
         "attributes": {
           "SourceUnit": 2240,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalanceInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBalanceInterface.sol",
           "file": "./CrydrStorageBalanceInterface.sol",
           "scope": 2199,
           "symbolAliases": [
@@ -2603,5 +2603,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.050Z"
+  "updatedAt": "2017-12-15T04:55:52.609Z"
 }

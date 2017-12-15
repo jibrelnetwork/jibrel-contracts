@@ -176,10 +176,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './JNTPayableServiceInterface.sol';\n\nimport '../view/CrydrViewERC20Interface.sol';\nimport '../controller/CrydrControllerBaseInterface.sol';\nimport '../jnt/JNTControllerInterface.sol';\n\n\ncontract JNTPayableService is CommonModifiersInterface,\n                              ManageableInterface,\n                              PausableInterface,\n                              JNTPayableServiceInterface {\n\n  /* Storage */\n\n  JNTControllerInterface jntController;\n  address jntBeneficiary;\n\n\n  /* JNTPayableServiceInterface */\n\n  /* Configuration */\n\n  function setJntController(\n    address _jntController\n  )\n    external\n    onlyContractAddress(_jntController)\n    onlyAllowedManager('set_jnt_controller')\n    whenContractPaused\n  {\n    require(_jntController != address(jntController));\n\n    jntController = JNTControllerInterface(_jntController);\n    JNTControllerChangedEvent(_jntController);\n  }\n\n  function getJntController() public constant returns (address) {\n    return address(jntController);\n  }\n\n\n  function setJntBeneficiary(\n    address _jntBeneficiary\n  )\n    external\n    onlyValidJntBeneficiary(_jntBeneficiary)\n    onlyAllowedManager('set_jnt_beneficiary')\n    whenContractPaused\n  {\n    require(_jntBeneficiary != jntBeneficiary);\n    require(_jntBeneficiary != address(this));\n\n    jntBeneficiary = _jntBeneficiary;\n    JNTBeneficiaryChangedEvent(jntBeneficiary);\n  }\n\n  function getJntBeneficiary() public constant returns (address) {\n    return jntBeneficiary;\n  }\n\n\n  /* Actions */\n\n  function chargeJNTForService(address _from, uint256 _value) internal whenContractNotPaused {\n    require(_from != address(0x0));\n    require(_from != jntBeneficiary);\n    require(_value > 0);\n\n    jntController.chargeJNT(_from, jntBeneficiary, _value);\n    JNTChargedEvent(_from, jntBeneficiary, _value);\n  }\n\n\n  /* Pausable */\n\n  /**\n   * @dev Override method to ensure that contract properly configured before it is unpaused\n   */\n  function unpauseContract()\n    public\n    onlyContractAddress(jntController)\n    onlyValidJntBeneficiary(jntBeneficiary)\n  {\n    super.unpauseContract();\n  }\n\n\n  /* Helpers */\n\n  modifier onlyValidJntBeneficiary(address _jntBeneficiary) {\n    require(_jntBeneficiary != address(0x0));\n    _;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableService.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTPayableService.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableService.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTPayableService.sol",
       "exportedSymbols": {
         "JNTPayableService": [
           1572
@@ -203,7 +203,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -218,7 +218,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -233,7 +233,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -248,7 +248,7 @@
       {
         "attributes": {
           "SourceUnit": 1790,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTPayableServiceInterface.sol",
           "file": "./JNTPayableServiceInterface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -263,7 +263,7 @@
       {
         "attributes": {
           "SourceUnit": 3367,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Interface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewERC20Interface.sol",
           "file": "../view/CrydrViewERC20Interface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -278,7 +278,7 @@
       {
         "attributes": {
           "SourceUnit": 856,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
           "file": "../controller/CrydrControllerBaseInterface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -293,7 +293,7 @@
       {
         "attributes": {
           "SourceUnit": 1392,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTControllerInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/jnt/JNTControllerInterface.sol",
           "file": "../jnt/JNTControllerInterface.sol",
           "scope": 1573,
           "symbolAliases": [
@@ -2706,5 +2706,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.048Z"
+  "updatedAt": "2017-12-15T04:55:52.604Z"
 }

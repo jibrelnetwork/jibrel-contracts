@@ -237,10 +237,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrControllerBaseInterface.sol';\n\nimport '../view/CrydrViewBaseInterface.sol';\n\n\n/**\n * @title CrydrControllerBase\n * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage\n */\ncontract CrydrControllerBase is CommonModifiersInterface,\n                                ManageableInterface,\n                                PausableInterface,\n                                CrydrControllerBaseInterface {\n\n  /* Storage */\n\n  address crydrStorage = address(0x0);\n  mapping (string => address) crydrViewsAddresses;\n  mapping (address => bool) isRegisteredView;\n\n\n  /* CrydrControllerBaseInterface */\n\n  function setCrydrStorage(\n    address _crydrStorage\n  )\n    external\n    onlyContractAddress(_crydrStorage)\n    onlyAllowedManager('set_crydr_storage')\n    whenContractPaused\n  {\n    require(_crydrStorage != address(this));\n    require(_crydrStorage != address(crydrStorage));\n\n    crydrStorage = _crydrStorage;\n    CrydrStorageChangedEvent(_crydrStorage);\n  }\n\n  function getCrydrStorageAddress() public constant returns (address) {\n    return address(crydrStorage);\n  }\n\n\n  function setCrydrView(\n    address _newCrydrView, string _viewApiStandardName\n  )\n    external\n    onlyContractAddress(_newCrydrView)\n    onlyValidCrydrViewStandardName(_viewApiStandardName)\n    onlyAllowedManager('set_crydr_view')\n    whenContractPaused\n  {\n    require(_newCrydrView != address(this));\n    require(crydrViewsAddresses[_viewApiStandardName] == address(0x0));\n\n    var crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);\n    var standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();\n    require(standardNameHash == keccak256(_viewApiStandardName));\n\n    crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;\n    isRegisteredView[_newCrydrView] = true;\n\n    CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);\n  }\n\n  function removeCrydrView(\n    string _viewApiStandardName\n  )\n    external\n    onlyValidCrydrViewStandardName(_viewApiStandardName)\n    onlyAllowedManager('remove_crydr_view')\n    whenContractPaused\n  {\n    require(crydrViewsAddresses[_viewApiStandardName] != address(0x0));\n\n    address removedView = crydrViewsAddresses[_viewApiStandardName];\n\n    // make changes to the storage\n    crydrViewsAddresses[_viewApiStandardName] == address(0x0);\n    isRegisteredView[removedView] = false;\n\n    CrydrViewRemovedEvent(removedView, _viewApiStandardName);\n  }\n\n  function getCrydrViewAddress(\n    string _viewApiStandardName\n  )\n    public\n    constant\n    onlyValidCrydrViewStandardName(_viewApiStandardName)\n    returns (address)\n  {\n    require(crydrViewsAddresses[_viewApiStandardName] != address(0x0));\n\n    return crydrViewsAddresses[_viewApiStandardName];\n  }\n\n  function isCrydrViewAddress(\n    address _crydrViewAddress\n  )\n    public\n    constant\n    returns (bool)\n  {\n    require(_crydrViewAddress != address(0x0));\n\n    return isRegisteredView[_crydrViewAddress];\n  }\n\n  function isCrydrViewRegistered(\n    string _viewApiStandardName\n  )\n    public\n    constant\n    onlyValidCrydrViewStandardName(_viewApiStandardName)\n    returns (bool)\n  {\n    return (crydrViewsAddresses[_viewApiStandardName] != address(0x0));\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBase.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBase.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBase.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBase.sol",
       "exportedSymbols": {
         "CrydrControllerBase": [
           765
@@ -264,7 +264,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 766,
           "symbolAliases": [
@@ -279,7 +279,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 766,
           "symbolAliases": [
@@ -294,7 +294,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 766,
           "symbolAliases": [
@@ -309,7 +309,7 @@
       {
         "attributes": {
           "SourceUnit": 856,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
           "file": "./CrydrControllerBaseInterface.sol",
           "scope": 766,
           "symbolAliases": [
@@ -324,7 +324,7 @@
       {
         "attributes": {
           "SourceUnit": 3117,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/view/CrydrViewBaseInterface.sol",
           "file": "../view/CrydrViewBaseInterface.sol",
           "scope": 766,
           "symbolAliases": [
@@ -3984,5 +3984,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.046Z"
+  "updatedAt": "2017-12-15T04:55:52.595Z"
 }

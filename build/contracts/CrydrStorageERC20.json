@@ -606,10 +606,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../third-party/zeppelin-solidity/SafeMathInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrStorageBaseInterface.sol';\nimport './CrydrStorageBalanceInterface.sol';\nimport './CrydrStorageAllowanceInterface.sol';\nimport './CrydrStorageBlocksInterface.sol';\nimport './CrydrStorageERC20Interface.sol';\n\n\n/**\n * @title CrydrStorageERC20\n */\ncontract CrydrStorageERC20 is SafeMathInterface,\n                              PausableInterface,\n                              CrydrStorageBaseInterface,\n                              CrydrStorageBalanceInterface,\n                              CrydrStorageAllowanceInterface,\n                              CrydrStorageBlocksInterface,\n                              CrydrStorageERC20Interface {\n\n  function transfer(\n    address _msgsender,\n    address _to,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_msgsender != _to);\n    require(getAccountBlocks(_msgsender) == 0);\n    require(safeSub(getBalance(_msgsender), _value) >= getAccountBlockedFunds(_msgsender));\n\n    decreaseBalance(_msgsender, _value);\n    increaseBalance(_to, _value);\n    CrydrTransferredEvent(_msgsender, _to, _value);\n  }\n\n  function transferFrom(\n    address _msgsender,\n    address _from,\n    address _to,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(getAccountBlocks(_msgsender) == 0);\n    require(getAccountBlocks(_from) == 0);\n    require(safeSub(getBalance(_from), _value) >= getAccountBlockedFunds(_from));\n    require(_from != _to);\n\n    decreaseAllowance(_from, _msgsender, _value);\n    decreaseBalance(_from, _value);\n    increaseBalance(_to, _value);\n    CrydrTransferredFromEvent(_msgsender, _from, _to, _value);\n  }\n\n  function approve(\n    address _msgsender,\n    address _spender,\n    uint256 _value\n  )\n    public\n    whenContractNotPaused\n  {\n    require(msg.sender == getCrydrController());\n\n    require(getAccountBlocks(_msgsender) == 0);\n    require(getAccountBlocks(_spender) == 0);\n\n    uint256 currentAllowance = getAllowance(_msgsender, _spender);\n    require(currentAllowance != _value);\n    if (currentAllowance > _value) {\n      decreaseAllowance(_msgsender, _spender, safeSub(currentAllowance, _value));\n    } else {\n      increaseAllowance(_msgsender, _spender, safeSub(_value, currentAllowance));\n    }\n\n    CrydrSpendingApprovedEvent(_msgsender, _spender, _value);\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageERC20.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageERC20.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageERC20.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageERC20.sol",
       "exportedSymbols": {
         "CrydrStorageERC20": [
           2904
@@ -633,7 +633,7 @@
       {
         "attributes": {
           "SourceUnit": 4686,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
           "file": "../../third-party/zeppelin-solidity/SafeMathInterface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -648,7 +648,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -663,7 +663,7 @@
       {
         "attributes": {
           "SourceUnit": 2356,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
           "file": "./CrydrStorageBaseInterface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -678,7 +678,7 @@
       {
         "attributes": {
           "SourceUnit": 2240,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalanceInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBalanceInterface.sol",
           "file": "./CrydrStorageBalanceInterface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -693,7 +693,7 @@
       {
         "attributes": {
           "SourceUnit": 2036,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageAllowanceInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageAllowanceInterface.sol",
           "file": "./CrydrStorageAllowanceInterface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -708,7 +708,7 @@
       {
         "attributes": {
           "SourceUnit": 2659,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
           "file": "./CrydrStorageBlocksInterface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -723,7 +723,7 @@
       {
         "attributes": {
           "SourceUnit": 2963,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageERC20Interface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageERC20Interface.sol",
           "file": "./CrydrStorageERC20Interface.sol",
           "scope": 2905,
           "symbolAliases": [
@@ -4433,5 +4433,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.055Z"
+  "updatedAt": "2017-12-15T04:55:52.616Z"
 }

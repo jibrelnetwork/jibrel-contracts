@@ -170,10 +170,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title CrydrControllerBaseInterface interface\n * @dev Interface of a contract that implement business-logic of an CryDR, mediates CryDR views and storage\n */\ncontract CrydrControllerBaseInterface {\n\n  /* Events */\n\n  event CrydrStorageChangedEvent(address indexed crydrstorage);\n  event CrydrViewAddedEvent(address indexed crydrview, string standardname);\n  event CrydrViewRemovedEvent(address indexed crydrview, string standardname);\n\n\n  /* Configuration */\n\n  function setCrydrStorage(address _newStorage) external;\n  function getCrydrStorageAddress() public constant returns (address);\n\n  function setCrydrView(address _newCrydrView, string _viewApiStandardName) external;\n  function removeCrydrView(string _viewApiStandardName) external;\n  function getCrydrViewAddress(string _viewApiStandardName) public constant returns (address);\n\n  function isCrydrViewAddress(address _crydrViewAddress) public constant returns (bool);\n  function isCrydrViewRegistered(string _viewApiStandardName) public constant returns (bool);\n\n\n  /* Helpers */\n\n  modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {\n    require(bytes(_viewApiStandard).length > 0);\n    _;\n  }\n\n  modifier onlyCrydrView() {\n    require(isCrydrViewAddress(msg.sender) == true);\n    _;\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
       "exportedSymbols": {
         "CrydrControllerBaseInterface": [
           855
@@ -1367,5 +1367,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.047Z"
+  "updatedAt": "2017-12-15T05:17:29.605Z"
 }

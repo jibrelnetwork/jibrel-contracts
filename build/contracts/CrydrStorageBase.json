@@ -142,10 +142,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../feature/assetid/AssetIDInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrStorageBaseInterface.sol';\n\n\n/**\n * @title CrydrStorageBase\n */\ncontract CrydrStorageBase is CommonModifiersInterface,\n                             AssetIDInterface,\n                             ManageableInterface,\n                             PausableInterface,\n                             CrydrStorageBaseInterface {\n\n  /* Storage */\n\n  address crydrController = address(0x0);\n\n\n  /* CrydrStorageBaseInterface */\n\n  /* Configuration */\n\n  function setCrydrController(\n    address _crydrController\n  )\n    public\n    whenContractPaused\n    onlyContractAddress(_crydrController)\n    onlyAllowedManager('set_crydr_controller')\n  {\n    require(_crydrController != address(crydrController));\n    require(_crydrController != address(this));\n\n    crydrController = _crydrController;\n    CrydrControllerChangedEvent(_crydrController);\n  }\n\n  function getCrydrController() public constant returns (address) {\n    return address(crydrController);\n  }\n\n\n  /* PausableInterface */\n\n  /**\n   * @dev Override method to ensure that contract properly configured before it is unpaused\n   */\n  function unpauseContract() public {\n    require(isContract(crydrController) == true);\n    require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());\n\n    super.unpauseContract();\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBase.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBase.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBase.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBase.sol",
       "exportedSymbols": {
         "CrydrStorageBase": [
           2338
@@ -169,7 +169,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 2339,
           "symbolAliases": [
@@ -184,7 +184,7 @@
       {
         "attributes": {
           "SourceUnit": 3802,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/assetid/AssetIDInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/assetid/AssetIDInterface.sol",
           "file": "../../feature/assetid/AssetIDInterface.sol",
           "scope": 2339,
           "symbolAliases": [
@@ -199,7 +199,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 2339,
           "symbolAliases": [
@@ -214,7 +214,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 2339,
           "symbolAliases": [
@@ -229,7 +229,7 @@
       {
         "attributes": {
           "SourceUnit": 2356,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
           "file": "./CrydrStorageBaseInterface.sol",
           "scope": 2339,
           "symbolAliases": [
@@ -1606,5 +1606,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.050Z"
+  "updatedAt": "2017-12-15T04:55:52.608Z"
 }

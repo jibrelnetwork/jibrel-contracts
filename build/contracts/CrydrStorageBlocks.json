@@ -257,10 +257,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../third-party/zeppelin-solidity/SafeMathInterface.sol';\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../feature/assetid/AssetIDInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrStorageBaseInterface.sol';\nimport './CrydrStorageBlocksInterface.sol';\n\n\n/**\n * @title CrydrStorageBase\n */\ncontract CrydrStorageBlocks is SafeMathInterface,\n                               PausableInterface,\n                               CrydrStorageBaseInterface,\n                               CrydrStorageBlocksInterface {\n\n  /* Storage */\n\n  mapping (address => uint256) accountBlocks;\n  mapping (address => uint256) accountBlockedFunds;\n\n\n  /* Constructor */\n\n  function CrydrStorageBlocks() public {\n    accountBlocks[0x0] = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;\n  }\n\n\n  /* Low-level change of blocks and getters */\n\n  function blockAccount(\n    address _account\n  )\n    public\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_account != address(0x0));\n\n    accountBlocks[_account] = safeAdd(accountBlocks[_account], 1);\n    AccountBlockedEvent(_account);\n  }\n\n  function unblockAccount(\n    address _account\n  )\n    public\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_account != address(0x0));\n\n    accountBlocks[_account] = safeSub(accountBlocks[_account], 1);\n    AccountUnblockedEvent(_account);\n  }\n\n  function getAccountBlocks(\n    address _account\n  )\n    public\n    constant\n    returns (uint256)\n  {\n    require(_account != address(0x0));\n\n    return accountBlocks[_account];\n  }\n\n  function blockAccountFunds(\n    address _account,\n    uint256 _value\n  )\n    public\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_account != address(0x0));\n    require(_value > 0);\n\n    accountBlockedFunds[_account] = safeAdd(accountBlockedFunds[_account], _value);\n    AccountFundsBlockedEvent(_account, _value);\n  }\n\n  function unblockAccountFunds(\n    address _account,\n    uint256 _value\n  )\n    public\n  {\n    require(msg.sender == getCrydrController());\n\n    require(_account != address(0x0));\n    require(_value > 0);\n\n    accountBlockedFunds[_account] = safeSub(accountBlockedFunds[_account], _value);\n    AccountFundsUnblockedEvent(_account, _value);\n  }\n\n  function getAccountBlockedFunds(\n    address _account\n  )\n    public\n    constant\n    returns (uint256)\n  {\n    require(_account != address(0x0));\n\n    return accountBlockedFunds[_account];\n  }\n}\n",
-  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocks.sol",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBlocks.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocks.sol",
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBlocks.sol",
       "exportedSymbols": {
         "CrydrStorageBlocks": [
           2597
@@ -284,7 +284,7 @@
       {
         "attributes": {
           "SourceUnit": 4686,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/third-party/zeppelin-solidity/SafeMathInterface.sol",
           "file": "../../third-party/zeppelin-solidity/SafeMathInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -299,7 +299,7 @@
       {
         "attributes": {
           "SourceUnit": 5589,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/util/CommonModifiersInterface.sol",
           "file": "../../util/CommonModifiersInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -314,7 +314,7 @@
       {
         "attributes": {
           "SourceUnit": 3802,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/assetid/AssetIDInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/assetid/AssetIDInterface.sol",
           "file": "../../feature/assetid/AssetIDInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -329,7 +329,7 @@
       {
         "attributes": {
           "SourceUnit": 4247,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
           "file": "../../lifecycle/ManageableInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -344,7 +344,7 @@
       {
         "attributes": {
           "SourceUnit": 4549,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/PausableInterface.sol",
           "file": "../../lifecycle/PausableInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -359,7 +359,7 @@
       {
         "attributes": {
           "SourceUnit": 2356,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
           "file": "./CrydrStorageBaseInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -374,7 +374,7 @@
       {
         "attributes": {
           "SourceUnit": 2659,
-          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
           "file": "./CrydrStorageBlocksInterface.sol",
           "scope": 2598,
           "symbolAliases": [
@@ -3876,5 +3876,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2017-12-15T00:13:01.051Z"
+  "updatedAt": "2017-12-15T04:55:52.613Z"
 }
