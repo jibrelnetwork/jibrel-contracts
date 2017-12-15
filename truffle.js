@@ -19,7 +19,7 @@ module.exports = {
     main: {
       host:       'localhost',
       port:       8545,
-      network_id: 3, // official id of the ropsten network
+      network_id: 1, // official id of the main network
       gas:        6700000,
     },
     coverage: {
