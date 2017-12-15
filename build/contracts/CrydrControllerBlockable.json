@@ -1,0 +1,1530 @@
+{
+  "contractName": "CrydrControllerBlockable",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newStorage",
+          "type": "address"
+        }
+      ],
+      "name": "setCrydrStorage",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "unblockAccount",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "removeCrydrView",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "blockAccount",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "unblockAccountFunds",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCrydrStorageAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "getCrydrViewAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "blockAccountFunds",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_crydrViewAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isCrydrViewAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "isCrydrViewRegistered",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newCrydrView",
+          "type": "address"
+        },
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "setCrydrView",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrstorage",
+          "type": "address"
+        }
+      ],
+      "name": "CrydrStorageChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrview",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "standardname",
+          "type": "string"
+        }
+      ],
+      "name": "CrydrViewAddedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrview",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "standardname",
+          "type": "string"
+        }
+      ],
+      "name": "CrydrViewRemovedEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../lifecycle/ManageableInterface.sol';\nimport './CrydrControllerBaseInterface.sol';\nimport './CrydrControllerBlockableInterface.sol';\n\nimport '../storage/CrydrStorageBlocksInterface.sol';\n\n\n/**\n * @title CrydrControllerBlockable interface\n * @dev Implementation of a contract that allows blocking/unlocking accounts\n */\ncontract CrydrControllerBlockable is ManageableInterface,\n                                     CrydrControllerBaseInterface,\n                                     CrydrControllerBlockableInterface {\n\n\n  /* blocking/unlocking */\n\n  function blockAccount(\n    address _account\n  )\n    public\n    onlyAllowedManager('block_account')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccount(_account);\n  }\n\n  function unblockAccount(\n    address _account\n  )\n    public\n    onlyAllowedManager('unblock_account')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).unblockAccount(_account);\n  }\n\n  function blockAccountFunds(\n    address _account,\n    uint256 _value\n  )\n    public\n    onlyAllowedManager('block_account_funds')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);\n  }\n\n  function unblockAccountFunds(\n    address _account,\n    uint256 _value\n  )\n    public\n    onlyAllowedManager('unblock_account_funds')\n  {\n    CrydrStorageBlocksInterface(getCrydrStorageAddress()).unblockAccountFunds(_account, _value);\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBlockable.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBlockable.sol",
+      "exportedSymbols": {
+        "CrydrControllerBlockable": [
+          942
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 857,
+        "name": "PragmaDirective",
+        "src": "60:24:15"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4248,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/lifecycle/ManageableInterface.sol",
+          "file": "../../lifecycle/ManageableInterface.sol",
+          "scope": 943,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 858,
+        "name": "ImportDirective",
+        "src": "87:49:15"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 856,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+          "file": "./CrydrControllerBaseInterface.sol",
+          "scope": 943,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 859,
+        "name": "ImportDirective",
+        "src": "137:44:15"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 970,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/controller/CrydrControllerBlockableInterface.sol",
+          "file": "./CrydrControllerBlockableInterface.sol",
+          "scope": 943,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 860,
+        "name": "ImportDirective",
+        "src": "182:49:15"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2659,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
+          "file": "../storage/CrydrStorageBlocksInterface.sol",
+          "scope": 943,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 861,
+        "name": "ImportDirective",
+        "src": "233:52:15"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            855,
+            969,
+            4247
+          ],
+          "contractKind": "contract",
+          "documentation": "@title CrydrControllerBlockable interface\n@dev Implementation of a contract that allows blocking/unlocking accounts",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            942,
+            969,
+            855,
+            4247
+          ],
+          "name": "CrydrControllerBlockable",
+          "scope": 943
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "ManageableInterface",
+                  "referencedDeclaration": 4247,
+                  "type": "contract ManageableInterface"
+                },
+                "id": 862,
+                "name": "UserDefinedTypeName",
+                "src": "455:19:15"
+              }
+            ],
+            "id": 863,
+            "name": "InheritanceSpecifier",
+            "src": "455:19:15"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "CrydrControllerBaseInterface",
+                  "referencedDeclaration": 855,
+                  "type": "contract CrydrControllerBaseInterface"
+                },
+                "id": 864,
+                "name": "UserDefinedTypeName",
+                "src": "513:28:15"
+              }
+            ],
+            "id": 865,
+            "name": "InheritanceSpecifier",
+            "src": "513:28:15"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "CrydrControllerBlockableInterface",
+                  "referencedDeclaration": 969,
+                  "type": "contract CrydrControllerBlockableInterface"
+                },
+                "id": 866,
+                "name": "UserDefinedTypeName",
+                "src": "580:33:15"
+              }
+            ],
+            "id": 867,
+            "name": "InheritanceSpecifier",
+            "src": "580:33:15"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "blockAccount",
+              "payable": false,
+              "scope": 942,
+              "stateMutability": "nonpayable",
+              "superFunction": 949,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 884,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 868,
+                        "name": "ElementaryTypeName",
+                        "src": "675:7:15"
+                      }
+                    ],
+                    "id": 869,
+                    "name": "VariableDeclaration",
+                    "src": "675:16:15"
+                  }
+                ],
+                "id": 870,
+                "name": "ParameterList",
+                "src": "669:26:15"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 874,
+                "name": "ParameterList",
+                "src": "749:0:15"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 871,
+                    "name": "Identifier",
+                    "src": "711:18:15"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "626c6f636b5f6163636f756e74",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"block_account\"",
+                      "value": "block_account"
+                    },
+                    "id": 872,
+                    "name": "Literal",
+                    "src": "730:15:15"
+                  }
+                ],
+                "id": 873,
+                "name": "ModifierInvocation",
+                "src": "711:35:15"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "blockAccount",
+                              "referencedDeclaration": 2624,
+                              "type": "function (address) external"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "contract CrydrStorageBlocksInterface",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 2658,
+                                      "type": "type(contract CrydrStorageBlocksInterface)",
+                                      "value": "CrydrStorageBlocksInterface"
+                                    },
+                                    "id": 875,
+                                    "name": "Identifier",
+                                    "src": "755:27:15"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "arguments": [
+                                        null
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "type": "address",
+                                      "type_conversion": false
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            null
+                                          ],
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 793,
+                                          "type": "function () view returns (address)",
+                                          "value": "getCrydrStorageAddress"
+                                        },
+                                        "id": 876,
+                                        "name": "Identifier",
+                                        "src": "783:22:15"
+                                      }
+                                    ],
+                                    "id": 877,
+                                    "name": "FunctionCall",
+                                    "src": "783:24:15"
+                                  }
+                                ],
+                                "id": 878,
+                                "name": "FunctionCall",
+                                "src": "755:53:15"
+                              }
+                            ],
+                            "id": 879,
+                            "name": "MemberAccess",
+                            "src": "755:66:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 869,
+                              "type": "address",
+                              "value": "_account"
+                            },
+                            "id": 880,
+                            "name": "Identifier",
+                            "src": "822:8:15"
+                          }
+                        ],
+                        "id": 881,
+                        "name": "FunctionCall",
+                        "src": "755:76:15"
+                      }
+                    ],
+                    "id": 882,
+                    "name": "ExpressionStatement",
+                    "src": "755:76:15"
+                  }
+                ],
+                "id": 883,
+                "name": "Block",
+                "src": "749:87:15"
+              }
+            ],
+            "id": 884,
+            "name": "FunctionDefinition",
+            "src": "648:188:15"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "unblockAccount",
+              "payable": false,
+              "scope": 942,
+              "stateMutability": "nonpayable",
+              "superFunction": 954,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 901,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 885,
+                        "name": "ElementaryTypeName",
+                        "src": "869:7:15"
+                      }
+                    ],
+                    "id": 886,
+                    "name": "VariableDeclaration",
+                    "src": "869:16:15"
+                  }
+                ],
+                "id": 887,
+                "name": "ParameterList",
+                "src": "863:26:15"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 891,
+                "name": "ParameterList",
+                "src": "945:0:15"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 888,
+                    "name": "Identifier",
+                    "src": "905:18:15"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "756e626c6f636b5f6163636f756e74",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"unblock_account\"",
+                      "value": "unblock_account"
+                    },
+                    "id": 889,
+                    "name": "Literal",
+                    "src": "924:17:15"
+                  }
+                ],
+                "id": 890,
+                "name": "ModifierInvocation",
+                "src": "905:37:15"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "unblockAccount",
+                              "referencedDeclaration": 2629,
+                              "type": "function (address) external"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "contract CrydrStorageBlocksInterface",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 2658,
+                                      "type": "type(contract CrydrStorageBlocksInterface)",
+                                      "value": "CrydrStorageBlocksInterface"
+                                    },
+                                    "id": 892,
+                                    "name": "Identifier",
+                                    "src": "951:27:15"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "arguments": [
+                                        null
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "type": "address",
+                                      "type_conversion": false
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            null
+                                          ],
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 793,
+                                          "type": "function () view returns (address)",
+                                          "value": "getCrydrStorageAddress"
+                                        },
+                                        "id": 893,
+                                        "name": "Identifier",
+                                        "src": "979:22:15"
+                                      }
+                                    ],
+                                    "id": 894,
+                                    "name": "FunctionCall",
+                                    "src": "979:24:15"
+                                  }
+                                ],
+                                "id": 895,
+                                "name": "FunctionCall",
+                                "src": "951:53:15"
+                              }
+                            ],
+                            "id": 896,
+                            "name": "MemberAccess",
+                            "src": "951:68:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 886,
+                              "type": "address",
+                              "value": "_account"
+                            },
+                            "id": 897,
+                            "name": "Identifier",
+                            "src": "1020:8:15"
+                          }
+                        ],
+                        "id": 898,
+                        "name": "FunctionCall",
+                        "src": "951:78:15"
+                      }
+                    ],
+                    "id": 899,
+                    "name": "ExpressionStatement",
+                    "src": "951:78:15"
+                  }
+                ],
+                "id": 900,
+                "name": "Block",
+                "src": "945:89:15"
+              }
+            ],
+            "id": 901,
+            "name": "FunctionDefinition",
+            "src": "840:194:15"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "blockAccountFunds",
+              "payable": false,
+              "scope": 942,
+              "stateMutability": "nonpayable",
+              "superFunction": 961,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 921,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 902,
+                        "name": "ElementaryTypeName",
+                        "src": "1070:7:15"
+                      }
+                    ],
+                    "id": 903,
+                    "name": "VariableDeclaration",
+                    "src": "1070:16:15"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 921,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 904,
+                        "name": "ElementaryTypeName",
+                        "src": "1092:7:15"
+                      }
+                    ],
+                    "id": 905,
+                    "name": "VariableDeclaration",
+                    "src": "1092:14:15"
+                  }
+                ],
+                "id": 906,
+                "name": "ParameterList",
+                "src": "1064:46:15"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 910,
+                "name": "ParameterList",
+                "src": "1170:0:15"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 907,
+                    "name": "Identifier",
+                    "src": "1126:18:15"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "626c6f636b5f6163636f756e745f66756e6473",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"block_account_funds\"",
+                      "value": "block_account_funds"
+                    },
+                    "id": 908,
+                    "name": "Literal",
+                    "src": "1145:21:15"
+                  }
+                ],
+                "id": 909,
+                "name": "ModifierInvocation",
+                "src": "1126:41:15"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "blockAccountFunds",
+                              "referencedDeclaration": 2643,
+                              "type": "function (address,uint256) external"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "contract CrydrStorageBlocksInterface",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 2658,
+                                      "type": "type(contract CrydrStorageBlocksInterface)",
+                                      "value": "CrydrStorageBlocksInterface"
+                                    },
+                                    "id": 911,
+                                    "name": "Identifier",
+                                    "src": "1176:27:15"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "arguments": [
+                                        null
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "type": "address",
+                                      "type_conversion": false
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            null
+                                          ],
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 793,
+                                          "type": "function () view returns (address)",
+                                          "value": "getCrydrStorageAddress"
+                                        },
+                                        "id": 912,
+                                        "name": "Identifier",
+                                        "src": "1204:22:15"
+                                      }
+                                    ],
+                                    "id": 913,
+                                    "name": "FunctionCall",
+                                    "src": "1204:24:15"
+                                  }
+                                ],
+                                "id": 914,
+                                "name": "FunctionCall",
+                                "src": "1176:53:15"
+                              }
+                            ],
+                            "id": 915,
+                            "name": "MemberAccess",
+                            "src": "1176:71:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 903,
+                              "type": "address",
+                              "value": "_account"
+                            },
+                            "id": 916,
+                            "name": "Identifier",
+                            "src": "1248:8:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 905,
+                              "type": "uint256",
+                              "value": "_value"
+                            },
+                            "id": 917,
+                            "name": "Identifier",
+                            "src": "1258:6:15"
+                          }
+                        ],
+                        "id": 918,
+                        "name": "FunctionCall",
+                        "src": "1176:89:15"
+                      }
+                    ],
+                    "id": 919,
+                    "name": "ExpressionStatement",
+                    "src": "1176:89:15"
+                  }
+                ],
+                "id": 920,
+                "name": "Block",
+                "src": "1170:100:15"
+              }
+            ],
+            "id": 921,
+            "name": "FunctionDefinition",
+            "src": "1038:232:15"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "unblockAccountFunds",
+              "payable": false,
+              "scope": 942,
+              "stateMutability": "nonpayable",
+              "superFunction": 968,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 922,
+                        "name": "ElementaryTypeName",
+                        "src": "1308:7:15"
+                      }
+                    ],
+                    "id": 923,
+                    "name": "VariableDeclaration",
+                    "src": "1308:16:15"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 924,
+                        "name": "ElementaryTypeName",
+                        "src": "1330:7:15"
+                      }
+                    ],
+                    "id": 925,
+                    "name": "VariableDeclaration",
+                    "src": "1330:14:15"
+                  }
+                ],
+                "id": 926,
+                "name": "ParameterList",
+                "src": "1302:46:15"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 930,
+                "name": "ParameterList",
+                "src": "1410:0:15"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 927,
+                    "name": "Identifier",
+                    "src": "1364:18:15"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "756e626c6f636b5f6163636f756e745f66756e6473",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"unblock_account_funds\"",
+                      "value": "unblock_account_funds"
+                    },
+                    "id": 928,
+                    "name": "Literal",
+                    "src": "1383:23:15"
+                  }
+                ],
+                "id": 929,
+                "name": "ModifierInvocation",
+                "src": "1364:43:15"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "unblockAccountFunds",
+                              "referencedDeclaration": 2650,
+                              "type": "function (address,uint256) external"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "contract CrydrStorageBlocksInterface",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 2658,
+                                      "type": "type(contract CrydrStorageBlocksInterface)",
+                                      "value": "CrydrStorageBlocksInterface"
+                                    },
+                                    "id": 931,
+                                    "name": "Identifier",
+                                    "src": "1416:27:15"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "arguments": [
+                                        null
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "type": "address",
+                                      "type_conversion": false
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            null
+                                          ],
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 793,
+                                          "type": "function () view returns (address)",
+                                          "value": "getCrydrStorageAddress"
+                                        },
+                                        "id": 932,
+                                        "name": "Identifier",
+                                        "src": "1444:22:15"
+                                      }
+                                    ],
+                                    "id": 933,
+                                    "name": "FunctionCall",
+                                    "src": "1444:24:15"
+                                  }
+                                ],
+                                "id": 934,
+                                "name": "FunctionCall",
+                                "src": "1416:53:15"
+                              }
+                            ],
+                            "id": 935,
+                            "name": "MemberAccess",
+                            "src": "1416:73:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 923,
+                              "type": "address",
+                              "value": "_account"
+                            },
+                            "id": 936,
+                            "name": "Identifier",
+                            "src": "1490:8:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 925,
+                              "type": "uint256",
+                              "value": "_value"
+                            },
+                            "id": 937,
+                            "name": "Identifier",
+                            "src": "1500:6:15"
+                          }
+                        ],
+                        "id": 938,
+                        "name": "FunctionCall",
+                        "src": "1416:91:15"
+                      }
+                    ],
+                    "id": 939,
+                    "name": "ExpressionStatement",
+                    "src": "1416:91:15"
+                  }
+                ],
+                "id": 940,
+                "name": "Block",
+                "src": "1410:102:15"
+              }
+            ],
+            "id": 941,
+            "name": "FunctionDefinition",
+            "src": "1274:238:15"
+          }
+        ],
+        "id": 942,
+        "name": "ContractDefinition",
+        "src": "418:1096:15"
+      }
+    ],
+    "id": 943,
+    "name": "SourceUnit",
+    "src": "60:1455:15"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-15T09:35:42.051Z"
+}

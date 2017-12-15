@@ -1,0 +1,653 @@
+{
+  "contractName": "BytecodeExecutorInterface",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_target",
+          "type": "address"
+        },
+        {
+          "name": "_suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "name": "_ethValue",
+          "type": "uint256"
+        },
+        {
+          "name": "_transactionBytecode",
+          "type": "bytes"
+        }
+      ],
+      "name": "executeCall",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_target",
+          "type": "address"
+        },
+        {
+          "name": "_suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "name": "_transactionBytecode",
+          "type": "bytes"
+        }
+      ],
+      "name": "executeDelegatecall",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "ethValue",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "transactionBytecodeHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "CallExecutedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "transactionBytecodeHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "DelegatecallExecutedEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title BytecodeExecutorInterface interface\n * @dev Implementation of a contract that execute any bytecode on behalf of the contract\n * @dev Last resort for the immutable and not-replaceable contract :)\n */\ncontract BytecodeExecutorInterface {\n\n  /* Events */\n\n  event CallExecutedEvent(address indexed target,\n                          uint256 suppliedGas,\n                          uint256 ethValue,\n                          bytes32 transactionBytecodeHash);\n  event DelegatecallExecutedEvent(address indexed target,\n                                  uint256 suppliedGas,\n                                  bytes32 transactionBytecodeHash);\n\n\n  /* Functions */\n\n  function executeCall(address _target, uint256 _suppliedGas, uint256 _ethValue, bytes _transactionBytecode) external;\n  function executeDelegatecall(address _target, uint256 _suppliedGas, bytes _transactionBytecode) external;\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/bytecode/BytecodeExecutorInterface.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/feature/bytecode/BytecodeExecutorInterface.sol",
+      "exportedSymbols": {
+        "BytecodeExecutorInterface": [
+          3951
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 3912,
+        "name": "PragmaDirective",
+        "src": "60:24:49"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title BytecodeExecutorInterface interface\n@dev Implementation of a contract that execute any bytecode on behalf of the contract\n@dev Last resort for the immutable and not-replaceable contract :)",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            3951
+          ],
+          "name": "BytecodeExecutorInterface",
+          "scope": 3952
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "CallExecutedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "target",
+                      "scope": 3922,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 3913,
+                        "name": "ElementaryTypeName",
+                        "src": "380:7:49"
+                      }
+                    ],
+                    "id": 3914,
+                    "name": "VariableDeclaration",
+                    "src": "380:22:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "suppliedGas",
+                      "scope": 3922,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 3915,
+                        "name": "ElementaryTypeName",
+                        "src": "430:7:49"
+                      }
+                    ],
+                    "id": 3916,
+                    "name": "VariableDeclaration",
+                    "src": "430:19:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "ethValue",
+                      "scope": 3922,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 3917,
+                        "name": "ElementaryTypeName",
+                        "src": "477:7:49"
+                      }
+                    ],
+                    "id": 3918,
+                    "name": "VariableDeclaration",
+                    "src": "477:16:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "transactionBytecodeHash",
+                      "scope": 3922,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 3919,
+                        "name": "ElementaryTypeName",
+                        "src": "521:7:49"
+                      }
+                    ],
+                    "id": 3920,
+                    "name": "VariableDeclaration",
+                    "src": "521:31:49"
+                  }
+                ],
+                "id": 3921,
+                "name": "ParameterList",
+                "src": "379:174:49"
+              }
+            ],
+            "id": 3922,
+            "name": "EventDefinition",
+            "src": "356:198:49"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "DelegatecallExecutedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "target",
+                      "scope": 3930,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 3923,
+                        "name": "ElementaryTypeName",
+                        "src": "589:7:49"
+                      }
+                    ],
+                    "id": 3924,
+                    "name": "VariableDeclaration",
+                    "src": "589:22:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "suppliedGas",
+                      "scope": 3930,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 3925,
+                        "name": "ElementaryTypeName",
+                        "src": "647:7:49"
+                      }
+                    ],
+                    "id": 3926,
+                    "name": "VariableDeclaration",
+                    "src": "647:19:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "transactionBytecodeHash",
+                      "scope": 3930,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 3927,
+                        "name": "ElementaryTypeName",
+                        "src": "702:7:49"
+                      }
+                    ],
+                    "id": 3928,
+                    "name": "VariableDeclaration",
+                    "src": "702:31:49"
+                  }
+                ],
+                "id": 3929,
+                "name": "ParameterList",
+                "src": "588:146:49"
+              }
+            ],
+            "id": 3930,
+            "name": "EventDefinition",
+            "src": "557:178:49"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "executeCall",
+              "payable": false,
+              "scope": 3951,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_target",
+                      "scope": 3941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 3931,
+                        "name": "ElementaryTypeName",
+                        "src": "780:7:49"
+                      }
+                    ],
+                    "id": 3932,
+                    "name": "VariableDeclaration",
+                    "src": "780:15:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_suppliedGas",
+                      "scope": 3941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 3933,
+                        "name": "ElementaryTypeName",
+                        "src": "797:7:49"
+                      }
+                    ],
+                    "id": 3934,
+                    "name": "VariableDeclaration",
+                    "src": "797:20:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_ethValue",
+                      "scope": 3941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 3935,
+                        "name": "ElementaryTypeName",
+                        "src": "819:7:49"
+                      }
+                    ],
+                    "id": 3936,
+                    "name": "VariableDeclaration",
+                    "src": "819:17:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_transactionBytecode",
+                      "scope": 3941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes calldata",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes storage pointer"
+                        },
+                        "id": 3937,
+                        "name": "ElementaryTypeName",
+                        "src": "838:5:49"
+                      }
+                    ],
+                    "id": 3938,
+                    "name": "VariableDeclaration",
+                    "src": "838:26:49"
+                  }
+                ],
+                "id": 3939,
+                "name": "ParameterList",
+                "src": "779:86:49"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 3940,
+                "name": "ParameterList",
+                "src": "874:0:49"
+              }
+            ],
+            "id": 3941,
+            "name": "FunctionDefinition",
+            "src": "759:116:49"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "executeDelegatecall",
+              "payable": false,
+              "scope": 3951,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_target",
+                      "scope": 3950,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 3942,
+                        "name": "ElementaryTypeName",
+                        "src": "907:7:49"
+                      }
+                    ],
+                    "id": 3943,
+                    "name": "VariableDeclaration",
+                    "src": "907:15:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_suppliedGas",
+                      "scope": 3950,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 3944,
+                        "name": "ElementaryTypeName",
+                        "src": "924:7:49"
+                      }
+                    ],
+                    "id": 3945,
+                    "name": "VariableDeclaration",
+                    "src": "924:20:49"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_transactionBytecode",
+                      "scope": 3950,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes calldata",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes storage pointer"
+                        },
+                        "id": 3946,
+                        "name": "ElementaryTypeName",
+                        "src": "946:5:49"
+                      }
+                    ],
+                    "id": 3947,
+                    "name": "VariableDeclaration",
+                    "src": "946:26:49"
+                  }
+                ],
+                "id": 3948,
+                "name": "ParameterList",
+                "src": "906:67:49"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 3949,
+                "name": "ParameterList",
+                "src": "982:0:49"
+              }
+            ],
+            "id": 3950,
+            "name": "FunctionDefinition",
+            "src": "878:105:49"
+          }
+        ],
+        "id": 3951,
+        "name": "ContractDefinition",
+        "src": "300:685:49"
+      }
+    ],
+    "id": 3952,
+    "name": "SourceUnit",
+    "src": "60:926:49"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-15T09:35:42.128Z"
+}

@@ -1,0 +1,914 @@
+{
+  "contractName": "CrydrStorageERC20Interface",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_msgsender",
+          "type": "address"
+        },
+        {
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_msgsender",
+          "type": "address"
+        },
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_msgsender",
+          "type": "address"
+        },
+        {
+          "name": "_spender",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "CrydrTransferredEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "CrydrTransferredFromEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "CrydrSpendingApprovedEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title CrydrStorageERC20Interface interface\n * @dev Interface of a contract that manages balance of an CryDR and have optimization for ERC20 controllers\n */\ncontract CrydrStorageERC20Interface {\n\n  /* Events */\n\n  event CrydrTransferredEvent(address indexed from, address indexed to, uint256 value);\n  event CrydrTransferredFromEvent(address indexed spender, address indexed from, address indexed to, uint256 value);\n  event CrydrSpendingApprovedEvent(address indexed owner, address indexed spender, uint256 value);\n\n\n  /* ERC20 optimization. _msgsender - account that invoked CrydrView */\n\n  function transfer(address _msgsender, address _to, uint256 _value) public;\n  function transferFrom(address _msgsender, address _from, address _to, uint256 _value) public;\n  function approve(address _msgsender, address _spender, uint256 _value) public;\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageERC20Interface.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts_ropsten/contracts/crydr/storage/CrydrStorageERC20Interface.sol",
+      "exportedSymbols": {
+        "CrydrStorageERC20Interface": [
+          2962
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 2906,
+        "name": "PragmaDirective",
+        "src": "48:24:35"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title CrydrStorageERC20Interface interface\n@dev Interface of a contract that manages balance of an CryDR and have optimization for ERC20 controllers",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2962
+          ],
+          "name": "CrydrStorageERC20Interface",
+          "scope": 2963
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "CrydrTransferredEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "from",
+                      "scope": 2914,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2907,
+                        "name": "ElementaryTypeName",
+                        "src": "324:7:35"
+                      }
+                    ],
+                    "id": 2908,
+                    "name": "VariableDeclaration",
+                    "src": "324:20:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "to",
+                      "scope": 2914,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2909,
+                        "name": "ElementaryTypeName",
+                        "src": "346:7:35"
+                      }
+                    ],
+                    "id": 2910,
+                    "name": "VariableDeclaration",
+                    "src": "346:18:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2914,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2911,
+                        "name": "ElementaryTypeName",
+                        "src": "366:7:35"
+                      }
+                    ],
+                    "id": 2912,
+                    "name": "VariableDeclaration",
+                    "src": "366:13:35"
+                  }
+                ],
+                "id": 2913,
+                "name": "ParameterList",
+                "src": "323:57:35"
+              }
+            ],
+            "id": 2914,
+            "name": "EventDefinition",
+            "src": "296:85:35"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "CrydrTransferredFromEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "spender",
+                      "scope": 2924,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2915,
+                        "name": "ElementaryTypeName",
+                        "src": "416:7:35"
+                      }
+                    ],
+                    "id": 2916,
+                    "name": "VariableDeclaration",
+                    "src": "416:23:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "from",
+                      "scope": 2924,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2917,
+                        "name": "ElementaryTypeName",
+                        "src": "441:7:35"
+                      }
+                    ],
+                    "id": 2918,
+                    "name": "VariableDeclaration",
+                    "src": "441:20:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "to",
+                      "scope": 2924,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2919,
+                        "name": "ElementaryTypeName",
+                        "src": "463:7:35"
+                      }
+                    ],
+                    "id": 2920,
+                    "name": "VariableDeclaration",
+                    "src": "463:18:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2924,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2921,
+                        "name": "ElementaryTypeName",
+                        "src": "483:7:35"
+                      }
+                    ],
+                    "id": 2922,
+                    "name": "VariableDeclaration",
+                    "src": "483:13:35"
+                  }
+                ],
+                "id": 2923,
+                "name": "ParameterList",
+                "src": "415:82:35"
+              }
+            ],
+            "id": 2924,
+            "name": "EventDefinition",
+            "src": "384:114:35"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "CrydrSpendingApprovedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "owner",
+                      "scope": 2932,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2925,
+                        "name": "ElementaryTypeName",
+                        "src": "534:7:35"
+                      }
+                    ],
+                    "id": 2926,
+                    "name": "VariableDeclaration",
+                    "src": "534:21:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "spender",
+                      "scope": 2932,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2927,
+                        "name": "ElementaryTypeName",
+                        "src": "557:7:35"
+                      }
+                    ],
+                    "id": 2928,
+                    "name": "VariableDeclaration",
+                    "src": "557:23:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2932,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2929,
+                        "name": "ElementaryTypeName",
+                        "src": "582:7:35"
+                      }
+                    ],
+                    "id": 2930,
+                    "name": "VariableDeclaration",
+                    "src": "582:13:35"
+                  }
+                ],
+                "id": 2931,
+                "name": "ParameterList",
+                "src": "533:63:35"
+              }
+            ],
+            "id": 2932,
+            "name": "EventDefinition",
+            "src": "501:96:35"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "transfer",
+              "payable": false,
+              "scope": 2962,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_msgsender",
+                      "scope": 2941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2933,
+                        "name": "ElementaryTypeName",
+                        "src": "693:7:35"
+                      }
+                    ],
+                    "id": 2934,
+                    "name": "VariableDeclaration",
+                    "src": "693:18:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_to",
+                      "scope": 2941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2935,
+                        "name": "ElementaryTypeName",
+                        "src": "713:7:35"
+                      }
+                    ],
+                    "id": 2936,
+                    "name": "VariableDeclaration",
+                    "src": "713:11:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2941,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2937,
+                        "name": "ElementaryTypeName",
+                        "src": "726:7:35"
+                      }
+                    ],
+                    "id": 2938,
+                    "name": "VariableDeclaration",
+                    "src": "726:14:35"
+                  }
+                ],
+                "id": 2939,
+                "name": "ParameterList",
+                "src": "692:49:35"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2940,
+                "name": "ParameterList",
+                "src": "748:0:35"
+              }
+            ],
+            "id": 2941,
+            "name": "FunctionDefinition",
+            "src": "675:74:35"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "transferFrom",
+              "payable": false,
+              "scope": 2962,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_msgsender",
+                      "scope": 2952,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2942,
+                        "name": "ElementaryTypeName",
+                        "src": "774:7:35"
+                      }
+                    ],
+                    "id": 2943,
+                    "name": "VariableDeclaration",
+                    "src": "774:18:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_from",
+                      "scope": 2952,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2944,
+                        "name": "ElementaryTypeName",
+                        "src": "794:7:35"
+                      }
+                    ],
+                    "id": 2945,
+                    "name": "VariableDeclaration",
+                    "src": "794:13:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_to",
+                      "scope": 2952,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2946,
+                        "name": "ElementaryTypeName",
+                        "src": "809:7:35"
+                      }
+                    ],
+                    "id": 2947,
+                    "name": "VariableDeclaration",
+                    "src": "809:11:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2952,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2948,
+                        "name": "ElementaryTypeName",
+                        "src": "822:7:35"
+                      }
+                    ],
+                    "id": 2949,
+                    "name": "VariableDeclaration",
+                    "src": "822:14:35"
+                  }
+                ],
+                "id": 2950,
+                "name": "ParameterList",
+                "src": "773:64:35"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2951,
+                "name": "ParameterList",
+                "src": "844:0:35"
+              }
+            ],
+            "id": 2952,
+            "name": "FunctionDefinition",
+            "src": "752:93:35"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "approve",
+              "payable": false,
+              "scope": 2962,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_msgsender",
+                      "scope": 2961,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2953,
+                        "name": "ElementaryTypeName",
+                        "src": "865:7:35"
+                      }
+                    ],
+                    "id": 2954,
+                    "name": "VariableDeclaration",
+                    "src": "865:18:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_spender",
+                      "scope": 2961,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2955,
+                        "name": "ElementaryTypeName",
+                        "src": "885:7:35"
+                      }
+                    ],
+                    "id": 2956,
+                    "name": "VariableDeclaration",
+                    "src": "885:16:35"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2961,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2957,
+                        "name": "ElementaryTypeName",
+                        "src": "903:7:35"
+                      }
+                    ],
+                    "id": 2958,
+                    "name": "VariableDeclaration",
+                    "src": "903:14:35"
+                  }
+                ],
+                "id": 2959,
+                "name": "ParameterList",
+                "src": "864:54:35"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2960,
+                "name": "ParameterList",
+                "src": "925:0:35"
+              }
+            ],
+            "id": 2961,
+            "name": "FunctionDefinition",
+            "src": "848:78:35"
+          }
+        ],
+        "id": 2962,
+        "name": "ContractDefinition",
+        "src": "239:689:35"
+      }
+    ],
+    "id": 2963,
+    "name": "SourceUnit",
+    "src": "48:881:35"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-15T09:35:42.122Z"
+}
