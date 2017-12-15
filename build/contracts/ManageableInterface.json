@@ -1,0 +1,433 @@
+{
+  "contractName": "ManageableInterface",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title ManageableInterface\n * @dev Contract that allows to grant permissions to any address\n * @dev In real life we are no able to perform all actions with just one Ethereum address\n * @dev because risks are too high.\n * @dev Instead owner delegates rights to manage an contract to the different addresses and\n * @dev stay able to revoke permissions at any time.\n */\ncontract ManageableInterface {\n\n  /**\n   * @dev Function to check if the manager can perform the action or not\n   * @param _manager        address Manager`s address\n   * @param _permissionName string  Permission name\n   * @return True if manager is enabled and has been granted needed permission\n   */\n  function isManagerAllowed(address _manager, string _permissionName) public constant returns (bool);\n\n  /**\n   * @dev Modifier to use in derived contracts\n   */\n  modifier onlyAllowedManager(string _permissionName) {\n    require(isManagerAllowed(msg.sender, _permissionName) == true);\n    _;\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+      "exportedSymbols": {
+        "ManageableInterface": [
+          4247
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 4221,
+        "name": "PragmaDirective",
+        "src": "48:24:51"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title ManageableInterface\n@dev Contract that allows to grant permissions to any address\n@dev In real life we are no able to perform all actions with just one Ethereum address\n@dev because risks are too high.\n@dev Instead owner delegates rights to manage an contract to the different addresses and\n@dev stay able to revoke permissions at any time.",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            4247
+          ],
+          "name": "ManageableInterface",
+          "scope": 4248
+        },
+        "children": [
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "isManagerAllowed",
+              "payable": false,
+              "scope": 4247,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_manager",
+                      "scope": 4230,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 4222,
+                        "name": "ElementaryTypeName",
+                        "src": "779:7:51"
+                      }
+                    ],
+                    "id": 4223,
+                    "name": "VariableDeclaration",
+                    "src": "779:16:51"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_permissionName",
+                      "scope": 4230,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 4224,
+                        "name": "ElementaryTypeName",
+                        "src": "797:6:51"
+                      }
+                    ],
+                    "id": 4225,
+                    "name": "VariableDeclaration",
+                    "src": "797:22:51"
+                  }
+                ],
+                "id": 4226,
+                "name": "ParameterList",
+                "src": "778:42:51"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 4230,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 4227,
+                        "name": "ElementaryTypeName",
+                        "src": "846:4:51"
+                      }
+                    ],
+                    "id": 4228,
+                    "name": "VariableDeclaration",
+                    "src": "846:4:51"
+                  }
+                ],
+                "id": 4229,
+                "name": "ParameterList",
+                "src": "845:6:51"
+              }
+            ],
+            "id": 4230,
+            "name": "FunctionDefinition",
+            "src": "753:99:51"
+          },
+          {
+            "attributes": {
+              "name": "onlyAllowedManager",
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_permissionName",
+                      "scope": 4246,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 4231,
+                        "name": "ElementaryTypeName",
+                        "src": "943:6:51"
+                      }
+                    ],
+                    "id": 4232,
+                    "name": "VariableDeclaration",
+                    "src": "943:22:51"
+                  }
+                ],
+                "id": 4233,
+                "name": "ParameterList",
+                "src": "942:24:51"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 4234,
+                            "name": "Identifier",
+                            "src": "973:7:51"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_bool",
+                                "typeString": "bool"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "==",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "bool",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        },
+                                        {
+                                          "typeIdentifier": "t_string_memory_ptr",
+                                          "typeString": "string memory"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 4230,
+                                      "type": "function (address,string memory) view returns (bool)",
+                                      "value": "isManagerAllowed"
+                                    },
+                                    "id": 4235,
+                                    "name": "Identifier",
+                                    "src": "981:16:51"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "sender",
+                                      "referencedDeclaration": null,
+                                      "type": "address"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 5601,
+                                          "type": "msg",
+                                          "value": "msg"
+                                        },
+                                        "id": 4236,
+                                        "name": "Identifier",
+                                        "src": "998:3:51"
+                                      }
+                                    ],
+                                    "id": 4237,
+                                    "name": "MemberAccess",
+                                    "src": "998:10:51"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 4232,
+                                      "type": "string memory",
+                                      "value": "_permissionName"
+                                    },
+                                    "id": 4238,
+                                    "name": "Identifier",
+                                    "src": "1010:15:51"
+                                  }
+                                ],
+                                "id": 4239,
+                                "name": "FunctionCall",
+                                "src": "981:45:51"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "74727565",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "bool",
+                                  "type": "bool",
+                                  "value": "true"
+                                },
+                                "id": 4240,
+                                "name": "Literal",
+                                "src": "1030:4:51"
+                              }
+                            ],
+                            "id": 4241,
+                            "name": "BinaryOperation",
+                            "src": "981:53:51"
+                          }
+                        ],
+                        "id": 4242,
+                        "name": "FunctionCall",
+                        "src": "973:62:51"
+                      }
+                    ],
+                    "id": 4243,
+                    "name": "ExpressionStatement",
+                    "src": "973:62:51"
+                  },
+                  {
+                    "id": 4244,
+                    "name": "PlaceholderStatement",
+                    "src": "1041:1:51"
+                  }
+                ],
+                "id": 4245,
+                "name": "Block",
+                "src": "967:80:51"
+              }
+            ],
+            "id": 4246,
+            "name": "ModifierDefinition",
+            "src": "915:132:51"
+          }
+        ],
+        "id": 4247,
+        "name": "ContractDefinition",
+        "src": "449:600:51"
+      }
+    ],
+    "id": 4248,
+    "name": "SourceUnit",
+    "src": "48:1002:51"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-15T09:06:54.702Z"
+}

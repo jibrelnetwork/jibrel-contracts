@@ -1,0 +1,654 @@
+{
+  "contractName": "CrydrStorageBalanceInterface",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseBalance",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTotalSupply",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "decreaseBalance",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "AccountBalanceIncreasedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "AccountBalanceDecreasedEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title CrydrStorageBaseInterface interface\n * @dev Interface of a contract that manages balance of an CryDR\n */\ncontract CrydrStorageBalanceInterface {\n\n  /* Events */\n\n  event AccountBalanceIncreasedEvent(address indexed account, uint256 value);\n  event AccountBalanceDecreasedEvent(address indexed account, uint256 value);\n\n\n  /* Low-level change of balance. Implied that totalSupply kept in sync. */\n\n  function increaseBalance(address _account, uint256 _value) public;\n  function decreaseBalance(address _account, uint256 _value) public;\n  function getBalance(address _account) public constant returns (uint256);\n  function getTotalSupply() public constant returns (uint256);\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalanceInterface.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalanceInterface.sol",
+      "exportedSymbols": {
+        "CrydrStorageBalanceInterface": [
+          2239
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 2200,
+        "name": "PragmaDirective",
+        "src": "48:24:29"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title CrydrStorageBaseInterface interface\n@dev Interface of a contract that manages balance of an CryDR",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2239
+          ],
+          "name": "CrydrStorageBalanceInterface",
+          "scope": 2240
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "AccountBalanceIncreasedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "account",
+                      "scope": 2206,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2201,
+                        "name": "ElementaryTypeName",
+                        "src": "288:7:29"
+                      }
+                    ],
+                    "id": 2202,
+                    "name": "VariableDeclaration",
+                    "src": "288:23:29"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2206,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2203,
+                        "name": "ElementaryTypeName",
+                        "src": "313:7:29"
+                      }
+                    ],
+                    "id": 2204,
+                    "name": "VariableDeclaration",
+                    "src": "313:13:29"
+                  }
+                ],
+                "id": 2205,
+                "name": "ParameterList",
+                "src": "287:40:29"
+              }
+            ],
+            "id": 2206,
+            "name": "EventDefinition",
+            "src": "253:75:29"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "AccountBalanceDecreasedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "account",
+                      "scope": 2212,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2207,
+                        "name": "ElementaryTypeName",
+                        "src": "366:7:29"
+                      }
+                    ],
+                    "id": 2208,
+                    "name": "VariableDeclaration",
+                    "src": "366:23:29"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2212,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2209,
+                        "name": "ElementaryTypeName",
+                        "src": "391:7:29"
+                      }
+                    ],
+                    "id": 2210,
+                    "name": "VariableDeclaration",
+                    "src": "391:13:29"
+                  }
+                ],
+                "id": 2211,
+                "name": "ParameterList",
+                "src": "365:40:29"
+              }
+            ],
+            "id": 2212,
+            "name": "EventDefinition",
+            "src": "331:75:29"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "increaseBalance",
+              "payable": false,
+              "scope": 2239,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2219,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2213,
+                        "name": "ElementaryTypeName",
+                        "src": "513:7:29"
+                      }
+                    ],
+                    "id": 2214,
+                    "name": "VariableDeclaration",
+                    "src": "513:16:29"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2219,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2215,
+                        "name": "ElementaryTypeName",
+                        "src": "531:7:29"
+                      }
+                    ],
+                    "id": 2216,
+                    "name": "VariableDeclaration",
+                    "src": "531:14:29"
+                  }
+                ],
+                "id": 2217,
+                "name": "ParameterList",
+                "src": "512:34:29"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2218,
+                "name": "ParameterList",
+                "src": "553:0:29"
+              }
+            ],
+            "id": 2219,
+            "name": "FunctionDefinition",
+            "src": "488:66:29"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "decreaseBalance",
+              "payable": false,
+              "scope": 2239,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2226,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2220,
+                        "name": "ElementaryTypeName",
+                        "src": "582:7:29"
+                      }
+                    ],
+                    "id": 2221,
+                    "name": "VariableDeclaration",
+                    "src": "582:16:29"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2226,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2222,
+                        "name": "ElementaryTypeName",
+                        "src": "600:7:29"
+                      }
+                    ],
+                    "id": 2223,
+                    "name": "VariableDeclaration",
+                    "src": "600:14:29"
+                  }
+                ],
+                "id": 2224,
+                "name": "ParameterList",
+                "src": "581:34:29"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2225,
+                "name": "ParameterList",
+                "src": "622:0:29"
+              }
+            ],
+            "id": 2226,
+            "name": "FunctionDefinition",
+            "src": "557:66:29"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getBalance",
+              "payable": false,
+              "scope": 2239,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2233,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2227,
+                        "name": "ElementaryTypeName",
+                        "src": "646:7:29"
+                      }
+                    ],
+                    "id": 2228,
+                    "name": "VariableDeclaration",
+                    "src": "646:16:29"
+                  }
+                ],
+                "id": 2229,
+                "name": "ParameterList",
+                "src": "645:18:29"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 2233,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2230,
+                        "name": "ElementaryTypeName",
+                        "src": "689:7:29"
+                      }
+                    ],
+                    "id": 2231,
+                    "name": "VariableDeclaration",
+                    "src": "689:7:29"
+                  }
+                ],
+                "id": 2232,
+                "name": "ParameterList",
+                "src": "688:9:29"
+              }
+            ],
+            "id": 2233,
+            "name": "FunctionDefinition",
+            "src": "626:72:29"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getTotalSupply",
+              "payable": false,
+              "scope": 2239,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2234,
+                "name": "ParameterList",
+                "src": "724:2:29"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 2238,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2235,
+                        "name": "ElementaryTypeName",
+                        "src": "752:7:29"
+                      }
+                    ],
+                    "id": 2236,
+                    "name": "VariableDeclaration",
+                    "src": "752:7:29"
+                  }
+                ],
+                "id": 2237,
+                "name": "ParameterList",
+                "src": "751:9:29"
+              }
+            ],
+            "id": 2238,
+            "name": "FunctionDefinition",
+            "src": "701:60:29"
+          }
+        ],
+        "id": 2239,
+        "name": "ContractDefinition",
+        "src": "194:569:29"
+      }
+    ],
+    "id": 2240,
+    "name": "SourceUnit",
+    "src": "48:716:29"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-15T09:06:54.695Z"
+}

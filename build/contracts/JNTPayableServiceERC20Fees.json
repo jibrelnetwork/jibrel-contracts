@@ -1,0 +1,1957 @@
+{
+  "contractName": "JNTPayableServiceERC20Fees",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntPriceForTransfer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_jntPriceTransfer",
+          "type": "uint256"
+        },
+        {
+          "name": "_jntPriceTransferFrom",
+          "type": "uint256"
+        },
+        {
+          "name": "_jntPriceApprove",
+          "type": "uint256"
+        }
+      ],
+      "name": "setJntPrice",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getPaused",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntPriceForTransferFrom",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntPriceForApprove",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "unpauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_jntPriceTransfer",
+          "type": "uint256"
+        },
+        {
+          "name": "_jntPriceTransferFrom",
+          "type": "uint256"
+        },
+        {
+          "name": "_jntPriceApprove",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "JNTPriceTransferChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "JNTPriceTransferFromChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "JNTPriceApproveChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "PauseEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "UnpauseEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './JNTPayableServiceERC20FeesInterface.sol';\n\n\ncontract JNTPayableServiceERC20Fees is ManageableInterface,\n                                       PausableInterface,\n                                       JNTPayableServiceERC20FeesInterface {\n\n  /* Storage */\n\n  uint256 jntPriceTransfer;\n  uint256 jntPriceTransferFrom;\n  uint256 jntPriceApprove;\n\n\n  /* Constructor */\n\n  function JNTPayableServiceERC20Fees(\n    uint256 _jntPriceTransfer,\n    uint256 _jntPriceTransferFrom,\n    uint256 _jntPriceApprove\n  )\n    public\n  {\n    jntPriceTransfer = _jntPriceTransfer;\n    jntPriceTransferFrom = _jntPriceTransferFrom;\n    jntPriceApprove = _jntPriceApprove;\n  }\n\n\n  /* JNTPayableServiceERC20FeesInterface */\n\n  /* Configuration */\n\n  function setJntPrice(\n    uint256 _jntPriceTransfer, uint256 _jntPriceTransferFrom, uint256 _jntPriceApprove\n  )\n    external\n    onlyAllowedManager('set_jnt_price')\n    whenContractPaused\n  {\n    require(_jntPriceTransfer != jntPriceTransfer ||\n            _jntPriceTransferFrom != jntPriceTransferFrom ||\n            _jntPriceApprove != jntPriceApprove);\n\n    if (jntPriceTransfer != _jntPriceTransfer) {\n      jntPriceTransfer = _jntPriceTransfer;\n      JNTPriceTransferChangedEvent(_jntPriceTransfer);\n    }\n    if (jntPriceTransferFrom != _jntPriceTransferFrom) {\n      jntPriceTransferFrom = _jntPriceTransferFrom;\n      JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);\n    }\n    if (jntPriceApprove != _jntPriceApprove) {\n      jntPriceApprove = _jntPriceApprove;\n      JNTPriceApproveChangedEvent(_jntPriceApprove);\n    }\n  }\n\n  function getJntPriceForTransfer() public constant returns (uint256) {\n    return jntPriceTransfer;\n  }\n\n  function getJntPriceForTransferFrom() public constant returns (uint256) {\n    return jntPriceTransferFrom;\n  }\n\n  function getJntPriceForApprove() public constant returns (uint256) {\n    return jntPriceApprove;\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceERC20Fees.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceERC20Fees.sol",
+      "exportedSymbols": {
+        "JNTPayableServiceERC20Fees": [
+          1704
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 1574,
+        "name": "PragmaDirective",
+        "src": "48:24:23"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4248,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "file": "../../lifecycle/ManageableInterface.sol",
+          "scope": 1705,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1575,
+        "name": "ImportDirective",
+        "src": "75:49:23"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4550,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "file": "../../lifecycle/PausableInterface.sol",
+          "scope": 1705,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1576,
+        "name": "ImportDirective",
+        "src": "125:47:23"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1744,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceERC20FeesInterface.sol",
+          "file": "./JNTPayableServiceERC20FeesInterface.sol",
+          "scope": 1705,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1577,
+        "name": "ImportDirective",
+        "src": "173:51:23"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            1743,
+            4247,
+            4549
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1704,
+            1743,
+            4549,
+            4247
+          ],
+          "name": "JNTPayableServiceERC20Fees",
+          "scope": 1705
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "ManageableInterface",
+                  "referencedDeclaration": 4247,
+                  "type": "contract ManageableInterface"
+                },
+                "id": 1578,
+                "name": "UserDefinedTypeName",
+                "src": "266:19:23"
+              }
+            ],
+            "id": 1579,
+            "name": "InheritanceSpecifier",
+            "src": "266:19:23"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "PausableInterface",
+                  "referencedDeclaration": 4549,
+                  "type": "contract PausableInterface"
+                },
+                "id": 1580,
+                "name": "UserDefinedTypeName",
+                "src": "326:17:23"
+              }
+            ],
+            "id": 1581,
+            "name": "InheritanceSpecifier",
+            "src": "326:17:23"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "JNTPayableServiceERC20FeesInterface",
+                  "referencedDeclaration": 1743,
+                  "type": "contract JNTPayableServiceERC20FeesInterface"
+                },
+                "id": 1582,
+                "name": "UserDefinedTypeName",
+                "src": "384:35:23"
+              }
+            ],
+            "id": 1583,
+            "name": "InheritanceSpecifier",
+            "src": "384:35:23"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "jntPriceTransfer",
+              "scope": 1704,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 1584,
+                "name": "ElementaryTypeName",
+                "src": "442:7:23"
+              }
+            ],
+            "id": 1585,
+            "name": "VariableDeclaration",
+            "src": "442:24:23"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "jntPriceTransferFrom",
+              "scope": 1704,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 1586,
+                "name": "ElementaryTypeName",
+                "src": "470:7:23"
+              }
+            ],
+            "id": 1587,
+            "name": "VariableDeclaration",
+            "src": "470:28:23"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "jntPriceApprove",
+              "scope": 1704,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 1588,
+                "name": "ElementaryTypeName",
+                "src": "502:7:23"
+              }
+            ],
+            "id": 1589,
+            "name": "VariableDeclaration",
+            "src": "502:23:23"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "modifiers": [
+                null
+              ],
+              "name": "JNTPayableServiceERC20Fees",
+              "payable": false,
+              "scope": 1704,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntPriceTransfer",
+                      "scope": 1611,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1590,
+                        "name": "ElementaryTypeName",
+                        "src": "593:7:23"
+                      }
+                    ],
+                    "id": 1591,
+                    "name": "VariableDeclaration",
+                    "src": "593:25:23"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntPriceTransferFrom",
+                      "scope": 1611,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1592,
+                        "name": "ElementaryTypeName",
+                        "src": "624:7:23"
+                      }
+                    ],
+                    "id": 1593,
+                    "name": "VariableDeclaration",
+                    "src": "624:29:23"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntPriceApprove",
+                      "scope": 1611,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1594,
+                        "name": "ElementaryTypeName",
+                        "src": "659:7:23"
+                      }
+                    ],
+                    "id": 1595,
+                    "name": "VariableDeclaration",
+                    "src": "659:24:23"
+                  }
+                ],
+                "id": 1596,
+                "name": "ParameterList",
+                "src": "587:100:23"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1597,
+                "name": "ParameterList",
+                "src": "701:0:23"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1585,
+                              "type": "uint256",
+                              "value": "jntPriceTransfer"
+                            },
+                            "id": 1598,
+                            "name": "Identifier",
+                            "src": "707:16:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1591,
+                              "type": "uint256",
+                              "value": "_jntPriceTransfer"
+                            },
+                            "id": 1599,
+                            "name": "Identifier",
+                            "src": "726:17:23"
+                          }
+                        ],
+                        "id": 1600,
+                        "name": "Assignment",
+                        "src": "707:36:23"
+                      }
+                    ],
+                    "id": 1601,
+                    "name": "ExpressionStatement",
+                    "src": "707:36:23"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1587,
+                              "type": "uint256",
+                              "value": "jntPriceTransferFrom"
+                            },
+                            "id": 1602,
+                            "name": "Identifier",
+                            "src": "749:20:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1593,
+                              "type": "uint256",
+                              "value": "_jntPriceTransferFrom"
+                            },
+                            "id": 1603,
+                            "name": "Identifier",
+                            "src": "772:21:23"
+                          }
+                        ],
+                        "id": 1604,
+                        "name": "Assignment",
+                        "src": "749:44:23"
+                      }
+                    ],
+                    "id": 1605,
+                    "name": "ExpressionStatement",
+                    "src": "749:44:23"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1589,
+                              "type": "uint256",
+                              "value": "jntPriceApprove"
+                            },
+                            "id": 1606,
+                            "name": "Identifier",
+                            "src": "799:15:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1595,
+                              "type": "uint256",
+                              "value": "_jntPriceApprove"
+                            },
+                            "id": 1607,
+                            "name": "Identifier",
+                            "src": "817:16:23"
+                          }
+                        ],
+                        "id": 1608,
+                        "name": "Assignment",
+                        "src": "799:34:23"
+                      }
+                    ],
+                    "id": 1609,
+                    "name": "ExpressionStatement",
+                    "src": "799:34:23"
+                  }
+                ],
+                "id": 1610,
+                "name": "Block",
+                "src": "701:137:23"
+              }
+            ],
+            "id": 1611,
+            "name": "FunctionDefinition",
+            "src": "552:286:23"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "setJntPrice",
+              "payable": false,
+              "scope": 1704,
+              "stateMutability": "nonpayable",
+              "superFunction": 1727,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntPriceTransfer",
+                      "scope": 1679,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1612,
+                        "name": "ElementaryTypeName",
+                        "src": "937:7:23"
+                      }
+                    ],
+                    "id": 1613,
+                    "name": "VariableDeclaration",
+                    "src": "937:25:23"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntPriceTransferFrom",
+                      "scope": 1679,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1614,
+                        "name": "ElementaryTypeName",
+                        "src": "964:7:23"
+                      }
+                    ],
+                    "id": 1615,
+                    "name": "VariableDeclaration",
+                    "src": "964:29:23"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntPriceApprove",
+                      "scope": 1679,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1616,
+                        "name": "ElementaryTypeName",
+                        "src": "995:7:23"
+                      }
+                    ],
+                    "id": 1617,
+                    "name": "VariableDeclaration",
+                    "src": "995:24:23"
+                  }
+                ],
+                "id": 1618,
+                "name": "ParameterList",
+                "src": "931:92:23"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1624,
+                "name": "ParameterList",
+                "src": "1102:0:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 1619,
+                    "name": "Identifier",
+                    "src": "1041:18:23"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "7365745f6a6e745f7072696365",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"set_jnt_price\"",
+                      "value": "set_jnt_price"
+                    },
+                    "id": 1620,
+                    "name": "Literal",
+                    "src": "1060:15:23"
+                  }
+                ],
+                "id": 1621,
+                "name": "ModifierInvocation",
+                "src": "1041:35:23"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4548,
+                      "type": "modifier ()",
+                      "value": "whenContractPaused"
+                    },
+                    "id": 1622,
+                    "name": "Identifier",
+                    "src": "1081:18:23"
+                  }
+                ],
+                "id": 1623,
+                "name": "ModifierInvocation",
+                "src": "1081:18:23"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1625,
+                            "name": "Identifier",
+                            "src": "1108:7:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_bool",
+                                "typeString": "bool"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "||",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "commonType": {
+                                    "typeIdentifier": "t_bool",
+                                    "typeString": "bool"
+                                  },
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "operator": "||",
+                                  "type": "bool"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "commonType": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                      },
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "operator": "!=",
+                                      "type": "bool"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1613,
+                                          "type": "uint256",
+                                          "value": "_jntPriceTransfer"
+                                        },
+                                        "id": 1626,
+                                        "name": "Identifier",
+                                        "src": "1116:17:23"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1585,
+                                          "type": "uint256",
+                                          "value": "jntPriceTransfer"
+                                        },
+                                        "id": 1627,
+                                        "name": "Identifier",
+                                        "src": "1137:16:23"
+                                      }
+                                    ],
+                                    "id": 1628,
+                                    "name": "BinaryOperation",
+                                    "src": "1116:37:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "commonType": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                      },
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "operator": "!=",
+                                      "type": "bool"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1615,
+                                          "type": "uint256",
+                                          "value": "_jntPriceTransferFrom"
+                                        },
+                                        "id": 1629,
+                                        "name": "Identifier",
+                                        "src": "1169:21:23"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1587,
+                                          "type": "uint256",
+                                          "value": "jntPriceTransferFrom"
+                                        },
+                                        "id": 1630,
+                                        "name": "Identifier",
+                                        "src": "1194:20:23"
+                                      }
+                                    ],
+                                    "id": 1631,
+                                    "name": "BinaryOperation",
+                                    "src": "1169:45:23"
+                                  }
+                                ],
+                                "id": 1632,
+                                "name": "BinaryOperation",
+                                "src": "1116:98:23"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "commonType": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                  },
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "operator": "!=",
+                                  "type": "bool"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1617,
+                                      "type": "uint256",
+                                      "value": "_jntPriceApprove"
+                                    },
+                                    "id": 1633,
+                                    "name": "Identifier",
+                                    "src": "1230:16:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1589,
+                                      "type": "uint256",
+                                      "value": "jntPriceApprove"
+                                    },
+                                    "id": 1634,
+                                    "name": "Identifier",
+                                    "src": "1250:15:23"
+                                  }
+                                ],
+                                "id": 1635,
+                                "name": "BinaryOperation",
+                                "src": "1230:35:23"
+                              }
+                            ],
+                            "id": 1636,
+                            "name": "BinaryOperation",
+                            "src": "1116:149:23"
+                          }
+                        ],
+                        "id": 1637,
+                        "name": "FunctionCall",
+                        "src": "1108:158:23"
+                      }
+                    ],
+                    "id": 1638,
+                    "name": "ExpressionStatement",
+                    "src": "1108:158:23"
+                  },
+                  {
+                    "attributes": {
+                      "falseBody": null
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "!=",
+                          "type": "bool"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1585,
+                              "type": "uint256",
+                              "value": "jntPriceTransfer"
+                            },
+                            "id": 1639,
+                            "name": "Identifier",
+                            "src": "1277:16:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1613,
+                              "type": "uint256",
+                              "value": "_jntPriceTransfer"
+                            },
+                            "id": 1640,
+                            "name": "Identifier",
+                            "src": "1297:17:23"
+                          }
+                        ],
+                        "id": 1641,
+                        "name": "BinaryOperation",
+                        "src": "1277:37:23"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "operator": "=",
+                                  "type": "uint256"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1585,
+                                      "type": "uint256",
+                                      "value": "jntPriceTransfer"
+                                    },
+                                    "id": 1642,
+                                    "name": "Identifier",
+                                    "src": "1324:16:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1613,
+                                      "type": "uint256",
+                                      "value": "_jntPriceTransfer"
+                                    },
+                                    "id": 1643,
+                                    "name": "Identifier",
+                                    "src": "1343:17:23"
+                                  }
+                                ],
+                                "id": 1644,
+                                "name": "Assignment",
+                                "src": "1324:36:23"
+                              }
+                            ],
+                            "id": 1645,
+                            "name": "ExpressionStatement",
+                            "src": "1324:36:23"
+                          },
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "tuple()",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_uint256",
+                                          "typeString": "uint256"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1710,
+                                      "type": "function (uint256)",
+                                      "value": "JNTPriceTransferChangedEvent"
+                                    },
+                                    "id": 1646,
+                                    "name": "Identifier",
+                                    "src": "1368:28:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1613,
+                                      "type": "uint256",
+                                      "value": "_jntPriceTransfer"
+                                    },
+                                    "id": 1647,
+                                    "name": "Identifier",
+                                    "src": "1397:17:23"
+                                  }
+                                ],
+                                "id": 1648,
+                                "name": "FunctionCall",
+                                "src": "1368:47:23"
+                              }
+                            ],
+                            "id": 1649,
+                            "name": "ExpressionStatement",
+                            "src": "1368:47:23"
+                          }
+                        ],
+                        "id": 1650,
+                        "name": "Block",
+                        "src": "1316:106:23"
+                      }
+                    ],
+                    "id": 1651,
+                    "name": "IfStatement",
+                    "src": "1273:149:23"
+                  },
+                  {
+                    "attributes": {
+                      "falseBody": null
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "!=",
+                          "type": "bool"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1587,
+                              "type": "uint256",
+                              "value": "jntPriceTransferFrom"
+                            },
+                            "id": 1652,
+                            "name": "Identifier",
+                            "src": "1431:20:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1615,
+                              "type": "uint256",
+                              "value": "_jntPriceTransferFrom"
+                            },
+                            "id": 1653,
+                            "name": "Identifier",
+                            "src": "1455:21:23"
+                          }
+                        ],
+                        "id": 1654,
+                        "name": "BinaryOperation",
+                        "src": "1431:45:23"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "operator": "=",
+                                  "type": "uint256"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1587,
+                                      "type": "uint256",
+                                      "value": "jntPriceTransferFrom"
+                                    },
+                                    "id": 1655,
+                                    "name": "Identifier",
+                                    "src": "1486:20:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1615,
+                                      "type": "uint256",
+                                      "value": "_jntPriceTransferFrom"
+                                    },
+                                    "id": 1656,
+                                    "name": "Identifier",
+                                    "src": "1509:21:23"
+                                  }
+                                ],
+                                "id": 1657,
+                                "name": "Assignment",
+                                "src": "1486:44:23"
+                              }
+                            ],
+                            "id": 1658,
+                            "name": "ExpressionStatement",
+                            "src": "1486:44:23"
+                          },
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "tuple()",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_uint256",
+                                          "typeString": "uint256"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1714,
+                                      "type": "function (uint256)",
+                                      "value": "JNTPriceTransferFromChangedEvent"
+                                    },
+                                    "id": 1659,
+                                    "name": "Identifier",
+                                    "src": "1538:32:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1615,
+                                      "type": "uint256",
+                                      "value": "_jntPriceTransferFrom"
+                                    },
+                                    "id": 1660,
+                                    "name": "Identifier",
+                                    "src": "1571:21:23"
+                                  }
+                                ],
+                                "id": 1661,
+                                "name": "FunctionCall",
+                                "src": "1538:55:23"
+                              }
+                            ],
+                            "id": 1662,
+                            "name": "ExpressionStatement",
+                            "src": "1538:55:23"
+                          }
+                        ],
+                        "id": 1663,
+                        "name": "Block",
+                        "src": "1478:122:23"
+                      }
+                    ],
+                    "id": 1664,
+                    "name": "IfStatement",
+                    "src": "1427:173:23"
+                  },
+                  {
+                    "attributes": {
+                      "falseBody": null
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "!=",
+                          "type": "bool"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1589,
+                              "type": "uint256",
+                              "value": "jntPriceApprove"
+                            },
+                            "id": 1665,
+                            "name": "Identifier",
+                            "src": "1609:15:23"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1617,
+                              "type": "uint256",
+                              "value": "_jntPriceApprove"
+                            },
+                            "id": 1666,
+                            "name": "Identifier",
+                            "src": "1628:16:23"
+                          }
+                        ],
+                        "id": 1667,
+                        "name": "BinaryOperation",
+                        "src": "1609:35:23"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "operator": "=",
+                                  "type": "uint256"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1589,
+                                      "type": "uint256",
+                                      "value": "jntPriceApprove"
+                                    },
+                                    "id": 1668,
+                                    "name": "Identifier",
+                                    "src": "1654:15:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1617,
+                                      "type": "uint256",
+                                      "value": "_jntPriceApprove"
+                                    },
+                                    "id": 1669,
+                                    "name": "Identifier",
+                                    "src": "1672:16:23"
+                                  }
+                                ],
+                                "id": 1670,
+                                "name": "Assignment",
+                                "src": "1654:34:23"
+                              }
+                            ],
+                            "id": 1671,
+                            "name": "ExpressionStatement",
+                            "src": "1654:34:23"
+                          },
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "tuple()",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_uint256",
+                                          "typeString": "uint256"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1718,
+                                      "type": "function (uint256)",
+                                      "value": "JNTPriceApproveChangedEvent"
+                                    },
+                                    "id": 1672,
+                                    "name": "Identifier",
+                                    "src": "1696:27:23"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1617,
+                                      "type": "uint256",
+                                      "value": "_jntPriceApprove"
+                                    },
+                                    "id": 1673,
+                                    "name": "Identifier",
+                                    "src": "1724:16:23"
+                                  }
+                                ],
+                                "id": 1674,
+                                "name": "FunctionCall",
+                                "src": "1696:45:23"
+                              }
+                            ],
+                            "id": 1675,
+                            "name": "ExpressionStatement",
+                            "src": "1696:45:23"
+                          }
+                        ],
+                        "id": 1676,
+                        "name": "Block",
+                        "src": "1646:102:23"
+                      }
+                    ],
+                    "id": 1677,
+                    "name": "IfStatement",
+                    "src": "1605:143:23"
+                  }
+                ],
+                "id": 1678,
+                "name": "Block",
+                "src": "1102:650:23"
+              }
+            ],
+            "id": 1679,
+            "name": "FunctionDefinition",
+            "src": "911:841:23"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntPriceForTransfer",
+              "payable": false,
+              "scope": 1704,
+              "stateMutability": "view",
+              "superFunction": 1732,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1680,
+                "name": "ParameterList",
+                "src": "1787:2:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1687,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1681,
+                        "name": "ElementaryTypeName",
+                        "src": "1815:7:23"
+                      }
+                    ],
+                    "id": 1682,
+                    "name": "VariableDeclaration",
+                    "src": "1815:7:23"
+                  }
+                ],
+                "id": 1683,
+                "name": "ParameterList",
+                "src": "1814:9:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 1683
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 1585,
+                          "type": "uint256",
+                          "value": "jntPriceTransfer"
+                        },
+                        "id": 1684,
+                        "name": "Identifier",
+                        "src": "1837:16:23"
+                      }
+                    ],
+                    "id": 1685,
+                    "name": "Return",
+                    "src": "1830:23:23"
+                  }
+                ],
+                "id": 1686,
+                "name": "Block",
+                "src": "1824:34:23"
+              }
+            ],
+            "id": 1687,
+            "name": "FunctionDefinition",
+            "src": "1756:102:23"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntPriceForTransferFrom",
+              "payable": false,
+              "scope": 1704,
+              "stateMutability": "view",
+              "superFunction": 1737,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1688,
+                "name": "ParameterList",
+                "src": "1897:2:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1695,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1689,
+                        "name": "ElementaryTypeName",
+                        "src": "1925:7:23"
+                      }
+                    ],
+                    "id": 1690,
+                    "name": "VariableDeclaration",
+                    "src": "1925:7:23"
+                  }
+                ],
+                "id": 1691,
+                "name": "ParameterList",
+                "src": "1924:9:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 1691
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 1587,
+                          "type": "uint256",
+                          "value": "jntPriceTransferFrom"
+                        },
+                        "id": 1692,
+                        "name": "Identifier",
+                        "src": "1947:20:23"
+                      }
+                    ],
+                    "id": 1693,
+                    "name": "Return",
+                    "src": "1940:27:23"
+                  }
+                ],
+                "id": 1694,
+                "name": "Block",
+                "src": "1934:38:23"
+              }
+            ],
+            "id": 1695,
+            "name": "FunctionDefinition",
+            "src": "1862:110:23"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntPriceForApprove",
+              "payable": false,
+              "scope": 1704,
+              "stateMutability": "view",
+              "superFunction": 1742,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1696,
+                "name": "ParameterList",
+                "src": "2006:2:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1697,
+                        "name": "ElementaryTypeName",
+                        "src": "2034:7:23"
+                      }
+                    ],
+                    "id": 1698,
+                    "name": "VariableDeclaration",
+                    "src": "2034:7:23"
+                  }
+                ],
+                "id": 1699,
+                "name": "ParameterList",
+                "src": "2033:9:23"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 1699
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 1589,
+                          "type": "uint256",
+                          "value": "jntPriceApprove"
+                        },
+                        "id": 1700,
+                        "name": "Identifier",
+                        "src": "2056:15:23"
+                      }
+                    ],
+                    "id": 1701,
+                    "name": "Return",
+                    "src": "2049:22:23"
+                  }
+                ],
+                "id": 1702,
+                "name": "Block",
+                "src": "2043:33:23"
+              }
+            ],
+            "id": 1703,
+            "name": "FunctionDefinition",
+            "src": "1976:100:23"
+          }
+        ],
+        "id": 1704,
+        "name": "ContractDefinition",
+        "src": "227:1851:23"
+      }
+    ],
+    "id": 1705,
+    "name": "SourceUnit",
+    "src": "48:2031:23"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-15T09:06:54.693Z"
+}
