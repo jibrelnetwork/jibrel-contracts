@@ -26,6 +26,23 @@ global.contract('JNT Integration tests', (accounts) => {
     global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + (15 * (10 ** 18)));
   });
 
+  global.it('should test burning of JNT', async () => {
+    const JNTControllerInstance = await JNTController.deployed();
+    const JNTViewERC20Instance = await JNTViewERC20.deployed();
+
+    const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
+
+    await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, 15 * (10 ** 18));
+
+    let balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
+    global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + (15 * (10 ** 18)));
+
+    await controllerMintableJSAPI.burn(JNTControllerInstance.address, managerMint, testInvestor1, 15 * (10 ** 18));
+
+    balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
+    global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber());
+  });
+
   global.it('should test transfers of JNT', async () => {
     const MigrationsInstance = await Migrations.deployed();
     const JNTControllerInstance = await JNTController.deployed();
