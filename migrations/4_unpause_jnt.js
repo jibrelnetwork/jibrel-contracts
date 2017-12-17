@@ -5,22 +5,8 @@ global.artifacts = artifacts; // eslint-disable-line no-undef
 
 
 const TxConfig = require('../jsroutines/jsconfig/TxConfig');
-
-const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
-
 const DeployConfig = require('../jsroutines/jsconfig/DeployConfig');
-const CrydrInit = require('../jsroutines/jsinit/CrydrInit');
-
-
-/* Migration actions */
-
-const executeMigration = async () => {
-  await CrydrInit.upauseCrydrView(JNTViewERC20);
-};
-
-const verifyMigration = async () => {
-  // todo verify migration, make integration tests
-};
+const migrations = require('../jsroutines/migrations');
 
 
 /* Migration */
@@ -36,7 +22,7 @@ module.exports = (deployer, network, accounts) => {
   DeployConfig.setDeployer(deployer);
   DeployConfig.setAccounts(accounts);
 
-  deployer.then(() => executeMigration())
-          .then(() => verifyMigration())
+  deployer.then(() => migrations.executeMigration(4))
+          .then(() => migrations.verifyMigration(4))
           .then(() => global.console.log('  Migration finished'));
 };
