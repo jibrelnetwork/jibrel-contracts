@@ -1,0 +1,1610 @@
+{
+  "contractName": "CrydrStorageBase",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_crydrController",
+          "type": "address"
+        }
+      ],
+      "name": "setCrydrController",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getPaused",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAssetID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAssetIDHash",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "unpauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCrydrController",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrcontroller",
+          "type": "address"
+        }
+      ],
+      "name": "CrydrControllerChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "PauseEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "UnpauseEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../feature/assetid/AssetIDInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './CrydrStorageBaseInterface.sol';\n\n\n/**\n * @title CrydrStorageBase\n */\ncontract CrydrStorageBase is CommonModifiersInterface,\n                             AssetIDInterface,\n                             ManageableInterface,\n                             PausableInterface,\n                             CrydrStorageBaseInterface {\n\n  /* Storage */\n\n  address crydrController = address(0x0);\n\n\n  /* CrydrStorageBaseInterface */\n\n  /* Configuration */\n\n  function setCrydrController(\n    address _crydrController\n  )\n    public\n    whenContractPaused\n    onlyContractAddress(_crydrController)\n    onlyAllowedManager('set_crydr_controller')\n  {\n    require(_crydrController != address(crydrController));\n    require(_crydrController != address(this));\n\n    crydrController = _crydrController;\n    CrydrControllerChangedEvent(_crydrController);\n  }\n\n  function getCrydrController() public constant returns (address) {\n    return address(crydrController);\n  }\n\n\n  /* PausableInterface */\n\n  /**\n   * @dev Override method to ensure that contract properly configured before it is unpaused\n   */\n  function unpauseContract() public {\n    require(isContract(crydrController) == true);\n    require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());\n\n    super.unpauseContract();\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBase.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBase.sol",
+      "exportedSymbols": {
+        "CrydrStorageBase": [
+          2338
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 2241,
+        "name": "PragmaDirective",
+        "src": "48:24:30"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 5590,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "file": "../../util/CommonModifiersInterface.sol",
+          "scope": 2339,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2242,
+        "name": "ImportDirective",
+        "src": "75:49:30"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 3803,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/assetid/AssetIDInterface.sol",
+          "file": "../../feature/assetid/AssetIDInterface.sol",
+          "scope": 2339,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2243,
+        "name": "ImportDirective",
+        "src": "125:52:30"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4248,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "file": "../../lifecycle/ManageableInterface.sol",
+          "scope": 2339,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2244,
+        "name": "ImportDirective",
+        "src": "178:49:30"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4550,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "file": "../../lifecycle/PausableInterface.sol",
+          "scope": 2339,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2245,
+        "name": "ImportDirective",
+        "src": "228:47:30"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2356,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBaseInterface.sol",
+          "file": "./CrydrStorageBaseInterface.sol",
+          "scope": 2339,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2246,
+        "name": "ImportDirective",
+        "src": "276:41:30"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            2355,
+            3802,
+            4247,
+            4549,
+            5589
+          ],
+          "contractKind": "contract",
+          "documentation": "@title CrydrStorageBase",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2338,
+            2355,
+            4549,
+            4247,
+            3802,
+            5589
+          ],
+          "name": "CrydrStorageBase",
+          "scope": 2339
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "CommonModifiersInterface",
+                  "referencedDeclaration": 5589,
+                  "type": "contract CommonModifiersInterface"
+                },
+                "id": 2247,
+                "name": "UserDefinedTypeName",
+                "src": "384:24:30"
+              }
+            ],
+            "id": 2248,
+            "name": "InheritanceSpecifier",
+            "src": "384:24:30"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "AssetIDInterface",
+                  "referencedDeclaration": 3802,
+                  "type": "contract AssetIDInterface"
+                },
+                "id": 2249,
+                "name": "UserDefinedTypeName",
+                "src": "439:16:30"
+              }
+            ],
+            "id": 2250,
+            "name": "InheritanceSpecifier",
+            "src": "439:16:30"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "ManageableInterface",
+                  "referencedDeclaration": 4247,
+                  "type": "contract ManageableInterface"
+                },
+                "id": 2251,
+                "name": "UserDefinedTypeName",
+                "src": "486:19:30"
+              }
+            ],
+            "id": 2252,
+            "name": "InheritanceSpecifier",
+            "src": "486:19:30"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "PausableInterface",
+                  "referencedDeclaration": 4549,
+                  "type": "contract PausableInterface"
+                },
+                "id": 2253,
+                "name": "UserDefinedTypeName",
+                "src": "536:17:30"
+              }
+            ],
+            "id": 2254,
+            "name": "InheritanceSpecifier",
+            "src": "536:17:30"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "CrydrStorageBaseInterface",
+                  "referencedDeclaration": 2355,
+                  "type": "contract CrydrStorageBaseInterface"
+                },
+                "id": 2255,
+                "name": "UserDefinedTypeName",
+                "src": "584:25:30"
+              }
+            ],
+            "id": 2256,
+            "name": "InheritanceSpecifier",
+            "src": "584:25:30"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "crydrController",
+              "scope": 2338,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address",
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "address",
+                  "type": "address"
+                },
+                "id": 2257,
+                "name": "ElementaryTypeName",
+                "src": "632:7:30"
+              },
+              {
+                "attributes": {
+                  "argumentTypes": null,
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "isStructConstructorCall": false,
+                  "lValueRequested": false,
+                  "names": [
+                    null
+                  ],
+                  "type": "address",
+                  "type_conversion": true
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        }
+                      ],
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "type": "type(address)",
+                      "value": "address"
+                    },
+                    "id": 2258,
+                    "name": "ElementaryTypeNameExpression",
+                    "src": "658:7:30"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "307830",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "number",
+                      "type": "int_const 0",
+                      "value": "0x0"
+                    },
+                    "id": 2259,
+                    "name": "Literal",
+                    "src": "666:3:30"
+                  }
+                ],
+                "id": 2260,
+                "name": "FunctionCall",
+                "src": "658:12:30"
+              }
+            ],
+            "id": 2261,
+            "name": "VariableDeclaration",
+            "src": "632:38:30"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "setCrydrController",
+              "payable": false,
+              "scope": 2338,
+              "stateMutability": "nonpayable",
+              "superFunction": 2349,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_crydrController",
+                      "scope": 2299,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2262,
+                        "name": "ElementaryTypeName",
+                        "src": "767:7:30"
+                      }
+                    ],
+                    "id": 2263,
+                    "name": "VariableDeclaration",
+                    "src": "767:24:30"
+                  }
+                ],
+                "id": 2264,
+                "name": "ParameterList",
+                "src": "761:34:30"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2273,
+                "name": "ParameterList",
+                "src": "921:0:30"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4548,
+                      "type": "modifier ()",
+                      "value": "whenContractPaused"
+                    },
+                    "id": 2265,
+                    "name": "Identifier",
+                    "src": "811:18:30"
+                  }
+                ],
+                "id": 2266,
+                "name": "ModifierInvocation",
+                "src": "811:18:30"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 5588,
+                      "type": "modifier (address)",
+                      "value": "onlyContractAddress"
+                    },
+                    "id": 2267,
+                    "name": "Identifier",
+                    "src": "834:19:30"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 2263,
+                      "type": "address",
+                      "value": "_crydrController"
+                    },
+                    "id": 2268,
+                    "name": "Identifier",
+                    "src": "854:16:30"
+                  }
+                ],
+                "id": 2269,
+                "name": "ModifierInvocation",
+                "src": "834:37:30"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 2270,
+                    "name": "Identifier",
+                    "src": "876:18:30"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "7365745f63727964725f636f6e74726f6c6c6572",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"set_crydr_controller\"",
+                      "value": "set_crydr_controller"
+                    },
+                    "id": 2271,
+                    "name": "Literal",
+                    "src": "895:22:30"
+                  }
+                ],
+                "id": 2272,
+                "name": "ModifierInvocation",
+                "src": "876:42:30"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 2274,
+                            "name": "Identifier",
+                            "src": "927:7:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 2263,
+                                  "type": "address",
+                                  "value": "_crydrController"
+                                },
+                                "id": 2275,
+                                "name": "Identifier",
+                                "src": "935:16:30"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "address",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "type": "type(address)",
+                                      "value": "address"
+                                    },
+                                    "id": 2276,
+                                    "name": "ElementaryTypeNameExpression",
+                                    "src": "955:7:30"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 2261,
+                                      "type": "address",
+                                      "value": "crydrController"
+                                    },
+                                    "id": 2277,
+                                    "name": "Identifier",
+                                    "src": "963:15:30"
+                                  }
+                                ],
+                                "id": 2278,
+                                "name": "FunctionCall",
+                                "src": "955:24:30"
+                              }
+                            ],
+                            "id": 2279,
+                            "name": "BinaryOperation",
+                            "src": "935:44:30"
+                          }
+                        ],
+                        "id": 2280,
+                        "name": "FunctionCall",
+                        "src": "927:53:30"
+                      }
+                    ],
+                    "id": 2281,
+                    "name": "ExpressionStatement",
+                    "src": "927:53:30"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 2282,
+                            "name": "Identifier",
+                            "src": "986:7:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 2263,
+                                  "type": "address",
+                                  "value": "_crydrController"
+                                },
+                                "id": 2283,
+                                "name": "Identifier",
+                                "src": "994:16:30"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "address",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_contract$_CrydrStorageBase_$2338",
+                                          "typeString": "contract CrydrStorageBase"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "type": "type(address)",
+                                      "value": "address"
+                                    },
+                                    "id": 2284,
+                                    "name": "ElementaryTypeNameExpression",
+                                    "src": "1014:7:30"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 5678,
+                                      "type": "contract CrydrStorageBase",
+                                      "value": "this"
+                                    },
+                                    "id": 2285,
+                                    "name": "Identifier",
+                                    "src": "1022:4:30"
+                                  }
+                                ],
+                                "id": 2286,
+                                "name": "FunctionCall",
+                                "src": "1014:13:30"
+                              }
+                            ],
+                            "id": 2287,
+                            "name": "BinaryOperation",
+                            "src": "994:33:30"
+                          }
+                        ],
+                        "id": 2288,
+                        "name": "FunctionCall",
+                        "src": "986:42:30"
+                      }
+                    ],
+                    "id": 2289,
+                    "name": "ExpressionStatement",
+                    "src": "986:42:30"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2261,
+                              "type": "address",
+                              "value": "crydrController"
+                            },
+                            "id": 2290,
+                            "name": "Identifier",
+                            "src": "1035:15:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2263,
+                              "type": "address",
+                              "value": "_crydrController"
+                            },
+                            "id": 2291,
+                            "name": "Identifier",
+                            "src": "1053:16:30"
+                          }
+                        ],
+                        "id": 2292,
+                        "name": "Assignment",
+                        "src": "1035:34:30"
+                      }
+                    ],
+                    "id": 2293,
+                    "name": "ExpressionStatement",
+                    "src": "1035:34:30"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2344,
+                              "type": "function (address)",
+                              "value": "CrydrControllerChangedEvent"
+                            },
+                            "id": 2294,
+                            "name": "Identifier",
+                            "src": "1075:27:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2263,
+                              "type": "address",
+                              "value": "_crydrController"
+                            },
+                            "id": 2295,
+                            "name": "Identifier",
+                            "src": "1103:16:30"
+                          }
+                        ],
+                        "id": 2296,
+                        "name": "FunctionCall",
+                        "src": "1075:45:30"
+                      }
+                    ],
+                    "id": 2297,
+                    "name": "ExpressionStatement",
+                    "src": "1075:45:30"
+                  }
+                ],
+                "id": 2298,
+                "name": "Block",
+                "src": "921:204:30"
+              }
+            ],
+            "id": 2299,
+            "name": "FunctionDefinition",
+            "src": "734:391:30"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getCrydrController",
+              "payable": false,
+              "scope": 2338,
+              "stateMutability": "view",
+              "superFunction": 2354,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2300,
+                "name": "ParameterList",
+                "src": "1156:2:30"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 2309,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2301,
+                        "name": "ElementaryTypeName",
+                        "src": "1184:7:30"
+                      }
+                    ],
+                    "id": 2302,
+                    "name": "VariableDeclaration",
+                    "src": "1184:7:30"
+                  }
+                ],
+                "id": 2303,
+                "name": "ParameterList",
+                "src": "1183:9:30"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 2303
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "address",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "type": "type(address)",
+                              "value": "address"
+                            },
+                            "id": 2304,
+                            "name": "ElementaryTypeNameExpression",
+                            "src": "1206:7:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2261,
+                              "type": "address",
+                              "value": "crydrController"
+                            },
+                            "id": 2305,
+                            "name": "Identifier",
+                            "src": "1214:15:30"
+                          }
+                        ],
+                        "id": 2306,
+                        "name": "FunctionCall",
+                        "src": "1206:24:30"
+                      }
+                    ],
+                    "id": 2307,
+                    "name": "Return",
+                    "src": "1199:31:30"
+                  }
+                ],
+                "id": 2308,
+                "name": "Block",
+                "src": "1193:42:30"
+              }
+            ],
+            "id": 2309,
+            "name": "FunctionDefinition",
+            "src": "1129:106:30"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "unpauseContract",
+              "payable": false,
+              "scope": 2338,
+              "stateMutability": "nonpayable",
+              "superFunction": 4521,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2310,
+                "name": "ParameterList",
+                "src": "1395:2:30"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2311,
+                "name": "ParameterList",
+                "src": "1405:0:30"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 2312,
+                            "name": "Identifier",
+                            "src": "1411:7:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_bool",
+                                "typeString": "bool"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "==",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "bool",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address",
+                                          "typeString": "address"
+                                        }
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 5574,
+                                      "type": "function (address) view returns (bool)",
+                                      "value": "isContract"
+                                    },
+                                    "id": 2313,
+                                    "name": "Identifier",
+                                    "src": "1419:10:30"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 2261,
+                                      "type": "address",
+                                      "value": "crydrController"
+                                    },
+                                    "id": 2314,
+                                    "name": "Identifier",
+                                    "src": "1430:15:30"
+                                  }
+                                ],
+                                "id": 2315,
+                                "name": "FunctionCall",
+                                "src": "1419:27:30"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "74727565",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "bool",
+                                  "type": "bool",
+                                  "value": "true"
+                                },
+                                "id": 2316,
+                                "name": "Literal",
+                                "src": "1450:4:30"
+                              }
+                            ],
+                            "id": 2317,
+                            "name": "BinaryOperation",
+                            "src": "1419:35:30"
+                          }
+                        ],
+                        "id": 2318,
+                        "name": "FunctionCall",
+                        "src": "1411:44:30"
+                      }
+                    ],
+                    "id": 2319,
+                    "name": "ExpressionStatement",
+                    "src": "1411:44:30"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 2320,
+                            "name": "Identifier",
+                            "src": "1461:7:30"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_bytes32",
+                                "typeString": "bytes32"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "==",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    null
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "bytes32",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        null
+                                      ],
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 3801,
+                                      "type": "function () view returns (bytes32)",
+                                      "value": "getAssetIDHash"
+                                    },
+                                    "id": 2321,
+                                    "name": "Identifier",
+                                    "src": "1469:14:30"
+                                  }
+                                ],
+                                "id": 2322,
+                                "name": "FunctionCall",
+                                "src": "1469:16:30"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    null
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "bytes32",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        null
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "getAssetIDHash",
+                                      "referencedDeclaration": 3801,
+                                      "type": "function () view external returns (bytes32)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": false,
+                                          "isStructConstructorCall": false,
+                                          "lValueRequested": false,
+                                          "names": [
+                                            null
+                                          ],
+                                          "type": "contract AssetIDInterface",
+                                          "type_conversion": true
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": [
+                                                {
+                                                  "typeIdentifier": "t_address",
+                                                  "typeString": "address"
+                                                }
+                                              ],
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 3802,
+                                              "type": "type(contract AssetIDInterface)",
+                                              "value": "AssetIDInterface"
+                                            },
+                                            "id": 2323,
+                                            "name": "Identifier",
+                                            "src": "1489:16:30"
+                                          },
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 2261,
+                                              "type": "address",
+                                              "value": "crydrController"
+                                            },
+                                            "id": 2324,
+                                            "name": "Identifier",
+                                            "src": "1506:15:30"
+                                          }
+                                        ],
+                                        "id": 2325,
+                                        "name": "FunctionCall",
+                                        "src": "1489:33:30"
+                                      }
+                                    ],
+                                    "id": 2326,
+                                    "name": "MemberAccess",
+                                    "src": "1489:48:30"
+                                  }
+                                ],
+                                "id": 2327,
+                                "name": "FunctionCall",
+                                "src": "1489:50:30"
+                              }
+                            ],
+                            "id": 2328,
+                            "name": "BinaryOperation",
+                            "src": "1469:70:30"
+                          }
+                        ],
+                        "id": 2329,
+                        "name": "FunctionCall",
+                        "src": "1461:79:30"
+                      }
+                    ],
+                    "id": 2330,
+                    "name": "ExpressionStatement",
+                    "src": "1461:79:30"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            null
+                          ],
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "unpauseContract",
+                              "referencedDeclaration": 4521,
+                              "type": "function ()"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 5679,
+                                  "type": "contract super CrydrStorageBase",
+                                  "value": "super"
+                                },
+                                "id": 2331,
+                                "name": "Identifier",
+                                "src": "1547:5:30"
+                              }
+                            ],
+                            "id": 2333,
+                            "name": "MemberAccess",
+                            "src": "1547:21:30"
+                          }
+                        ],
+                        "id": 2334,
+                        "name": "FunctionCall",
+                        "src": "1547:23:30"
+                      }
+                    ],
+                    "id": 2335,
+                    "name": "ExpressionStatement",
+                    "src": "1547:23:30"
+                  }
+                ],
+                "id": 2336,
+                "name": "Block",
+                "src": "1405:170:30"
+              }
+            ],
+            "id": 2337,
+            "name": "FunctionDefinition",
+            "src": "1371:204:30"
+          }
+        ],
+        "id": 2338,
+        "name": "ContractDefinition",
+        "src": "355:1222:30"
+      }
+    ],
+    "id": 2339,
+    "name": "SourceUnit",
+    "src": "48:1530:30"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-17T22:16:40.555Z"
+}

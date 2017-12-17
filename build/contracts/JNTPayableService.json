@@ -1,0 +1,2710 @@
+{
+  "contractName": "JNTPayableService",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntController",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getPaused",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_jntController",
+          "type": "address"
+        }
+      ],
+      "name": "setJntController",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "unpauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntBeneficiary",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_jntBeneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "setJntBeneficiary",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "jntcontroller",
+          "type": "address"
+        }
+      ],
+      "name": "JNTControllerChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "jntbeneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "JNTBeneficiaryChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "JNTChargedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "PauseEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "UnpauseEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\nimport '../../util/CommonModifiersInterface.sol';\nimport '../../lifecycle/ManageableInterface.sol';\nimport '../../lifecycle/PausableInterface.sol';\nimport './JNTPayableServiceInterface.sol';\n\nimport '../view/CrydrViewERC20Interface.sol';\nimport '../controller/CrydrControllerBaseInterface.sol';\nimport '../jnt/JNTControllerInterface.sol';\n\n\ncontract JNTPayableService is CommonModifiersInterface,\n                              ManageableInterface,\n                              PausableInterface,\n                              JNTPayableServiceInterface {\n\n  /* Storage */\n\n  JNTControllerInterface jntController;\n  address jntBeneficiary;\n\n\n  /* JNTPayableServiceInterface */\n\n  /* Configuration */\n\n  function setJntController(\n    address _jntController\n  )\n    external\n    onlyContractAddress(_jntController)\n    onlyAllowedManager('set_jnt_controller')\n    whenContractPaused\n  {\n    require(_jntController != address(jntController));\n\n    jntController = JNTControllerInterface(_jntController);\n    JNTControllerChangedEvent(_jntController);\n  }\n\n  function getJntController() public constant returns (address) {\n    return address(jntController);\n  }\n\n\n  function setJntBeneficiary(\n    address _jntBeneficiary\n  )\n    external\n    onlyValidJntBeneficiary(_jntBeneficiary)\n    onlyAllowedManager('set_jnt_beneficiary')\n    whenContractPaused\n  {\n    require(_jntBeneficiary != jntBeneficiary);\n    require(_jntBeneficiary != address(this));\n\n    jntBeneficiary = _jntBeneficiary;\n    JNTBeneficiaryChangedEvent(jntBeneficiary);\n  }\n\n  function getJntBeneficiary() public constant returns (address) {\n    return jntBeneficiary;\n  }\n\n\n  /* Actions */\n\n  function chargeJNTForService(address _from, uint256 _value) internal whenContractNotPaused {\n    require(_from != address(0x0));\n    require(_from != jntBeneficiary);\n    require(_value > 0);\n\n    jntController.chargeJNT(_from, jntBeneficiary, _value);\n    JNTChargedEvent(_from, jntBeneficiary, _value);\n  }\n\n\n  /* Pausable */\n\n  /**\n   * @dev Override method to ensure that contract properly configured before it is unpaused\n   */\n  function unpauseContract()\n    public\n    onlyContractAddress(jntController)\n    onlyValidJntBeneficiary(jntBeneficiary)\n  {\n    super.unpauseContract();\n  }\n\n\n  /* Helpers */\n\n  modifier onlyValidJntBeneficiary(address _jntBeneficiary) {\n    require(_jntBeneficiary != address(0x0));\n    _;\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableService.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableService.sol",
+      "exportedSymbols": {
+        "JNTPayableService": [
+          1572
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 1393,
+        "name": "PragmaDirective",
+        "src": "48:24:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 5590,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiersInterface.sol",
+          "file": "../../util/CommonModifiersInterface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1394,
+        "name": "ImportDirective",
+        "src": "75:49:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4248,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/ManageableInterface.sol",
+          "file": "../../lifecycle/ManageableInterface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1395,
+        "name": "ImportDirective",
+        "src": "125:49:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 4550,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/PausableInterface.sol",
+          "file": "../../lifecycle/PausableInterface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1396,
+        "name": "ImportDirective",
+        "src": "175:47:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1790,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceInterface.sol",
+          "file": "./JNTPayableServiceInterface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1397,
+        "name": "ImportDirective",
+        "src": "223:42:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 3367,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Interface.sol",
+          "file": "../view/CrydrViewERC20Interface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1398,
+        "name": "ImportDirective",
+        "src": "267:45:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 856,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBaseInterface.sol",
+          "file": "../controller/CrydrControllerBaseInterface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1399,
+        "name": "ImportDirective",
+        "src": "313:56:22"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1392,
+          "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTControllerInterface.sol",
+          "file": "../jnt/JNTControllerInterface.sol",
+          "scope": 1573,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1400,
+        "name": "ImportDirective",
+        "src": "370:43:22"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            1789,
+            4247,
+            4549,
+            5589
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1572,
+            1789,
+            4549,
+            4247,
+            5589
+          ],
+          "name": "JNTPayableService",
+          "scope": 1573
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "CommonModifiersInterface",
+                  "referencedDeclaration": 5589,
+                  "type": "contract CommonModifiersInterface"
+                },
+                "id": 1401,
+                "name": "UserDefinedTypeName",
+                "src": "446:24:22"
+              }
+            ],
+            "id": 1402,
+            "name": "InheritanceSpecifier",
+            "src": "446:24:22"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "ManageableInterface",
+                  "referencedDeclaration": 4247,
+                  "type": "contract ManageableInterface"
+                },
+                "id": 1403,
+                "name": "UserDefinedTypeName",
+                "src": "502:19:22"
+              }
+            ],
+            "id": 1404,
+            "name": "InheritanceSpecifier",
+            "src": "502:19:22"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "PausableInterface",
+                  "referencedDeclaration": 4549,
+                  "type": "contract PausableInterface"
+                },
+                "id": 1405,
+                "name": "UserDefinedTypeName",
+                "src": "553:17:22"
+              }
+            ],
+            "id": 1406,
+            "name": "InheritanceSpecifier",
+            "src": "553:17:22"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "JNTPayableServiceInterface",
+                  "referencedDeclaration": 1789,
+                  "type": "contract JNTPayableServiceInterface"
+                },
+                "id": 1407,
+                "name": "UserDefinedTypeName",
+                "src": "602:26:22"
+              }
+            ],
+            "id": 1408,
+            "name": "InheritanceSpecifier",
+            "src": "602:26:22"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "jntController",
+              "scope": 1572,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "contract JNTControllerInterface",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "JNTControllerInterface",
+                  "referencedDeclaration": 1391,
+                  "type": "contract JNTControllerInterface"
+                },
+                "id": 1409,
+                "name": "UserDefinedTypeName",
+                "src": "651:22:22"
+              }
+            ],
+            "id": 1410,
+            "name": "VariableDeclaration",
+            "src": "651:36:22"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "jntBeneficiary",
+              "scope": 1572,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "address",
+                  "type": "address"
+                },
+                "id": 1411,
+                "name": "ElementaryTypeName",
+                "src": "691:7:22"
+              }
+            ],
+            "id": 1412,
+            "name": "VariableDeclaration",
+            "src": "691:22:22"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "setJntController",
+              "payable": false,
+              "scope": 1572,
+              "stateMutability": "nonpayable",
+              "superFunction": 1766,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntController",
+                      "scope": 1444,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1413,
+                        "name": "ElementaryTypeName",
+                        "src": "809:7:22"
+                      }
+                    ],
+                    "id": 1414,
+                    "name": "VariableDeclaration",
+                    "src": "809:22:22"
+                  }
+                ],
+                "id": 1415,
+                "name": "ParameterList",
+                "src": "803:32:22"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1424,
+                "name": "ParameterList",
+                "src": "959:0:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 5588,
+                      "type": "modifier (address)",
+                      "value": "onlyContractAddress"
+                    },
+                    "id": 1416,
+                    "name": "Identifier",
+                    "src": "853:19:22"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1414,
+                      "type": "address",
+                      "value": "_jntController"
+                    },
+                    "id": 1417,
+                    "name": "Identifier",
+                    "src": "873:14:22"
+                  }
+                ],
+                "id": 1418,
+                "name": "ModifierInvocation",
+                "src": "853:35:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 1419,
+                    "name": "Identifier",
+                    "src": "893:18:22"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "7365745f6a6e745f636f6e74726f6c6c6572",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"set_jnt_controller\"",
+                      "value": "set_jnt_controller"
+                    },
+                    "id": 1420,
+                    "name": "Literal",
+                    "src": "912:20:22"
+                  }
+                ],
+                "id": 1421,
+                "name": "ModifierInvocation",
+                "src": "893:40:22"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4548,
+                      "type": "modifier ()",
+                      "value": "whenContractPaused"
+                    },
+                    "id": 1422,
+                    "name": "Identifier",
+                    "src": "938:18:22"
+                  }
+                ],
+                "id": 1423,
+                "name": "ModifierInvocation",
+                "src": "938:18:22"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1425,
+                            "name": "Identifier",
+                            "src": "965:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1414,
+                                  "type": "address",
+                                  "value": "_jntController"
+                                },
+                                "id": 1426,
+                                "name": "Identifier",
+                                "src": "973:14:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "address",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_contract$_JNTControllerInterface_$1391",
+                                          "typeString": "contract JNTControllerInterface"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "type": "type(address)",
+                                      "value": "address"
+                                    },
+                                    "id": 1427,
+                                    "name": "ElementaryTypeNameExpression",
+                                    "src": "991:7:22"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1410,
+                                      "type": "contract JNTControllerInterface",
+                                      "value": "jntController"
+                                    },
+                                    "id": 1428,
+                                    "name": "Identifier",
+                                    "src": "999:13:22"
+                                  }
+                                ],
+                                "id": 1429,
+                                "name": "FunctionCall",
+                                "src": "991:22:22"
+                              }
+                            ],
+                            "id": 1430,
+                            "name": "BinaryOperation",
+                            "src": "973:40:22"
+                          }
+                        ],
+                        "id": 1431,
+                        "name": "FunctionCall",
+                        "src": "965:49:22"
+                      }
+                    ],
+                    "id": 1432,
+                    "name": "ExpressionStatement",
+                    "src": "965:49:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "contract JNTControllerInterface"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1410,
+                              "type": "contract JNTControllerInterface",
+                              "value": "jntController"
+                            },
+                            "id": 1433,
+                            "name": "Identifier",
+                            "src": "1021:13:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "contract JNTControllerInterface",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_address",
+                                      "typeString": "address"
+                                    }
+                                  ],
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1391,
+                                  "type": "type(contract JNTControllerInterface)",
+                                  "value": "JNTControllerInterface"
+                                },
+                                "id": 1434,
+                                "name": "Identifier",
+                                "src": "1037:22:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1414,
+                                  "type": "address",
+                                  "value": "_jntController"
+                                },
+                                "id": 1435,
+                                "name": "Identifier",
+                                "src": "1060:14:22"
+                              }
+                            ],
+                            "id": 1436,
+                            "name": "FunctionCall",
+                            "src": "1037:38:22"
+                          }
+                        ],
+                        "id": 1437,
+                        "name": "Assignment",
+                        "src": "1021:54:22"
+                      }
+                    ],
+                    "id": 1438,
+                    "name": "ExpressionStatement",
+                    "src": "1021:54:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1749,
+                              "type": "function (address)",
+                              "value": "JNTControllerChangedEvent"
+                            },
+                            "id": 1439,
+                            "name": "Identifier",
+                            "src": "1081:25:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1414,
+                              "type": "address",
+                              "value": "_jntController"
+                            },
+                            "id": 1440,
+                            "name": "Identifier",
+                            "src": "1107:14:22"
+                          }
+                        ],
+                        "id": 1441,
+                        "name": "FunctionCall",
+                        "src": "1081:41:22"
+                      }
+                    ],
+                    "id": 1442,
+                    "name": "ExpressionStatement",
+                    "src": "1081:41:22"
+                  }
+                ],
+                "id": 1443,
+                "name": "Block",
+                "src": "959:168:22"
+              }
+            ],
+            "id": 1444,
+            "name": "FunctionDefinition",
+            "src": "778:349:22"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntController",
+              "payable": false,
+              "scope": 1572,
+              "stateMutability": "view",
+              "superFunction": 1771,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1445,
+                "name": "ParameterList",
+                "src": "1156:2:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1454,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1446,
+                        "name": "ElementaryTypeName",
+                        "src": "1184:7:22"
+                      }
+                    ],
+                    "id": 1447,
+                    "name": "VariableDeclaration",
+                    "src": "1184:7:22"
+                  }
+                ],
+                "id": 1448,
+                "name": "ParameterList",
+                "src": "1183:9:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 1448
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "address",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_contract$_JNTControllerInterface_$1391",
+                                  "typeString": "contract JNTControllerInterface"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "type": "type(address)",
+                              "value": "address"
+                            },
+                            "id": 1449,
+                            "name": "ElementaryTypeNameExpression",
+                            "src": "1206:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1410,
+                              "type": "contract JNTControllerInterface",
+                              "value": "jntController"
+                            },
+                            "id": 1450,
+                            "name": "Identifier",
+                            "src": "1214:13:22"
+                          }
+                        ],
+                        "id": 1451,
+                        "name": "FunctionCall",
+                        "src": "1206:22:22"
+                      }
+                    ],
+                    "id": 1452,
+                    "name": "Return",
+                    "src": "1199:29:22"
+                  }
+                ],
+                "id": 1453,
+                "name": "Block",
+                "src": "1193:40:22"
+              }
+            ],
+            "id": 1454,
+            "name": "FunctionDefinition",
+            "src": "1131:102:22"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "setJntBeneficiary",
+              "payable": false,
+              "scope": 1572,
+              "stateMutability": "nonpayable",
+              "superFunction": 1776,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntBeneficiary",
+                      "scope": 1490,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1455,
+                        "name": "ElementaryTypeName",
+                        "src": "1270:7:22"
+                      }
+                    ],
+                    "id": 1456,
+                    "name": "VariableDeclaration",
+                    "src": "1270:23:22"
+                  }
+                ],
+                "id": 1457,
+                "name": "ParameterList",
+                "src": "1264:33:22"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1466,
+                "name": "ParameterList",
+                "src": "1427:0:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1571,
+                      "type": "modifier (address)",
+                      "value": "onlyValidJntBeneficiary"
+                    },
+                    "id": 1458,
+                    "name": "Identifier",
+                    "src": "1315:23:22"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1456,
+                      "type": "address",
+                      "value": "_jntBeneficiary"
+                    },
+                    "id": 1459,
+                    "name": "Identifier",
+                    "src": "1339:15:22"
+                  }
+                ],
+                "id": 1460,
+                "name": "ModifierInvocation",
+                "src": "1315:40:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4246,
+                      "type": "modifier (string memory)",
+                      "value": "onlyAllowedManager"
+                    },
+                    "id": 1461,
+                    "name": "Identifier",
+                    "src": "1360:18:22"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "hexvalue": "7365745f6a6e745f62656e6566696369617279",
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "subdenomination": null,
+                      "token": "string",
+                      "type": "literal_string \"set_jnt_beneficiary\"",
+                      "value": "set_jnt_beneficiary"
+                    },
+                    "id": 1462,
+                    "name": "Literal",
+                    "src": "1379:21:22"
+                  }
+                ],
+                "id": 1463,
+                "name": "ModifierInvocation",
+                "src": "1360:41:22"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4548,
+                      "type": "modifier ()",
+                      "value": "whenContractPaused"
+                    },
+                    "id": 1464,
+                    "name": "Identifier",
+                    "src": "1406:18:22"
+                  }
+                ],
+                "id": 1465,
+                "name": "ModifierInvocation",
+                "src": "1406:18:22"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1467,
+                            "name": "Identifier",
+                            "src": "1433:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1456,
+                                  "type": "address",
+                                  "value": "_jntBeneficiary"
+                                },
+                                "id": 1468,
+                                "name": "Identifier",
+                                "src": "1441:15:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1412,
+                                  "type": "address",
+                                  "value": "jntBeneficiary"
+                                },
+                                "id": 1469,
+                                "name": "Identifier",
+                                "src": "1460:14:22"
+                              }
+                            ],
+                            "id": 1470,
+                            "name": "BinaryOperation",
+                            "src": "1441:33:22"
+                          }
+                        ],
+                        "id": 1471,
+                        "name": "FunctionCall",
+                        "src": "1433:42:22"
+                      }
+                    ],
+                    "id": 1472,
+                    "name": "ExpressionStatement",
+                    "src": "1433:42:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1473,
+                            "name": "Identifier",
+                            "src": "1481:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1456,
+                                  "type": "address",
+                                  "value": "_jntBeneficiary"
+                                },
+                                "id": 1474,
+                                "name": "Identifier",
+                                "src": "1489:15:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "address",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_contract$_JNTPayableService_$1572",
+                                          "typeString": "contract JNTPayableService"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "type": "type(address)",
+                                      "value": "address"
+                                    },
+                                    "id": 1475,
+                                    "name": "ElementaryTypeNameExpression",
+                                    "src": "1508:7:22"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 5712,
+                                      "type": "contract JNTPayableService",
+                                      "value": "this"
+                                    },
+                                    "id": 1476,
+                                    "name": "Identifier",
+                                    "src": "1516:4:22"
+                                  }
+                                ],
+                                "id": 1477,
+                                "name": "FunctionCall",
+                                "src": "1508:13:22"
+                              }
+                            ],
+                            "id": 1478,
+                            "name": "BinaryOperation",
+                            "src": "1489:32:22"
+                          }
+                        ],
+                        "id": 1479,
+                        "name": "FunctionCall",
+                        "src": "1481:41:22"
+                      }
+                    ],
+                    "id": 1480,
+                    "name": "ExpressionStatement",
+                    "src": "1481:41:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1412,
+                              "type": "address",
+                              "value": "jntBeneficiary"
+                            },
+                            "id": 1481,
+                            "name": "Identifier",
+                            "src": "1529:14:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1456,
+                              "type": "address",
+                              "value": "_jntBeneficiary"
+                            },
+                            "id": 1482,
+                            "name": "Identifier",
+                            "src": "1546:15:22"
+                          }
+                        ],
+                        "id": 1483,
+                        "name": "Assignment",
+                        "src": "1529:32:22"
+                      }
+                    ],
+                    "id": 1484,
+                    "name": "ExpressionStatement",
+                    "src": "1529:32:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1753,
+                              "type": "function (address)",
+                              "value": "JNTBeneficiaryChangedEvent"
+                            },
+                            "id": 1485,
+                            "name": "Identifier",
+                            "src": "1567:26:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1412,
+                              "type": "address",
+                              "value": "jntBeneficiary"
+                            },
+                            "id": 1486,
+                            "name": "Identifier",
+                            "src": "1594:14:22"
+                          }
+                        ],
+                        "id": 1487,
+                        "name": "FunctionCall",
+                        "src": "1567:42:22"
+                      }
+                    ],
+                    "id": 1488,
+                    "name": "ExpressionStatement",
+                    "src": "1567:42:22"
+                  }
+                ],
+                "id": 1489,
+                "name": "Block",
+                "src": "1427:187:22"
+              }
+            ],
+            "id": 1490,
+            "name": "FunctionDefinition",
+            "src": "1238:376:22"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntBeneficiary",
+              "payable": false,
+              "scope": 1572,
+              "stateMutability": "view",
+              "superFunction": 1781,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1491,
+                "name": "ParameterList",
+                "src": "1644:2:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1498,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1492,
+                        "name": "ElementaryTypeName",
+                        "src": "1672:7:22"
+                      }
+                    ],
+                    "id": 1493,
+                    "name": "VariableDeclaration",
+                    "src": "1672:7:22"
+                  }
+                ],
+                "id": 1494,
+                "name": "ParameterList",
+                "src": "1671:9:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 1494
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 1412,
+                          "type": "address",
+                          "value": "jntBeneficiary"
+                        },
+                        "id": 1495,
+                        "name": "Identifier",
+                        "src": "1694:14:22"
+                      }
+                    ],
+                    "id": 1496,
+                    "name": "Return",
+                    "src": "1687:21:22"
+                  }
+                ],
+                "id": 1497,
+                "name": "Block",
+                "src": "1681:32:22"
+              }
+            ],
+            "id": 1498,
+            "name": "FunctionDefinition",
+            "src": "1618:95:22"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "chargeJNTForService",
+              "payable": false,
+              "scope": 1572,
+              "stateMutability": "nonpayable",
+              "superFunction": 1788,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_from",
+                      "scope": 1542,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1499,
+                        "name": "ElementaryTypeName",
+                        "src": "1764:7:22"
+                      }
+                    ],
+                    "id": 1500,
+                    "name": "VariableDeclaration",
+                    "src": "1764:13:22"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 1542,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1501,
+                        "name": "ElementaryTypeName",
+                        "src": "1779:7:22"
+                      }
+                    ],
+                    "id": 1502,
+                    "name": "VariableDeclaration",
+                    "src": "1779:14:22"
+                  }
+                ],
+                "id": 1503,
+                "name": "ParameterList",
+                "src": "1763:31:22"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1506,
+                "name": "ParameterList",
+                "src": "1826:0:22"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 4537,
+                      "type": "modifier ()",
+                      "value": "whenContractNotPaused"
+                    },
+                    "id": 1504,
+                    "name": "Identifier",
+                    "src": "1804:21:22"
+                  }
+                ],
+                "id": 1505,
+                "name": "ModifierInvocation",
+                "src": "1804:21:22"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1507,
+                            "name": "Identifier",
+                            "src": "1832:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1500,
+                                  "type": "address",
+                                  "value": "_from"
+                                },
+                                "id": 1508,
+                                "name": "Identifier",
+                                "src": "1840:5:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "address",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_rational_0_by_1",
+                                          "typeString": "int_const 0"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "type": "type(address)",
+                                      "value": "address"
+                                    },
+                                    "id": 1509,
+                                    "name": "ElementaryTypeNameExpression",
+                                    "src": "1849:7:22"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "307830",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "number",
+                                      "type": "int_const 0",
+                                      "value": "0x0"
+                                    },
+                                    "id": 1510,
+                                    "name": "Literal",
+                                    "src": "1857:3:22"
+                                  }
+                                ],
+                                "id": 1511,
+                                "name": "FunctionCall",
+                                "src": "1849:12:22"
+                              }
+                            ],
+                            "id": 1512,
+                            "name": "BinaryOperation",
+                            "src": "1840:21:22"
+                          }
+                        ],
+                        "id": 1513,
+                        "name": "FunctionCall",
+                        "src": "1832:30:22"
+                      }
+                    ],
+                    "id": 1514,
+                    "name": "ExpressionStatement",
+                    "src": "1832:30:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1515,
+                            "name": "Identifier",
+                            "src": "1868:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1500,
+                                  "type": "address",
+                                  "value": "_from"
+                                },
+                                "id": 1516,
+                                "name": "Identifier",
+                                "src": "1876:5:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1412,
+                                  "type": "address",
+                                  "value": "jntBeneficiary"
+                                },
+                                "id": 1517,
+                                "name": "Identifier",
+                                "src": "1885:14:22"
+                              }
+                            ],
+                            "id": 1518,
+                            "name": "BinaryOperation",
+                            "src": "1876:23:22"
+                          }
+                        ],
+                        "id": 1519,
+                        "name": "FunctionCall",
+                        "src": "1868:32:22"
+                      }
+                    ],
+                    "id": 1520,
+                    "name": "ExpressionStatement",
+                    "src": "1868:32:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1521,
+                            "name": "Identifier",
+                            "src": "1906:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": ">",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1502,
+                                  "type": "uint256",
+                                  "value": "_value"
+                                },
+                                "id": 1522,
+                                "name": "Identifier",
+                                "src": "1914:6:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "30",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "number",
+                                  "type": "int_const 0",
+                                  "value": "0"
+                                },
+                                "id": 1523,
+                                "name": "Literal",
+                                "src": "1923:1:22"
+                              }
+                            ],
+                            "id": 1524,
+                            "name": "BinaryOperation",
+                            "src": "1914:10:22"
+                          }
+                        ],
+                        "id": 1525,
+                        "name": "FunctionCall",
+                        "src": "1906:19:22"
+                      }
+                    ],
+                    "id": 1526,
+                    "name": "ExpressionStatement",
+                    "src": "1906:19:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "chargeJNT",
+                              "referencedDeclaration": 1390,
+                              "type": "function (address,address,uint256) external"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1410,
+                                  "type": "contract JNTControllerInterface",
+                                  "value": "jntController"
+                                },
+                                "id": 1527,
+                                "name": "Identifier",
+                                "src": "1932:13:22"
+                              }
+                            ],
+                            "id": 1529,
+                            "name": "MemberAccess",
+                            "src": "1932:23:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1500,
+                              "type": "address",
+                              "value": "_from"
+                            },
+                            "id": 1530,
+                            "name": "Identifier",
+                            "src": "1956:5:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1412,
+                              "type": "address",
+                              "value": "jntBeneficiary"
+                            },
+                            "id": 1531,
+                            "name": "Identifier",
+                            "src": "1963:14:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1502,
+                              "type": "uint256",
+                              "value": "_value"
+                            },
+                            "id": 1532,
+                            "name": "Identifier",
+                            "src": "1979:6:22"
+                          }
+                        ],
+                        "id": 1533,
+                        "name": "FunctionCall",
+                        "src": "1932:54:22"
+                      }
+                    ],
+                    "id": 1534,
+                    "name": "ExpressionStatement",
+                    "src": "1932:54:22"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1761,
+                              "type": "function (address,address,uint256)",
+                              "value": "JNTChargedEvent"
+                            },
+                            "id": 1535,
+                            "name": "Identifier",
+                            "src": "1992:15:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1500,
+                              "type": "address",
+                              "value": "_from"
+                            },
+                            "id": 1536,
+                            "name": "Identifier",
+                            "src": "2008:5:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1412,
+                              "type": "address",
+                              "value": "jntBeneficiary"
+                            },
+                            "id": 1537,
+                            "name": "Identifier",
+                            "src": "2015:14:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1502,
+                              "type": "uint256",
+                              "value": "_value"
+                            },
+                            "id": 1538,
+                            "name": "Identifier",
+                            "src": "2031:6:22"
+                          }
+                        ],
+                        "id": 1539,
+                        "name": "FunctionCall",
+                        "src": "1992:46:22"
+                      }
+                    ],
+                    "id": 1540,
+                    "name": "ExpressionStatement",
+                    "src": "1992:46:22"
+                  }
+                ],
+                "id": 1541,
+                "name": "Block",
+                "src": "1826:217:22"
+              }
+            ],
+            "id": 1542,
+            "name": "FunctionDefinition",
+            "src": "1735:308:22"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "unpauseContract",
+              "payable": false,
+              "scope": 1572,
+              "stateMutability": "nonpayable",
+              "superFunction": 4521,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1543,
+                "name": "ParameterList",
+                "src": "2194:2:22"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1550,
+                "name": "ParameterList",
+                "src": "2293:0:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 5588,
+                      "type": "modifier (address)",
+                      "value": "onlyContractAddress"
+                    },
+                    "id": 1544,
+                    "name": "Identifier",
+                    "src": "2212:19:22"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1410,
+                      "type": "contract JNTControllerInterface",
+                      "value": "jntController"
+                    },
+                    "id": 1545,
+                    "name": "Identifier",
+                    "src": "2232:13:22"
+                  }
+                ],
+                "id": 1546,
+                "name": "ModifierInvocation",
+                "src": "2212:34:22"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1571,
+                      "type": "modifier (address)",
+                      "value": "onlyValidJntBeneficiary"
+                    },
+                    "id": 1547,
+                    "name": "Identifier",
+                    "src": "2251:23:22"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1412,
+                      "type": "address",
+                      "value": "jntBeneficiary"
+                    },
+                    "id": 1548,
+                    "name": "Identifier",
+                    "src": "2275:14:22"
+                  }
+                ],
+                "id": 1549,
+                "name": "ModifierInvocation",
+                "src": "2251:39:22"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            null
+                          ],
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "unpauseContract",
+                              "referencedDeclaration": 4521,
+                              "type": "function ()"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 5713,
+                                  "type": "contract super JNTPayableService",
+                                  "value": "super"
+                                },
+                                "id": 1551,
+                                "name": "Identifier",
+                                "src": "2299:5:22"
+                              }
+                            ],
+                            "id": 1553,
+                            "name": "MemberAccess",
+                            "src": "2299:21:22"
+                          }
+                        ],
+                        "id": 1554,
+                        "name": "FunctionCall",
+                        "src": "2299:23:22"
+                      }
+                    ],
+                    "id": 1555,
+                    "name": "ExpressionStatement",
+                    "src": "2299:23:22"
+                  }
+                ],
+                "id": 1556,
+                "name": "Block",
+                "src": "2293:34:22"
+              }
+            ],
+            "id": 1557,
+            "name": "FunctionDefinition",
+            "src": "2170:157:22"
+          },
+          {
+            "attributes": {
+              "name": "onlyValidJntBeneficiary",
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntBeneficiary",
+                      "scope": 1571,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1558,
+                        "name": "ElementaryTypeName",
+                        "src": "2382:7:22"
+                      }
+                    ],
+                    "id": 1559,
+                    "name": "VariableDeclaration",
+                    "src": "2382:23:22"
+                  }
+                ],
+                "id": 1560,
+                "name": "ParameterList",
+                "src": "2381:25:22"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 5604,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 1561,
+                            "name": "Identifier",
+                            "src": "2413:7:22"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "!=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 1559,
+                                  "type": "address",
+                                  "value": "_jntBeneficiary"
+                                },
+                                "id": 1562,
+                                "name": "Identifier",
+                                "src": "2421:15:22"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "address",
+                                  "type_conversion": true
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_rational_0_by_1",
+                                          "typeString": "int_const 0"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "type": "type(address)",
+                                      "value": "address"
+                                    },
+                                    "id": 1563,
+                                    "name": "ElementaryTypeNameExpression",
+                                    "src": "2440:7:22"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "307830",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "number",
+                                      "type": "int_const 0",
+                                      "value": "0x0"
+                                    },
+                                    "id": 1564,
+                                    "name": "Literal",
+                                    "src": "2448:3:22"
+                                  }
+                                ],
+                                "id": 1565,
+                                "name": "FunctionCall",
+                                "src": "2440:12:22"
+                              }
+                            ],
+                            "id": 1566,
+                            "name": "BinaryOperation",
+                            "src": "2421:31:22"
+                          }
+                        ],
+                        "id": 1567,
+                        "name": "FunctionCall",
+                        "src": "2413:40:22"
+                      }
+                    ],
+                    "id": 1568,
+                    "name": "ExpressionStatement",
+                    "src": "2413:40:22"
+                  },
+                  {
+                    "id": 1569,
+                    "name": "PlaceholderStatement",
+                    "src": "2459:1:22"
+                  }
+                ],
+                "id": 1570,
+                "name": "Block",
+                "src": "2407:58:22"
+              }
+            ],
+            "id": 1571,
+            "name": "ModifierDefinition",
+            "src": "2349:116:22"
+          }
+        ],
+        "id": 1572,
+        "name": "ContractDefinition",
+        "src": "416:2051:22"
+      }
+    ],
+    "id": 1573,
+    "name": "SourceUnit",
+    "src": "48:2420:22"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-17T22:16:40.553Z"
+}

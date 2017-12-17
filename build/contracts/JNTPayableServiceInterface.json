@@ -1,0 +1,716 @@
+{
+  "contractName": "JNTPayableServiceInterface",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntController",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_jntController",
+          "type": "address"
+        }
+      ],
+      "name": "setJntController",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getJntBeneficiary",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_jntBeneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "setJntBeneficiary",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "jntcontroller",
+          "type": "address"
+        }
+      ],
+      "name": "JNTControllerChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "jntbeneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "JNTBeneficiaryChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "JNTChargedEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title JNTPayableService interface\n * @dev Interface of a contract that charge JNT for actions\n */\ncontract JNTPayableServiceInterface {\n\n  /* Events */\n\n  event JNTControllerChangedEvent(address jntcontroller);\n  event JNTBeneficiaryChangedEvent(address jntbeneficiary);\n  event JNTChargedEvent(address indexed from, address indexed to, uint256 value);\n\n\n  /* Configuration */\n\n  function setJntController(address _jntController) external;\n  function getJntController() public constant returns (address);\n\n  function setJntBeneficiary(address _jntBeneficiary) external;\n  function getJntBeneficiary() public constant returns (address);\n\n\n  /* Actions */\n\n  function chargeJNTForService(address _from, uint256 _value) internal;\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceInterface.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPayableServiceInterface.sol",
+      "exportedSymbols": {
+        "JNTPayableServiceInterface": [
+          1789
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 1745,
+        "name": "PragmaDirective",
+        "src": "48:24:25"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title JNTPayableService interface\n@dev Interface of a contract that charge JNT for actions",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1789
+          ],
+          "name": "JNTPayableServiceInterface",
+          "scope": 1790
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "JNTControllerChangedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "jntcontroller",
+                      "scope": 1749,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1746,
+                        "name": "ElementaryTypeName",
+                        "src": "270:7:25"
+                      }
+                    ],
+                    "id": 1747,
+                    "name": "VariableDeclaration",
+                    "src": "270:21:25"
+                  }
+                ],
+                "id": 1748,
+                "name": "ParameterList",
+                "src": "269:23:25"
+              }
+            ],
+            "id": 1749,
+            "name": "EventDefinition",
+            "src": "238:55:25"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "JNTBeneficiaryChangedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "jntbeneficiary",
+                      "scope": 1753,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1750,
+                        "name": "ElementaryTypeName",
+                        "src": "329:7:25"
+                      }
+                    ],
+                    "id": 1751,
+                    "name": "VariableDeclaration",
+                    "src": "329:22:25"
+                  }
+                ],
+                "id": 1752,
+                "name": "ParameterList",
+                "src": "328:24:25"
+              }
+            ],
+            "id": 1753,
+            "name": "EventDefinition",
+            "src": "296:57:25"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "JNTChargedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "from",
+                      "scope": 1761,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1754,
+                        "name": "ElementaryTypeName",
+                        "src": "378:7:25"
+                      }
+                    ],
+                    "id": 1755,
+                    "name": "VariableDeclaration",
+                    "src": "378:20:25"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "to",
+                      "scope": 1761,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1756,
+                        "name": "ElementaryTypeName",
+                        "src": "400:7:25"
+                      }
+                    ],
+                    "id": 1757,
+                    "name": "VariableDeclaration",
+                    "src": "400:18:25"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 1761,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1758,
+                        "name": "ElementaryTypeName",
+                        "src": "420:7:25"
+                      }
+                    ],
+                    "id": 1759,
+                    "name": "VariableDeclaration",
+                    "src": "420:13:25"
+                  }
+                ],
+                "id": 1760,
+                "name": "ParameterList",
+                "src": "377:57:25"
+              }
+            ],
+            "id": 1761,
+            "name": "EventDefinition",
+            "src": "356:79:25"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "setJntController",
+              "payable": false,
+              "scope": 1789,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntController",
+                      "scope": 1766,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1762,
+                        "name": "ElementaryTypeName",
+                        "src": "489:7:25"
+                      }
+                    ],
+                    "id": 1763,
+                    "name": "VariableDeclaration",
+                    "src": "489:22:25"
+                  }
+                ],
+                "id": 1764,
+                "name": "ParameterList",
+                "src": "488:24:25"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1765,
+                "name": "ParameterList",
+                "src": "521:0:25"
+              }
+            ],
+            "id": 1766,
+            "name": "FunctionDefinition",
+            "src": "463:59:25"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntController",
+              "payable": false,
+              "scope": 1789,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1767,
+                "name": "ParameterList",
+                "src": "550:2:25"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1771,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1768,
+                        "name": "ElementaryTypeName",
+                        "src": "578:7:25"
+                      }
+                    ],
+                    "id": 1769,
+                    "name": "VariableDeclaration",
+                    "src": "578:7:25"
+                  }
+                ],
+                "id": 1770,
+                "name": "ParameterList",
+                "src": "577:9:25"
+              }
+            ],
+            "id": 1771,
+            "name": "FunctionDefinition",
+            "src": "525:62:25"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "setJntBeneficiary",
+              "payable": false,
+              "scope": 1789,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_jntBeneficiary",
+                      "scope": 1776,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1772,
+                        "name": "ElementaryTypeName",
+                        "src": "618:7:25"
+                      }
+                    ],
+                    "id": 1773,
+                    "name": "VariableDeclaration",
+                    "src": "618:23:25"
+                  }
+                ],
+                "id": 1774,
+                "name": "ParameterList",
+                "src": "617:25:25"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1775,
+                "name": "ParameterList",
+                "src": "651:0:25"
+              }
+            ],
+            "id": 1776,
+            "name": "FunctionDefinition",
+            "src": "591:61:25"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getJntBeneficiary",
+              "payable": false,
+              "scope": 1789,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1777,
+                "name": "ParameterList",
+                "src": "681:2:25"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1781,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1778,
+                        "name": "ElementaryTypeName",
+                        "src": "709:7:25"
+                      }
+                    ],
+                    "id": 1779,
+                    "name": "VariableDeclaration",
+                    "src": "709:7:25"
+                  }
+                ],
+                "id": 1780,
+                "name": "ParameterList",
+                "src": "708:9:25"
+              }
+            ],
+            "id": 1781,
+            "name": "FunctionDefinition",
+            "src": "655:63:25"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "chargeJNTForService",
+              "payable": false,
+              "scope": 1789,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_from",
+                      "scope": 1788,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1782,
+                        "name": "ElementaryTypeName",
+                        "src": "769:7:25"
+                      }
+                    ],
+                    "id": 1783,
+                    "name": "VariableDeclaration",
+                    "src": "769:13:25"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 1788,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 1784,
+                        "name": "ElementaryTypeName",
+                        "src": "784:7:25"
+                      }
+                    ],
+                    "id": 1785,
+                    "name": "VariableDeclaration",
+                    "src": "784:14:25"
+                  }
+                ],
+                "id": 1786,
+                "name": "ParameterList",
+                "src": "768:31:25"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1787,
+                "name": "ParameterList",
+                "src": "808:0:25"
+              }
+            ],
+            "id": 1788,
+            "name": "FunctionDefinition",
+            "src": "740:69:25"
+          }
+        ],
+        "id": 1789,
+        "name": "ContractDefinition",
+        "src": "181:630:25"
+      }
+    ],
+    "id": 1790,
+    "name": "SourceUnit",
+    "src": "48:764:25"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-17T22:16:40.554Z"
+}

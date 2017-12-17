@@ -1,0 +1,955 @@
+{
+  "contractName": "CrydrStorageBlocksInterface",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "unblockAccount",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "blockAccount",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "unblockAccountFunds",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "getAccountBlocks",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "getAccountBlockedFunds",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "blockAccountFunds",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "AccountBlockedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "AccountUnblockedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "AccountFundsBlockedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "AccountFundsUnblockedEvent",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.18;\n\n\n/**\n * @title CrydrStorageBaseInterface interface\n * @dev Interface of a contract that manages balance of an CryDR\n */\ncontract CrydrStorageBlocksInterface {\n\n  /* Events */\n\n  event AccountBlockedEvent(address indexed account);\n  event AccountUnblockedEvent(address indexed account);\n  event AccountFundsBlockedEvent(address indexed account, uint256 value);\n  event AccountFundsUnblockedEvent(address indexed account, uint256 value);\n\n\n  /* Low-level change of blocks and getters */\n\n  function blockAccount(address _account) public;\n  function unblockAccount(address _account) public;\n  function getAccountBlocks(address _account) public constant returns (uint256);\n\n  function blockAccountFunds(address _account, uint256 _value) public;\n  function unblockAccountFunds(address _account, uint256 _value) public;\n  function getAccountBlockedFunds(address _account) public constant returns (uint256);\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBlocksInterface.sol",
+      "exportedSymbols": {
+        "CrydrStorageBlocksInterface": [
+          2658
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 2599,
+        "name": "PragmaDirective",
+        "src": "48:24:33"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title CrydrStorageBaseInterface interface\n@dev Interface of a contract that manages balance of an CryDR",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2658
+          ],
+          "name": "CrydrStorageBlocksInterface",
+          "scope": 2659
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "AccountBlockedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "account",
+                      "scope": 2603,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2600,
+                        "name": "ElementaryTypeName",
+                        "src": "278:7:33"
+                      }
+                    ],
+                    "id": 2601,
+                    "name": "VariableDeclaration",
+                    "src": "278:23:33"
+                  }
+                ],
+                "id": 2602,
+                "name": "ParameterList",
+                "src": "277:25:33"
+              }
+            ],
+            "id": 2603,
+            "name": "EventDefinition",
+            "src": "252:51:33"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "AccountUnblockedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "account",
+                      "scope": 2607,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2604,
+                        "name": "ElementaryTypeName",
+                        "src": "334:7:33"
+                      }
+                    ],
+                    "id": 2605,
+                    "name": "VariableDeclaration",
+                    "src": "334:23:33"
+                  }
+                ],
+                "id": 2606,
+                "name": "ParameterList",
+                "src": "333:25:33"
+              }
+            ],
+            "id": 2607,
+            "name": "EventDefinition",
+            "src": "306:53:33"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "AccountFundsBlockedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "account",
+                      "scope": 2613,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2608,
+                        "name": "ElementaryTypeName",
+                        "src": "393:7:33"
+                      }
+                    ],
+                    "id": 2609,
+                    "name": "VariableDeclaration",
+                    "src": "393:23:33"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2613,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2610,
+                        "name": "ElementaryTypeName",
+                        "src": "418:7:33"
+                      }
+                    ],
+                    "id": 2611,
+                    "name": "VariableDeclaration",
+                    "src": "418:13:33"
+                  }
+                ],
+                "id": 2612,
+                "name": "ParameterList",
+                "src": "392:40:33"
+              }
+            ],
+            "id": 2613,
+            "name": "EventDefinition",
+            "src": "362:71:33"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "AccountFundsUnblockedEvent"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "name": "account",
+                      "scope": 2619,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2614,
+                        "name": "ElementaryTypeName",
+                        "src": "469:7:33"
+                      }
+                    ],
+                    "id": 2615,
+                    "name": "VariableDeclaration",
+                    "src": "469:23:33"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "value",
+                      "scope": 2619,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2616,
+                        "name": "ElementaryTypeName",
+                        "src": "494:7:33"
+                      }
+                    ],
+                    "id": 2617,
+                    "name": "VariableDeclaration",
+                    "src": "494:13:33"
+                  }
+                ],
+                "id": 2618,
+                "name": "ParameterList",
+                "src": "468:40:33"
+              }
+            ],
+            "id": 2619,
+            "name": "EventDefinition",
+            "src": "436:73:33"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "blockAccount",
+              "payable": false,
+              "scope": 2658,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2624,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2620,
+                        "name": "ElementaryTypeName",
+                        "src": "584:7:33"
+                      }
+                    ],
+                    "id": 2621,
+                    "name": "VariableDeclaration",
+                    "src": "584:16:33"
+                  }
+                ],
+                "id": 2622,
+                "name": "ParameterList",
+                "src": "583:18:33"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2623,
+                "name": "ParameterList",
+                "src": "608:0:33"
+              }
+            ],
+            "id": 2624,
+            "name": "FunctionDefinition",
+            "src": "562:47:33"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "unblockAccount",
+              "payable": false,
+              "scope": 2658,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2629,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2625,
+                        "name": "ElementaryTypeName",
+                        "src": "636:7:33"
+                      }
+                    ],
+                    "id": 2626,
+                    "name": "VariableDeclaration",
+                    "src": "636:16:33"
+                  }
+                ],
+                "id": 2627,
+                "name": "ParameterList",
+                "src": "635:18:33"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2628,
+                "name": "ParameterList",
+                "src": "660:0:33"
+              }
+            ],
+            "id": 2629,
+            "name": "FunctionDefinition",
+            "src": "612:49:33"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getAccountBlocks",
+              "payable": false,
+              "scope": 2658,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2636,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2630,
+                        "name": "ElementaryTypeName",
+                        "src": "690:7:33"
+                      }
+                    ],
+                    "id": 2631,
+                    "name": "VariableDeclaration",
+                    "src": "690:16:33"
+                  }
+                ],
+                "id": 2632,
+                "name": "ParameterList",
+                "src": "689:18:33"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 2636,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2633,
+                        "name": "ElementaryTypeName",
+                        "src": "733:7:33"
+                      }
+                    ],
+                    "id": 2634,
+                    "name": "VariableDeclaration",
+                    "src": "733:7:33"
+                  }
+                ],
+                "id": 2635,
+                "name": "ParameterList",
+                "src": "732:9:33"
+              }
+            ],
+            "id": 2636,
+            "name": "FunctionDefinition",
+            "src": "664:78:33"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "blockAccountFunds",
+              "payable": false,
+              "scope": 2658,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2643,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2637,
+                        "name": "ElementaryTypeName",
+                        "src": "773:7:33"
+                      }
+                    ],
+                    "id": 2638,
+                    "name": "VariableDeclaration",
+                    "src": "773:16:33"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2643,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2639,
+                        "name": "ElementaryTypeName",
+                        "src": "791:7:33"
+                      }
+                    ],
+                    "id": 2640,
+                    "name": "VariableDeclaration",
+                    "src": "791:14:33"
+                  }
+                ],
+                "id": 2641,
+                "name": "ParameterList",
+                "src": "772:34:33"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2642,
+                "name": "ParameterList",
+                "src": "813:0:33"
+              }
+            ],
+            "id": 2643,
+            "name": "FunctionDefinition",
+            "src": "746:68:33"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "unblockAccountFunds",
+              "payable": false,
+              "scope": 2658,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2650,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2644,
+                        "name": "ElementaryTypeName",
+                        "src": "846:7:33"
+                      }
+                    ],
+                    "id": 2645,
+                    "name": "VariableDeclaration",
+                    "src": "846:16:33"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_value",
+                      "scope": 2650,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2646,
+                        "name": "ElementaryTypeName",
+                        "src": "864:7:33"
+                      }
+                    ],
+                    "id": 2647,
+                    "name": "VariableDeclaration",
+                    "src": "864:14:33"
+                  }
+                ],
+                "id": 2648,
+                "name": "ParameterList",
+                "src": "845:34:33"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2649,
+                "name": "ParameterList",
+                "src": "886:0:33"
+              }
+            ],
+            "id": 2650,
+            "name": "FunctionDefinition",
+            "src": "817:70:33"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getAccountBlockedFunds",
+              "payable": false,
+              "scope": 2658,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_account",
+                      "scope": 2657,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2651,
+                        "name": "ElementaryTypeName",
+                        "src": "922:7:33"
+                      }
+                    ],
+                    "id": 2652,
+                    "name": "VariableDeclaration",
+                    "src": "922:16:33"
+                  }
+                ],
+                "id": 2653,
+                "name": "ParameterList",
+                "src": "921:18:33"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 2657,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2654,
+                        "name": "ElementaryTypeName",
+                        "src": "965:7:33"
+                      }
+                    ],
+                    "id": 2655,
+                    "name": "VariableDeclaration",
+                    "src": "965:7:33"
+                  }
+                ],
+                "id": 2656,
+                "name": "ParameterList",
+                "src": "964:9:33"
+              }
+            ],
+            "id": 2657,
+            "name": "FunctionDefinition",
+            "src": "890:84:33"
+          }
+        ],
+        "id": 2658,
+        "name": "ContractDefinition",
+        "src": "194:782:33"
+      }
+    ],
+    "id": 2659,
+    "name": "SourceUnit",
+    "src": "48:929:33"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-17T22:16:40.556Z"
+}
