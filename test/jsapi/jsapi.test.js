@@ -1,6 +1,5 @@
 const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
-const jUSDViewERC20 = global.artifacts.require('jUSDViewERC20.sol');
 
 const fs = require('fs');
 const path = require('path');
@@ -26,7 +25,6 @@ global.after(async () => {
   const contracts = {
     JNTController,
     JNTViewERC20,
-    jUSDViewERC20,
   };
 
   const contractNames = Object.keys(contracts);
