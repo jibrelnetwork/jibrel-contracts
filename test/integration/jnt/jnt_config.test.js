@@ -12,7 +12,7 @@ const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
 
 global.contract('JNT Integration tests', (accounts) => {
   DeployConfig.setAccounts(accounts);
-  const { managerMint, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
+  const { managerGeneral, managerMint, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
 
   global.it('should test minting of JNT', async () => {
     const JNTControllerInstance = await JNTController.deployed();
@@ -41,6 +41,25 @@ global.contract('JNT Integration tests', (accounts) => {
 
     balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber());
+  });
+
+  global.it('should test minting and burning of JNT', async () => {
+    const JNTControllerInstance = await JNTController.deployed();
+    const JNTViewERC20Instance = await JNTViewERC20.deployed();
+
+    // no special meaning to use jntmanagerGeneral. Just an account without JNT
+    const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, managerGeneral);
+    global.assert.strictEqual(balanceInitial.toNumber(), 0);
+
+    await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, managerGeneral, 15 * (10 ** 18));
+
+    let balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, managerGeneral);
+    global.assert.strictEqual(balanceChanged.toNumber(), (15 * (10 ** 18)));
+
+    await controllerMintableJSAPI.burn(JNTControllerInstance.address, managerMint, managerGeneral, 15 * (10 ** 18));
+
+    balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, managerGeneral);
+    global.assert.strictEqual(balanceChanged.toNumber(), 0);
   });
 
   global.it('should test transfers of JNT', async () => {
