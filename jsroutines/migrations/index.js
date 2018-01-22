@@ -34,17 +34,17 @@ export const verifyMigrationNumber2 = async () => {
 
 const executeMigrationNumber3 = async () => {
   const JNTControllerInstance = await JNTController.deployed();
-  const JNTControllerAddress = await JNTControllerInstance.address;
+  const JNTControllerAddress = JNTControllerInstance.address;
 
   await CrydrInit.initCrydr(jUSDStorage, jUSDController, jUSDViewERC20, 'erc20');
   const jUSDControllerInstance = await jUSDController.deployed();
-  const jUSDControllerAddress = await jUSDControllerInstance.address;
+  const jUSDControllerAddress = jUSDControllerInstance.address;
   await CrydrControllerInit.configureJntPayableService(jUSDControllerAddress, JNTControllerAddress);
   await CrydrInit.upauseCrydrControllerAndStorage(jUSDStorage, jUSDController);
 
   await CrydrInit.initCrydr(jKRWStorage, jKRWController, jKRWViewERC20, 'erc20');
   const jKRWControllerInstance = await jKRWController.deployed();
-  const jKRWControllerAddress = await jKRWControllerInstance.address;
+  const jKRWControllerAddress = jKRWControllerInstance.address;
   await CrydrControllerInit.configureJntPayableService(jKRWControllerAddress, JNTControllerAddress);
   await CrydrInit.upauseCrydrControllerAndStorage(jKRWStorage, jKRWController);
 };
