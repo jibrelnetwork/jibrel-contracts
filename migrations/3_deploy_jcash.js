@@ -1,11 +1,15 @@
+const migrations = require('../jsroutines/migrations');
+const initConfig = require('../jsroutines/jsconfig/initConfig');
+
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-const migrations = require('../jsroutines/migrations');
-
-module.exports = (deployer) => {
+module.exports = (deployer, network, accounts) => {
   global.console.log('  Start migration 3');
 
-  deployer.then(() => migrations.executeMigration(3))
-          .then(() => migrations.verifyMigration(3))
-          .then(() => global.console.log('  Migration 3 finished'));
+  initConfig(web3, deployer, network, accounts); // eslint-disable-line no-undef
+
+  deployer
+    .then(() => migrations.executeMigration(3))
+    .then(() => migrations.verifyMigration(3))
+    .then(() => global.console.log('  Migration 3 finished'));
 };
