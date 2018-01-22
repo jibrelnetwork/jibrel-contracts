@@ -9,7 +9,7 @@ const investorBalance = 15 * (10 ** 18);
 const transferBalance = 10 * (10 ** 18);
 
 contract('JNT Integration tests', (accounts) => {
-  const { managerMint, testInvestor1, testInvestor2 } = getAccounts(accounts);
+  const { managerGeneral, managerMint, testInvestor1, testInvestor2 } = getAccounts(accounts);
 
   it('should test minting of JNT', async () => {
     const JNTControllerInstance = await JNTController.deployed();
@@ -27,15 +27,31 @@ contract('JNT Integration tests', (accounts) => {
     const JNTViewERC20Instance = await JNTViewERC20.deployed();
 
     const balanceInitial = await JNTViewERC20Instance.balanceOf(testInvestor1);
+
     await JNTControllerInstance.mint(testInvestor1, investorBalance, { from: managerMint });
     const balanceAfterMint = await JNTViewERC20Instance.balanceOf(testInvestor1);
-
     assert(balanceAfterMint.eq(balanceInitial.add(investorBalance)));
 
     await JNTControllerInstance.burn(testInvestor1, investorBalance, { from: managerMint });
     const balanceAfterBurn = await JNTViewERC20Instance.balanceOf(testInvestor1);
-
     assert(balanceAfterBurn.eq(balanceInitial));
+  });
+
+  it('should test minting and burning of JNT', async () => {
+    const JNTControllerInstance = await JNTController.deployed();
+    const JNTViewERC20Instance = await JNTViewERC20.deployed();
+
+    // no special meaning to use jntmanagerGeneral. Just an account without JNT
+    const balanceInitial = await JNTViewERC20Instance.balanceOf(managerGeneral);
+    assert(balanceInitial.eq(0));
+
+    await JNTControllerInstance.mint(managerGeneral, investorBalance, { from: managerMint });
+    const balanceAfterMint = await JNTViewERC20Instance.balanceOf(managerGeneral);
+    assert(balanceAfterMint.eq(investorBalance));
+
+    await JNTControllerInstance.burn(managerGeneral, investorBalance, { from: managerMint });
+    const balanceAfterBurn = await JNTViewERC20Instance.balanceOf(managerGeneral);
+    assert(balanceAfterBurn.eq(0));
   });
 
   it('should test transfers of JNT', async () => {
