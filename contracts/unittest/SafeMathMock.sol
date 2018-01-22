@@ -5,17 +5,19 @@ import '../third-party/zeppelin-solidity/SafeMath.sol';
 
 
 contract SafeMathMock is SafeMath {
-  uint256 public result;
-
-  function multiply(uint256 a, uint256 b) public {
-    result = SafeMath.safeMul(a, b);
+  function multiply(uint256 a, uint256 b) public pure returns (uint256) {
+    return SafeMath.safeMul(a, b);
   }
 
-  function subtract(uint256 a, uint256 b) public {
-    result = SafeMath.safeSub(a, b);
+  function divide(uint256 a, uint256 b) public pure returns (uint256) {
+    return SafeMath.safeDiv(a, b);
   }
 
-  function add(uint256 a, uint256 b) public {
-    result = SafeMath.safeAdd(a, b);
+  function subtract(uint256 a, uint256 b) public pure returns (uint256) {
+    return SafeMath.safeSub(a, b);
+  }
+
+  function add(uint256 a, uint256 b) public pure returns (uint256) {
+    return SafeMath.safeAdd(a, b);
   }
 }
