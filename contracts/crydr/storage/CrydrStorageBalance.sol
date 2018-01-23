@@ -3,11 +3,8 @@
 pragma solidity ^0.4.18;
 
 
+import '../../lifecycle/Pausable.sol';
 import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
-import '../../util/CommonModifiersInterface.sol';
-import '../../feature/assetid/AssetIDInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
 import './CrydrStorageBaseInterface.sol';
 import './CrydrStorageBalanceInterface.sol';
 
@@ -15,8 +12,8 @@ import './CrydrStorageBalanceInterface.sol';
 /**
  * @title CrydrStorageBase
  */
-contract CrydrStorageBalance is SafeMathInterface,
-                                PausableInterface,
+contract CrydrStorageBalance is Pausable,
+                                SafeMathInterface,
                                 CrydrStorageBaseInterface,
                                 CrydrStorageBalanceInterface {
 

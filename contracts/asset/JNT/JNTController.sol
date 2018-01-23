@@ -5,9 +5,6 @@ pragma solidity ^0.4.18;
 
 import '../../util/CommonModifiers.sol';
 import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
 import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../../crydr/controller/CrydrControllerBase.sol';
 import '../../crydr/controller/CrydrControllerBlockable.sol';
@@ -24,9 +21,6 @@ import '../../crydr/storage/CrydrStorageERC20Interface.sol';
  */
 contract JNTController is CommonModifiers,
                           AssetID,
-                          Ownable,
-                          Manageable,
-                          Pausable,
                           BytecodeExecutor,
                           CrydrControllerBase,
                           CrydrControllerBlockable,

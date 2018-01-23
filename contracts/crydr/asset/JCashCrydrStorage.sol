@@ -6,9 +6,6 @@ pragma solidity ^0.4.18;
 import '../../third-party/zeppelin-solidity/SafeMath.sol';
 import '../../util/CommonModifiers.sol';
 import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
 import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../storage/CrydrStorageBase.sol';
 import '../storage/CrydrStorageBalance.sol';
@@ -24,9 +21,6 @@ import '../storage/CrydrStorageERC20.sol';
 contract JCashCrydrStorage is SafeMath,
                               CommonModifiers,
                               AssetID,
-                              Ownable,
-                              Manageable,
-                              Pausable,
                               BytecodeExecutor,
                               CrydrStorageBase,
                               CrydrStorageBalance,

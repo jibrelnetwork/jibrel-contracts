@@ -20,12 +20,4 @@ contract ManageableInterface {
    * @return True if manager is enabled and has been granted needed permission
    */
   function isManagerAllowed(address _manager, string _permissionName) public constant returns (bool);
-
-  /**
-   * @dev Modifier to use in derived contracts
-   */
-  modifier onlyAllowedManager(string _permissionName) {
-    require(isManagerAllowed(msg.sender, _permissionName) == true);
-    _;
-  }
 }

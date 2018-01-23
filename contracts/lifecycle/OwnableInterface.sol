@@ -14,12 +14,4 @@ contract OwnableInterface {
    * @dev The getter for "owner" contract variable
    */
   function getOwner() public constant returns (address);
-
-  /**
-   * @dev Throws if called by any account other than the current owner.
-   */
-  modifier onlyOwner() {
-    require (msg.sender == getOwner());
-    _;
-  }
 }

@@ -3,13 +3,11 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../lifecycle/Pausable.sol';
 import './CrydrViewERC20NamedInterface.sol';
 
 
-contract CrydrViewERC20Named is ManageableInterface,
-                                PausableInterface,
+contract CrydrViewERC20Named is Pausable,
                                 CrydrViewERC20NamedInterface {
 
   /* Storage */

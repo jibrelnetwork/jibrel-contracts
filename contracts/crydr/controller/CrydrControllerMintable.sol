@@ -3,8 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../lifecycle/Pausable.sol';
 import './CrydrControllerBaseInterface.sol';
 import './CrydrControllerMintableInterface.sol';
 
@@ -18,8 +17,7 @@ import '../view/CrydrViewERC20MintableInterface.sol';
  * @dev We do not use events Transfer(0x0, owner, amount) for minting as described in the EIP20
  * @dev because that are not transfers
  */
-contract CrydrControllerMintable is ManageableInterface,
-                                    PausableInterface,
+contract CrydrControllerMintable is Pausable,
                                     CrydrControllerBaseInterface,
                                     CrydrControllerMintableInterface {
 

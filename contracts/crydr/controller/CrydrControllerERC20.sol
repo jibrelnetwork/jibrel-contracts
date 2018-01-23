@@ -3,8 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrControllerBaseInterface.sol';
+import './CrydrControllerBase.sol';
 import './CrydrControllerERC20Interface.sol';
 
 import '../storage/CrydrStorageBalanceInterface.sol';
@@ -17,8 +16,7 @@ import '../view/CrydrViewERC20LoggableInterface.sol';
  * @title CrydrControllerERC20Interface interface
  * @dev Interface of a contract that implement business-logic of an ERC20 CryDR
  */
-contract CrydrControllerERC20 is PausableInterface,
-                                 CrydrControllerBaseInterface,
+contract CrydrControllerERC20 is CrydrControllerBase,
                                  CrydrControllerERC20Interface {
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */

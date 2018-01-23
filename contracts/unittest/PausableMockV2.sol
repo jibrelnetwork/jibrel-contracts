@@ -2,8 +2,6 @@
 
 pragma solidity ^0.4.18;
 
-import '../lifecycle/Ownable.sol';
-import '../lifecycle/Manageable.sol';
 import '../lifecycle/Pausable.sol';
 
 
@@ -11,7 +9,7 @@ import '../lifecycle/Pausable.sol';
  * @title PausableMock
  * @dev This contract used only to test modifiers of Pausable contract
  */
-contract PausableMockV2 is Ownable, Manageable, Pausable {
+contract PausableMockV2 is Pausable {
 
   event WhenContractNotPausedEvent();
   event WhenContractPausedEvent();

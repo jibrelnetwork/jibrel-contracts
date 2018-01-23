@@ -3,14 +3,12 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/PausableInterface.sol';
 import './CrydrViewBaseInterface.sol';
 import './CrydrViewERC20Interface.sol';
 import './CrydrViewERC20LoggableInterface.sol';
 
 
-contract CrydrViewERC20Loggable is PausableInterface,
-                                   CrydrViewBaseInterface,
+contract CrydrViewERC20Loggable is CrydrViewBaseInterface,
                                    CrydrViewERC20Interface,
                                    CrydrViewERC20LoggableInterface {
 

@@ -3,7 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/ManageableInterface.sol';
+import '../../lifecycle/Manageable.sol';
 import './BytecodeExecutorInterface.sol';
 
 
@@ -12,7 +12,7 @@ import './BytecodeExecutorInterface.sol';
  * @dev Implementation of a contract that execute any bytecode on behalf of the contract
  * @dev Last resort for the immutable and not-replaceable contract :)
  */
-contract BytecodeExecutor is ManageableInterface,
+contract BytecodeExecutor is Manageable,
                              BytecodeExecutorInterface {
 
   /* Storage */

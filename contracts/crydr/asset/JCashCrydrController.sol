@@ -5,9 +5,6 @@ pragma solidity ^0.4.18;
 
 import '../../util/CommonModifiers.sol';
 import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
 import '../../feature/bytecode/BytecodeExecutor.sol';
 import '../controller/CrydrControllerBase.sol';
 import '../controller/CrydrControllerBlockable.sol';
@@ -19,9 +16,6 @@ import '../jnt/JNTPayableServiceERC20Fees.sol';
 
 contract JCashCrydrController is CommonModifiers,
                                  AssetID,
-                                 Ownable,
-                                 Manageable,
-                                 Pausable,
                                  BytecodeExecutor,
                                  CrydrControllerBase,
                                  CrydrControllerBlockable,
