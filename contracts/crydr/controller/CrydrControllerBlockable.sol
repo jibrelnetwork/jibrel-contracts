@@ -3,8 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/Manageable.sol';
-import './CrydrControllerBaseInterface.sol';
+import './CrydrControllerBase.sol';
 import './CrydrControllerBlockableInterface.sol';
 
 import '../storage/CrydrStorageBlocksInterface.sol';
@@ -14,8 +13,7 @@ import '../storage/CrydrStorageBlocksInterface.sol';
  * @title CrydrControllerBlockable interface
  * @dev Implementation of a contract that allows blocking/unlocking accounts
  */
-contract CrydrControllerBlockable is Manageable,
-                                     CrydrControllerBaseInterface,
+contract CrydrControllerBlockable is CrydrControllerBase,
                                      CrydrControllerBlockableInterface {
 
 

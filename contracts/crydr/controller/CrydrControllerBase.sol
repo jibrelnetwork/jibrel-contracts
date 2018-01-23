@@ -4,7 +4,7 @@ pragma solidity ^0.4.18;
 
 
 import '../../lifecycle/Pausable.sol';
-import '../../util/CommonModifiersInterface.sol';
+import '../../util/CommonModifiers.sol';
 import './CrydrControllerBaseInterface.sol';
 
 import '../view/CrydrViewBaseInterface.sol';
@@ -15,7 +15,7 @@ import '../view/CrydrViewBaseInterface.sol';
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
 contract CrydrControllerBase is Pausable,
-                                CommonModifiersInterface,
+                                CommonModifiers,
                                 CrydrControllerBaseInterface {
 
   /* Storage */

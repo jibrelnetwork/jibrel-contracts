@@ -3,12 +3,7 @@
 pragma solidity ^0.4.18;
 
 
-import '../feature/assetid/AssetID.sol';
-import '../crydr/storage/CrydrStorageBaseInterface.sol';
-import '../crydr/storage/CrydrStorageBalanceInterface.sol';
-import '../crydr/storage/CrydrStorageAllowanceInterface.sol';
-import '../crydr/storage/CrydrStorageBlocksInterface.sol';
-import '../crydr/storage/CrydrStorageERC20Interface.sol';
+import '../crydr/storage/CrydrStorageERC20.sol';
 
 
 /**
@@ -17,12 +12,7 @@ import '../crydr/storage/CrydrStorageERC20Interface.sol';
  * @dev CrydrStorage allows calls only from CrydrController, which should be a contract,
  * @dev therefore we have to create proxy contract
  */
-contract CrydrStorageERC20Proxy is AssetID,
-                                   CrydrStorageBaseInterface,
-                                   CrydrStorageBalanceInterface,
-                                   CrydrStorageAllowanceInterface,
-                                   CrydrStorageBlocksInterface,
-                                   CrydrStorageERC20Interface {
+contract CrydrStorageERC20Proxy is CrydrStorageERC20 {
 
   /* Storage */
 

@@ -2,20 +2,15 @@
 
 pragma solidity ^0.4.18;
 
-import '../../util/CommonModifiers.sol';
-import '../../feature/assetid/AssetID.sol';
+
 import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../view/CrydrViewBase.sol';
 import '../view/CrydrViewERC20.sol';
 import '../view/CrydrViewERC20Loggable.sol';
 import '../view/CrydrViewERC20Mintable.sol';
 import '../view/CrydrViewERC20Named.sol';
 
 
-contract JCashCrydrViewERC20 is CommonModifiers,
-                                AssetID,
-                                BytecodeExecutor,
-                                CrydrViewBase,
+contract JCashCrydrViewERC20 is BytecodeExecutor,
                                 CrydrViewERC20,
                                 CrydrViewERC20Loggable,
                                 CrydrViewERC20Mintable,

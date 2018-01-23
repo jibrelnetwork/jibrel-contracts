@@ -3,10 +3,8 @@
 pragma solidity ^0.4.18;
 
 
-import '../../util/CommonModifiers.sol';
 import '../../feature/assetid/AssetID.sol';
 import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../../crydr/controller/CrydrControllerBase.sol';
 import '../../crydr/controller/CrydrControllerBlockable.sol';
 import '../../crydr/controller/CrydrControllerMintable.sol';
 import '../../crydr/controller/CrydrControllerERC20.sol';
@@ -19,10 +17,8 @@ import '../../crydr/storage/CrydrStorageERC20Interface.sol';
  * @title JNTController
  * @dev Mediates views and storage of JNT, provides additional methods for Jibrel contracts
  */
-contract JNTController is CommonModifiers,
-                          AssetID,
+contract JNTController is AssetID,
                           BytecodeExecutor,
-                          CrydrControllerBase,
                           CrydrControllerBlockable,
                           CrydrControllerMintable,
                           CrydrControllerERC20,

@@ -3,24 +3,18 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/Pausable.sol';
-import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
-import './CrydrStorageBaseInterface.sol';
-import './CrydrStorageBalanceInterface.sol';
-import './CrydrStorageAllowanceInterface.sol';
-import './CrydrStorageBlocksInterface.sol';
+import './CrydrStorageBalance.sol';
+import './CrydrStorageAllowance.sol';
+import './CrydrStorageBlocks.sol';
 import './CrydrStorageERC20Interface.sol';
 
 
 /**
  * @title CrydrStorageERC20
  */
-contract CrydrStorageERC20 is Pausable,
-                              SafeMathInterface,
-                              CrydrStorageBaseInterface,
-                              CrydrStorageBalanceInterface,
-                              CrydrStorageAllowanceInterface,
-                              CrydrStorageBlocksInterface,
+contract CrydrStorageERC20 is CrydrStorageBalance,
+                              CrydrStorageAllowance,
+                              CrydrStorageBlocks,
                               CrydrStorageERC20Interface {
 
   function transfer(
