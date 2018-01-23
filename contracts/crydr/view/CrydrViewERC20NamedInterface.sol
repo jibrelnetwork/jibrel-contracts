@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrViewERC20NamedInterface
  * @dev Contract is able to set name/symbol/decimals
  */
-contract CrydrViewERC20NamedInterface {
+interface CrydrViewERC20NamedInterface {
 
   function name() external constant returns (string);
   function symbol() external constant returns (string);

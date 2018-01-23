@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrStorageERC20Interface interface
  * @dev Interface of a contract that manages balance of an CryDR and have optimization for ERC20 controllers
  */
-contract CrydrStorageERC20Interface {
+interface CrydrStorageERC20Interface {
 
   /* Events */
 

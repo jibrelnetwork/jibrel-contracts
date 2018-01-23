@@ -9,7 +9,7 @@ pragma solidity ^0.4.18;
  * @dev Based on zeppelin's Pausable, but integrated with Manageable
  * @dev Contract is in paused state by default and should be explicitly unlocked
  */
-contract PausableInterface {
+interface PausableInterface {
 
   /**
    * Events

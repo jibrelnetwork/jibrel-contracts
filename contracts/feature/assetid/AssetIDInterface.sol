@@ -9,7 +9,7 @@ pragma solidity ^0.4.18;
  * @dev Contracts for the same asset (like JNT, jUSD etc.) will have the same AssetID.
  * @dev This will help to avoid misconfiguration of contracts
  */
-contract AssetIDInterface {
+interface AssetIDInterface {
   function getAssetID() public constant returns (string);
   function getAssetIDHash() public constant returns (bytes32);
 }

@@ -8,7 +8,7 @@ pragma solidity ^0.4.18;
  * @dev Interface of a CryDR controller that charge JNT for actions
  * @dev Price for actions has a flat value and do not depend on amount of transferred CryDRs
  */
-contract JNTPayableServiceERC20FeesInterface {
+interface JNTPayableServiceERC20FeesInterface {
 
   /* Events */
 

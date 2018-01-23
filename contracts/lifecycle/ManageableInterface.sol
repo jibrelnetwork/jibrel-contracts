@@ -11,7 +11,7 @@ pragma solidity ^0.4.18;
  * @dev Instead owner delegates rights to manage an contract to the different addresses and
  * @dev stay able to revoke permissions at any time.
  */
-contract ManageableInterface {
+interface ManageableInterface {
 
   /**
    * @dev Function to check if the manager can perform the action or not

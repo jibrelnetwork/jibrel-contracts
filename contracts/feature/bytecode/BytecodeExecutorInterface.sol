@@ -8,7 +8,7 @@ pragma solidity ^0.4.18;
  * @dev Implementation of a contract that execute any bytecode on behalf of the contract
  * @dev Last resort for the immutable and not-replaceable contract :)
  */
-contract BytecodeExecutorInterface {
+interface BytecodeExecutorInterface {
 
   /* Events */
 

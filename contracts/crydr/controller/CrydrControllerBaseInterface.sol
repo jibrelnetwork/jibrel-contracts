@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrControllerBaseInterface interface
  * @dev Interface of a contract that implement business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBaseInterface {
+interface CrydrControllerBaseInterface {
 
   /* Events */
 
