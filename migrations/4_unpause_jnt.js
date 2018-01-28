@@ -1,28 +1,15 @@
-require('babel-register');
-require('babel-polyfill');
+const migrations = require('../jsroutines/migrations');
+const initConfig = require('../jsroutines/jsconfig/initConfig');
 
 global.artifacts = artifacts; // eslint-disable-line no-undef
 
-
-const TxConfig = require('../jsroutines/jsconfig/TxConfig');
-const DeployConfig = require('../jsroutines/jsconfig/DeployConfig');
-const migrations = require('../jsroutines/migrations');
-
-
-/* Migration */
-
 module.exports = (deployer, network, accounts) => {
-  global.console.log('  Start migration');
-  global.console.log(`  Accounts: ${accounts}`);
-  global.console.log(`  Network:  ${network}`);
+  global.console.log('  Start migration 4');
 
-  TxConfig.setWeb3(web3); // eslint-disable-line no-undef
-  TxConfig.setNetworkType(network);
+  initConfig(web3, deployer, network, accounts); // eslint-disable-line no-undef
 
-  DeployConfig.setDeployer(deployer);
-  DeployConfig.setAccounts(accounts);
-
-  deployer.then(() => migrations.executeMigration(4))
-          .then(() => migrations.verifyMigration(4))
-          .then(() => global.console.log('  Migration finished'));
+  deployer
+    .then(() => migrations.executeMigration(4))
+    .then(() => migrations.verifyMigration(4))
+    .then(() => global.console.log('  Migration 4 finished'));
 };
