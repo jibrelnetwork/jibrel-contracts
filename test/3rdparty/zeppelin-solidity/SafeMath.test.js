@@ -1,68 +1,56 @@
-const SafeMathMock = global.artifacts.require('SafeMathMock.sol');
+const assertThrows = require('../../../jsroutines/util/assertThrows');
+const { getAccounts } = require('../../../jsroutines/jsconfig/DeployConfig');
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
+const SafeMathMock = artifacts.require('SafeMathMock');
 
+const a = 5678;
+const b = 1234;
+const overflowUint = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
 
-global.contract('SafeMath', (accounts) => {
-  const owner = accounts[1];
+contract('SafeMath', (accounts) => {
+  const { owner } = getAccounts(accounts);
 
   let safeMathMockInstance;
 
-  global.before(async () => {
-    safeMathMockInstance = await SafeMathMock.new({ from: owner });
+  before(async () => {
+    safeMathMockInstance = SafeMathMock.isDeployed()
+      ? await SafeMathMock.deployed()
+      : await SafeMathMock.new({ from: owner });
   });
 
-  global.it('multiplies correctly', async () => {
-    const a = 5678;
-    const b = 1234;
-    await safeMathMockInstance.multiply.sendTransaction(a, b);
-    const result = await safeMathMockInstance.result();
-
-    global.assert.strictEqual(result.toNumber(), a * b);
+  it('should multiple correctly', async () => {
+    const result = await safeMathMockInstance.multiply(a, b);
+    assert.strictEqual(result.toNumber(), a * b);
   });
 
-  global.it('adds correctly', async () => {
-    const a = 5678;
-    const b = 1234;
-    await safeMathMockInstance.add.sendTransaction(a, b);
-    const result = await safeMathMockInstance.result();
-
-    global.assert.strictEqual(result.toNumber(), a + b);
+  it('should divide correctly', async () => {
+    const result = await safeMathMockInstance.divide(a, b);
+    assert.strictEqual(result.toNumber(), Math.floor(a / b));
   });
 
-  global.it('subtracts correctly', async () => {
-    const a = 5678;
-    const b = 1234;
-    await safeMathMockInstance.subtract.sendTransaction(a, b);
-    const result = await safeMathMockInstance.result();
-
-    global.assert.strictEqual(result.toNumber(), a - b);
+  it('should add correctly', async () => {
+    const result = await safeMathMockInstance.add(a, b);
+    assert.strictEqual(result.toNumber(), a + b);
   });
 
-  global.it('should throw an error if subtraction result would be negative', async () => {
-    const a = 1234;
-    const b = 5678;
-
-    await CheckExceptions.checkContractThrows(safeMathMockInstance.subtract.call,
-                                              [a, b],
-                                              'It should not be possible');
+  it('should subtract correctly', async () => {
+    const result = await safeMathMockInstance.subtract(a, b);
+    assert.strictEqual(result.toNumber(), a - b);
   });
 
-  global.it('should throw an error on addition overflow', async () => {
-    const a = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
-    const b = 1;
-
-    await CheckExceptions.checkContractThrows(safeMathMockInstance.add.call,
-                                              [a, b],
-                                              'It should not be possible');
+  it('should throw an error on multiplication overflow', async () => {
+    await assertThrows(safeMathMockInstance.multiply(overflowUint, b));
   });
 
-  global.it('should throw an error on multiplication overflow', async () => {
-    const a = 115792089237316195423570985008687907853269984665640564039457584007913129639933;
-    const b = 2;
+  it('should throw an error on division by zero', async () => {
+    await assertThrows(safeMathMockInstance.divide(a, 0));
+  });
 
-    await CheckExceptions.checkContractThrows(safeMathMockInstance.multiply.call,
-                                              [a, b],
-                                              'It should not be possible');
+  it('should throw an error on addition overflow', async () => {
+    await assertThrows(safeMathMockInstance.add(overflowUint, b));
+  });
+
+  it('should throw an error if subtraction result would be negative', async () => {
+    await assertThrows(safeMathMockInstance.subtract(b, a));
   });
 });
