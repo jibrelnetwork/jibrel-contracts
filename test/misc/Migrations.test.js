@@ -15,18 +15,18 @@ global.contract('Migrations', (accounts) => {
     global.console.log(`\tmigrationsInstance: ${migrationsInstance.address}`);
     global.assert.notStrictEqual(migrationsInstance.address, '0x0000000000000000000000000000000000000000');
 
-    const contractOwner = await migrationsInstance.getOwner.call();
+    const contractOwner = await migrationsInstance.owner.call();
     global.assert.strictEqual(contractOwner, owner);
 
-    let lastCompletedMigration = await migrationsInstance.getLastCompletedMigration.call();
+    let lastCompletedMigration = await migrationsInstance.last_completed_migration.call();
     global.assert.strictEqual(lastCompletedMigration.toNumber(), 0);
 
     await migrationsInstance.setCompleted.sendTransaction(1, { from: owner });
-    lastCompletedMigration = await migrationsInstance.getLastCompletedMigration.call();
+    lastCompletedMigration = await migrationsInstance.last_completed_migration.call();
     global.assert.strictEqual(lastCompletedMigration.toNumber(), 1);
 
     await migrationsInstance.setCompleted.sendTransaction(2, { from: nonOwner });
-    lastCompletedMigration = await migrationsInstance.getLastCompletedMigration.call();
+    lastCompletedMigration = await migrationsInstance.last_completed_migration.call();
     global.assert.strictEqual(lastCompletedMigration.toNumber(), 1,
                               'Only owner should be able to change completed migration ');
   });
