@@ -3,15 +3,11 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrViewBaseInterface.sol';
-import './CrydrViewERC20Interface.sol';
+import './CrydrViewERC20.sol';
 import './CrydrViewERC20LoggableInterface.sol';
 
 
-contract CrydrViewERC20Loggable is PausableInterface,
-                                   CrydrViewBaseInterface,
-                                   CrydrViewERC20Interface,
+contract CrydrViewERC20Loggable is CrydrViewERC20,
                                    CrydrViewERC20LoggableInterface {
 
   function emitTransferEvent(

@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrControllerBaseInterface interface
  * @dev Interface of a contract that implement business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBaseInterface {
+interface CrydrControllerBaseInterface {
 
   /* Events */
 
@@ -27,17 +27,4 @@ contract CrydrControllerBaseInterface {
 
   function isCrydrViewAddress(address _crydrViewAddress) public constant returns (bool);
   function isCrydrViewRegistered(string _viewApiStandardName) public constant returns (bool);
-
-
-  /* Helpers */
-
-  modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {
-    require(bytes(_viewApiStandard).length > 0);
-    _;
-  }
-
-  modifier onlyCrydrView() {
-    require(isCrydrViewAddress(msg.sender) == true);
-    _;
-  }
 }

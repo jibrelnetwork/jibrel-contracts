@@ -24,4 +24,15 @@ contract CommonModifiers is CommonModifiersInterface {
     }
     return (length > 0);
   }
+
+
+  /* Helpers */
+
+  /**
+   * @dev modifier to allow actions only when the _targetAddress is a contract.
+   */
+  modifier onlyContractAddress(address _targetAddress) {
+    require(isContract(_targetAddress) == true);
+    _;
+  }
 }

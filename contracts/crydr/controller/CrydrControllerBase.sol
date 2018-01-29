@@ -3,9 +3,8 @@
 pragma solidity ^0.4.18;
 
 
-import '../../util/CommonModifiersInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../lifecycle/Pausable.sol';
+import '../../util/CommonModifiers.sol';
 import './CrydrControllerBaseInterface.sol';
 
 import '../view/CrydrViewBaseInterface.sol';
@@ -15,9 +14,8 @@ import '../view/CrydrViewBaseInterface.sol';
  * @title CrydrControllerBase
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBase is CommonModifiersInterface,
-                                ManageableInterface,
-                                PausableInterface,
+contract CrydrControllerBase is Pausable,
+                                CommonModifiers,
                                 CrydrControllerBaseInterface {
 
   /* Storage */
@@ -124,5 +122,18 @@ contract CrydrControllerBase is CommonModifiersInterface,
     returns (bool)
   {
     return (crydrViewsAddresses[_viewApiStandardName] != address(0x0));
+  }
+
+
+  /* Helpers */
+
+  modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {
+    require(bytes(_viewApiStandard).length > 0);
+    _;
+  }
+
+  modifier onlyCrydrView() {
+    require(isCrydrViewAddress(msg.sender) == true);
+    _;
   }
 }

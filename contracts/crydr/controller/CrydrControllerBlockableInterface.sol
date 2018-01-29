@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrControllerBlockableInterface interface
  * @dev Interface of a contract that allows block/unlock accounts
  */
-contract CrydrControllerBlockableInterface {
+interface CrydrControllerBlockableInterface {
 
   /* blocking/unlocking */
 

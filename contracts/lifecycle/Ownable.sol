@@ -95,4 +95,15 @@ contract Ownable is OwnableInterface {
   function getProposedOwner() public constant returns (address) {
     return proposedOwner;
   }
+
+
+  /* Helpers */
+
+  /**
+   * @dev Throws if called by any account other than the current owner.
+   */
+  modifier onlyOwner() {
+    require (msg.sender == getOwner());
+    _;
+  }
 }

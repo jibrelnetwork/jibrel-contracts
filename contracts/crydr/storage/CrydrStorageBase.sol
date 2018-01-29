@@ -3,20 +3,18 @@
 pragma solidity ^0.4.18;
 
 
-import '../../util/CommonModifiersInterface.sol';
-import '../../feature/assetid/AssetIDInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../lifecycle/Pausable.sol';
+import '../../util/CommonModifiers.sol';
+import '../../feature/assetid/AssetID.sol';
 import './CrydrStorageBaseInterface.sol';
 
 
 /**
  * @title CrydrStorageBase
  */
-contract CrydrStorageBase is CommonModifiersInterface,
-                             AssetIDInterface,
-                             ManageableInterface,
-                             PausableInterface,
+contract CrydrStorageBase is Pausable,
+                             CommonModifiers,
+                             AssetID,
                              CrydrStorageBaseInterface {
 
   /* Storage */

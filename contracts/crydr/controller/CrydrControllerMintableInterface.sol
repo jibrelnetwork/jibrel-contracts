@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrControllerMintableInterface interface
  * @dev Interface of a contract that allows minting/burning of tokens
  */
-contract CrydrControllerMintableInterface {
+interface CrydrControllerMintableInterface {
 
   /* minting/burning */
 

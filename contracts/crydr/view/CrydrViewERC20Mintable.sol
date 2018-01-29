@@ -3,13 +3,11 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrViewBaseInterface.sol';
+import './CrydrViewBase.sol';
 import './CrydrViewERC20MintableInterface.sol';
 
 
-contract CrydrViewERC20Mintable is PausableInterface,
-                                   CrydrViewBaseInterface,
+contract CrydrViewERC20Mintable is CrydrViewBase,
                                    CrydrViewERC20MintableInterface {
 
   function emitMintEvent(

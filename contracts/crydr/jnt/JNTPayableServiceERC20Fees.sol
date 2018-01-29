@@ -3,13 +3,11 @@
 pragma solidity ^0.4.18;
 
 
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../lifecycle/Pausable.sol';
 import './JNTPayableServiceERC20FeesInterface.sol';
 
 
-contract JNTPayableServiceERC20Fees is ManageableInterface,
-                                       PausableInterface,
+contract JNTPayableServiceERC20Fees is Pausable,
                                        JNTPayableServiceERC20FeesInterface {
 
   /* Storage */

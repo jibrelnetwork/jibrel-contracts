@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
  * @title CrydrViewERC20Interface
  * @dev ERC20 interface to use in applications
  */
-contract CrydrViewERC20Interface {
+interface CrydrViewERC20Interface {
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 

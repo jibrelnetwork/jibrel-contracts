@@ -11,7 +11,7 @@ pragma solidity ^0.4.18;
  * @dev Instead owner delegates rights to manage an contract to the different addresses and
  * @dev stay able to revoke permissions at any time.
  */
-contract ManageableInterface {
+interface ManageableInterface {
 
   /**
    * @dev Function to check if the manager can perform the action or not
@@ -20,12 +20,4 @@ contract ManageableInterface {
    * @return True if manager is enabled and has been granted needed permission
    */
   function isManagerAllowed(address _manager, string _permissionName) public constant returns (bool);
-
-  /**
-   * @dev Modifier to use in derived contracts
-   */
-  modifier onlyAllowedManager(string _permissionName) {
-    require(isManagerAllowed(msg.sender, _permissionName) == true);
-    _;
-  }
 }
