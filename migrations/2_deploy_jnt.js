@@ -1,7 +1,8 @@
+global.artifacts = artifacts; // eslint-disable-line no-undef
+
 const migrations = require('../jsroutines/migrations');
 const initConfig = require('../jsroutines/jsconfig/initConfig');
 
-global.artifacts = artifacts; // eslint-disable-line no-undef
 
 module.exports = (deployer, network, accounts) => {
   global.console.log('  Start migration 2');
