@@ -67,7 +67,7 @@ global.contract('JNT Integration tests', (accounts) => {
     const JNTControllerInstance = await JNTController.deployed();
     const JNTViewERC20Instance = await JNTViewERC20.deployed();
 
-    const lastMigration = await MigrationsInstance.getLastCompletedMigration.call();
+    const lastMigration = await MigrationsInstance.last_completed_migration.call();
 
     await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, 50 * (10 ** 18));
 
