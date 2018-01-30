@@ -33,6 +33,17 @@ export const verifyMigrationNumber2 = async () => {
 /* Migration #3 */
 
 const executeMigrationNumber3 = async () => {
+  await CrydrInit.upauseCrydrView(JNTViewERC20);
+};
+
+const verifyMigrationNumber3 = async () => {
+  // todo verify migration, make integration tests
+};
+
+
+/* Migration #3 */
+
+const executeMigrationNumber4 = async () => {
   const JNTControllerInstance = await JNTController.deployed();
   const JNTControllerAddress = JNTControllerInstance.address;
 
@@ -47,17 +58,6 @@ const executeMigrationNumber3 = async () => {
   const jKRWControllerAddress = jKRWControllerInstance.address;
   await CrydrControllerInit.configureJntPayableService(jKRWControllerAddress, JNTControllerAddress);
   await CrydrInit.upauseCrydrControllerAndStorage(jKRWStorage, jKRWController);
-};
-
-const verifyMigrationNumber3 = async () => {
-  // todo verify migration, make integration tests
-};
-
-
-/* Migration #4 */
-
-const executeMigrationNumber4 = async () => {
-  await CrydrInit.upauseCrydrView(JNTViewERC20);
 };
 
 const verifyMigrationNumber4 = async () => {
