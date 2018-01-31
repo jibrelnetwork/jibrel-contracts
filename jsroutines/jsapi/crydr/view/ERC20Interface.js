@@ -45,7 +45,7 @@ export const balanceOf = async (contractAddress, ownerAddress) =>
 
 export const approve = async (crydrViewAddress, approverAddress,
                               spenderAddress, valueApproved) => {
-  global.console.log('\tTransfer tokens:');
+  global.console.log('\tApprove transfers of tokens:');
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tapproverAddress - ${approverAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
@@ -56,7 +56,7 @@ export const approve = async (crydrViewAddress, approverAddress,
       .approve
       .sendTransaction,
     [spenderAddress, valueApproved, { from: approverAddress }]);
-  global.console.log('\tTokens successfully transferred');
+  global.console.log('\tSpending of tokens successfully approved');
   return null;
 };
 
@@ -74,7 +74,7 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
       .transferFrom
       .sendTransaction,
     [fromAddress, toAddress, valueTransferred, { from: spenderAddress }]);
-  global.console.log('\tTokens successfully Transferred From');
+  global.console.log('\tTokens successfully transferred From');
   return null;
 };
 

@@ -1,5 +1,7 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
+const Promise = require('bluebird');
+
 const CrydrViewERC20MintableInterface = global.artifacts.require('CrydrViewERC20MintableInterface.sol');
 
 
@@ -35,4 +37,25 @@ export const emitBurnEvent = async (crydrViewAddress, managerAddress,
     [_owner, _value, { from: managerAddress }]);
   global.console.log('\tBurnEvent successfully emitted');
   return null;
+};
+
+
+/**
+ * Events
+ */
+
+export const getMintEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrViewERC20MintableInterface
+    .at(contractAddress)
+    .MintEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
+};
+
+export const getBurnEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  const eventObj = CrydrViewERC20MintableInterface
+    .at(contractAddress)
+    .BurnEvent(eventDataFilter, commonFilter);
+  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  return eventGet();
 };
