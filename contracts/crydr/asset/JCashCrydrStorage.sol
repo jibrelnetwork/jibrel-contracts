@@ -18,7 +18,7 @@ import '../storage/CrydrStorageERC20.sol';
 
 
 /**
- * @title CrydrStorage
+ * @title JCashCrydrStorage
  * @dev Implementation of a contract that manages data of an CryDR
  */
 contract JCashCrydrStorage is SafeMath,

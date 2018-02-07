@@ -13,7 +13,7 @@ import './CrydrStorageBlocksInterface.sol';
 
 
 /**
- * @title CrydrStorageBase
+ * @title CrydrStorageBlocks
  */
 contract CrydrStorageBlocks is SafeMathInterface,
                                PausableInterface,

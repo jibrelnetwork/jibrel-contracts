@@ -4,7 +4,7 @@ pragma solidity ^0.4.18;
 
 
 /**
- * @title CrydrStorageBaseInterface interface
+ * @title CrydrStorageBalanceInterface interface
  * @dev Interface of a contract that manages balance of an CryDR
  */
 contract CrydrStorageBalanceInterface {

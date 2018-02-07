@@ -4,7 +4,7 @@ pragma solidity ^0.4.18;
 
 
 /**
- * @title CommonModifiers
+ * @title CommonModifiersInterface
  * @dev Base contract which contains common checks.
  */
 contract CommonModifiersInterface {
