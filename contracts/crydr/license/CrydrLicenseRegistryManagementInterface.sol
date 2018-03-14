@@ -1,0 +1,57 @@
+/* Author: Victor Mezrin  victor@mezrin.com */
+
+pragma solidity ^0.4.18;
+
+
+/**
+ * @title CrydrLicenseRegistryManagementInterface
+ * @dev Interface of the contract that stores licenses
+ */
+contract CrydrLicenseRegistryManagementInterface {
+
+  /* Events */
+
+  event UserAdmittedEvent(address indexed useraddress);
+  event UserDeniedEvent(address indexed useraddress);
+  event UserLicenseGrantedEvent(address indexed useraddress, string licensename, uint256 indexed expirationtimestamp);
+  event UserLicenseRenewedEvent(address indexed useraddress, string licensename, uint256 indexed expirationtimestamp);
+  event UserLicenseRevokedEvent(address indexed useraddress, string licensename);
+
+
+  /* Configuration */
+
+  /**
+   * @dev Function to admit user
+   * @param _userAddress address User`s address
+   */
+  function admitUser(address _userAddress) external;
+
+  /**
+   * @dev Function to deny user
+   * @param _userAddress address User`s address
+   */
+  function denyUser(address _userAddress) external;
+
+  /**
+   * @dev Function to grant license to an user
+   * @param _userAddress         address User`s address
+   * @param _licenseName         string  name of the license
+   * @param _expirationTimestamp uint256 Expiration of the license
+   */
+  function grantUserLicense(address _userAddress, string _licenseName, uint256 _expirationTimestamp) external;
+
+  /**
+   * @dev Function to change expiration time of the user
+   * @param _userAddress         address User`s address
+   * @param _licenseName         string  name of the license
+   * @param _expirationTimestamp uint256 Expiration of the license
+   */
+  function renewUserLicense(address _userAddress, string _licenseName, uint256 _expirationTimestamp) external;
+
+  /**
+   * @dev Function to revoke license from the user
+   * @param _userAddress address User`s address
+   * @param _licenseName string  name of the license
+   */
+  function revokeUserLicense(address _userAddress, string _licenseName) external;
+}
