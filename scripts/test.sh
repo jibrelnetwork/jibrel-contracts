@@ -40,7 +40,7 @@ else
   echo "Starting our own testrpc instance"
 
   # We define 10 accounts with balance 1M ether, needed for high-value tests.
-  for i in {0..9}
+  for i in {0..10}
   do
     keys[i]=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
   done
@@ -56,6 +56,7 @@ else
     --account="0x${keys[7]},1000000000000000000000000"  \
     --account="0x${keys[8]},1000000000000000000000000"  \
     --account="0x${keys[9]},1000000000000000000000000"  \
+    --account="0x${keys[10]},1000000000000000000000000"  \
   > ./.testrpc.log &
   testrpc_pid=$!
 
