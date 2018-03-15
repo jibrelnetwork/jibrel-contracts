@@ -1,6 +1,7 @@
 const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
 const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
 const CrydrControllerBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBaseInterface');
+const CrydrControllerLicensedBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerLicensedBaseInterface');
 const CrydrControllerBlockableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBlockableInterface');
 const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
 const JNTControllerInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTControllerInterface');
@@ -47,6 +48,23 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress) =
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerMint);
 
   global.console.log('\tManagers of crydr controller successfully configured');
+  return null;
+};
+
+export const configureCrydrControllerLicensedManagers = async (crydrControllerAddress) => {
+  global.console.log('\tConfiguring managers of licensed crydr controller...');
+  global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
+
+  const { owner, managerGeneral } = DeployConfig.getAccounts();
+  global.console.log(`\t\towner - ${owner}`);
+  global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
+
+  await CrydrControllerLicensedBaseInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                          owner, managerGeneral);
+  // assumed manager has been enabled already
+  // await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerGeneral);
+
+  global.console.log('\tManagers of licensed crydr controller successfully configured');
   return null;
 };
 

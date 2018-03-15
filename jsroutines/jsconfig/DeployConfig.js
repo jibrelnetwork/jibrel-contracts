@@ -20,9 +20,10 @@ export function setAccounts(accountsList) {
     managerMint:    accountsList[4],
     managerJNT:     accountsList[5], // allowed to configure jntBeneficiary of crydr controllers
     jntBeneficiary: accountsList[6],
-    testInvestor1:  accountsList[7],
-    testInvestor2:  accountsList[8],
-    testInvestor3:  accountsList[9],
+    managerLicense: accountsList[7],
+    testInvestor1:  accountsList[8],
+    testInvestor2:  accountsList[9],
+    testInvestor3:  accountsList[10],
   };
 }
 
