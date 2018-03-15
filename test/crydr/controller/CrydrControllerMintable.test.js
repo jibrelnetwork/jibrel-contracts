@@ -8,6 +8,9 @@ const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/contro
 const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
 
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
+const CrydrStorageInitJSAPI = require('../../../jsroutines/jsinit/CrydrStorageInit');
+const CrydrControllerInitJSAPI = require('../../../jsroutines/jsinit/CrydrControllerInit');
+const CrydrViewInitJSAPI = require('../../../jsroutines/jsinit/CrydrViewInit');
 const CrydrInit = require('../../../jsroutines/jsinit/CrydrInit');
 
 const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
@@ -33,15 +36,25 @@ global.contract('CrydrControllerMintable', (accounts) => {
     jcashCrydrViewERC20Instance = await JCashCrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals,
                                                                 { from: owner });
 
+    const crydrStorageAddress = crydrStorageInstance.address;
+    const crydrControllerAddress = crydrControllerMintableInstance.address;
+    const crydrViewAddress = jcashCrydrViewERC20Instance.address;
+
     global.console.log('\tContracts deployed for tests CrydrControllerMintable:');
     global.console.log(`\t\tcrydrControllerMintableInstance: ${crydrControllerMintableInstance.address}`);
     global.console.log(`\t\tcrydrStorageInstance: ${crydrStorageInstance.address}`);
     global.console.log(`\t\tjcashCrydrViewERC20Instance: ${jcashCrydrViewERC20Instance.address}`);
 
-    await CrydrInit.configureCrydr(crydrStorageInstance.address,
-                                   crydrControllerMintableInstance.address,
-                                   jcashCrydrViewERC20Instance.address,
-                                   viewStandard);
+    global.console.log('\tConfiguring crydr managers');
+    await CrydrStorageInitJSAPI.configureCrydrStorageManagers(crydrStorageAddress);
+    await CrydrControllerInitJSAPI.configureCrydrControllerManagers(crydrControllerAddress);
+    await CrydrViewInitJSAPI.configureCrydrViewManagers(crydrViewAddress);
+    global.console.log('\tCrydr managers successfully configured');
+
+    global.console.log('\tLink crydr contracts');
+    await CrydrInit.linkCrydrStorage(crydrStorageAddress, crydrControllerAddress);
+    await CrydrInit.linkCrydrView(crydrControllerAddress, crydrViewAddress, 'erc20');
+    global.console.log('\tCrydr contracts successfully linked');
   });
 
   global.it('should test that contract allows to mint tokens', async () => {
