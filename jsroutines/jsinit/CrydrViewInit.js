@@ -1,6 +1,7 @@
 const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
 const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
 const CrydrViewBaseInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewBaseInterface');
+const CrydrViewERC20NamedInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewERC20NamedInterface');
 const CrydrViewMetadataInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewMetadataInterface');
 
 const DeployConfig = require('../jsconfig/DeployConfig');
@@ -30,6 +31,7 @@ export const configureCrydrViewManagers = async (crydrViewAddress) => {
   await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerPause);
 
   await CrydrViewBaseInterfaceJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
+  await CrydrViewERC20NamedInterfaceJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
   await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerGeneral);
 
   global.console.log('\tManagers of crydr view successfully configured');

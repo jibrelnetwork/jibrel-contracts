@@ -1,6 +1,6 @@
 import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
 
-const CrydrControllerLicensedBaseInterface = global.artifacts.require('CrydrControllerLicensedBaseInterface.sol');
+const CrydrViewMetadataInterface = global.artifacts.require('CrydrViewMetadataInterface.sol');
 
 const ManageableJSAPI = require('../../lifecycle/Manageable');
 
@@ -17,7 +17,7 @@ export const setMetadata = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmetadataKey - ${metadataKey}`);
   global.console.log(`metadataValue${metadataValue}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerLicensedBaseInterface
+    CrydrViewMetadataInterface
       .at(crydrViewAddress)
       .setMetadata
       .sendTransaction,
@@ -26,10 +26,10 @@ export const setMetadata = async (crydrViewAddress, managerAddress,
 };
 
 export const getMetadata = async (crydrViewAddress, metadataKey) =>
-  CrydrControllerLicensedBaseInterface.at(crydrViewAddress).getMetadata.call(metadataKey);
+  CrydrViewMetadataInterface.at(crydrViewAddress).getMetadata.call(metadataKey);
 
 export const getMetadataHash = async (crydrViewAddress, metadataKey) =>
-  CrydrControllerLicensedBaseInterface.at(crydrViewAddress).getMetadataHash.call(metadataKey);
+  CrydrViewMetadataInterface.at(crydrViewAddress).getMetadataHash.call(metadataKey);
 
 
 /**
