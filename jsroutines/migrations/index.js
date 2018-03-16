@@ -22,6 +22,8 @@ const CrydrInit = require('../jsinit/CrydrInit');
 const CrydrControllerInit = require('../jsinit/CrydrControllerInit');
 const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
 const CrydrControllerLicensedERC20JSAPI = require('../jsapi/crydr/controller/CrydrControllerLicensedERC20');
+const CrydrViewERC20NamedInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewERC20NamedInterface');
+const CrydrViewMetadataInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewMetadataInterface');
 
 
 /* Migration #2 */
@@ -189,8 +191,11 @@ export const verifyMigrationNumber7 = async () => {
 /* Migration #8 */
 
 const executeMigrationNumber8 = async () => {
-  const { managerMint, managerLicense, testInvestor1, testInvestor2, testInvestor3 } = DeployConfig.getAccounts();
+  const { managerGeneral, managerMint, managerLicense,
+          testInvestor1, testInvestor2, testInvestor3 } = DeployConfig.getAccounts();
 
+
+  global.console.log('  Grant licenses to users');
 
   const licenseRegistryInstance = await jDemoLicenseRegistry.deployed();
   const licenseRegistryAddress = licenseRegistryInstance.address;
@@ -205,8 +210,12 @@ const executeMigrationNumber8 = async () => {
                                                                    testInvestor3, expirationTimestamp)]);
 
 
+  global.console.log('  Mint tokens');
+
   const jDemoControllerInstance = await jDemoController.deployed();
   const jDemoControllerAddress = jDemoControllerInstance.address;
+  const jDemoViewERC20Instance = await jDemoViewERC20.deployed();
+  const jDemoViewERC20Address = jDemoViewERC20Instance.address;
 
   await Promise.all([
     CrydrControllerMintableInterfaceJSAPI.mint(jDemoControllerAddress,
@@ -222,6 +231,13 @@ const executeMigrationNumber8 = async () => {
                                                testInvestor3,
                                                10000 * (10 ** 18)),
   ]);
+
+
+  global.console.log('  Change CryDR metadata');
+  await CrydrViewERC20NamedInterfaceJSAPI.setSymbol(jDemoViewERC20Address, managerGeneral, 'JGLD');
+  await CrydrViewERC20NamedInterfaceJSAPI.setName(jDemoViewERC20Address, managerGeneral, 'jGold asset');
+  await CrydrViewMetadataInterfaceJSAPI.setMetadata(jDemoViewERC20Address, managerGeneral,
+                                                    'asset_type', 'commodity');
 };
 
 const verifyMigrationNumber8 = async () => {
