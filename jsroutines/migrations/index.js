@@ -158,9 +158,6 @@ const verifyMigrationNumber6 = async () => {
 export const executeMigrationNumber7 = async () => {
   await CrydrInit.initLicensedCrydr(jDemoStorage, jDemoLicenseRegistry, jDemoController, jDemoViewERC20, 'erc20');
 
-  const JNTControllerInstance = await JNTController.deployed();
-  const JNTControllerAddress = JNTControllerInstance.address;
-
   const jDemoStorageInstance = await jDemoStorage.deployed();
   const jDemoStorageAddress = jDemoStorageInstance.address;
   const jDemoLicenseRegistryInstance = await jDemoLicenseRegistry.deployed();
@@ -169,7 +166,6 @@ export const executeMigrationNumber7 = async () => {
   const jDemoControllerAddress = jDemoControllerInstance.address;
   const jDemoViewERC20Instance = await jDemoViewERC20.deployed();
   const jDemoViewERC20Address = jDemoViewERC20Instance.address;
-  await CrydrControllerInit.configureJntPayableService(jDemoControllerAddress, JNTControllerAddress);
 
   await CrydrInit.upauseCrydrContract(jDemoStorage, 'storage');
   await CrydrInit.upauseCrydrContract(jDemoLicenseRegistry, 'license_registry');
