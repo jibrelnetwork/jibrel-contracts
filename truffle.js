@@ -15,14 +15,14 @@ module.exports = {
       port:       8550,
       network_id: 3, // official id of the ropsten network
       gas:        4600000,
-      gasPrice:   1000000000000,
+      gasPrice:   1000000000, // 1 Gwei
     },
     main: {
       host:       'localhost',
       port:       8545,
       network_id: 1, // official id of the main network
       gas:        6600000,
-      gasPrice:   35000000000,
+      gasPrice:   1000000000, // 1 Gwei
     },
     coverage: {
       host:       'localhost',
