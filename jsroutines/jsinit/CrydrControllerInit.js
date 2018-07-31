@@ -4,6 +4,7 @@ const CrydrControllerBaseInterfaceJSAPI = require('../jsapi/crydr/controller/Cry
 const CrydrControllerLicensedBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerLicensedBaseInterface');
 const CrydrControllerBlockableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBlockableInterface');
 const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
+const CrydrControllerForcedTransferInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerForcedTransferInterface');
 const JNTControllerInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTControllerInterface');
 const JNTPayableServiceInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTPayableServiceInterface');
 
@@ -25,12 +26,13 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress) =
   global.console.log('\tConfiguring managers of crydr controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  const { owner, managerPause, managerGeneral, managerBlock, managerMint } = DeployConfig.getAccounts();
+  const { owner, managerPause, managerGeneral, managerBlock, managerMint, managerForcedTransfer } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
   global.console.log(`\t\tmanagerBlock - ${managerBlock}`);
   global.console.log(`\t\tmanagerMint - ${managerMint}`);
+  global.console.log(`\t\tmanagerForcedTransfer - ${managerForcedTransfer}`);
 
   await PausableJSAPI.grantManagerPermissions(crydrControllerAddress, owner, managerPause);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerPause);
@@ -46,6 +48,10 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress) =
   await CrydrControllerMintableInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
                                                                       owner, managerMint);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerMint);
+
+  await CrydrControllerForcedTransferInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                            owner, managerForcedTransfer);
+  await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerForcedTransfer);
 
   global.console.log('\tManagers of crydr controller successfully configured');
   return null;
