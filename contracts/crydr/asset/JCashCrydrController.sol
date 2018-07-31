@@ -13,6 +13,7 @@ import '../controller/CrydrControllerBase.sol';
 import '../controller/CrydrControllerBlockable.sol';
 import '../controller/CrydrControllerMintable.sol';
 import '../controller/CrydrControllerERC20.sol';
+import '../controller/CrydrControllerForcedTransfer.sol';
 import '../jnt/JNTPayableService.sol';
 import '../jnt/JNTPayableServiceERC20Fees.sol';
 
@@ -27,6 +28,7 @@ contract JCashCrydrController is CommonModifiers,
                                  CrydrControllerBlockable,
                                  CrydrControllerMintable,
                                  CrydrControllerERC20,
+                                 CrydrControllerForcedTransfer,
                                  JNTPayableService,
                                  JNTPayableServiceERC20Fees {
 
