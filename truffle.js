@@ -1,5 +1,7 @@
 require('babel-register');
 require('babel-polyfill');
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const Settings = require('./settings');
 
 
 module.exports = {
@@ -8,20 +10,37 @@ module.exports = {
       host:       'localhost',
       port:       8560,
       network_id: '*', // Match any network id
-      gas:        6600000,
+      gas:        8000000,
+    },
+    development_hd: {
+      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8560', 0, 20),
+      network_id: '*', // Match any network id
+      gas:        8000000,
     },
     ropsten: {
       host:       'localhost',
       port:       8550,
       network_id: 3, // official id of the ropsten network
-      gas:        4600000,
+      gas:        6600000,
+      gasPrice:   1000000000, // 1 Gwei
+    },
+    ropsten_hd: {
+      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8550', 0, 20),
+      network_id: 3, // official id of the ropsten network
+      gas:        6600000,
       gasPrice:   1000000000, // 1 Gwei
     },
     main: {
       host:       'localhost',
       port:       8545,
       network_id: 1, // official id of the main network
-      gas:        6600000,
+      gas:        8000000,
+      gasPrice:   1000000000, // 1 Gwei
+    },
+    main_hd: {
+      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8545', 0, 20),
+      network_id: 1, // official id of the main network
+      gas:        8000000,
       gasPrice:   1000000000, // 1 Gwei
     },
     coverage: {
