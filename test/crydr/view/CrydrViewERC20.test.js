@@ -126,18 +126,17 @@ global.contract('CrydrViewERC20', (accounts) => {
 
   global.it('should test that only controller is allowed to emit events', async () => {
     // direct call to the view, not through the controller
-    await CheckExceptions
-      .checkContractThrows(CrydrViewERC20LoggableJSAPI.emitTransferEvent,
-                           [jcashCrydrViewERC20Instance.address, testInvestor1,
-                            testInvestor1, testInvestor2, 10 * (10 ** 18)],
-                           'Only CrydrController can emit transfer event');
-    await CheckExceptions
-      .checkContractThrows(CrydrViewERC20LoggableJSAPI.emitApprovalEvent,
-                           [jcashCrydrViewERC20Instance.address, testInvestor1,
-                            testInvestor1, testInvestor2, 10 * (10 ** 18)],
-                           'Only CrydrController can emit approval event');
+    let isThrows = await CheckExceptions
+      .isContractThrows(CrydrViewERC20LoggableJSAPI.emitTransferEvent,
+                        [jcashCrydrViewERC20Instance.address, testInvestor1,
+                         testInvestor1, testInvestor2, 10 * (10 ** 18)]);
+    global.assert.strictEqual(isThrows, true, 'Only CrydrController can emit transfer event');
+    isThrows = await CheckExceptions
+      .isContractThrows(CrydrViewERC20LoggableJSAPI.emitApprovalEvent,
+                        [jcashCrydrViewERC20Instance.address, testInvestor1,
+                         testInvestor1, testInvestor2, 10 * (10 ** 18)]);
+    global.assert.strictEqual(isThrows, true, 'Only CrydrController can emit approval event');
   });
-
 
   global.it('should test that functions fire events', async () => {
     const value = 10 * (10 ** 18);

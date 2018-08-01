@@ -21,8 +21,8 @@ global.contract('JNTPayableService', (accounts) => {
 
   global.beforeEach(async () => {
     jntPayableServiceInstance = await JNTPayableServiceMock.new({ from: owner });
-    jntControllerStubInstance01 = await JNTControllerStub.new({ from: owner });  // we need to mock it
-    jntControllerStubInstance02 = await JNTControllerStub.new({ from: owner });  // we need to mock it
+    jntControllerStubInstance01 = await JNTControllerStub.new({ from: owner }); // we need to mock it
+    jntControllerStubInstance02 = await JNTControllerStub.new({ from: owner }); // we need to mock it
 
     await PausableJSAPI.grantManagerPermissions(jntPayableServiceInstance.address, owner, managerPause);
     await JNTPayableServiceJSAPI.grantManagerPermissions(jntPayableServiceInstance.address, owner, managerJNT);
@@ -39,54 +39,53 @@ global.contract('JNTPayableService', (accounts) => {
   global.it('should test setJntController method', async () => {
     await PausableJSAPI.pauseContract(jntPayableServiceInstance.address, managerPause);
 
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntController,
-                                              [jntPayableServiceInstance.address, testInvestor1,
-                                               jntControllerStubInstance02.address],
-                                              'Only manager should be able to set JntController');
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntController,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               testInvestor1],
-                                              'Should be a valid address of JntController');
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntController,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               0x0],
-                                              'Should be a valid address of JntController');
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntController,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               jntControllerStubInstance01.address],
-                                              'Not possible to set the same address');
+    let isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntController,
+                                                          [jntPayableServiceInstance.address, testInvestor1,
+                                                           jntControllerStubInstance02.address]);
+    global.assert.strictEqual(isThrows, true, 'Only manager should be able to set JntController');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntController,
+                                                      [jntPayableServiceInstance.address, managerJNT,
+                                                       testInvestor1]);
+    global.assert.strictEqual(isThrows, true, 'Should be a valid address of JntController');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntController,
+                                                      [jntPayableServiceInstance.address, managerJNT,
+                                                       0x0]);
+    global.assert.strictEqual(isThrows, true, 'Should be a valid address of JntController');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntController,
+                                                      [jntPayableServiceInstance.address, managerJNT,
+                                                       jntControllerStubInstance01.address]);
+    global.assert.strictEqual(isThrows, true, 'Not possible to set the same address');
 
     await JNTPayableServiceJSAPI.setJntController(jntPayableServiceInstance.address, managerJNT,
                                                   jntControllerStubInstance02.address);
 
     await PausableJSAPI.unpauseContract(jntPayableServiceInstance.address, managerPause);
 
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntController,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               jntControllerStubInstance01.address],
-                                              'Not possible to configure unpaused contract');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntController,
+                                                      [jntPayableServiceInstance.address, managerJNT,
+                                                       jntControllerStubInstance01.address]);
+    global.assert.strictEqual(isThrows, true, 'Not possible to configure unpaused contract');
   });
 
   global.it('should test setJntBeneficiary method', async () => {
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               jntBeneficiary],
-                                              'Not possible to configure unpaused contract');
+    let isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
+                                                          [jntPayableServiceInstance.address, managerJNT,
+                                                           jntBeneficiary]);
+    global.assert.strictEqual(isThrows, true, 'Not possible to configure unpaused contract');
 
     await PausableJSAPI.pauseContract(jntPayableServiceInstance.address, managerPause);
 
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
-                                              [jntPayableServiceInstance.address, testInvestor1,
-                                               testInvestor2],
-                                              'Only manager should be able to set JntBeneficiary');
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               0x0],
-                                              'Should be a valid address of JntBeneficiary');
-    await CheckExceptions.checkContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
-                                              [jntPayableServiceInstance.address, managerJNT,
-                                               jntBeneficiary],
-                                              'Not possible to set the same address');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
+                                                      [jntPayableServiceInstance.address, testInvestor1,
+                                                       testInvestor2]);
+    global.assert.strictEqual(isThrows, true, 'Only manager should be able to set JntBeneficiary');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
+                                                      [jntPayableServiceInstance.address, managerJNT, 0x0]);
+    global.assert.strictEqual(isThrows, true, 'Should be a valid address of JntBeneficiary');
+    isThrows = await CheckExceptions.isContractThrows(JNTPayableServiceJSAPI.setJntBeneficiary,
+                                                      [jntPayableServiceInstance.address, managerJNT,
+                                                       jntBeneficiary]);
+    global.assert.strictEqual(isThrows, true, 'Not possible to set the same address');
 
     await JNTPayableServiceJSAPI.setJntBeneficiary(jntPayableServiceInstance.address, managerJNT,
                                                    testInvestor1);

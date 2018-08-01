@@ -96,10 +96,10 @@ global.contract('JNT Integration tests', (accounts) => {
     if (lastMigration.toNumber() <= 2) {
       global.console.log('    JNT ERC20 view not unpaused yet');
 
-      await CheckExceptions.checkContractThrows(
+      const isThrows = await CheckExceptions.isContractThrows(
         ERC20InterfaceJSAPI.transfer,
-        [JNTViewERC20Instance.address, testInvestor1, testInvestor2, transferredValue],
-        'Should not be possible to transfer tokens');
+        [JNTViewERC20Instance.address, testInvestor1, testInvestor2, transferredValue]);
+      global.assert.strictEqual(isThrows, true, 'Should not be possible to transfer tokens');
 
       const investor1BalanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address,
                                                                           testInvestor1);
@@ -162,10 +162,10 @@ global.contract('JNT Integration tests', (accounts) => {
     if (lastMigration.toNumber() <= 2) {
       global.console.log('    JNT ERC20 view not unpaused yet');
 
-      await CheckExceptions.checkContractThrows(
+      const isThrows = await CheckExceptions.isContractThrows(
         ERC20InterfaceJSAPI.approve,
-        [JNTViewERC20Instance.address, testInvestor1, testInvestor3, approvedValue],
-        'Should not be possible to approve spendings');
+        [JNTViewERC20Instance.address, testInvestor1, testInvestor3, approvedValue]);
+      global.assert.strictEqual(isThrows, true, 'Should not be possible to approve spendings');
 
       const approvedSpendingChanged = await ERC20InterfaceJSAPI.allowance(JNTViewERC20Instance.address,
                                                                           testInvestor1, testInvestor3);

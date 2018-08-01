@@ -172,23 +172,23 @@ global.contract('Manageable', (accounts) => {
   global.it('should test that functions throw if general conditions are not met', async () => {
     // getters
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.isManagerEnabled,
-                                              [manageableInstanceAddress, 0x0],
-                                              'isManagerEnabled should reject invalid manager address');
+    let isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.isManagerEnabled,
+                                                          [manageableInstanceAddress, 0x0]);
+    global.assert.strictEqual(isThrows, true, 'isManagerEnabled should reject invalid manager address');
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.isPermissionGranted,
-                                              [manageableInstanceAddress, 0x0, 'permission_01'],
-                                              'isPermissionGranted should reject invalid manager address');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.isPermissionGranted,
-                                              [manageableInstanceAddress, managerGeneral, ''],
-                                              'isPermissionGranted should reject invalid permission name');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.isPermissionGranted,
+                                                      [manageableInstanceAddress, 0x0, 'permission_01']);
+    global.assert.strictEqual(isThrows, true, 'isPermissionGranted should reject invalid manager address');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.isPermissionGranted,
+                                                      [manageableInstanceAddress, managerGeneral, '']);
+    global.assert.strictEqual(isThrows, true, 'isPermissionGranted should reject invalid permission name');
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.isManagerAllowed,
-                                              [manageableInstanceAddress, 0x0, 'permission_01'],
-                                              'isManagerAllowed should reject invalid manager address');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.isManagerAllowed,
-                                              [manageableInstanceAddress, managerGeneral, ''],
-                                              'isManagerAllowed should reject invalid permission name');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.isManagerAllowed,
+                                                      [manageableInstanceAddress, 0x0, 'permission_01']);
+    global.assert.strictEqual(isThrows, true, 'isManagerAllowed should reject invalid manager address');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.isManagerAllowed,
+                                                      [manageableInstanceAddress, managerGeneral, '']);
+    global.assert.strictEqual(isThrows, true, 'isManagerAllowed should reject invalid permission name');
 
 
     // setters
@@ -198,27 +198,27 @@ global.contract('Manageable', (accounts) => {
     const isManagerEnabled = await ManageableJSAPI.isManagerEnabled(manageableInstanceAddress, managerGeneral);
     global.assert.strictEqual(isManagerEnabled, false);
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.enableManager,
-                                              [manageableInstanceAddress, owner, 0x0],
-                                              'enableManager should reject invalid manager address');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.enableManager,
-                                              [manageableInstanceAddress, managerGeneral, managerGeneral],
-                                              'Only owner should be able to enable manager');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.enableManager,
+                                                      [manageableInstanceAddress, owner, 0x0]);
+    global.assert.strictEqual(isThrows, true, 'enableManager should reject invalid manager address');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.enableManager,
+                                                      [manageableInstanceAddress, managerGeneral, managerGeneral]);
+    global.assert.strictEqual(isThrows, true, 'Only owner should be able to enable manager');
     await ManageableJSAPI.enableManager(manageableInstanceAddress, owner, managerGeneral);
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.enableManager,
-                                              [manageableInstanceAddress, owner, managerGeneral],
-                                              'Should not be possible to enable already enabled manager');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.enableManager,
+                                                      [manageableInstanceAddress, owner, managerGeneral]);
+    global.assert.strictEqual(isThrows, true, 'Should not be possible to enable already enabled manager');
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.disableManager,
-                                              [manageableInstanceAddress, owner, 0x0],
-                                              'disableManager should reject invalid manager address');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.disableManager,
-                                              [manageableInstanceAddress, managerGeneral, managerGeneral],
-                                              'Only owner should be able to disable manager');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.disableManager,
+                                                      [manageableInstanceAddress, owner, 0x0]);
+    global.assert.strictEqual(isThrows, true, 'disableManager should reject invalid manager address');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.disableManager,
+                                                      [manageableInstanceAddress, managerGeneral, managerGeneral]);
+    global.assert.strictEqual(isThrows, true, 'Only owner should be able to disable manager');
     await ManageableJSAPI.disableManager(manageableInstanceAddress, owner, managerGeneral);
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.disableManager,
-                                              [manageableInstanceAddress, owner, managerGeneral],
-                                              'Should not be possible to disable already disabled manager');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.disableManager,
+                                                      [manageableInstanceAddress, owner, managerGeneral]);
+    global.assert.strictEqual(isThrows, true, 'Should not be possible to disable already disabled manager');
 
 
     // grantManagerPermission & revokeManagerPermission
@@ -228,42 +228,42 @@ global.contract('Manageable', (accounts) => {
                                                                             'permission_01');
     global.assert.strictEqual(isPermission01Granted, false);
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.grantManagerPermissions,
-                                              [manageableInstanceAddress, owner,
-                                               0x0, ['permission_01']],
-                                              'grantManagerPermission should reject invalid manager address');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.grantManagerPermissions,
-                                              [manageableInstanceAddress, owner,
-                                               managerGeneral, ['']],
-                                              'grantManagerPermission should reject invalid permission name');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.grantManagerPermissions,
-                                              [manageableInstanceAddress, managerGeneral,
-                                               managerGeneral, ['permission_01']],
-                                              'Only owner should be able to grant permissions');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.grantManagerPermissions,
+                                                      [manageableInstanceAddress, owner,
+                                                       0x0, ['permission_01']]);
+    global.assert.strictEqual(isThrows, true, 'grantManagerPermission should reject invalid manager address');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.grantManagerPermissions,
+                                                      [manageableInstanceAddress, owner,
+                                                       managerGeneral, ['']]);
+    global.assert.strictEqual(isThrows, true, 'grantManagerPermission should reject invalid permission name');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.grantManagerPermissions,
+                                                      [manageableInstanceAddress, managerGeneral,
+                                                       managerGeneral, ['permission_01']]);
+    global.assert.strictEqual(isThrows, true, 'Only owner should be able to grant permissions');
     await ManageableJSAPI.grantManagerPermissions(manageableInstanceAddress, owner,
                                                   managerGeneral, ['permission_01']);
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.grantManagerPermissions,
-                                              [manageableInstanceAddress, owner,
-                                               managerGeneral, ['permission_01']],
-                                              'Should not be possible to grant permission that is already granted');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.grantManagerPermissions,
+                                                      [manageableInstanceAddress, owner,
+                                                       managerGeneral, ['permission_01']]);
+    global.assert.strictEqual(isThrows, true, 'Should not be possible to grant permission that is already granted');
 
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.revokeManagerPermissions,
-                                              [manageableInstanceAddress, owner,
-                                               0x0, ['permission_01']],
-                                              'revokeManagerPermission should reject invalid manager address');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.revokeManagerPermissions,
-                                              [manageableInstanceAddress, owner, managerGeneral, ['']],
-                                              'revokeManagerPermission should reject invalid permission name');
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.revokeManagerPermissions,
-                                              [manageableInstanceAddress, managerGeneral,
-                                               managerGeneral, ['permission_01']],
-                                              'Only owner should be able to revoke permissions');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.revokeManagerPermissions,
+                                                      [manageableInstanceAddress, owner,
+                                                       0x0, ['permission_01']]);
+    global.assert.strictEqual(isThrows, true, 'revokeManagerPermission should reject invalid manager address');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.revokeManagerPermissions,
+                                                      [manageableInstanceAddress, owner, managerGeneral, ['']]);
+    global.assert.strictEqual(isThrows, true, 'revokeManagerPermission should reject invalid permission name');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.revokeManagerPermissions,
+                                                      [manageableInstanceAddress, managerGeneral,
+                                                       managerGeneral, ['permission_01']]);
+    global.assert.strictEqual(isThrows, true, 'Only owner should be able to revoke permissions');
     await ManageableJSAPI.revokeManagerPermissions(manageableInstanceAddress, owner,
                                                    managerGeneral, ['permission_01']);
-    await CheckExceptions.checkContractThrows(ManageableJSAPI.revokeManagerPermissions,
-                                              [manageableInstanceAddress, owner,
-                                               managerGeneral, ['permission_01']],
-                                              'Should not be possible to revoke permission that is already revoked');
+    isThrows = await CheckExceptions.isContractThrows(ManageableJSAPI.revokeManagerPermissions,
+                                                      [manageableInstanceAddress, owner,
+                                                       managerGeneral, ['permission_01']]);
+    global.assert.strictEqual(isThrows, true, 'Should not be possible to revoke permission that is already revoked');
   });
 
   global.it('should test that functions fire events', async () => {

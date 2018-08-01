@@ -81,43 +81,37 @@ global.contract('Ownable', (accounts) => {
   });
 
   global.it('should check exceptions related to creation of ownership transfer offer', async () => {
-    await CheckExceptions
-      .checkContractThrows(OwnableJSAPI.createOwnershipOffer,
-                           [ownableInstanceAddress, testInvestor1, testInvestor2],
-                           'Only current owner should be able to create an ownership offer');
+    let isThrows = await CheckExceptions.isContractThrows(OwnableJSAPI.createOwnershipOffer,
+                                                          [ownableInstanceAddress, testInvestor1, testInvestor2]);
+    global.assert.strictEqual(isThrows, true, 'Only current owner should be able to create an ownership offer');
 
-    await CheckExceptions
-      .checkContractThrows(OwnableJSAPI.createOwnershipOffer,
-                           [ownableInstanceAddress, owner, 0x0],
-                           'Address of proposed owner should be valid');
+    isThrows = await CheckExceptions.isContractThrows(OwnableJSAPI.createOwnershipOffer,
+                                                      [ownableInstanceAddress, owner, 0x0]);
+    global.assert.strictEqual(isThrows, true, 'Address of proposed owner should be valid');
 
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    await CheckExceptions
-      .checkContractThrows(OwnableJSAPI.createOwnershipOffer,
-                           [ownableInstanceAddress, owner, testInvestor2],
-                           'New offer should not be possible until the old one finished');
+    isThrows = await CheckExceptions.isContractThrows(OwnableJSAPI.createOwnershipOffer,
+                                                      [ownableInstanceAddress, owner, testInvestor2]);
+    global.assert.strictEqual(isThrows, true, 'New offer should not be possible until the old one finished');
   });
 
   global.it('should check exceptions related to accepting of ownership transfer offer', async () => {
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    await CheckExceptions
-      .checkContractThrows(OwnableJSAPI.acceptOwnershipOffer,
-                           [ownableInstanceAddress, owner],
-                           'Only proposed owner should be able to accept offer');
-    await CheckExceptions
-      .checkContractThrows(OwnableJSAPI.acceptOwnershipOffer,
-                           [ownableInstanceAddress, testInvestor2],
-                           'Only proposed owner should be able to accept offer');
+    let isThrows = await CheckExceptions.isContractThrows(OwnableJSAPI.acceptOwnershipOffer,
+                                                          [ownableInstanceAddress, owner]);
+    global.assert.strictEqual(isThrows, true, 'Only proposed owner should be able to accept offer');
+    isThrows = await CheckExceptions.isContractThrows(OwnableJSAPI.acceptOwnershipOffer,
+                                                      [ownableInstanceAddress, testInvestor2]);
+    global.assert.strictEqual(isThrows, true, 'Only proposed owner should be able to accept offer');
   });
 
   global.it('should check exceptions related to cancellation of ownership transfer offer', async () => {
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    await CheckExceptions
-      .checkContractThrows(OwnableJSAPI.cancelOwnershipOffer,
-                           [ownableInstanceAddress, testInvestor2],
-                           'Only owner and proposed owner should be able to cancel offer');
+    const isThrows = await CheckExceptions.isContractThrows(OwnableJSAPI.cancelOwnershipOffer,
+                                                            [ownableInstanceAddress, testInvestor2]);
+    global.assert.strictEqual(isThrows, true, 'Only owner and proposed owner should be able to cancel offer');
   });
 });

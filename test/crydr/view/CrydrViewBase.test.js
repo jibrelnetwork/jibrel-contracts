@@ -65,19 +65,19 @@ global.contract('CrydrViewBase', (accounts) => {
     await PausableJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
 
 
-    await CheckExceptions.checkContractThrows(CrydrViewBaseJSAPI.setCrydrController,
-                                              [crydrViewBaseInstance.address,
-                                               testInvestor1,
-                                               controllerStubInstance02.address],
-                                              'Only manager should be able to set crydrController');
-    await CheckExceptions.checkContractThrows(CrydrViewBaseJSAPI.setCrydrController,
-                                              [crydrViewBaseInstance.address,
-                                               managerGeneral,
-                                               0x0],
-                                              'Should be a valid address of crydrController');
-    await CrydrViewBaseJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                managerGeneral,
-                                                controllerStubInstance02.address);
+    let isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseJSAPI.setCrydrController,
+                                                          [crydrViewBaseInstance.address,
+                                                           testInvestor1,
+                                                           controllerStubInstance02.address]);
+    global.assert.strictEqual(isThrows, true, 'Only manager should be able to set crydrController');
+    isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseJSAPI.setCrydrController,
+                                                      [crydrViewBaseInstance.address,
+                                                       managerGeneral,
+                                                       0x0]);
+    global.assert.strictEqual(isThrows, true, 'Should be a valid address of crydrController');
+    isThrows = await CrydrViewBaseJSAPI.setCrydrController(crydrViewBaseInstance.address,
+                                                           managerGeneral,
+                                                           controllerStubInstance02.address);
 
 
     await PausableJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
@@ -85,11 +85,11 @@ global.contract('CrydrViewBase', (accounts) => {
     global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
 
-    await CheckExceptions.checkContractThrows(CrydrViewBaseJSAPI.setCrydrController,
-                                              [crydrViewBaseInstance.address,
-                                               managerGeneral,
-                                               0x0],
-                                              'configuration os crydrController should be prohibited if unpaused');
+    isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseJSAPI.setCrydrController,
+                                                      [crydrViewBaseInstance.address,
+                                                       managerGeneral,
+                                                       0x0]);
+    global.assert.strictEqual(isThrows, true, 'configuration os crydrController should be prohibited if unpaused');
   });
 
   global.it('should test that functions fire events', async () => {

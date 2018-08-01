@@ -55,12 +55,12 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   global.it('check that crydr storage is configurable', async () => {
     await PausableJSAPI.pauseContract(crydrStorageInstance.address, managerPause);
 
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.setCrydrController.sendTransaction,
-                                              [0x0, { from: managerGeneral }],
-                                              'Should reject invalid crydr controller address');
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.setCrydrController.sendTransaction,
-                                              [storageProxyInstance01.address, { from: testInvestor1 }],
-                                              'Only allowed manager should be able to configure crydr storage');
+    let isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.setCrydrController.sendTransaction,
+                                                          [0x0, { from: managerGeneral }]);
+    global.assert.strictEqual(isThrows, true, 'Should reject invalid crydr controller address');
+    isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.setCrydrController.sendTransaction,
+                                                      [storageProxyInstance01.address, { from: testInvestor1 }]);
+    global.assert.strictEqual(isThrows, true, 'Only allowed manager should be able to configure crydr storage');
 
     await crydrStorageBaseJSAPI.setCrydrController(crydrStorageInstance.address, managerGeneral,
                                                    storageProxyInstance02.address);
@@ -69,9 +69,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(crydrControllerAddress, storageProxyInstance02.address,
                               'Manager should be able to configure crydr storage and set controller');
 
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.setCrydrController.sendTransaction,
-                                              [storageProxyInstance02.address, { from: managerGeneral }],
-                                              'New crydr controller should be different from the previous one');
+    isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.setCrydrController.sendTransaction,
+                                                      [storageProxyInstance02.address, { from: managerGeneral }]);
+    global.assert.strictEqual(isThrows, true, 'New crydr controller should be different from the previous one');
 
     await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
     await PausableJSAPI.pauseContract(crydrStorageInstance.address, managerPause);
@@ -81,9 +81,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     crydrControllerAddress = await crydrStorageInstance.getCrydrController.call();
     global.assert.strictEqual(crydrControllerAddress, storageProxyInstance03.address,
                               'Manager should be able to change crydr controller at any time');
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.unpauseContract.sendTransaction,
-                                              [{ from: managerPause }],
-                                              'should not be possible');
+    isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.unpauseContract.sendTransaction,
+                                                      [{ from: managerPause }]);
+    global.assert.strictEqual(isThrows, true, 'should not be possible');
     const isPaused = await crydrStorageInstance.getPaused.call();
     global.assert.strictEqual(isPaused, true, 'Contract should be paused');
 
@@ -276,20 +276,18 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
                                                        testInvestor1, testInvestor2, 10 * (10 ** 18));
 
     // test that only crydr controller is able to invoke setters
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.increaseBalance.sendTransaction,
-                                              [testInvestor1, 5 * (10 ** 18), { from: testInvestor1 }],
-                                              'increaseBalance should throw if called by non-controller');
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.decreaseBalance.sendTransaction,
-                                              [testInvestor1, 5 * (10 ** 18), { from: testInvestor1 }],
-                                              'decreaseBalance should throw if called by non-controller');
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.increaseAllowance.sendTransaction,
-                                              [testInvestor1, testInvestor2, 5 * (10 ** 18),
-                                                { from: testInvestor1 }],
-                                              'increaseAllowance should throw if called by non-controller');
-    await CheckExceptions.checkContractThrows(crydrStorageInstance.decreaseAllowance.sendTransaction,
-                                              [testInvestor1, testInvestor2, 5 * (10 ** 18),
-                                                { from: testInvestor1 }],
-                                              'decreaseAllowance should throw if called by non-controller');
+    let isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.increaseBalance.sendTransaction,
+                                                          [testInvestor1, 5 * (10 ** 18), { from: testInvestor1 }]);
+    global.assert.strictEqual(isThrows, true, 'increaseBalance should throw if called by non-controller');
+    isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.decreaseBalance.sendTransaction,
+                                                      [testInvestor1, 5 * (10 ** 18), { from: testInvestor1 }]);
+    global.assert.strictEqual(isThrows, true, 'decreaseBalance should throw if called by non-controller');
+    isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.increaseAllowance.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 5 * (10 ** 18), { from: testInvestor1 }]);
+    global.assert.strictEqual(isThrows, true, 'increaseAllowance should throw if called by non-controller');
+    isThrows = await CheckExceptions.isContractThrows(crydrStorageInstance.decreaseAllowance.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 5 * (10 ** 18), { from: testInvestor1 }]);
+    global.assert.strictEqual(isThrows, true, 'decreaseAllowance should throw if called by non-controller');
   });
 
   global.it('check that crydr storage has correct pausable modifiers for low-level setters', async () => {
@@ -335,9 +333,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     let investorAllowance = await crydrStorageInstance.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseBalance.sendTransaction,
-                                              [testInvestor1, 1, { from: owner }],
-                                              'decreaseBalance should throw if integer overflow');
+    let isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.decreaseBalance.sendTransaction,
+                                                          [testInvestor1, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'decreaseBalance should throw if integer overflow');
 
     await crydrStorageBalanceJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                    testInvestor1, 1000);
@@ -346,12 +344,12 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseBalance.sendTransaction,
-                                              [testInvestor1, 1001, { from: owner }],
-                                              'decreaseBalance should throw if integer overflow');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
-                                              [testInvestor1, uint256Max.minus(999), { from: owner }],
-                                              'increaseBalance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.decreaseBalance.sendTransaction,
+                                                      [testInvestor1, 1001, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'decreaseBalance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
+                                                      [testInvestor1, uint256Max.minus(999), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'increaseBalance should throw if integer overflow');
 
     await crydrStorageBalanceJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                    testInvestor1, uint256Max.minus(1000));
@@ -361,12 +359,12 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
-                                              [testInvestor1, 1, { from: owner }],
-                                              'increaseBalance should throw if integer overflow');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
-                                              [testInvestor2, 1, { from: owner }],
-                                              'increaseBalance should throw if integer overflow of total supply');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
+                                                      [testInvestor1, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'increaseBalance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.increaseBalance.sendTransaction,
+                                                      [testInvestor2, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'increaseBalance should throw if integer overflow of total supply');
 
 
     // increaseAllowance & decreaseAllowance
@@ -377,9 +375,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseAllowance.sendTransaction,
-                                              [testInvestor1, testInvestor2, 1, { from: owner }],
-                                              'decreaseAllowance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.decreaseAllowance.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'decreaseAllowance should throw if integer overflow');
 
     await crydrStorageAllowanceJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                        testInvestor1, testInvestor2, 1000);
@@ -389,15 +387,15 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 1000);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.decreaseAllowance.sendTransaction,
-                                              [testInvestor1, testInvestor2, 1001, { from: owner }],
-                                              'decreaseAllowance should throw if integer overflow');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseAllowance.sendTransaction,
-                                              [testInvestor1,
-                                               testInvestor2,
-                                               uint256Max.minus(999),
-                                               { from: owner }],
-                                              'increaseAllowance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.decreaseAllowance.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 1001, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'decreaseAllowance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.increaseAllowance.sendTransaction,
+                                                      [testInvestor1,
+                                                       testInvestor2,
+                                                       uint256Max.minus(999),
+                                                       { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'increaseAllowance should throw if integer overflow');
 
     await crydrStorageAllowanceJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                        testInvestor1, testInvestor2, uint256Max.minus(1000));
@@ -408,9 +406,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(investorAllowance.toNumber(),
                               0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.increaseAllowance.sendTransaction,
-                                              [testInvestor1, testInvestor2, 1, { from: owner }],
-                                              'increaseAllowance should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.increaseAllowance.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'increaseAllowance should throw if integer overflow');
 
     investorBalance = await crydrStorageInstance.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(),
@@ -436,29 +434,29 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     investorBalance = await crydrStorageInstance.getBalance(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(), 1000);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccount.sendTransaction,
-                                              ['0x0', { from: owner }],
-                                              'blockAccount should throw if account address is 0x0');
+    let isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.blockAccount.sendTransaction,
+                                                          ['0x0', { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'blockAccount should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccount.sendTransaction,
-                                              ['0x0', { from: owner }],
-                                              'unblockAccount should throw if account address is 0x0');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.unblockAccount.sendTransaction,
+                                                      ['0x0', { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'unblockAccount should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
-                                              ['0x0', 1000, { from: owner }],
-                                              'blockAccountFunds should throw if account address is 0x0');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
+                                                      ['0x0', 1000, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'blockAccountFunds should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
-                                              [testInvestor1, 0, { from: owner }],
-                                              'blockAccountFunds should throw if value is 0');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
+                                                      [testInvestor1, 0, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'blockAccountFunds should throw if value is 0');
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
-                                              ['0x0', 1000, { from: owner }],
-                                              'unblockAccountFunds should throw if account address is 0x0');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
+                                                      ['0x0', 1000, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'unblockAccountFunds should throw if account address is 0x0');
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
-                                              [testInvestor1, 0, { from: owner }],
-                                              'unblockAccountFunds should throw if value is 0');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
+                                                      [testInvestor1, 0, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'unblockAccountFunds should throw if value is 0');
   });
 
   global.it('test that blockAccountFunds/unblockAccountFunds functions throw if integer overflow', async () => {
@@ -474,18 +472,18 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(investorBlockFunds.toNumber(),
                               0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
-                                              [testInvestor1, 1, { from: owner }],
-                                              'blockAccountFunds should throw if integer overflow');
+    let isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.blockAccountFunds.sendTransaction,
+                                                          [testInvestor1, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'blockAccountFunds should throw if integer overflow');
 
     await crydrStorageBlocksJSAPI.unblockAccountFunds(storageProxyInstance01.address, owner,
                                                       testInvestor1, uint256Max);
     investorBlockFunds = await crydrStorageInstance.getAccountBlockedFunds(testInvestor1);
     global.assert.strictEqual(investorBlockFunds.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
-                                              [testInvestor1, 1, { from: owner }],
-                                              'blockAccountFunds should throw if integer overflow');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.unblockAccountFunds.sendTransaction,
+                                                      [testInvestor1, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'blockAccountFunds should throw if integer overflow');
   });
 
   global.it('should test that block/unlock functions fire events', async () => {

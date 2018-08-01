@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/prefer-default-export
-export async function checkContractThrows(functionObj, functionParams = [], checkFailedMsg = null) {
+export async function isContractThrows(functionObj, functionParams = []) {
   if (typeof functionObj === 'undefined' || functionObj === null) {
     throw Error('Function is not defined.');
   }
-  let isCaught = false;
+  let isThrows = false;
   try {
     await functionObj(...functionParams);
   } catch (err) {
@@ -12,8 +12,7 @@ export async function checkContractThrows(functionObj, functionParams = [], chec
     // number of args should match func signature
     // types should match function signature
     // generally truffle should make these checks
-    isCaught = true;
+    isThrows = true;
   }
-  global.assert.strictEqual(isCaught, true,
-                            (checkFailedMsg === null) ? 'Expected that function call throws' : checkFailedMsg);
+  return isThrows;
 }
