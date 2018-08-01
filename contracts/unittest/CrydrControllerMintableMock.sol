@@ -23,5 +23,5 @@ contract CrydrControllerMintableMock is CommonModifiers,
                                         CrydrControllerBase,
                                         CrydrControllerMintable {
 
-  function CrydrControllerMintableMock(string _assetID) public AssetID(_assetID) {}
+  constructor (string _assetID) public AssetID(_assetID) {}
 }

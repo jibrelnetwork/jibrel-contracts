@@ -24,5 +24,5 @@ contract JCashLicenseRegistry is AssetID,
 
   /* Constructor */
 
-  function JCashLicenseRegistry(string _assetID) AssetID(_assetID) public { }
+  constructor (string _assetID) AssetID(_assetID) public { }
 }

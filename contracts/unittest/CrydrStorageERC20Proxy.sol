@@ -28,7 +28,10 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   address crydrStorage;
 
-  function CrydrStorageERC20Proxy(
+
+  /* Constructor */
+
+  constructor (
     string _assetID,
     address _crydrStorage
   )

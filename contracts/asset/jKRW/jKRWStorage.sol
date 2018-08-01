@@ -6,5 +6,5 @@ import '../../crydr/asset/JCashCrydrStorage.sol';
 
 
 contract jKRWStorage is JCashCrydrStorage {
-  function jKRWStorage() public JCashCrydrStorage('jKRW') {}
+  constructor () public JCashCrydrStorage('jKRW') {}
 }

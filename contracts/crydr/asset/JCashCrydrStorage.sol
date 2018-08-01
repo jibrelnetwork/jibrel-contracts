@@ -36,5 +36,5 @@ contract JCashCrydrStorage is SafeMath,
 
   /* Constructor */
 
-  function JCashCrydrStorage(string _assetID) AssetID(_assetID) public { }
+  constructor (string _assetID) AssetID(_assetID) public { }
 }

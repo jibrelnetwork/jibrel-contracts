@@ -6,5 +6,5 @@ import '../../crydr/asset/JCashCrydrViewERC20.sol';
 
 
 contract jKRWViewERC20 is JCashCrydrViewERC20 {
-  function jKRWViewERC20() public JCashCrydrViewERC20('jKRW', 'South Korean Won', 'jKRW', 18) {}
+  constructor () public JCashCrydrViewERC20('jKRW', 'South Korean Won', 'jKRW', 18) {}
 }

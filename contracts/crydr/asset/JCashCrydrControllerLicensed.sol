@@ -37,7 +37,7 @@ contract JCashCrydrControllerLicensed is CommonModifiers,
 
   /* Constructor */
 
-  function JCashCrydrControllerLicensed(string _assetID)
+  constructor (string _assetID)
     public
     AssetID(_assetID)
   {}

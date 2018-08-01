@@ -24,7 +24,7 @@ contract CrydrViewBase is CommonModifiersInterface,
 
   /* Constructor */
 
-  function CrydrViewBase(string _crydrViewStandardName) public {
+  constructor (string _crydrViewStandardName) public {
     require(bytes(_crydrViewStandardName).length > 0);
 
     crydrViewStandardName = _crydrViewStandardName;

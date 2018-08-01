@@ -21,5 +21,5 @@ contract CrydrControllerBaseMock is CommonModifiers,
                                     Pausable,
                                     CrydrControllerBase {
 
-  function CrydrControllerBaseMock(string _assetID) public AssetID(_assetID) {}
+  constructor (string _assetID) public AssetID(_assetID) {}
 }

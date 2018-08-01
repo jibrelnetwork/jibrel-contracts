@@ -7,5 +7,5 @@ import '../../crydr/asset/JCashCrydrController.sol';
 
 
 contract jKRWController is JCashCrydrController {
-  function jKRWController() public JCashCrydrController('jKRW') {}
+  constructor () public JCashCrydrController('jKRW') {}
 }

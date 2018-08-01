@@ -9,7 +9,7 @@ import '../view/CrydrViewMetadata.sol';
 contract JCashCrydrViewERC20Meta is JCashCrydrViewERC20,
                                     CrydrViewMetadata {
 
-  function JCashCrydrViewERC20Meta(string _assetID, string _name, string _symbol, uint8 _decimals)
+  constructor (string _assetID, string _name, string _symbol, uint8 _decimals)
     public
     JCashCrydrViewERC20(_assetID, _name, _symbol, _decimals)
   { }

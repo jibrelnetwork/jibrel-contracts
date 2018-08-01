@@ -25,5 +25,5 @@ contract CrydrControllerForcedTransferMock is CommonModifiers,
                                               CrydrControllerMintable,
                                               CrydrControllerForcedTransfer {
 
-  function CrydrControllerForcedTransferMock(string _assetID) public AssetID(_assetID) {}
+  constructor (string _assetID) public AssetID(_assetID) {}
 }

@@ -19,7 +19,7 @@ contract AssetID is AssetIDInterface {
 
   /* Constructor */
 
-  function AssetID(string _assetID) public {
+  constructor (string _assetID) public {
     require(bytes(_assetID).length > 0);
 
     assetID = _assetID;

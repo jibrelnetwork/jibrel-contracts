@@ -18,7 +18,7 @@ contract CrydrViewBaseMock is CommonModifiers,
                               Pausable,
                               CrydrViewBase {
 
-  function CrydrViewBaseMock(string _assetID, string _crydrViewStandardName)
+  constructor (string _assetID, string _crydrViewStandardName)
     public
     AssetID(_assetID)
     CrydrViewBase(_crydrViewStandardName)

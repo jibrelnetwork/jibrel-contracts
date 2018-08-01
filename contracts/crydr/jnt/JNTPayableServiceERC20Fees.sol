@@ -21,7 +21,7 @@ contract JNTPayableServiceERC20Fees is ManageableInterface,
 
   /* Constructor */
 
-  function JNTPayableServiceERC20Fees(
+  constructor (
     uint256 _jntPriceTransfer,
     uint256 _jntPriceTransferFrom,
     uint256 _jntPriceApprove

@@ -6,5 +6,5 @@ import '../../crydr/asset/JCashLicenseRegistry.sol';
 
 
 contract jDemoLicenseRegistry is JCashLicenseRegistry {
-  function jDemoLicenseRegistry() public JCashLicenseRegistry('jDemo') {}
+  constructor () public JCashLicenseRegistry('jDemo') {}
 }

@@ -29,7 +29,7 @@ contract Ownable is OwnableInterface {
   /**
    * @dev The constructor sets the initial `owner` to the passed account.
    */
-  function Ownable() public {
+  constructor () public {
     owner = msg.sender;
 
     OwnerAssignedEvent(owner);

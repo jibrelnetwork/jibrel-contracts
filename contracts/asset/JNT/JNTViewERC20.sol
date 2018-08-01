@@ -6,5 +6,5 @@ import '../../crydr/asset/JCashCrydrViewERC20.sol';
 
 
 contract JNTViewERC20 is JCashCrydrViewERC20 {
-  function JNTViewERC20() public JCashCrydrViewERC20('JNT', 'Jibrel Network Token', 'JNT', 18) {}
+  constructor () public JCashCrydrViewERC20('JNT', 'Jibrel Network Token', 'JNT', 18) {}
 }

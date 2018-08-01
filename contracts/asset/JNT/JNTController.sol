@@ -36,7 +36,7 @@ contract JNTController is CommonModifiers,
 
   /* Constructor */
 
-  function JNTController() AssetID('JNT') public {}
+  constructor () AssetID('JNT') public {}
 
 
   /* JNTControllerInterface */

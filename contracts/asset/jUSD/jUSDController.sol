@@ -7,5 +7,5 @@ import '../../crydr/asset/JCashCrydrController.sol';
 
 
 contract jUSDController is JCashCrydrController {
-  function jUSDController() public JCashCrydrController('jUSD') {}
+  constructor () public JCashCrydrController('jUSD') {}
 }

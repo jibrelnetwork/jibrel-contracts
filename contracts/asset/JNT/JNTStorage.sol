@@ -6,5 +6,5 @@ import '../../crydr/asset/JCashCrydrStorage.sol';
 
 
 contract JNTStorage is JCashCrydrStorage {
-  function JNTStorage() JCashCrydrStorage('JNT') public {}
+  constructor () JCashCrydrStorage('JNT') public {}
 }

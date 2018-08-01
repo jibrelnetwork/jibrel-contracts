@@ -7,5 +7,5 @@ import '../../crydr/asset/JCashCrydrControllerLicensed.sol';
 
 
 contract jDemoController is JCashCrydrControllerLicensed {
-  function jDemoController() public JCashCrydrControllerLicensed('jDemo') {}
+  constructor () public JCashCrydrControllerLicensed('jDemo') {}
 }
