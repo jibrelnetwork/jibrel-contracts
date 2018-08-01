@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from '../../jsapi/misc/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
 
 // const Pausable = global.artifacts.require('Pausable.sol');
 

@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
 
 const CrydrViewMetadataInterface = global.artifacts.require('CrydrViewMetadataInterface.sol');
 

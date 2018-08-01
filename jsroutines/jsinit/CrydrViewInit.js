@@ -9,10 +9,10 @@ const DeployConfig = require('../jsconfig/DeployConfig');
 const DeployUtils = require('../util/DeployUtils');
 
 
-export const deployCrydrView = async (crydrViewContractArtifact) => {
+export const deployCrydrView = async (crydrViewContractArtifact, contractOwner) => {
   global.console.log('\tDeploying view of a crydr.');
 
-  const contractAddress = await DeployUtils.deployContract(crydrViewContractArtifact);
+  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrViewContractArtifact, contractOwner);
 
   global.console.log(`\tView of a crydr successfully deployed: ${contractAddress}`);
   return null;

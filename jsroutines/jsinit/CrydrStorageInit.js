@@ -7,10 +7,10 @@ const DeployConfig = require('../jsconfig/DeployConfig');
 const DeployUtils = require('../util/DeployUtils');
 
 
-export const deployCrydrStorage = async (crydrStorageContractArtifact) => {
+export const deployCrydrStorage = async (crydrStorageContractArtifact, contractOwner) => {
   global.console.log('\tDeploying storage of a crydr.');
 
-  const contractAddress = await DeployUtils.deployContract(crydrStorageContractArtifact);
+  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrStorageContractArtifact, contractOwner);
 
   global.console.log(`\tStorage of a crydr successfully deployed: ${contractAddress}`);
 
@@ -35,4 +35,3 @@ export const configureCrydrStorageManagers = async (crydrStorageAddress) => {
   global.console.log('\tManagers of crydr storage successfully configured');
   return null;
 };
-

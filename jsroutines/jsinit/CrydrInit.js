@@ -75,9 +75,10 @@ export const initCrydr = async (crydrStorageContractArtifact,
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
   global.console.log('\tDeploying crydr contracts');
-  await CrydrStorageInitJSAPI.deployCrydrStorage(crydrStorageContractArtifact);
-  await CrydrControllerInitJSAPI.deployCrydrController(crydrControllerContractArtifact);
-  await CrydrViewInitJSAPI.deployCrydrView(crydrViewContractArtifact);
+  const { owner } = DeployConfig.getAccounts();
+  await CrydrStorageInitJSAPI.deployCrydrStorage(crydrStorageContractArtifact, owner);
+  await CrydrControllerInitJSAPI.deployCrydrController(crydrControllerContractArtifact, owner);
+  await CrydrViewInitJSAPI.deployCrydrView(crydrViewContractArtifact, owner);
   global.console.log('\tCrydr contracts successfully deployed');
 
   const crydrStorageInstance = await crydrStorageContractArtifact.deployed();
@@ -115,7 +116,8 @@ export const initLicensedCrydr = async (crydrStorageContractArtifact,
                   crydrViewApiStandardName);
 
   global.console.log('\tDeploying license registry contract');
-  await CrydrLicenseRegistryInitJSAPI.deployLiceseRegistry(licenseRegistryArtifact);
+  const { owner } = DeployConfig.getAccounts();
+  await CrydrLicenseRegistryInitJSAPI.deployLicenseRegistry(licenseRegistryArtifact, owner);
   global.console.log('\tLicense registry successfully deployed');
 
   const licenseRegistryInstance = await licenseRegistryArtifact.deployed();

@@ -13,10 +13,10 @@ const DeployConfig = require('../jsconfig/DeployConfig');
 const DeployUtils = require('../util/DeployUtils');
 
 
-export const deployCrydrController = async (crydrControllerContractArtifact) => {
+export const deployCrydrController = async (crydrControllerContractArtifact, contractOwner) => {
   global.console.log('\tDeploying controller of a crydr');
 
-  const contractAddress = await DeployUtils.deployContract(crydrControllerContractArtifact);
+  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrControllerContractArtifact, contractOwner);
 
   global.console.log(`\tController of a crydr successfully deployed: ${contractAddress}`);
   return null;

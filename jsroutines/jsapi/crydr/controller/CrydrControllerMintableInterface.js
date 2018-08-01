@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
 
 const CrydrControllerMintableInterface = global.artifacts.require('CrydrControllerMintableInterface.sol');
 
