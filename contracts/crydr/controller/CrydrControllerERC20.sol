@@ -59,7 +59,7 @@ contract CrydrControllerERC20 is PausableInterface,
     // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     // We decided to enforce users to set 0 before set new value
-    var allowance = CrydrStorageAllowanceInterface(getCrydrStorageAddress()).getAllowance(_msgsender, _spender);
+    uint256 allowance = CrydrStorageAllowanceInterface(getCrydrStorageAddress()).getAllowance(_msgsender, _spender);
     require((allowance > 0 && _value == 0) || (allowance == 0 && _value > 0));
 
     CrydrStorageERC20Interface(address(getCrydrStorageAddress())).approve(_msgsender, _spender, _value);

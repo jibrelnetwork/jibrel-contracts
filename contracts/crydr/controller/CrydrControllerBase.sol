@@ -62,8 +62,8 @@ contract CrydrControllerBase is CommonModifiersInterface,
     require(_newCrydrView != address(this));
     require(crydrViewsAddresses[_viewApiStandardName] == address(0x0));
 
-    var crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
-    var standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
+    CrydrViewBaseInterface crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
+    bytes32 standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
     require(standardNameHash == keccak256(_viewApiStandardName));
 
     crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
