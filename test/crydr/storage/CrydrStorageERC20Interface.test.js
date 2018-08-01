@@ -251,20 +251,20 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
 
     // test that methods throw if contract is paused
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
-                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
-                                              'transfer should throw if contract is paused');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.approve.sendTransaction,
-                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
-                                              'approve should throw if contract is paused');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [
-                                                testInvestor2,
-                                                testInvestor1,
-                                                testInvestor2,
-                                                2 * (10 ** 18),
-                                                { from: owner }],
-                                              'transferFrom should throw if contract is paused');
+    let isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transfer.sendTransaction,
+                                                          [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transfer should throw if contract is paused');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.approve.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'approve should throw if contract is paused');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                      [
+                                                        testInvestor2,
+                                                        testInvestor1,
+                                                        testInvestor2,
+                                                        2 * (10 ** 18),
+                                                        { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if contract is paused');
 
     // unpause contract
     await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
@@ -274,13 +274,13 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     await crydrStorageBlocksJSAPI.blockAccount(storageProxyInstance01.address, owner,
                                                testInvestor1);
     global.console.log('\t\tCheck that blocked account is not able to spend');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
-                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
-                                              'transfer should throw if account is blocked');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transfer.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transfer should throw if account is blocked');
     global.console.log('\t\tCheck that blocked account is not able to approve spendings');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.approve.sendTransaction,
-                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
-                                              'approve should throw if account is blocked');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.approve.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'approve should throw if account is blocked');
 
     global.console.log(`\t\tUnblock account: ${testInvestor1}`);
     await crydrStorageBlocksJSAPI.unblockAccount(storageProxyInstance01.address, owner,
@@ -292,47 +292,47 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     await crydrStorageBlocksJSAPI.blockAccount(storageProxyInstance01.address, owner,
                                                testInvestor1);
     global.console.log('\t\tCheck that nobody can spend on behalf of blocked account');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [
-                                                testInvestor2,
-                                                testInvestor1,
-                                                testInvestor2,
-                                                2 * (10 ** 18),
-                                                { from: owner }],
-                                              'transferFrom should throw if account is blocked');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                      [
+                                                        testInvestor2,
+                                                        testInvestor1,
+                                                        testInvestor2,
+                                                        2 * (10 ** 18),
+                                                        { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if account is blocked');
 
     await crydrStorageBlocksJSAPI.unblockAccount(storageProxyInstance01.address, owner,
                                                  testInvestor1);
 
     await crydrStorageBlocksJSAPI.blockAccountFunds(storageProxyInstance01.address, owner,
                                                     testInvestor1, 7 * (10 ** 18));
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
-                                              [testInvestor1, testInvestor2, 4 * (10 ** 18), { from: owner }],
-                                              'transfer should throw if funds is blocked');
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [
-                                                testInvestor2,
-                                                testInvestor1,
-                                                testInvestor2,
-                                                4 * (10 ** 18),
-                                                { from: owner }],
-                                              'transferFrom should throw if funds is blocked');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transfer.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 4 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transfer should throw if funds is blocked');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                      [
+                                                        testInvestor2,
+                                                        testInvestor1,
+                                                        testInvestor2,
+                                                        4 * (10 ** 18),
+                                                        { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if funds is blocked');
 
     // test that only crydr controller is able to invoke setters
-    await CheckExceptions.checkContractThrows(storageProxyInstance02.transfer.sendTransaction,
-                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
-                                              'transfer should throw if contract is paused');
-    await CheckExceptions.checkContractThrows(storageProxyInstance02.approve.sendTransaction,
-                                              [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }],
-                                              'approve should throw if contract is paused');
-    await CheckExceptions.checkContractThrows(storageProxyInstance02.transferFrom.sendTransaction,
-                                              [
-                                                testInvestor2,
-                                                testInvestor1,
-                                                testInvestor2,
-                                                2 * (10 ** 18),
-                                                { from: owner }],
-                                              'transferFrom should throw if contract is paused');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance02.transfer.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transfer should throw if contract is paused');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance02.approve.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 2 * (10 ** 18), { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'approve should throw if contract is paused');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance02.transferFrom.sendTransaction,
+                                                      [
+                                                        testInvestor2,
+                                                        testInvestor1,
+                                                        testInvestor2,
+                                                        2 * (10 ** 18),
+                                                        { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if contract is paused');
   });
 
   global.it('test that ERC20 setters throw if not enough balance or integer overflow - transfer', async () => {
@@ -345,9 +345,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     investorBalance = await crydrStorageInstance.getBalance.call(testInvestor2);
     global.assert.strictEqual(investorBalance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
-                                              [testInvestor1, testInvestor2, 1, { from: owner }],
-                                              'transfer should throw if not enough balance');
+    let isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transfer.sendTransaction,
+                                                          [testInvestor1, testInvestor2, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transfer should throw if not enough balance');
 
     await crydrStorageBalanceJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                    testInvestor1, 1000);
@@ -356,9 +356,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     investorBalance = await crydrStorageInstance.getBalance.call(testInvestor2);
     global.assert.strictEqual(investorBalance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transfer.sendTransaction,
-                                              [testInvestor1, testInvestor2, 1001, { from: owner }],
-                                              'transfer should throw if not enough balance');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transfer.sendTransaction,
+                                                      [testInvestor1, testInvestor2, 1001, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transfer should throw if not enough balance');
 
     investorBalance = await crydrStorageInstance.getBalance.call(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(), 1000);
@@ -378,9 +378,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     let investorAllowance = await crydrStorageInstance.getAllowance.call(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [testInvestor2, testInvestor1, testInvestor2, 1, { from: owner }],
-                                              'transferFrom should throw if not enough balance');
+    let isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                          [testInvestor2, testInvestor1, testInvestor2, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if not enough balance');
 
     await crydrStorageBalanceJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                    testInvestor1, 1000);
@@ -391,9 +391,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance.call(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 0);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [testInvestor2, testInvestor1, testInvestor2, 1, { from: owner }],
-                                              'transferFrom should throw if not enough allowance');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                      [testInvestor2, testInvestor1, testInvestor2, 1, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if not enough allowance');
 
     await crydrStorageAllowanceJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                        testInvestor1, testInvestor2, 500);
@@ -404,9 +404,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance.call(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 500);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [testInvestor2, testInvestor1, testInvestor2, 501, { from: owner }],
-                                              'transferFrom should throw if not enough allowance');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                      [testInvestor2, testInvestor1, testInvestor2, 501, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if not enough allowance');
 
     await crydrStorageAllowanceJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                        testInvestor1, testInvestor2, 1000);
@@ -417,9 +417,9 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     investorAllowance = await crydrStorageInstance.getAllowance.call(testInvestor1, testInvestor2);
     global.assert.strictEqual(investorAllowance.toNumber(), 1500);
 
-    await CheckExceptions.checkContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
-                                              [testInvestor2, testInvestor1, testInvestor2, 1001, { from: owner }],
-                                              'transferFrom should throw if not enough balance');
+    isThrows = await CheckExceptions.isContractThrows(storageProxyInstance01.transferFrom.sendTransaction,
+                                                      [testInvestor2, testInvestor1, testInvestor2, 1001, { from: owner }]);
+    global.assert.strictEqual(isThrows, true, 'transferFrom should throw if not enough balance');
 
     investorBalance = await crydrStorageInstance.getBalance.call(testInvestor1);
     global.assert.strictEqual(investorBalance.toNumber(), 1000);

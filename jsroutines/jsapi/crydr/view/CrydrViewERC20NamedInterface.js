@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
 
 const CrydrViewERC20NamedInterface = global.artifacts.require('CrydrViewERC20NamedInterface.sol');
 

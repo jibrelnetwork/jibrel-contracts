@@ -43,26 +43,23 @@ global.contract('SafeMath', (accounts) => {
     const a = 1234;
     const b = 5678;
 
-    await CheckExceptions.checkContractThrows(safeMathMockInstance.subtract.call,
-                                              [a, b],
-                                              'It should not be possible');
+    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.subtract.call, [a, b]);
+    global.assert.strictEqual(isThrows, true, 'It should not be possible');
   });
 
   global.it('should throw an error on addition overflow', async () => {
     const a = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
     const b = 1;
 
-    await CheckExceptions.checkContractThrows(safeMathMockInstance.add.call,
-                                              [a, b],
-                                              'It should not be possible');
+    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.add.call, [a, b]);
+    global.assert.strictEqual(isThrows, true, 'It should not be possible');
   });
 
   global.it('should throw an error on multiplication overflow', async () => {
     const a = 115792089237316195423570985008687907853269984665640564039457584007913129639933;
     const b = 2;
 
-    await CheckExceptions.checkContractThrows(safeMathMockInstance.multiply.call,
-                                              [a, b],
-                                              'It should not be possible');
+    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.multiply.call, [a, b]);
+    global.assert.strictEqual(isThrows, true, 'It should not be possible');
   });
 });

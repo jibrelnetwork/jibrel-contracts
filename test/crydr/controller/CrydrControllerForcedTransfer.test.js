@@ -130,28 +130,28 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   //                             'Just configured crydrControllerBase contract must be paused');
   //
   //
-  //   await CheckExceptions.checkContractThrows(crydrControllerInstance.mint.sendTransaction,
-  //                                             [0x0, 100 * (10 ** 18), { from: managerMint }],
-  //                                             'Should be a valid account address');
+  //   let isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.mint.sendTransaction,
+  //                                                         [0x0, 100 * (10 ** 18), { from: managerMint }]);
+  //   global.assert.strictEqual(isThrows, true, 'Should be a valid account address');
   //
-  //   await CheckExceptions.checkContractThrows(crydrControllerInstance.mint.sendTransaction,
-  //                                             [testInvestor1, 0, { from: managerMint }],
-  //                                             'Should be a positive value');
+  //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.mint.sendTransaction,
+  //                                                     [testInvestor1, 0, { from: managerMint }]);
+  //   global.assert.strictEqual(isThrows, true, 'Should be a positive value');
   //
-  //   await CheckExceptions.checkContractThrows(crydrControllerInstance.mint.sendTransaction,
-  //                                             [testInvestor1, 100 * (10 ** 18), { from: managerMint }],
-  //                                             'Only manager should be able to mint');
+  //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.mint.sendTransaction,
+  //                                                     [testInvestor1, 100 * (10 ** 18), { from: managerMint }]);
+  //   global.assert.strictEqual(isThrows, true, 'Only manager should be able to mint');
   //
-  //   await CheckExceptions.checkContractThrows(crydrControllerInstance.burn.sendTransaction,
-  //                                             [0x0, 100 * (10 ** 18), { from: managerMint }],
-  //                                             'Should be a valid account address');
+  //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.burn.sendTransaction,
+  //                                                     [0x0, 100 * (10 ** 18), { from: managerMint }]);
+  //   global.assert.strictEqual(isThrows, true, 'Should be a valid account address');
   //
-  //   await CheckExceptions.checkContractThrows(crydrControllerInstance.burn.sendTransaction,
-  //                                             [testInvestor1, 0, { from: managerMint }],
-  //                                             'Should be a positive value');
+  //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.burn.sendTransaction,
+  //                                                     [testInvestor1, 0, { from: managerMint }]);
+  //   global.assert.strictEqual(isThrows, true, 'Should be a positive value');
   //
-  //   await CheckExceptions.checkContractThrows(crydrControllerInstance.burn.sendTransaction,
-  //                                             [testInvestor1, 100 * (10 ** 18), { from: testInvestor1 }],
-  //                                             'Only manager should be able to burn');
+  //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.burn.sendTransaction,
+  //                                                     [testInvestor1, 100 * (10 ** 18), { from: testInvestor1 }]);
+  //   global.assert.strictEqual(isThrows, true, 'Only manager should be able to burn');
   // });
 });

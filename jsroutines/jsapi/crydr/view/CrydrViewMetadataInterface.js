@@ -1,4 +1,4 @@
-import { submitTxAndWaitConfirmation } from '../../misc/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
 
 const CrydrViewMetadataInterface = global.artifacts.require('CrydrViewMetadataInterface.sol');
 
@@ -15,7 +15,7 @@ export const setMetadata = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tmetadataKey - ${metadataKey}`);
-  global.console.log(`metadataValue${metadataValue}`);
+  global.console.log(`\t\tmetadataValue - ${metadataValue}`);
   await submitTxAndWaitConfirmation(
     CrydrViewMetadataInterface
       .at(crydrViewAddress)

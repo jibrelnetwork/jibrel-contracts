@@ -7,10 +7,10 @@ const DeployConfig = require('../jsconfig/DeployConfig');
 const DeployUtils = require('../util/DeployUtils');
 
 
-export const deployLiceseRegistry = async (licenseRegistryArtifact) => {
+export const deployLicenseRegistry = async (licenseRegistryArtifact, contractOwner) => {
   global.console.log('\tDeploying license registry of a crydr.');
 
-  const contractAddress = await DeployUtils.deployContract(licenseRegistryArtifact);
+  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(licenseRegistryArtifact, contractOwner);
 
   global.console.log(`\tLicense registry of a crydr successfully deployed: ${contractAddress}`);
 
