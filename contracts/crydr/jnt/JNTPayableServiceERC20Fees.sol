@@ -51,15 +51,15 @@ contract JNTPayableServiceERC20Fees is ManageableInterface,
 
     if (jntPriceTransfer != _jntPriceTransfer) {
       jntPriceTransfer = _jntPriceTransfer;
-      JNTPriceTransferChangedEvent(_jntPriceTransfer);
+      emit JNTPriceTransferChangedEvent(_jntPriceTransfer);
     }
     if (jntPriceTransferFrom != _jntPriceTransferFrom) {
       jntPriceTransferFrom = _jntPriceTransferFrom;
-      JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);
+      emit JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);
     }
     if (jntPriceApprove != _jntPriceApprove) {
       jntPriceApprove = _jntPriceApprove;
-      JNTPriceApproveChangedEvent(_jntPriceApprove);
+      emit JNTPriceApproveChangedEvent(_jntPriceApprove);
     }
   }
 

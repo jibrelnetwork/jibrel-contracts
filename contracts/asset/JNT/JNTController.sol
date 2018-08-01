@@ -47,8 +47,9 @@ contract JNTController is CommonModifiers,
     uint256 _value
   )
     public
-    onlyAllowedManager('jnt_payable_service') {
+    onlyAllowedManager('jnt_payable_service')
+  {
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_from, _to, _value);
-    JNTChargedEvent(msg.sender, _from, _to, _value);
+    emit JNTChargedEvent(msg.sender, _from, _to, _value);
   }
 }

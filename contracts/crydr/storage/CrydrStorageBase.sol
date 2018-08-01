@@ -40,7 +40,8 @@ contract CrydrStorageBase is CommonModifiersInterface,
     require(_crydrController != address(this));
 
     crydrController = _crydrController;
-    CrydrControllerChangedEvent(_crydrController);
+
+    emit CrydrControllerChangedEvent(_crydrController);
   }
 
   function getCrydrController() public constant returns (address) {

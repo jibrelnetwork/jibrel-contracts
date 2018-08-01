@@ -44,7 +44,8 @@ contract CrydrViewBase is CommonModifiersInterface,
     require(crydrController != _crydrController);
 
     crydrController = _crydrController;
-    CrydrControllerChangedEvent(_crydrController);
+
+    emit CrydrControllerChangedEvent(_crydrController);
   }
 
   function getCrydrController() public constant returns (address) {

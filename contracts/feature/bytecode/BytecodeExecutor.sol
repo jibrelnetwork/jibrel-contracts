@@ -37,7 +37,7 @@ contract BytecodeExecutor is ManageableInterface,
     _target.call.gas(_suppliedGas).value(_ethValue)(_transactionBytecode);
     underExecution = false;
 
-    CallExecutedEvent(_target, _suppliedGas, _ethValue, keccak256(_transactionBytecode));
+    emit CallExecutedEvent(_target, _suppliedGas, _ethValue, keccak256(_transactionBytecode));
   }
 
   function executeDelegatecall(
@@ -54,6 +54,6 @@ contract BytecodeExecutor is ManageableInterface,
     _target.delegatecall.gas(_suppliedGas)(_transactionBytecode);
     underExecution = false;
 
-    DelegatecallExecutedEvent(_target, _suppliedGas, keccak256(_transactionBytecode));
+    emit DelegatecallExecutedEvent(_target, _suppliedGas, keccak256(_transactionBytecode));
   }
 }

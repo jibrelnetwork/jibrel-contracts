@@ -34,7 +34,8 @@ contract CrydrControllerForcedTransfer is ManageableInterface,
 
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).decreaseBalance(_from, _value);
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_to, _value);
-    ForcedTransferEvent(_from, _to, _value);
+
+    emit ForcedTransferEvent(_from, _to, _value);
   }
 
   function forcedTransferAll(
@@ -49,6 +50,7 @@ contract CrydrControllerForcedTransfer is ManageableInterface,
     uint256 value = CrydrStorageBalanceInterface(getCrydrStorageAddress()).getBalance(_from);
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).decreaseBalance(_from, value);
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_to, value);
-    ForcedTransferEvent(_from, _to, value);
+
+    emit ForcedTransferEvent(_from, _to, value);
   }
 }

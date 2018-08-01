@@ -38,7 +38,7 @@ contract CrydrControllerLicensedBase is CommonModifiersInterface,
 
     licenseRegistry = _newLicenseRegistry;
 
-    LicenseRegistryChangedEvent(_newLicenseRegistry);
+    emit LicenseRegistryChangedEvent(_newLicenseRegistry);
   }
 
   function getLicenseRegistryAddress() public constant returns (address) {

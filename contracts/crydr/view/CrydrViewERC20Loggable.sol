@@ -23,7 +23,7 @@ contract CrydrViewERC20Loggable is PausableInterface,
   {
     require(msg.sender == getCrydrController());
 
-    Transfer(_from, _to, _value);
+    emit Transfer(_from, _to, _value);
   }
 
   function emitApprovalEvent(
@@ -35,6 +35,6 @@ contract CrydrViewERC20Loggable is PausableInterface,
   {
     require(msg.sender == getCrydrController());
 
-    Approval(_owner, _spender, _value);
+    emit Approval(_owner, _spender, _value);
   }
 }

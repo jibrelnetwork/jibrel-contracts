@@ -20,7 +20,7 @@ contract CrydrViewERC20Mintable is PausableInterface,
   {
     require(msg.sender == getCrydrController());
 
-    MintEvent(_owner, _value);
+    emit MintEvent(_owner, _value);
   }
 
   function emitBurnEvent(
@@ -31,6 +31,6 @@ contract CrydrViewERC20Mintable is PausableInterface,
   {
     require(msg.sender == getCrydrController());
 
-    BurnEvent(_owner, _value);
+    emit BurnEvent(_owner, _value);
   }
 }

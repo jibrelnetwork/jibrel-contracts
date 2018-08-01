@@ -41,7 +41,8 @@ contract CrydrControllerBase is CommonModifiersInterface,
     require(_crydrStorage != address(crydrStorage));
 
     crydrStorage = _crydrStorage;
-    CrydrStorageChangedEvent(_crydrStorage);
+
+    emit CrydrStorageChangedEvent(_crydrStorage);
   }
 
   function getCrydrStorageAddress() public constant returns (address) {
@@ -68,7 +69,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
     crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
     isRegisteredView[_newCrydrView] = true;
 
-    CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);
+    emit CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);
   }
 
   function removeCrydrView(
@@ -87,7 +88,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
     crydrViewsAddresses[_viewApiStandardName] == address(0x0);
     isRegisteredView[removedView] = false;
 
-    CrydrViewRemovedEvent(removedView, _viewApiStandardName);
+    emit CrydrViewRemovedEvent(removedView, _viewApiStandardName);
   }
 
   function getCrydrViewAddress(

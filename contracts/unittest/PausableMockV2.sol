@@ -20,11 +20,11 @@ contract PausableMockV2 is Ownable, Manageable, Pausable {
 
   function worksWhenContractNotPaused() public whenContractNotPaused {
     counter += 1;
-    WhenContractNotPausedEvent();
+    emit WhenContractNotPausedEvent();
   }
 
   function worksWhenContractPaused() public whenContractPaused {
     counter += 10;
-    WhenContractPausedEvent();
+    emit WhenContractPausedEvent();
   }
 }
