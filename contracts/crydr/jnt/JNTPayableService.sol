@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiersInterface.sol';
@@ -39,7 +39,8 @@ contract JNTPayableService is CommonModifiersInterface,
     require(_jntController != address(jntController));
 
     jntController = JNTControllerInterface(_jntController);
-    JNTControllerChangedEvent(_jntController);
+
+    emit JNTControllerChangedEvent(_jntController);
   }
 
   function getJntController() public constant returns (address) {
@@ -59,7 +60,8 @@ contract JNTPayableService is CommonModifiersInterface,
     require(_jntBeneficiary != address(this));
 
     jntBeneficiary = _jntBeneficiary;
-    JNTBeneficiaryChangedEvent(jntBeneficiary);
+
+    emit JNTBeneficiaryChangedEvent(jntBeneficiary);
   }
 
   function getJntBeneficiary() public constant returns (address) {
@@ -75,7 +77,8 @@ contract JNTPayableService is CommonModifiersInterface,
     require(_value > 0);
 
     jntController.chargeJNT(_from, jntBeneficiary, _value);
-    JNTChargedEvent(_from, jntBeneficiary, _value);
+
+    emit JNTChargedEvent(_from, jntBeneficiary, _value);
   }
 
 

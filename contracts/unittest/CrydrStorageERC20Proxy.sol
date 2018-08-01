@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@mgmail.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../feature/assetid/AssetID.sol';
@@ -28,7 +28,10 @@ contract CrydrStorageERC20Proxy is AssetID,
 
   address crydrStorage;
 
-  function CrydrStorageERC20Proxy(
+
+  /* Constructor */
+
+  constructor (
     string _assetID,
     address _crydrStorage
   )

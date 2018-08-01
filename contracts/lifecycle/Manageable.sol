@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import './OwnableInterface.sol';
@@ -34,7 +34,8 @@ contract Manageable is OwnableInterface,
     require(managerEnabled[_manager] == false);
 
     managerEnabled[_manager] = true;
-    ManagerEnabledEvent(_manager);
+
+    emit ManagerEnabledEvent(_manager);
   }
 
   /**
@@ -45,7 +46,8 @@ contract Manageable is OwnableInterface,
     require(managerEnabled[_manager] == true);
 
     managerEnabled[_manager] = false;
-    ManagerDisabledEvent(_manager);
+
+    emit ManagerDisabledEvent(_manager);
   }
 
   /**
@@ -64,7 +66,8 @@ contract Manageable is OwnableInterface,
     require(managerPermissions[_manager][_permissionName] == false);
 
     managerPermissions[_manager][_permissionName] = true;
-    ManagerPermissionGrantedEvent(_manager, _permissionName);
+
+    emit ManagerPermissionGrantedEvent(_manager, _permissionName);
   }
 
   /**
@@ -83,7 +86,8 @@ contract Manageable is OwnableInterface,
     require(managerPermissions[_manager][_permissionName] == true);
 
     managerPermissions[_manager][_permissionName] = false;
-    ManagerPermissionRevokedEvent(_manager, _permissionName);
+
+    emit ManagerPermissionRevokedEvent(_manager, _permissionName);
   }
 
 

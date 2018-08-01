@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import "../jnt_payable_service/JNTPayableServiceERC20.sol";

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../util/CommonModifiers.sol';
@@ -18,7 +18,7 @@ contract CrydrViewBaseMock is CommonModifiers,
                               Pausable,
                               CrydrViewBase {
 
-  function CrydrViewBaseMock(string _assetID, string _crydrViewStandardName)
+  constructor (string _assetID, string _crydrViewStandardName)
     public
     AssetID(_assetID)
     CrydrViewBase(_crydrViewStandardName)

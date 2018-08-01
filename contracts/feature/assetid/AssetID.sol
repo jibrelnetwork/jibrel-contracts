@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import './AssetIDInterface.sol';
@@ -19,7 +19,7 @@ contract AssetID is AssetIDInterface {
 
   /* Constructor */
 
-  function AssetID(string _assetID) public {
+  constructor (string _assetID) public {
     require(bytes(_assetID).length > 0);
 
     assetID = _assetID;

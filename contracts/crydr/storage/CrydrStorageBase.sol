@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiersInterface.sol';
@@ -40,7 +40,8 @@ contract CrydrStorageBase is CommonModifiersInterface,
     require(_crydrController != address(this));
 
     crydrController = _crydrController;
-    CrydrControllerChangedEvent(_crydrController);
+
+    emit CrydrControllerChangedEvent(_crydrController);
   }
 
   function getCrydrController() public constant returns (address) {

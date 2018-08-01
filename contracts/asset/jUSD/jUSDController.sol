@@ -1,11 +1,11 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../crydr/asset/JCashCrydrController.sol';
 
 
 contract jUSDController is JCashCrydrController {
-  function jUSDController() public JCashCrydrController('jUSD') {}
+  constructor () public JCashCrydrController('jUSD') {}
 }

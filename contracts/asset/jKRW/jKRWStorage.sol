@@ -1,10 +1,10 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import '../../crydr/asset/JCashCrydrStorage.sol';
 
 
 contract jKRWStorage is JCashCrydrStorage {
-  function jKRWStorage() public JCashCrydrStorage('jKRW') {}
+  constructor () public JCashCrydrStorage('jKRW') {}
 }

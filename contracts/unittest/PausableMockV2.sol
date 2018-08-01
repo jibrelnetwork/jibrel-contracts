@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import '../lifecycle/Ownable.sol';
 import '../lifecycle/Manageable.sol';
@@ -20,11 +20,11 @@ contract PausableMockV2 is Ownable, Manageable, Pausable {
 
   function worksWhenContractNotPaused() public whenContractNotPaused {
     counter += 1;
-    WhenContractNotPausedEvent();
+    emit WhenContractNotPausedEvent();
   }
 
   function worksWhenContractPaused() public whenContractPaused {
     counter += 10;
-    WhenContractPausedEvent();
+    emit WhenContractPausedEvent();
   }
 }

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiersInterface.sol';
@@ -38,7 +38,7 @@ contract CrydrControllerLicensedBase is CommonModifiersInterface,
 
     licenseRegistry = _newLicenseRegistry;
 
-    LicenseRegistryChangedEvent(_newLicenseRegistry);
+    emit LicenseRegistryChangedEvent(_newLicenseRegistry);
   }
 
   function getLicenseRegistryAddress() public constant returns (address) {

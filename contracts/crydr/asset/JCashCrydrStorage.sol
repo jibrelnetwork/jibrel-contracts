@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../third-party/zeppelin-solidity/SafeMath.sol';
@@ -36,5 +36,5 @@ contract JCashCrydrStorage is SafeMath,
 
   /* Constructor */
 
-  function JCashCrydrStorage(string _assetID) AssetID(_assetID) public { }
+  constructor (string _assetID) AssetID(_assetID) public { }
 }

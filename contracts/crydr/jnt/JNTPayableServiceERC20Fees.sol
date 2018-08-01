@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../lifecycle/ManageableInterface.sol';
@@ -21,7 +21,7 @@ contract JNTPayableServiceERC20Fees is ManageableInterface,
 
   /* Constructor */
 
-  function JNTPayableServiceERC20Fees(
+  constructor (
     uint256 _jntPriceTransfer,
     uint256 _jntPriceTransferFrom,
     uint256 _jntPriceApprove
@@ -51,15 +51,15 @@ contract JNTPayableServiceERC20Fees is ManageableInterface,
 
     if (jntPriceTransfer != _jntPriceTransfer) {
       jntPriceTransfer = _jntPriceTransfer;
-      JNTPriceTransferChangedEvent(_jntPriceTransfer);
+      emit JNTPriceTransferChangedEvent(_jntPriceTransfer);
     }
     if (jntPriceTransferFrom != _jntPriceTransferFrom) {
       jntPriceTransferFrom = _jntPriceTransferFrom;
-      JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);
+      emit JNTPriceTransferFromChangedEvent(_jntPriceTransferFrom);
     }
     if (jntPriceApprove != _jntPriceApprove) {
       jntPriceApprove = _jntPriceApprove;
-      JNTPriceApproveChangedEvent(_jntPriceApprove);
+      emit JNTPriceApproveChangedEvent(_jntPriceApprove);
     }
   }
 

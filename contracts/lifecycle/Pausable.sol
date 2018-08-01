@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import './ManageableInterface.sol';
@@ -28,7 +28,7 @@ contract Pausable is ManageableInterface,
    */
   function pauseContract() public onlyAllowedManager('pause_contract') whenContractNotPaused {
     paused = true;
-    PauseEvent();
+    emit PauseEvent();
   }
 
   /**
@@ -36,7 +36,7 @@ contract Pausable is ManageableInterface,
    */
   function unpauseContract() public onlyAllowedManager('unpause_contract') whenContractPaused {
     paused = false;
-    UnpauseEvent();
+    emit UnpauseEvent();
   }
 
   /**

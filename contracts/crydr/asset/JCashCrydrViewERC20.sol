@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import '../../util/CommonModifiers.sol';
 import '../../feature/assetid/AssetID.sol';
@@ -27,7 +27,7 @@ contract JCashCrydrViewERC20 is CommonModifiers,
                                 CrydrViewERC20Mintable,
                                 CrydrViewERC20Named {
 
-  function JCashCrydrViewERC20(string _assetID, string _name, string _symbol, uint8 _decimals)
+  constructor (string _assetID, string _name, string _symbol, uint8 _decimals)
     public
     AssetID(_assetID)
     CrydrViewBase('erc20')

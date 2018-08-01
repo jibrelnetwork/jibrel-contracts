@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import './OwnableInterface.sol';
 
@@ -29,10 +29,10 @@ contract Ownable is OwnableInterface {
   /**
    * @dev The constructor sets the initial `owner` to the passed account.
    */
-  function Ownable() public {
+  constructor () public {
     owner = msg.sender;
 
-    OwnerAssignedEvent(owner);
+    emit OwnerAssignedEvent(owner);
   }
 
 
@@ -47,7 +47,7 @@ contract Ownable is OwnableInterface {
 
     proposedOwner = _proposedOwner;
 
-    OwnershipOfferCreatedEvent(owner, _proposedOwner);
+    emit OwnershipOfferCreatedEvent(owner, _proposedOwner);
   }
 
 
@@ -63,8 +63,8 @@ contract Ownable is OwnableInterface {
     owner = proposedOwner;
     proposedOwner = address(0x0);
 
-    OwnerAssignedEvent(owner);
-    OwnershipOfferAcceptedEvent(_oldOwner, owner);
+    emit OwnerAssignedEvent(owner);
+    emit OwnershipOfferAcceptedEvent(_oldOwner, owner);
   }
 
 
@@ -78,7 +78,7 @@ contract Ownable is OwnableInterface {
     address _oldProposedOwner = proposedOwner;
     proposedOwner = address(0x0);
 
-    OwnershipOfferCancelledEvent(owner, _oldProposedOwner);
+    emit OwnershipOfferCancelledEvent(owner, _oldProposedOwner);
   }
 
 

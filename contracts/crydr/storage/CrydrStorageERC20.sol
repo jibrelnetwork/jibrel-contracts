@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
@@ -39,7 +39,8 @@ contract CrydrStorageERC20 is SafeMathInterface,
 
     decreaseBalance(_msgsender, _value);
     increaseBalance(_to, _value);
-    CrydrTransferredEvent(_msgsender, _to, _value);
+
+    emit CrydrTransferredEvent(_msgsender, _to, _value);
   }
 
   function transferFrom(
@@ -61,7 +62,8 @@ contract CrydrStorageERC20 is SafeMathInterface,
     decreaseAllowance(_from, _msgsender, _value);
     decreaseBalance(_from, _value);
     increaseBalance(_to, _value);
-    CrydrTransferredFromEvent(_msgsender, _from, _to, _value);
+
+    emit CrydrTransferredFromEvent(_msgsender, _from, _to, _value);
   }
 
   function approve(
@@ -85,6 +87,6 @@ contract CrydrStorageERC20 is SafeMathInterface,
       increaseAllowance(_msgsender, _spender, safeSub(_value, currentAllowance));
     }
 
-    CrydrSpendingApprovedEvent(_msgsender, _spender, _value);
+    emit CrydrSpendingApprovedEvent(_msgsender, _spender, _value);
   }
 }

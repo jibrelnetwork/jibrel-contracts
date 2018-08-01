@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiers.sol';
@@ -36,7 +36,7 @@ contract JNTController is CommonModifiers,
 
   /* Constructor */
 
-  function JNTController() AssetID('JNT') public {}
+  constructor () AssetID('JNT') public {}
 
 
   /* JNTControllerInterface */
@@ -47,8 +47,9 @@ contract JNTController is CommonModifiers,
     uint256 _value
   )
     public
-    onlyAllowedManager('jnt_payable_service') {
+    onlyAllowedManager('jnt_payable_service')
+  {
     CrydrStorageERC20Interface(address(crydrStorage)).transfer(_from, _to, _value);
-    JNTChargedEvent(msg.sender, _from, _to, _value);
+    emit JNTChargedEvent(msg.sender, _from, _to, _value);
   }
 }

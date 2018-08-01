@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import '../util/CommonModifiers.sol';
 import '../feature/assetid/AssetID.sol';
@@ -21,5 +21,5 @@ contract CrydrControllerBaseMock is CommonModifiers,
                                     Pausable,
                                     CrydrControllerBase {
 
-  function CrydrControllerBaseMock(string _assetID) public AssetID(_assetID) {}
+  constructor (string _assetID) public AssetID(_assetID) {}
 }

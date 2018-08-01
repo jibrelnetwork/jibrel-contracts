@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
@@ -43,7 +43,8 @@ contract CrydrStorageAllowance is SafeMathInterface,
     require(_value > 0);
 
     allowed[_owner][_spender] = safeAdd(allowed[_owner][_spender], _value);
-    AccountAllowanceIncreasedEvent(_owner, _spender, _value);
+
+    emit AccountAllowanceIncreasedEvent(_owner, _spender, _value);
   }
 
   function decreaseAllowance(
@@ -62,7 +63,8 @@ contract CrydrStorageAllowance is SafeMathInterface,
     require(_value > 0);
 
     allowed[_owner][_spender] = safeSub(allowed[_owner][_spender], _value);
-    AccountAllowanceDecreasedEvent(_owner, _spender, _value);
+
+    emit AccountAllowanceDecreasedEvent(_owner, _spender, _value);
   }
 
   function getAllowance(

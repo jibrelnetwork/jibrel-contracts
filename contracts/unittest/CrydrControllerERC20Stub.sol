@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../feature/assetid/AssetID.sol';
@@ -31,7 +31,7 @@ contract CrydrControllerERC20Stub is AssetID,
 
   /* Constructor */
 
-  function CrydrControllerERC20Stub(string _assetID, address _crydrView) public AssetID(_assetID) {
+  constructor (string _assetID, address _crydrView) public AssetID(_assetID) {
     crydrView = _crydrView;
   }
 

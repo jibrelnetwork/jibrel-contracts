@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiers.sol';
@@ -35,7 +35,7 @@ contract JCashCrydrController is CommonModifiers,
   /* Constructor */
   // 10^18 - assumes that JNT has decimals==18, 1JNT per operation
 
-  function JCashCrydrController(string _assetID)
+  constructor (string _assetID)
     public
     AssetID(_assetID)
     JNTPayableServiceERC20Fees(10^18, 10^18, 10^18)

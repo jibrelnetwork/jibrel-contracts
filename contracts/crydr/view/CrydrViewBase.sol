@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiersInterface.sol';
@@ -24,7 +24,7 @@ contract CrydrViewBase is CommonModifiersInterface,
 
   /* Constructor */
 
-  function CrydrViewBase(string _crydrViewStandardName) public {
+  constructor (string _crydrViewStandardName) public {
     require(bytes(_crydrViewStandardName).length > 0);
 
     crydrViewStandardName = _crydrViewStandardName;
@@ -44,7 +44,8 @@ contract CrydrViewBase is CommonModifiersInterface,
     require(crydrController != _crydrController);
 
     crydrController = _crydrController;
-    CrydrControllerChangedEvent(_crydrController);
+
+    emit CrydrControllerChangedEvent(_crydrController);
   }
 
   function getCrydrController() public constant returns (address) {

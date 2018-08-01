@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import "../../lifecycle/Manageable.sol";
@@ -35,7 +35,8 @@ contract CrydrLicenseRegistry is ManageableInterface,
     require(userAdmittance[_userAddress] == false);
 
     userAdmittance[_userAddress] = true;
-    UserAdmittedEvent(_userAddress);
+
+    emit UserAdmittedEvent(_userAddress);
   }
 
   function denyUser(
@@ -48,7 +49,8 @@ contract CrydrLicenseRegistry is ManageableInterface,
     require(userAdmittance[_userAddress] == true);
 
     userAdmittance[_userAddress] = false;
-    UserDeniedEvent(_userAddress);
+
+    emit UserDeniedEvent(_userAddress);
   }
 
   function grantUserLicense(
@@ -65,7 +67,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     userLicenses[_userAddress][_licenseName] = true;
     userLicensesExpiration[_userAddress][_licenseName] = _expirationTimestamp;
 
-    UserLicenseGrantedEvent(_userAddress, _licenseName, _expirationTimestamp);
+    emit UserLicenseGrantedEvent(_userAddress, _licenseName, _expirationTimestamp);
   }
 
   function renewUserLicense(
@@ -81,7 +83,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
     userLicensesExpiration[_userAddress][_licenseName] = _expirationTimestamp;
 
-    UserLicenseRenewedEvent(_userAddress, _licenseName, _expirationTimestamp);
+    emit UserLicenseRenewedEvent(_userAddress, _licenseName, _expirationTimestamp);
   }
 
   function revokeUserLicense(
@@ -97,7 +99,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     userLicenses[_userAddress][_licenseName] = false;
     userLicensesExpiration[_userAddress][_licenseName] = 0;
 
-    UserLicenseRevokedEvent(_userAddress, _licenseName);
+    emit UserLicenseRevokedEvent(_userAddress, _licenseName);
   }
 
 

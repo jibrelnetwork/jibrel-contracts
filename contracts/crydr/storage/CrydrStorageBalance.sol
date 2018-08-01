@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
@@ -42,7 +42,8 @@ contract CrydrStorageBalance is SafeMathInterface,
 
     balances[_account] = safeAdd(balances[_account], _value);
     totalSupply = safeAdd(totalSupply, _value);
-    AccountBalanceIncreasedEvent(_account, _value);
+
+    emit AccountBalanceIncreasedEvent(_account, _value);
   }
 
   function decreaseBalance(
@@ -59,7 +60,8 @@ contract CrydrStorageBalance is SafeMathInterface,
 
     balances[_account] = safeSub(balances[_account], _value);
     totalSupply = safeSub(totalSupply, _value);
-    AccountBalanceDecreasedEvent(_account, _value);
+
+    emit AccountBalanceDecreasedEvent(_account, _value);
   }
 
   function getBalance(address _account) public constant returns (uint256) {

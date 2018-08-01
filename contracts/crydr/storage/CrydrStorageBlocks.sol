@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
@@ -28,7 +28,7 @@ contract CrydrStorageBlocks is SafeMathInterface,
 
   /* Constructor */
 
-  function CrydrStorageBlocks() public {
+  constructor () public {
     accountBlocks[0x0] = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
   }
 
@@ -45,7 +45,8 @@ contract CrydrStorageBlocks is SafeMathInterface,
     require(_account != address(0x0));
 
     accountBlocks[_account] = safeAdd(accountBlocks[_account], 1);
-    AccountBlockedEvent(_account);
+
+    emit AccountBlockedEvent(_account);
   }
 
   function unblockAccount(
@@ -58,7 +59,8 @@ contract CrydrStorageBlocks is SafeMathInterface,
     require(_account != address(0x0));
 
     accountBlocks[_account] = safeSub(accountBlocks[_account], 1);
-    AccountUnblockedEvent(_account);
+
+    emit AccountUnblockedEvent(_account);
   }
 
   function getAccountBlocks(
@@ -85,7 +87,8 @@ contract CrydrStorageBlocks is SafeMathInterface,
     require(_value > 0);
 
     accountBlockedFunds[_account] = safeAdd(accountBlockedFunds[_account], _value);
-    AccountFundsBlockedEvent(_account, _value);
+
+    emit AccountFundsBlockedEvent(_account, _value);
   }
 
   function unblockAccountFunds(
@@ -100,7 +103,8 @@ contract CrydrStorageBlocks is SafeMathInterface,
     require(_value > 0);
 
     accountBlockedFunds[_account] = safeSub(accountBlockedFunds[_account], _value);
-    AccountFundsUnblockedEvent(_account, _value);
+
+    emit AccountFundsUnblockedEvent(_account, _value);
   }
 
   function getAccountBlockedFunds(

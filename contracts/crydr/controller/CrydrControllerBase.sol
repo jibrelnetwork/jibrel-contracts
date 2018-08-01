@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../util/CommonModifiersInterface.sol';
@@ -41,7 +41,8 @@ contract CrydrControllerBase is CommonModifiersInterface,
     require(_crydrStorage != address(crydrStorage));
 
     crydrStorage = _crydrStorage;
-    CrydrStorageChangedEvent(_crydrStorage);
+
+    emit CrydrStorageChangedEvent(_crydrStorage);
   }
 
   function getCrydrStorageAddress() public constant returns (address) {
@@ -61,14 +62,14 @@ contract CrydrControllerBase is CommonModifiersInterface,
     require(_newCrydrView != address(this));
     require(crydrViewsAddresses[_viewApiStandardName] == address(0x0));
 
-    var crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
-    var standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
+    CrydrViewBaseInterface crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
+    bytes32 standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
     require(standardNameHash == keccak256(_viewApiStandardName));
 
     crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
     isRegisteredView[_newCrydrView] = true;
 
-    CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);
+    emit CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);
   }
 
   function removeCrydrView(
@@ -87,7 +88,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
     crydrViewsAddresses[_viewApiStandardName] == address(0x0);
     isRegisteredView[removedView] = false;
 
-    CrydrViewRemovedEvent(removedView, _viewApiStandardName);
+    emit CrydrViewRemovedEvent(removedView, _viewApiStandardName);
   }
 
   function getCrydrViewAddress(

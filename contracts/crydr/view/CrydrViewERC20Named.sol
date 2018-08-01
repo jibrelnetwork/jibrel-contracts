@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../../lifecycle/ManageableInterface.sol';
@@ -19,7 +19,7 @@ contract CrydrViewERC20Named is ManageableInterface,
 
   /* Constructor */
 
-  function CrydrViewERC20Named(string _name, string _symbol, uint8 _decimals) public {
+  constructor (string _name, string _symbol, uint8 _decimals) public {
     require(bytes(_name).length > 0);
     require(bytes(_symbol).length > 0);
 

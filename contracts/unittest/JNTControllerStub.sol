@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 import '../crydr/jnt/JNTControllerInterface.sol';
@@ -20,6 +20,6 @@ contract JNTControllerStub is JNTControllerInterface {
 
   function chargeJNT(address _from, address _to, uint256 _value) public {
     counter += 1;
-    JNTChargedEvent(msg.sender, _from, _to, _value);
+    emit JNTChargedEvent(msg.sender, _from, _to, _value);
   }
 }
