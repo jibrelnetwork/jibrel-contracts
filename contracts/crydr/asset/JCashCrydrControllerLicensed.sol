@@ -2,6 +2,7 @@
 
 pragma solidity ^0.4.24;
 
+
 import '../../util/CommonModifiers.sol';
 import '../../feature/assetid/AssetID.sol';
 import '../../lifecycle/Ownable.sol';
