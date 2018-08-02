@@ -30,6 +30,6 @@ export const configureJcashRegistrar = async (jcashRegistrarAddress, contractOwn
   global.console.log('\t\tUnpause contract');
   await PausableJSAPI.unpauseContract(jcashRegistrarAddress, managerPause);
 
-  global.console.log('\tEthRegister successfully configured');
+  global.console.log('\tJcashRegister successfully configured');
   return null;
 };

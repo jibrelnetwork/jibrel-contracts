@@ -7,6 +7,7 @@ import '../lifecycle/Ownable.sol';
 import '../lifecycle/Manageable.sol';
 import '../lifecycle/Pausable.sol';
 import '../crydr/view/CrydrViewERC20Interface.sol';
+import './JcashRegistrarInterface.sol';
 
 
 /**
@@ -15,7 +16,8 @@ import '../crydr/view/CrydrViewERC20Interface.sol';
  */
 contract JcashRegistrar is Ownable,
                            Manageable,
-                           Pausable {
+                           Pausable,
+                           JcashRegistrarInterface {
 
   /* Storage */
 
@@ -192,7 +194,6 @@ contract JcashRegistrar is Ownable,
     require (_tokenAddress != address(this));
     require (_to != address(0x0));
     require (_to != address(this));
-    require(processedTxs[_txHash] == false);
 
     processedTxs[_txHash] = true;
     CrydrViewERC20Interface(_tokenAddress).transfer(_to, _weivalue);
@@ -201,20 +202,6 @@ contract JcashRegistrar is Ownable,
 
 
   /* Getters */
-
-  /**
-   * @dev The getter returns Eth balance
-   */
-  function balanceEth() public view returns (uint256) {
-    return address(this).balance;
-  }
-
-  /**
-   * @dev The getter returns token's balance
-   */
-  function balanceToken(address _tokenAddress) public view returns (uint256) {
-    return CrydrViewERC20Interface(_tokenAddress).balanceOf(address(this));
-  }
 
   /**
    * @dev The getter returns true if tx hash is processed
@@ -227,6 +214,7 @@ contract JcashRegistrar is Ownable,
     onlyPayloadSize(1 * 32)
     returns (bool)
   {
+    require (_txHash != bytes32(0));
     return processedTxs[_txHash];
   }
 }

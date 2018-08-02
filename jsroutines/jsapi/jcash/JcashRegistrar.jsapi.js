@@ -11,10 +11,6 @@ const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
  * Getters
  */
 
-export const balanceEth = async (contractAddress) => JcashRegistrar.at(contractAddress).balanceEth.call();
-
-export const balanceToken = async (contractAddress, tokenAddress) => JcashRegistrar.at(contractAddress).balanceToken.call(tokenAddress);
-
 export const isProcessedTx = async (contractAddress, txHash) => JcashRegistrar.at(contractAddress).isProcessedTx.call(txHash);
 
 
