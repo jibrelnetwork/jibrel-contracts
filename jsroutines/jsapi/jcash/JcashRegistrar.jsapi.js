@@ -65,32 +65,6 @@ export const disableReplenisher = async (contractAddress, managerAddress, replen
   global.console.log('\tReplenisher of JcashRegistrar successfully disabled');
 };
 
-export const pause = async (contractAddress, contractOwner) => {
-  global.console.log('\tPause JcashRegistrar:');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tcontractOwner - ${contractOwner}`);
-  await submitTxAndWaitConfirmation(
-    JcashRegistrar
-      .at(contractAddress)
-      .pause
-      .sendTransaction,
-    [{ from: contractOwner }]);
-  global.console.log('\tJcashRegistrar successfully paused');
-};
-
-export const unpause = async (contractAddress, contractOwner) => {
-  global.console.log('\tUnpause JcashRegistrar:');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tcontractOwner - ${contractOwner}`);
-  await submitTxAndWaitConfirmation(
-    JcashRegistrar
-      .at(contractAddress)
-      .unpause
-      .sendTransaction,
-    [{ from: contractOwner }]);
-  global.console.log('\tJcashRegistrar successfully unpaused');
-};
-
 
 /**
  * Getters

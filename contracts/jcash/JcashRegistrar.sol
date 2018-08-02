@@ -4,6 +4,8 @@ pragma solidity ^0.4.24;
 
 
 import '../lifecycle/Ownable.sol';
+import '../lifecycle/Manageable.sol';
+import '../lifecycle/Pausable.sol';
 import '../crydr/view/CrydrViewERC20Interface.sol';
 
 
@@ -11,11 +13,12 @@ import '../crydr/view/CrydrViewERC20Interface.sol';
  * @title JcashRegistrar
  * @dev Implementation of a contract that can receives ETH&ERC20, refunds ETH&ERC20 and logs these operations
  */
-contract JcashRegistrar is Ownable {
+contract JcashRegistrar is Ownable,
+                           Manageable,
+                           Pausable {
 
   /* Storage */
 
-  bool paused = true;
   address manager = address(0x0);
   mapping (address => bool) replenishers;
   mapping (bytes32 => bool) processedTxs;
@@ -67,7 +70,7 @@ contract JcashRegistrar is Ownable {
     if (replenishers[msg.sender]==true) {
       emit ReplenishEthEvent(msg.sender, msg.value);
     } else {
-      require (!paused);
+      require (getPaused() == false);
       emit ReceiveEthEvent(msg.sender, msg.value);
     }
   }
@@ -120,26 +123,6 @@ contract JcashRegistrar is Ownable {
   }
 
   /**
-   * @dev Called by the owner to pause, triggers stopped state
-   */
-  function pause() external onlyOwner {
-    require (!paused);
-
-    paused = true;
-    emit PauseEvent();
-  }
-
-  /**
-   * @dev Called by the owner to unpause, returns to normal state
-   */
-  function unpause() external onlyOwner {
-    require (paused);
-
-    paused = false;
-    emit UnpauseEvent();
-  }
-
-  /**
    * @dev Function to add new replenisher
    * @param _replenisher address New replenisher
    */
@@ -175,9 +158,9 @@ contract JcashRegistrar is Ownable {
   )
     external
     onlymanager
+    whenContractNotPaused
     onlyPayloadSize(3 * 32)
   {
-    require (!paused);
     require (_txHash != bytes32(0));
     require (processedTxs[_txHash] == false);
     require (_to != address(0x0));
@@ -200,9 +183,9 @@ contract JcashRegistrar is Ownable {
   )
     external
     onlymanager
+    whenContractNotPaused
     onlyPayloadSize(4 * 32)
   {
-    require (!paused);
     require (_txHash != bytes32(0));
     require (processedTxs[_txHash] == false);
     require (_tokenAddress != address(0x0));
@@ -227,9 +210,9 @@ contract JcashRegistrar is Ownable {
   )
     external
     onlymanager
+    whenContractNotPaused
     onlyPayloadSize(3 * 32)
   {
-    require (!paused);
     require (_txHash != bytes32(0));
     require (processedTxs[_txHash] == false);
     require (_to != address(0x0));
@@ -252,9 +235,9 @@ contract JcashRegistrar is Ownable {
   )
     external
     onlymanager
+    whenContractNotPaused
     onlyPayloadSize(4 * 32)
   {
-    require (!paused);
     require (_txHash != bytes32(0));
     require (processedTxs[_txHash] == false);
     require (_tokenAddress != address(0x0));
@@ -270,14 +253,6 @@ contract JcashRegistrar is Ownable {
 
 
   /* Getters */
-
-  /**
-   * @dev The getter for "paused" contract variable
-   */
-  function getPaused() public view returns (bool)
-  {
-    return paused;
-  }
 
   /**
    * @dev The getter for "manager" contract variable
