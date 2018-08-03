@@ -63,6 +63,9 @@ contract JcashRegistrar is Ownable,
     }
   }
 
+
+  /* Replenisher actions */
+
   /**
    * @dev Allows to withdraw ETH by Replenisher.
    */
@@ -97,6 +100,9 @@ contract JcashRegistrar is Ownable,
     CrydrViewERC20Interface(_tokenAddress).transfer(msg.sender, _weivalue);
     emit WithdrawTokenEvent(_tokenAddress, msg.sender, _weivalue);
   }
+
+
+  /* Processing of exchange operations */
 
   /**
    * @dev Allows to perform refund ETH.

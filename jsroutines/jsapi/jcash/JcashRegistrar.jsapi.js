@@ -15,7 +15,7 @@ export const isProcessedTx = async (contractAddress, txHash) => JcashRegistrar.a
 
 
 /**
- * Manage contract
+ * Replenisher actions
  */
 
 export const withdrawEth = async (contractAddress, replenisherAddress, value) => {
@@ -53,7 +53,7 @@ export const withdrawToken = async (contractAddress, replenisherAddress, tokenAd
 
 
 /**
- * Manage exchange
+ * Processing of exchange operations
  */
 
 export const refundEth = async (contractAddress, managerAddress, refundedTxHash, destinationAddress, value) => {

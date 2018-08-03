@@ -26,7 +26,7 @@ contract JcashRegistrarInterface {
   event UnpauseEvent();
 
 
-  /* Actions */
+  /* Replenisher actions */
 
   /**
    * @dev Allows to withdraw ETH by Replenisher.
@@ -37,6 +37,9 @@ contract JcashRegistrarInterface {
    * @dev Allows to withdraw tokens by Replenisher.
    */
   function withdrawToken(address _tokenAddress, uint256 _weivalue) external;
+
+
+  /* Processing of exchange operations */
 
   /**
    * @dev Allows to perform refund ETH.
