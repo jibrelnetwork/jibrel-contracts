@@ -14,6 +14,11 @@ const jEURLicenseRegistryArtifact = global.artifacts.require('jEURLicenseRegistr
 const jEURControllerArtifact      = global.artifacts.require('jEURController.sol');
 const jEURViewERC20Artifact       = global.artifacts.require('jEURViewERC20.sol');
 
+const jGBPStorageArtifact         = global.artifacts.require('jGBPStorage.sol');
+const jGBPLicenseRegistryArtifact = global.artifacts.require('jGBPLicenseRegistry.sol');
+const jGBPControllerArtifact      = global.artifacts.require('jGBPController.sol');
+const jGBPViewERC20Artifact       = global.artifacts.require('jGBPViewERC20.sol');
+
 const jKRWStorageArtifact         = global.artifacts.require('jKRWStorage.sol');
 const jKRWLicenseRegistryArtifact = global.artifacts.require('jKRWLicenseRegistry.sol');
 const jKRWControllerArtifact      = global.artifacts.require('jKRWController.sol');
@@ -101,6 +106,31 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tjEURLicenseRegistryAddress: ${jEURLicenseRegistryAddress}`);
   global.console.log(`\tjEURControllerAddress: ${jEURControllerAddress}`);
   global.console.log(`\tjEURViewERC20Address: ${jEURViewERC20Address}`);
+
+
+  /* jGBP */
+
+  await CrydrInit.initLicensedCrydr(jGBPStorageArtifact, jGBPLicenseRegistryArtifact, jGBPControllerArtifact, jGBPViewERC20Artifact, 'erc20');
+
+  await CrydrInit.upauseCrydrContract(jGBPStorageArtifact, 'storage');
+  await CrydrInit.upauseCrydrContract(jGBPLicenseRegistryArtifact, 'license_registry');
+  await CrydrInit.upauseCrydrContract(jGBPControllerArtifact, 'controller');
+  await CrydrInit.upauseCrydrContract(jGBPViewERC20Artifact, 'view');
+
+  const jGBPStorageInstance = await jGBPStorageArtifact.deployed();
+  const jGBPStorageAddress = jGBPStorageInstance.address;
+  const jGBPLicenseRegistryInstance = await jGBPLicenseRegistryArtifact.deployed();
+  const jGBPLicenseRegistryAddress = jGBPLicenseRegistryInstance.address;
+  const jGBPControllerInstance = await jGBPControllerArtifact.deployed();
+  const jGBPControllerAddress = jGBPControllerInstance.address;
+  const jGBPViewERC20Instance = await jGBPViewERC20Artifact.deployed();
+  const jGBPViewERC20Address = jGBPViewERC20Instance.address;
+
+  global.console.log('  jGBP deployed, configured and unpaused:');
+  global.console.log(`\tjGBPStorageAddress: ${jGBPStorageAddress}`);
+  global.console.log(`\tjGBPLicenseRegistryAddress: ${jGBPLicenseRegistryAddress}`);
+  global.console.log(`\tjGBPControllerAddress: ${jGBPControllerAddress}`);
+  global.console.log(`\tjGBPViewERC20Address: ${jGBPViewERC20Address}`);
 
 
   /* jKRW */
