@@ -22,11 +22,11 @@ export function setAccounts(accountsList) {
     jntBeneficiary:          accountsList[6],
     managerLicense:          accountsList[7],
     managerForcedTransfer:   accountsList[8],
-    managerJcash:            accountsList[9],
     managerJcashReplenisher: accountsList[9],
-    testInvestor1:           accountsList[10],
-    testInvestor2:           accountsList[11],
-    testInvestor3:           accountsList[12],
+    managerJcashExchange:    accountsList[10],
+    testInvestor1:           accountsList[11],
+    testInvestor2:           accountsList[12],
+    testInvestor3:           accountsList[13],
   };
 }
 

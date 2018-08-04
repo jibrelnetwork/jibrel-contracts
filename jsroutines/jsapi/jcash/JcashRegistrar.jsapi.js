@@ -4,90 +4,22 @@ const Promise = require('bluebird');
 
 const JcashRegistrar = global.artifacts.require('JcashRegistrar.sol');
 
-
-/**
- * Configuration
- */
-
-export const changeOwner = async (contractAddress, contractOwner, newcontractOwner) => {
-  global.console.log('\tChange Owner address:');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tcontractOwner - ${contractOwner}`);
-  global.console.log(`\t\tnewcontractOwner - ${newcontractOwner}`);
-  await submitTxAndWaitConfirmation(
-    JcashRegistrar
-      .at(contractAddress)
-      .changeOwner
-      .sendTransaction,
-    [newcontractOwner, { from: contractOwner }]);
-  global.console.log('\tOwner of JcashRegistrar successfully changed');
-};
-
-export const changeManager = async (contractAddress, contractOwner, newManagerAddress) => {
-  global.console.log('\tChange Manager address:');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tcontractOwner - ${contractOwner}`);
-  global.console.log(`\t\tnewManagerAddress - ${newManagerAddress}`);
-  await submitTxAndWaitConfirmation(
-    JcashRegistrar
-      .at(contractAddress)
-      .changeManager
-      .sendTransaction,
-    [newManagerAddress, { from: contractOwner }]);
-  global.console.log('\tManger of JcashRegistrar successfully changed');
-};
-
-export const enableReplenisher = async (contractAddress, managerAddress, newReplenisherAddress) => {
-  global.console.log('\tEnable Replenisher address:');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  global.console.log(`\t\tnewReplenisherAddress - ${newReplenisherAddress}`);
-  await submitTxAndWaitConfirmation(
-    JcashRegistrar
-      .at(contractAddress)
-      .enableReplenisher
-      .sendTransaction,
-    [newReplenisherAddress, { from: managerAddress }]);
-  global.console.log('\tReplenisher of JcashRegistrar successfully enabled');
-};
-
-export const disableReplenisher = async (contractAddress, managerAddress, replenisherAddress) => {
-  global.console.log('\tDisable Replenisher address:');
-  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
-  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  global.console.log(`\t\treplenisherAddress - ${replenisherAddress}`);
-  await submitTxAndWaitConfirmation(
-    JcashRegistrar
-      .at(contractAddress)
-      .disableReplenisher
-      .sendTransaction,
-    [replenisherAddress, { from: managerAddress }]);
-  global.console.log('\tReplenisher of JcashRegistrar successfully disabled');
-};
+const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
 
 
 /**
  * Getters
  */
 
-export const balance = async (contractAddress) =>
-  JcashRegistrar.at(contractAddress).balance.call();
+export const balanceEth = async (contractAddress) => JcashRegistrar.at(contractAddress).balanceEth.call();
 
-export const isReplenisher = async (contractAddress, address) =>
-  JcashRegistrar.at(contractAddress).isReplenisher.call(address);
+export const balanceToken = async (contractAddress, tokenAddress) => JcashRegistrar.at(contractAddress).balanceToken.call(tokenAddress);
 
-export const getPaused = async (contractAddress) =>
-  JcashRegistrar.at(contractAddress).getPaused.call();
-
-export const getManager = async (contractAddress) =>
-  JcashRegistrar.at(contractAddress).getManager.call();
-
-export const getOwner = async (contractAddress) =>
-  JcashRegistrar.at(contractAddress).getOwner.call();
+export const isProcessedTx = async (contractAddress, txHash) => JcashRegistrar.at(contractAddress).isProcessedTx.call(txHash);
 
 
 /**
- * Actions
+ * Manage contract
  */
 
 export const withdrawEth = async (contractAddress, replenisherAddress, value) => {
@@ -100,7 +32,8 @@ export const withdrawEth = async (contractAddress, replenisherAddress, value) =>
       .at(contractAddress)
       .withdrawEth
       .sendTransaction,
-    [value, { from: replenisherAddress }]);
+    [value, { from: replenisherAddress }]
+  );
   global.console.log('\tSuccessfully withdraw');
   return txHash;
 };
@@ -116,10 +49,16 @@ export const withdrawToken = async (contractAddress, replenisherAddress, tokenAd
       .at(contractAddress)
       .withdrawToken
       .sendTransaction,
-    [tokenAddress, value, { from: replenisherAddress }]);
+    [tokenAddress, value, { from: replenisherAddress }]
+  );
   global.console.log('\tSuccessfully withdraw');
   return txHash;
 };
+
+
+/**
+ * Manage exchange
+ */
 
 export const refundEth = async (contractAddress, managerAddress, refundedTxHash, destinationAddress, value) => {
   global.console.log('\tRefund ETH to address:');
@@ -133,7 +72,8 @@ export const refundEth = async (contractAddress, managerAddress, refundedTxHash,
       .at(contractAddress)
       .refundEth
       .sendTransaction,
-    [refundedTxHash, destinationAddress, value, { from: managerAddress }]);
+    [refundedTxHash, destinationAddress, value, { from: managerAddress }]
+  );
   global.console.log('\tSuccessfully refund');
   return txHash;
 };
@@ -151,7 +91,8 @@ export const refundToken = async (contractAddress, managerAddress, refundedTxHas
       .at(contractAddress)
       .refundToken
       .sendTransaction,
-    [refundedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress }]);
+    [refundedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress }]
+  );
   global.console.log('\tSuccessfully refund');
   return txHash;
 };
@@ -167,7 +108,8 @@ export const transferEth = async (contractAddress, managerAddress, processedTxHa
       .at(contractAddress)
       .transferEth
       .sendTransaction,
-    [processedTxHash, destinationAddress, value, { from: managerAddress }]);
+    [processedTxHash, destinationAddress, value, { from: managerAddress }]
+  );
   global.console.log('\tSuccessfully transfer');
   return txHash;
 };
@@ -184,7 +126,8 @@ export const transferToken = async (contractAddress, managerAddress, processedTx
       .at(contractAddress)
       .transferToken
       .sendTransaction,
-    [processedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress }]);
+    [processedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress }]
+  );
   global.console.log('\tSuccessfully transfer');
   return txHash;
 };
@@ -224,18 +167,6 @@ export const getTransferTokenEvents = (contractAddress, eventDataFilter = {}, co
   return eventGet();
 };
 
-export const getReplenisherEnabledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrar.at(contractAddress).ReplenisherEnabledEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
-};
-
-export const getReplenisherDisabledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrar.at(contractAddress).ReplenisherDisabledEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
-};
-
 export const getReplenishEthEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
   const eventObj = JcashRegistrar.at(contractAddress).ReplenishEthEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -254,20 +185,49 @@ export const getWithdrawTokenEvents = (contractAddress, eventDataFilter = {}, co
   return eventGet();
 };
 
-export const getManagerChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrar.at(contractAddress).ManagerChangedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+
+/**
+ * Permissions
+ */
+
+export const grantReplenisherPermissions = async (contractAddress, ownerAddress, managerAddress) => {
+  global.console.log('\tConfiguring replenisher permissions for JcashRegistrar contract ...');
+  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
+
+  const managerPermissions = [
+    'replenish_eth',
+    'replenish_token',
+  ];
+
+  await ManageableJSAPI.grantManagerPermissions(contractAddress,
+                                                ownerAddress,
+                                                managerAddress,
+                                                managerPermissions);
+
+  global.console.log('\tPermissions to replenisher of JcashRegistrar contract granted');
+  return null;
 };
 
-export const getPauseEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrar.at(contractAddress).PauseEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
-};
+export const grantExchangeManagerPermissions = async (contractAddress, ownerAddress, managerAddress) => {
+  global.console.log('\tConfiguring exchange manager permissions for JcashRegistrar contract ...');
+  global.console.log(`\t\tcontractAddress - ${contractAddress}`);
+  global.console.log(`\t\townerAddress - ${ownerAddress}`);
+  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
 
-export const getUnpauseEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrar.at(contractAddress).UnpauseEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+  const managerPermissions = [
+    'refund_eth',
+    'refund_token',
+    'transfer_eth',
+    'transfer_token',
+  ];
+
+  await ManageableJSAPI.grantManagerPermissions(contractAddress,
+                                                ownerAddress,
+                                                managerAddress,
+                                                managerPermissions);
+
+  global.console.log('\tPermissions to exchange manager of JcashRegistrar contract granted');
+  return null;
 };

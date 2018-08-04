@@ -105,12 +105,13 @@ const verifyMigrationNumber4 = async () => {
 /* Migration #5 */
 
 const executeMigrationNumber5 = async () => {
-  const { owner, managerJcash, managerJcashReplenisher } = DeployConfig.getAccounts();
+  const { owner, managerPause, managerJcashReplenisher, managerJcashExchange } = DeployConfig.getAccounts();
   await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, owner);
   const JcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
   const JcashRegistrarAddress = JcashRegistrarInstance.address;
 
-  await JcashRegistrarInit.configureJcashRegistrar(JcashRegistrarAddress, owner, managerJcash, managerJcashReplenisher);
+  await JcashRegistrarInit.configureJcashRegistrar(JcashRegistrarAddress,
+                                                   owner, managerPause, managerJcashReplenisher, managerJcashExchange);
 };
 
 const verifyMigrationNumber5 = async () => {

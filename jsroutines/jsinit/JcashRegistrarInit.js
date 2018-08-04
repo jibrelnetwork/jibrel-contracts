@@ -14,17 +14,21 @@ export const deployJcashRegistrar = async (jcashRegistrarArtifact, contractOwner
   return null;
 };
 
-export const configureJcashRegistrar = async (jcashRegistrarAddress, contractOwner, contractManager, contractReplenisher) => {
+export const configureJcashRegistrar = async (jcashRegistrarAddress, contractOwner, managerPause, managerJcashReplenisher, managerJcashExchange) => {
   global.console.log('\tConfigure EthRegistrar contract:');
 
   global.console.log('\t\tSet manager address');
-  await JcashRegistrarJSAPI.changeManager(jcashRegistrarAddress, contractOwner, contractManager);
-  await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, contractManager);
-  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, contractManager);
+  await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerPause);
+  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerPause);
+
+  await JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, contractOwner, managerJcashReplenisher);
+  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashReplenisher);
+
+  await JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, contractOwner, managerJcashExchange);
+  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashExchange);
+
   global.console.log('\t\tUnpause contract');
-  await PausableJSAPI.unpauseContract(jcashRegistrarAddress, contractManager);
-  global.console.log('\t\tSet replenisher address');
-  await JcashRegistrarJSAPI.enableReplenisher(jcashRegistrarAddress, contractManager, contractReplenisher);
+  await PausableJSAPI.unpauseContract(jcashRegistrarAddress, managerPause);
 
   global.console.log('\tEthRegister successfully configured');
   return null;

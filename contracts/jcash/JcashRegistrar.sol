@@ -19,8 +19,6 @@ contract JcashRegistrar is Ownable,
 
   /* Storage */
 
-  address manager = address(0x0);
-  mapping (address => bool) replenishers;
   mapping (bytes32 => bool) processedTxs;
 
 
@@ -32,27 +30,15 @@ contract JcashRegistrar is Ownable,
   event RefundTokenEvent(bytes32 txhash, address indexed tokenaddress, address indexed to, uint256 value);
   event TransferTokenEvent(bytes32 txhash, address indexed tokenaddress, address indexed to, uint256 value);
 
-  event ReplenisherEnabledEvent(address indexed replenisher);
-  event ReplenisherDisabledEvent(address indexed replenisher);
   event ReplenishEthEvent(address indexed from, uint256 value);
   event WithdrawEthEvent(address indexed to, uint256 value);
   event WithdrawTokenEvent(address indexed tokenaddress, address indexed to, uint256 value);
 
-  event ManagerChangedEvent(address indexed manager);
   event PauseEvent();
   event UnpauseEvent();
 
 
   /* Modifiers */
-
-  /**
-   * @dev Modifiers that throws if called by any account other than the current manager.
-   */
-  modifier onlymanager {
-    require (msg.sender == manager);
-
-    _;
-  }
 
   /**
    * @dev Fix for the ERC20 short address attack.
@@ -67,7 +53,7 @@ contract JcashRegistrar is Ownable,
    * @dev Fallback function allowing the contract to receive funds, if contract haven't already been paused.
    */
   function () external payable {
-    if (replenishers[msg.sender]==true) {
+    if (isManagerAllowed(msg.sender, 'replenish_eth')==true) {
       emit ReplenishEthEvent(msg.sender, msg.value);
     } else {
       require (getPaused() == false);
@@ -82,9 +68,9 @@ contract JcashRegistrar is Ownable,
     uint256 _weivalue
   )
     external
+    onlyAllowedManager('replenish_eth')
     onlyPayloadSize(1 * 32)
   {
-    require (replenishers[msg.sender] == true);
     require (_weivalue > 0);
 
     address(msg.sender).transfer(_weivalue);
@@ -99,53 +85,15 @@ contract JcashRegistrar is Ownable,
     uint256 _weivalue
   )
     external
+    onlyAllowedManager('replenish_token')
     onlyPayloadSize(2 * 32)
   {
-    require (replenishers[msg.sender] == true);
     require (_tokenAddress != address(0x0));
     require (_tokenAddress != address(this));
     require (_weivalue > 0);
 
     CrydrViewERC20Interface(_tokenAddress).transfer(msg.sender, _weivalue);
     emit WithdrawTokenEvent(_tokenAddress, msg.sender, _weivalue);
-  }
-
-  /**
-   * @dev Change contract manager
-   */
-  function changeManager(address _newManager) external onlyOwner {
-    require (_newManager != address(0x0));
-    require (_newManager != address(this));
-    require (_newManager != manager);
-
-    manager = _newManager;
-    emit ManagerChangedEvent(_newManager);
-  }
-
-  /**
-   * @dev Function to add new replenisher
-   * @param _replenisher address New replenisher
-   */
-  function enableReplenisher(address _replenisher) external onlymanager {
-    require (_replenisher != address(0x0));
-    require (_replenisher != address(this));
-    require (replenishers[_replenisher] == false);
-
-    replenishers[_replenisher] = true;
-    emit ReplenisherEnabledEvent(_replenisher);
-  }
-
-  /**
-   * @dev Function to remove existing replenisher
-   * @param _replenisher address Existing replenisher
-   */
-  function disableReplenisher(address _replenisher) external onlymanager {
-    require (_replenisher != address(0x0));
-    require (_replenisher != address(this));
-    require (replenishers[_replenisher] == true);
-
-    replenishers[_replenisher] = false;
-    emit ReplenisherDisabledEvent(_replenisher);
   }
 
   /**
@@ -157,7 +105,7 @@ contract JcashRegistrar is Ownable,
     uint256 _weivalue
   )
     external
-    onlymanager
+    onlyAllowedManager('refund_eth')
     whenContractNotPaused
     onlyPayloadSize(3 * 32)
   {
@@ -182,7 +130,7 @@ contract JcashRegistrar is Ownable,
     uint256 _weivalue
   )
     external
-    onlymanager
+    onlyAllowedManager('refund_token')
     whenContractNotPaused
     onlyPayloadSize(4 * 32)
   {
@@ -209,7 +157,7 @@ contract JcashRegistrar is Ownable,
     uint256 _weivalue
   )
     external
-    onlymanager
+    onlyAllowedManager('transfer_eth')
     whenContractNotPaused
     onlyPayloadSize(3 * 32)
   {
@@ -234,7 +182,7 @@ contract JcashRegistrar is Ownable,
     uint256 _weivalue
   )
     external
-    onlymanager
+    onlyAllowedManager('transfer_token')
     whenContractNotPaused
     onlyPayloadSize(4 * 32)
   {
@@ -253,30 +201,6 @@ contract JcashRegistrar is Ownable,
 
 
   /* Getters */
-
-  /**
-   * @dev The getter for "manager" contract variable
-   */
-  function getManager() public view returns (address)
-  {
-    return manager;
-  }
-
-  /**
-   * @dev The getter for "replenishers" contract variable
-   */
-  function isReplenisher(
-    address _address
-  )
-    public
-    view
-    onlyPayloadSize(1 * 32)
-    returns (bool)
-  {
-    require (_address != address(0x0));
-
-    return replenishers[_address];
-  }
 
   /**
    * @dev The getter returns Eth balance

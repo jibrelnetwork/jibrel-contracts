@@ -6,6 +6,9 @@ import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
 import * as DeployUtils from '../../jsroutines/util/DeployUtils';
 
+import * as OwnableJSAPI from '../../jsroutines/jsapi/lifecycle/Ownable';
+import * as ManageableJSAPI from '../../jsroutines/jsapi/lifecycle/Manageable';
+
 import * as JcashRegistrarInit from '../../jsroutines/jsinit/JcashRegistrarInit';
 import * as JcashRegistrarJSAPI from '../../jsroutines/jsapi/jcash/JcashRegistrar.jsapi';
 import * as Erc20MockJSAPI from '../../jsroutines/jsapi/unittest/Erc20Mock.jsapi';
@@ -19,11 +22,8 @@ global.contract('JcashRegistrar', (accounts) => {
   let JcashRegistrarInstance;
 
   DeployConfig.setAccounts(accounts);
-  const { owner, managerJcash, managerJcashReplenisher, testInvestor1 } = DeployConfig.getAccounts();
+  const { owner, managerPause, managerJcashReplenisher, managerJcashExchange, testInvestor1 } = DeployConfig.getAccounts();
   const contractOwner = owner;
-  const contractManager = managerJcash;
-  const contractReplenisher = managerJcashReplenisher;
-
 
   global.beforeEach(async () => {
     await DeployUtils.deployContractSimple(JcashRegistrarArtifact, contractOwner);
@@ -33,22 +33,37 @@ global.contract('JcashRegistrar', (accounts) => {
     global.console.log(`\t\tJcashRegistrarInstance: ${JcashRegistrarInstance.address}`);
 
     await JcashRegistrarInit.configureJcashRegistrar(JcashRegistrarInstance.address,
-                                                     contractOwner, contractManager, contractReplenisher);
+                                                     owner, managerPause, managerJcashReplenisher, managerJcashExchange);
   });
 
 
-  global.it('should test initial configuration', async () => {
-    const receivedContractOwner = await JcashRegistrarJSAPI.getOwner(JcashRegistrarInstance.address);
+  global.it('should test initial configuration - owner', async () => {
+    const receivedContractOwner = await OwnableJSAPI.getOwner(JcashRegistrarInstance.address);
     global.assert.strictEqual(receivedContractOwner, contractOwner);
+  });
 
-    const receivedManager = await JcashRegistrarJSAPI.getManager(JcashRegistrarInstance.address);
-    global.assert.strictEqual(receivedManager, contractManager);
+  global.it('should test initial configuration - replenisher', async () => {
+    let isAllowed = await ManageableJSAPI.isManagerAllowed(JcashRegistrarInstance.address,
+                                                           managerJcashReplenisher, 'replenish_eth');
+    global.assert.strictEqual(isAllowed, true);
+    isAllowed = await ManageableJSAPI.isManagerAllowed(JcashRegistrarInstance.address,
+                                                       managerJcashReplenisher, 'replenish_token');
+    global.assert.strictEqual(isAllowed, true);
+  });
 
-    const receivedIsPaused = await JcashRegistrarJSAPI.getPaused(JcashRegistrarInstance.address);
-    global.assert.strictEqual(receivedIsPaused, false);
-
-    const receivedIsReplenisher = await JcashRegistrarJSAPI.isReplenisher(JcashRegistrarInstance.address, contractReplenisher);
-    global.assert.strictEqual(receivedIsReplenisher, true);
+  global.it('should test initial configuration - exchange manager', async () => {
+    let isAllowed = await ManageableJSAPI.isManagerAllowed(JcashRegistrarInstance.address,
+                                                           managerJcashExchange, 'refund_eth');
+    global.assert.strictEqual(isAllowed, true);
+    isAllowed = await ManageableJSAPI.isManagerAllowed(JcashRegistrarInstance.address,
+                                                       managerJcashExchange, 'refund_token');
+    global.assert.strictEqual(isAllowed, true);
+    isAllowed = await ManageableJSAPI.isManagerAllowed(JcashRegistrarInstance.address,
+                                                       managerJcashExchange, 'transfer_eth');
+    global.assert.strictEqual(isAllowed, true);
+    isAllowed = await ManageableJSAPI.isManagerAllowed(JcashRegistrarInstance.address,
+                                                       managerJcashExchange, 'transfer_token');
+    global.assert.strictEqual(isAllowed, true);
   });
 
 
@@ -72,12 +87,12 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await submitTxAndWaitConfirmation(global.web3.eth.sendTransaction,
-                                      [{ from: contractReplenisher, to: JcashRegistrarInstance.address, value: valueToSend }]);
+                                      [{ from: managerJcashReplenisher, to: JcashRegistrarInstance.address, value: valueToSend }]);
 
     const events = await JcashRegistrarJSAPI.getReplenishEthEvents(JcashRegistrarInstance.address,
-                                                                   { from: contractReplenisher }, { fromBlock: blockNumber + 1 });
+                                                                   { from: managerJcashReplenisher }, { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
-    global.assert.strictEqual(events[0].args.from, contractReplenisher);
+    global.assert.strictEqual(events[0].args.from, managerJcashReplenisher);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
   });
 
@@ -87,16 +102,16 @@ global.contract('JcashRegistrar', (accounts) => {
     const txPrice = new BigNumber(10).pow(18).mul(0.01);
 
     // send ETH to the contract
-    const replenisherBalanceStart = await global.web3.eth.getBalance(contractReplenisher);
+    const replenisherBalanceStart = await global.web3.eth.getBalance(managerJcashReplenisher);
     await submitTxAndWaitConfirmation(
       global.web3.eth.sendTransaction,
-      [{ from: contractReplenisher, to: JcashRegistrarInstance.address, value: valueToSend }]
+      [{ from: managerJcashReplenisher, to: JcashRegistrarInstance.address, value: valueToSend }]
     );
 
     // withdraw ETH from the contract
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-    await JcashRegistrarJSAPI.withdrawEth(JcashRegistrarInstance.address, contractReplenisher, valueToSend);
-    const replenisherBalanceFinish = await global.web3.eth.getBalance(contractReplenisher);
+    await JcashRegistrarJSAPI.withdrawEth(JcashRegistrarInstance.address, managerJcashReplenisher, valueToSend);
+    const replenisherBalanceFinish = await global.web3.eth.getBalance(managerJcashReplenisher);
 
     // check ETH have been actually withdrawn
     global.assert.approximately(replenisherBalanceFinish.toNumber(),
@@ -105,10 +120,10 @@ global.contract('JcashRegistrar', (accounts) => {
 
     // check an event emitted
     const events = await JcashRegistrarJSAPI.getWithdrawEthEvents(JcashRegistrarInstance.address,
-                                                                  { to: contractReplenisher },
+                                                                  { to: managerJcashReplenisher },
                                                                   { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
-    global.assert.strictEqual(events[0].args.to, contractReplenisher);
+    global.assert.strictEqual(events[0].args.to, managerJcashReplenisher);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
   });
 
@@ -117,28 +132,28 @@ global.contract('JcashRegistrar', (accounts) => {
 
     // deploy contract
     const erc20TokenAddress = await DeployUtils.deployContractSimple(Erc20MockArtifact, contractOwner);
-    await Erc20MockJSAPI.mint(erc20TokenAddress, contractOwner, contractReplenisher, valueToSend);
+    await Erc20MockJSAPI.mint(erc20TokenAddress, contractOwner, managerJcashReplenisher, valueToSend);
 
-    const replenisherBalance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, contractReplenisher);
+    const replenisherBalance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, managerJcashReplenisher);
     global.assert.strictEqual(replenisherBalance.toNumber(), valueToSend.toNumber());
 
     // transfer and withdraw tokens
-    const replenisherBalanceStart = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, contractReplenisher);
-    await Erc20MockJSAPI.transfer(erc20TokenAddress, contractReplenisher, JcashRegistrarInstance.address, valueToSend);
+    const replenisherBalanceStart = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, managerJcashReplenisher);
+    await Erc20MockJSAPI.transfer(erc20TokenAddress, managerJcashReplenisher, JcashRegistrarInstance.address, valueToSend);
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-    await JcashRegistrarJSAPI.withdrawToken(JcashRegistrarInstance.address, contractReplenisher, erc20TokenAddress, valueToSend);
-    const replenisherBalanceFinish = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, contractReplenisher);
+    await JcashRegistrarJSAPI.withdrawToken(JcashRegistrarInstance.address, managerJcashReplenisher, erc20TokenAddress, valueToSend);
+    const replenisherBalanceFinish = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, managerJcashReplenisher);
 
     // check tokens have been actually withdrawn
     global.assert.strictEqual(replenisherBalanceFinish.toNumber(), replenisherBalanceStart.toNumber());
 
     // check an event emitted
     const events = await JcashRegistrarJSAPI.getWithdrawTokenEvents(JcashRegistrarInstance.address,
-                                                                    { to: contractReplenisher },
+                                                                    { to: managerJcashReplenisher },
                                                                     { fromBlock: blockNumber + 1 });
 
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
-    global.assert.strictEqual(events[0].args.to, contractReplenisher);
+    global.assert.strictEqual(events[0].args.to, managerJcashReplenisher);
     global.assert.strictEqual(events[0].args.tokenaddress, erc20TokenAddress);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
   });
@@ -152,7 +167,7 @@ global.contract('JcashRegistrar', (accounts) => {
       [{ from: testInvestor1, to: JcashRegistrarInstance.address, value: valueToSend }]
     );
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-    await JcashRegistrarJSAPI.refundEth(JcashRegistrarInstance.address, contractManager, txHash, testInvestor1, valueToSend);
+    await JcashRegistrarJSAPI.refundEth(JcashRegistrarInstance.address, managerJcashExchange, txHash, testInvestor1, valueToSend);
 
     const events = await JcashRegistrarJSAPI.getRefundEthEvents(JcashRegistrarInstance.address,
                                                                 { txhash: txHash }, { fromBlock: blockNumber + 1 });
@@ -172,10 +187,10 @@ global.contract('JcashRegistrar', (accounts) => {
       [{ from: testInvestor1, to: JcashRegistrarInstance.address, value: valueToSend }]
     );
 
-    await JcashRegistrarJSAPI.refundEth(JcashRegistrarInstance.address, contractManager, txHash, testInvestor1, valueToSend);
+    await JcashRegistrarJSAPI.refundEth(JcashRegistrarInstance.address, managerJcashExchange, txHash, testInvestor1, valueToSend);
 
     const isThrows = await isContractThrows(JcashRegistrarJSAPI.refundEth,
-                                            [JcashRegistrarInstance.address, contractManager, txHash, testInvestor1, valueToSend]);
+                                            [JcashRegistrarInstance.address, managerJcashExchange, txHash, testInvestor1, valueToSend]);
     global.assert.strictEqual(isThrows, true);
   });
 
@@ -195,7 +210,7 @@ global.contract('JcashRegistrar', (accounts) => {
     global.assert.strictEqual(investor1Balance.toNumber(), 0);
 
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-    await JcashRegistrarJSAPI.refundToken(JcashRegistrarInstance.address, contractManager, txHash, erc20TokenAddress, testInvestor1, valueToSend);
+    await JcashRegistrarJSAPI.refundToken(JcashRegistrarInstance.address, managerJcashExchange, txHash, erc20TokenAddress, testInvestor1, valueToSend);
     investor1Balance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, testInvestor1);
     global.assert.strictEqual(investor1Balance.toNumber(), valueToSend.toNumber());
 
@@ -223,12 +238,12 @@ global.contract('JcashRegistrar', (accounts) => {
     investor1Balance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, testInvestor1);
     global.assert.strictEqual(investor1Balance.toNumber(), 0);
 
-    await JcashRegistrarJSAPI.refundToken(JcashRegistrarInstance.address, contractManager, txHash, erc20TokenAddress, testInvestor1, 10 * 17);
+    await JcashRegistrarJSAPI.refundToken(JcashRegistrarInstance.address, managerJcashExchange, txHash, erc20TokenAddress, testInvestor1, 10 * 17);
     investor1Balance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, testInvestor1);
     global.assert.strictEqual(investor1Balance.toNumber(), 10 * 17);
 
     const isThrows = await isContractThrows(JcashRegistrarJSAPI.refundToken,
-                                            [JcashRegistrarInstance.address, contractManager, txHash, erc20TokenAddress, testInvestor1, 10 * 17]);
+                                            [JcashRegistrarInstance.address, managerJcashExchange, txHash, erc20TokenAddress, testInvestor1, 10 * 17]);
     global.assert.strictEqual(isThrows, true);
   });
 
@@ -241,7 +256,7 @@ global.contract('JcashRegistrar', (accounts) => {
       [{ from: testInvestor1, to: JcashRegistrarInstance.address, value: valueToSend }]
     );
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-    await JcashRegistrarJSAPI.transferEth(JcashRegistrarInstance.address, contractManager, txHash, testInvestor1, valueToSend);
+    await JcashRegistrarJSAPI.transferEth(JcashRegistrarInstance.address, managerJcashExchange, txHash, testInvestor1, valueToSend);
 
     const events = await JcashRegistrarJSAPI.getTransferEthEvents(JcashRegistrarInstance.address,
                                                                   { txhash: txHash }, { fromBlock: blockNumber + 1 });
@@ -261,10 +276,10 @@ global.contract('JcashRegistrar', (accounts) => {
       [{ from: testInvestor1, to: JcashRegistrarInstance.address, value: valueToSend }]
     );
 
-    await JcashRegistrarJSAPI.transferEth(JcashRegistrarInstance.address, contractManager, txHash, testInvestor1, valueToSend);
+    await JcashRegistrarJSAPI.transferEth(JcashRegistrarInstance.address, managerJcashExchange, txHash, testInvestor1, valueToSend);
 
     const isThrows = await isContractThrows(JcashRegistrarJSAPI.transferEth,
-                                            [JcashRegistrarInstance.address, contractManager, txHash, testInvestor1, valueToSend]);
+                                            [JcashRegistrarInstance.address, managerJcashExchange, txHash, testInvestor1, valueToSend]);
     global.assert.strictEqual(isThrows, true);
   });
 
@@ -284,7 +299,7 @@ global.contract('JcashRegistrar', (accounts) => {
     global.assert.strictEqual(investor1Balance.toNumber(), 0);
 
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-    await JcashRegistrarJSAPI.transferToken(JcashRegistrarInstance.address, contractManager, txHash, erc20TokenAddress, testInvestor1, valueToSend);
+    await JcashRegistrarJSAPI.transferToken(JcashRegistrarInstance.address, managerJcashExchange, txHash, erc20TokenAddress, testInvestor1, valueToSend);
     investor1Balance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, testInvestor1);
     global.assert.strictEqual(investor1Balance.toNumber(), valueToSend.toNumber());
 
@@ -312,12 +327,12 @@ global.contract('JcashRegistrar', (accounts) => {
     investor1Balance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, testInvestor1);
     global.assert.strictEqual(investor1Balance.toNumber(), 0);
 
-    await JcashRegistrarJSAPI.transferToken(JcashRegistrarInstance.address, contractManager, txHash, erc20TokenAddress, testInvestor1, 10 * 17);
+    await JcashRegistrarJSAPI.transferToken(JcashRegistrarInstance.address, managerJcashExchange, txHash, erc20TokenAddress, testInvestor1, 10 * 17);
     investor1Balance = await Erc20MockJSAPI.balanceOf(erc20TokenAddress, testInvestor1);
     global.assert.strictEqual(investor1Balance.toNumber(), 10 * 17);
 
     const isThrows = await isContractThrows(JcashRegistrarJSAPI.transferToken,
-                                            [JcashRegistrarInstance.address, contractManager, txHash, erc20TokenAddress, testInvestor1, 10 * 17]);
+                                            [JcashRegistrarInstance.address, managerJcashExchange, txHash, erc20TokenAddress, testInvestor1, 10 * 17]);
     global.assert.strictEqual(isThrows, true);
   });
 });
