@@ -206,6 +206,14 @@ export const grantReplenisherPermissions = async (contractAddress, ownerAddress,
   return null;
 };
 
+export const verifyReplenisherPermissions = async (contractAddress, managerAddress) => {
+  const isAllowed01 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'replenish_eth');
+  const isAllowed02 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'replenish_token');
+  return (isAllowed01 === true
+    && isAllowed02 === true);
+};
+
+
 export const grantExchangeManagerPermissions = async (contractAddress, ownerAddress, managerAddress) => {
   global.console.log('\tConfiguring exchange manager permissions for JcashRegistrar contract ...');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
@@ -226,4 +234,15 @@ export const grantExchangeManagerPermissions = async (contractAddress, ownerAddr
 
   global.console.log('\tPermissions to exchange manager of JcashRegistrar contract granted');
   return null;
+};
+
+export const verifyExchangeManagerPermissions = async (contractAddress, managerAddress) => {
+  const isAllowed01 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'refund_eth');
+  const isAllowed02 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'refund_token');
+  const isAllowed03 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'transfer_eth');
+  const isAllowed04 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'transfer_token');
+  return (isAllowed01 === true
+    && isAllowed02 === true
+    && isAllowed03 === true
+    && isAllowed04 === true);
 };

@@ -90,3 +90,17 @@ export const getOwnershipOfferCancelledEvents = (contractAddress, eventDataFilte
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
+
+
+/**
+ * For the test suits
+ */
+
+export const verifyOwner = async (contractAddress, contractOwner) => {
+  const receivedContractOwner = await getOwner(contractAddress);
+  const result = (receivedContractOwner === contractOwner);
+  if (result !== true) {
+    global.console.log(`\t\tERROR: owner "${receivedContractOwner}" of a contract "${contractAddress}" does not match expected value "${contractOwner}"`);
+  }
+  return result;
+};

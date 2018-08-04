@@ -115,8 +115,9 @@ const executeMigrationNumber5 = async () => {
     jntBeneficiary,
   } = DeployConfig.getAccounts();
 
-  const JNTControllerInstance = await JNTControllerArtifact.deployed();
-  const JNTControllerAddress = JNTControllerInstance.address;
+  const jntControllerInstance = await JNTControllerArtifact.deployed();
+  const jntControllerAddress = jntControllerInstance.address;
+
 
   await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, owner);
   const JcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
@@ -125,12 +126,33 @@ const executeMigrationNumber5 = async () => {
   await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, owner,
                                              managerPause, managerJcashReplenisher, managerJcashExchange);
   await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, owner,
-                                                  JNTControllerAddress, managerJNT, jntBeneficiary, 10 ** 18);
+                                                  jntControllerAddress, managerJNT, jntBeneficiary, 10 ** 18);
   await PausableJSAPI.unpauseContract(JcashRegistrarAddress, managerPause);
 };
 
 const verifyMigrationNumber5 = async () => {
-  // todo verify migration, make integration tests
+  const {
+    owner,
+    managerPause,
+    managerJcashReplenisher,
+    managerJcashExchange,
+    managerJNT,
+    jntBeneficiary,
+  } = DeployConfig.getAccounts();
+
+  const jntControllerInstance = await JNTControllerArtifact.deployed();
+  const jntControllerAddress = jntControllerInstance.address;
+
+  const jcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
+  const jcashRegistrarAddress = jcashRegistrarInstance.address;
+
+  const isVerified1 = await JcashRegistrarInit.verifyManagers(jcashRegistrarAddress, owner,
+                                                              managerPause, managerJcashReplenisher, managerJcashExchange);
+  const isVerified2 = await JcashRegistrarInit.verifyJNTConnection(jcashRegistrarAddress,
+                                                                   jntControllerAddress, managerJNT, jntBeneficiary, 10 ** 18);
+  if (isVerified1 !== true || isVerified2 !== true) {
+    throw new Error('Failed to verify deployed JcashRegistrar');
+  }
 };
 
 

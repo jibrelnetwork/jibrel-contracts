@@ -93,3 +93,9 @@ export const grantManagerPermissions = async (contractAddress, ownerAddress, man
   return null;
 };
 
+export const verifyManagerPermissions = async (contractAddress, managerAddress) => {
+  const isAllowed01 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'pause_contract');
+  const isAllowed02 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'unpause_contract');
+  return (isAllowed01 === true
+    && isAllowed02 === true);
+};

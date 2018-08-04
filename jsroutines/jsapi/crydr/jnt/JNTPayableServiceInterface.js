@@ -69,8 +69,8 @@ export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
   return null;
 };
 
-export const getActionPrice = async (contractAddress) =>
-  JNTPayableServiceInterface.at(contractAddress).getActionPrice.call();
+export const getActionPrice = async (contractAddress, actionName) =>
+  JNTPayableServiceInterface.at(contractAddress).getActionPrice.call(actionName);
 
 
 /**
@@ -122,4 +122,14 @@ export const grantManagerPermissions = async (jntPayableServiceAddress, ownerAdd
 
   global.console.log('\tPermissions to the manager of JNT payable service granted');
   return null;
+};
+
+export const verifyManagerPermissions = async (contractAddress, managerAddress) => {
+  const isAllowed01 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'set_jnt_controller');
+  const isAllowed02 = await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'set_jnt_beneficiary');
+  const isAllowed03 = await ManageableJSAPI.isManagerAllowed(contractAddress, managerAddress, 'set_action_price');
+
+  return (isAllowed01 === true
+    && isAllowed02 === true
+    && isAllowed03 === true);
 };
