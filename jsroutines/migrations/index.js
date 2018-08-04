@@ -80,70 +80,6 @@ const verifyMigrationNumber5 = async () => {
 };
 
 
-/* Migration #6 */
-
-const executeMigrationNumber6 = async () => {
-  const { managerMint, testInvestor1, testInvestor2, testInvestor3 } = DeployConfig.getAccounts();
-  global.console.log(`\t\tmanagerMint - ${managerMint}`);
-  global.console.log(`\t\ttestInvestor1 - ${testInvestor1}`);
-  global.console.log(`\t\ttestInvestor2 - ${testInvestor2}`);
-  global.console.log(`\t\ttestInvestor3 - ${testInvestor3}`);
-
-  const JNTControllerInstance = await JNTController.deployed();
-  const JNTControllerAddress = JNTControllerInstance.address;
-
-  const jUSDControllerInstance = await jUSDController.deployed();
-  const jUSDControllerAddress = jUSDControllerInstance.address;
-
-  const jKRWControllerInstance = await jKRWController.deployed();
-  const jKRWControllerAddress = jKRWControllerInstance.address;
-
-  await Promise.all([
-    CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress,
-                                               managerMint,
-                                               testInvestor1,
-                                               10000 * (10 ** 18)),
-    CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress,
-                                               managerMint,
-                                               testInvestor2,
-                                               10000 * (10 ** 18)),
-    CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress,
-                                               managerMint,
-                                               testInvestor3,
-                                               10000 * (10 ** 18)),
-
-    CrydrControllerMintableInterfaceJSAPI.mint(jUSDControllerAddress,
-                                               managerMint,
-                                               testInvestor1,
-                                               10000 * (10 ** 18)),
-    CrydrControllerMintableInterfaceJSAPI.mint(jUSDControllerAddress,
-                                               managerMint,
-                                               testInvestor2,
-                                               10000 * (10 ** 18)),
-    CrydrControllerMintableInterfaceJSAPI.mint(jUSDControllerAddress,
-                                               managerMint,
-                                               testInvestor3,
-                                               10000 * (10 ** 18)),
-
-    CrydrControllerMintableInterfaceJSAPI.mint(jKRWControllerAddress,
-                                               managerMint,
-                                               testInvestor1,
-                                               10000 * (10 ** 18)),
-    CrydrControllerMintableInterfaceJSAPI.mint(jKRWControllerAddress,
-                                               managerMint,
-                                               testInvestor2,
-                                               10000 * (10 ** 18)),
-    CrydrControllerMintableInterfaceJSAPI.mint(jKRWControllerAddress,
-                                               managerMint,
-                                               testInvestor3,
-                                               10000 * (10 ** 18)),
-  ]);
-};
-
-const verifyMigrationNumber6 = async () => {
-  // todo verify migration, make integration tests
-};
-
 
 /* Migrations */
 
@@ -156,8 +92,6 @@ export const executeMigration = async (migrationNumber) => {
     await executeMigrationNumber4();
   } else if (migrationNumber === 5) {
     await executeMigrationNumber5();
-  } else if (migrationNumber === 6) {
-    await executeMigrationNumber6();
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }
@@ -172,8 +106,6 @@ export const verifyMigration = async (migrationNumber) => {
     await verifyMigrationNumber4();
   } else if (migrationNumber === 5) {
     await verifyMigrationNumber5();
-  } else if (migrationNumber === 6) {
-    await verifyMigrationNumber6();
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }
