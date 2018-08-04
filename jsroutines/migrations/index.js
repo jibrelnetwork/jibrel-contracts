@@ -9,6 +9,11 @@ const jUSDLicenseRegistryArtifact = global.artifacts.require('jUSDLicenseRegistr
 const jUSDControllerArtifact      = global.artifacts.require('jUSDController.sol');
 const jUSDViewERC20Artifact       = global.artifacts.require('jUSDViewERC20.sol');
 
+const jEURStorageArtifact         = global.artifacts.require('jEURStorage.sol');
+const jEURLicenseRegistryArtifact = global.artifacts.require('jEURLicenseRegistry.sol');
+const jEURControllerArtifact      = global.artifacts.require('jEURController.sol');
+const jEURViewERC20Artifact       = global.artifacts.require('jEURViewERC20.sol');
+
 const jKRWStorageArtifact         = global.artifacts.require('jKRWStorage.sol');
 const jKRWLicenseRegistryArtifact = global.artifacts.require('jKRWLicenseRegistry.sol');
 const jKRWControllerArtifact      = global.artifacts.require('jKRWController.sol');
@@ -71,6 +76,31 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tjUSDLicenseRegistryAddress: ${jUSDLicenseRegistryAddress}`);
   global.console.log(`\tjUSDControllerAddress: ${jUSDControllerAddress}`);
   global.console.log(`\tjUSDViewERC20Address: ${jUSDViewERC20Address}`);
+
+
+  /* jEUR */
+
+  await CrydrInit.initLicensedCrydr(jEURStorageArtifact, jEURLicenseRegistryArtifact, jEURControllerArtifact, jEURViewERC20Artifact, 'erc20');
+
+  await CrydrInit.upauseCrydrContract(jEURStorageArtifact, 'storage');
+  await CrydrInit.upauseCrydrContract(jEURLicenseRegistryArtifact, 'license_registry');
+  await CrydrInit.upauseCrydrContract(jEURControllerArtifact, 'controller');
+  await CrydrInit.upauseCrydrContract(jEURViewERC20Artifact, 'view');
+
+  const jEURStorageInstance = await jEURStorageArtifact.deployed();
+  const jEURStorageAddress = jEURStorageInstance.address;
+  const jEURLicenseRegistryInstance = await jEURLicenseRegistryArtifact.deployed();
+  const jEURLicenseRegistryAddress = jEURLicenseRegistryInstance.address;
+  const jEURControllerInstance = await jEURControllerArtifact.deployed();
+  const jEURControllerAddress = jEURControllerInstance.address;
+  const jEURViewERC20Instance = await jEURViewERC20Artifact.deployed();
+  const jEURViewERC20Address = jEURViewERC20Instance.address;
+
+  global.console.log('  jEUR deployed, configured and unpaused:');
+  global.console.log(`\tjEURStorageAddress: ${jEURStorageAddress}`);
+  global.console.log(`\tjEURLicenseRegistryAddress: ${jEURLicenseRegistryAddress}`);
+  global.console.log(`\tjEURControllerAddress: ${jEURControllerAddress}`);
+  global.console.log(`\tjEURViewERC20Address: ${jEURViewERC20Address}`);
 
 
   /* jKRW */
