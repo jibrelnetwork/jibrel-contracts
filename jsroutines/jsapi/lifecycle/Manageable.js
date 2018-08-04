@@ -117,3 +117,16 @@ export const getManagerPermissionRevokedEvents = (contractAddress, eventDataFilt
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
+
+
+/**
+ * For the test suits
+ */
+
+export const verifyManagerAllowed = async (contractAddress, contractManager, permissionName) => {
+  const isAllowed = await isManagerAllowed(contractAddress, contractManager, permissionName);
+  if (isAllowed !== true) {
+    global.console.log(`\t\tERROR: manager "${contractManager}" of a contract "${contractAddress}" is not allowed for the action "${permissionName}"`);
+  }
+  return isAllowed;
+};

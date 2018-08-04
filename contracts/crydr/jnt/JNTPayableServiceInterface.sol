@@ -13,7 +13,7 @@ contract JNTPayableServiceInterface {
 
   event JNTControllerChangedEvent(address jntcontroller);
   event JNTBeneficiaryChangedEvent(address jntbeneficiary);
-  event JNTChargedEvent(address indexed from, address indexed to, uint256 value);
+  event JNTChargedEvent(address indexed payer, address indexed to, uint256 value, string actionname);
 
 
   /* Configuration */
@@ -24,8 +24,11 @@ contract JNTPayableServiceInterface {
   function setJntBeneficiary(address _jntBeneficiary) external;
   function getJntBeneficiary() public constant returns (address);
 
+  function setActionPrice(string _actionName, uint256 _jntPriceWei) external;
+  function getActionPrice(string _actionName) public constant returns (uint256);
+
 
   /* Actions */
 
-  function chargeJNTForService(address _from, uint256 _value) internal;
+  function initChargeJNT(address _payer, string _actionName) internal;
 }

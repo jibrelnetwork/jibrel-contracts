@@ -22,9 +22,8 @@ contract JNTPayableService is CommonModifiersInterface,
 
   JNTControllerInterface jntController;
   address jntBeneficiary;
+  mapping (string => uint256) actionPrice;
 
-
-  /* JNTPayableServiceInterface */
 
   /* Configuration */
 
@@ -69,16 +68,51 @@ contract JNTPayableService is CommonModifiersInterface,
   }
 
 
+  function setActionPrice(
+    string _actionName,
+    uint256 _jntPriceWei
+  )
+    external
+    onlyAllowedManager('set_action_price')
+    onlyValidActionName(_actionName)
+    whenContractPaused
+  {
+    require (_jntPriceWei > 0);
+
+    actionPrice[_actionName] = _jntPriceWei;
+  }
+
+  function getActionPrice(
+    string _actionName
+  )
+    public
+    constant
+    onlyValidActionName(_actionName)
+    returns (uint256)
+  {
+    return actionPrice[_actionName];
+  }
+
+
   /* Actions */
 
-  function chargeJNTForService(address _from, uint256 _value) internal whenContractNotPaused {
+  function initChargeJNT(
+    address _from,
+    string _actionName
+  )
+    internal
+    onlyValidActionName(_actionName)
+    whenContractNotPaused
+  {
     require(_from != address(0x0));
     require(_from != jntBeneficiary);
-    require(_value > 0);
 
-    jntController.chargeJNT(_from, jntBeneficiary, _value);
+    uint256 _actionPrice = getActionPrice(_actionName);
+    require (_actionPrice > 0);
 
-    emit JNTChargedEvent(_from, jntBeneficiary, _value);
+    jntController.chargeJNT(_from, jntBeneficiary, _actionPrice);
+
+    emit JNTChargedEvent(_from, jntBeneficiary, _actionPrice, _actionName);
   }
 
 
@@ -96,10 +130,18 @@ contract JNTPayableService is CommonModifiersInterface,
   }
 
 
-  /* Helpers */
+  /* Modifiers */
 
   modifier onlyValidJntBeneficiary(address _jntBeneficiary) {
     require(_jntBeneficiary != address(0x0));
+    _;
+  }
+
+  /**
+   * @dev Modifier to check name of manager permission
+   */
+  modifier onlyValidActionName(string _actionName) {
+    require(bytes(_actionName).length != 0);
     _;
   }
 }

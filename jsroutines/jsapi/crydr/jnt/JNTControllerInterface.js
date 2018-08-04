@@ -63,3 +63,7 @@ export const grantManagerPermissions = async (jntControllerAddress, ownerAddress
   global.console.log('\tPermissions to the manager of JNT controller granted');
   return null;
 };
+
+export const verifyManagerPermissions = async (contractAddress, managerAddress) => {
+  return await ManageableJSAPI.verifyManagerAllowed(contractAddress, managerAddress, 'jnt_payable_service');
+};

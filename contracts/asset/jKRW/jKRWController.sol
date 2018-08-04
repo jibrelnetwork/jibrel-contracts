@@ -3,9 +3,9 @@
 pragma solidity ^0.4.24;
 
 
-import '../../crydr/asset/JCashCrydrController.sol';
+import '../../crydr/asset/JCashCrydrControllerLicensed.sol';
 
 
-contract jKRWController is JCashCrydrController {
-  constructor () public JCashCrydrController('jKRW') {}
+contract jKRWController is JCashCrydrControllerLicensed {
+  constructor () public JCashCrydrControllerLicensed('jKRW') {}
 }
