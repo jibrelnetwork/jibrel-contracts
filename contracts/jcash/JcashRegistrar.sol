@@ -3,10 +3,12 @@
 pragma solidity ^0.4.24;
 
 
+import '../util/CommonModifiers.sol';
 import '../lifecycle/Ownable.sol';
 import '../lifecycle/Manageable.sol';
 import '../lifecycle/Pausable.sol';
 import '../crydr/view/CrydrViewERC20Interface.sol';
+import '../crydr/jnt/JNTPayableService.sol';
 import './JcashRegistrarInterface.sol';
 
 
@@ -14,9 +16,11 @@ import './JcashRegistrarInterface.sol';
  * @title JcashRegistrar
  * @dev Implementation of a contract that can receives ETH&ERC20, refunds ETH&ERC20 and logs these operations
  */
-contract JcashRegistrar is Ownable,
+contract JcashRegistrar is CommonModifiers,
+                           Ownable,
                            Manageable,
                            Pausable,
+                           JNTPayableService,
                            JcashRegistrarInterface {
 
   /* Storage */
@@ -125,6 +129,7 @@ contract JcashRegistrar is Ownable,
 
     processedTxs[_txHash] = true;
     _to.transfer(_weivalue);
+
     emit RefundEthEvent(_txHash, _to, _weivalue);
   }
 
@@ -152,6 +157,7 @@ contract JcashRegistrar is Ownable,
 
     processedTxs[_txHash] = true;
     CrydrViewERC20Interface(_tokenAddress).transfer(_to, _weivalue);
+
     emit RefundTokenEvent(_txHash, _tokenAddress, _to, _weivalue);
   }
 
@@ -177,6 +183,11 @@ contract JcashRegistrar is Ownable,
 
     processedTxs[_txHash] = true;
     _to.transfer(_weivalue);
+
+    if (getActionPrice('transfer_eth') > 0) {
+      initChargeJNT(_to, 'transfer_eth');
+    }
+
     emit TransferEthEvent(_txHash, _to, _weivalue);
   }
 
@@ -203,6 +214,11 @@ contract JcashRegistrar is Ownable,
 
     processedTxs[_txHash] = true;
     CrydrViewERC20Interface(_tokenAddress).transfer(_to, _weivalue);
+
+    if (getActionPrice('transfer_token') > 0) {
+      initChargeJNT(_to, 'transfer_token');
+    }
+
     emit TransferTokenEvent(_txHash, _tokenAddress, _to, _weivalue);
   }
 

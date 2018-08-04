@@ -51,6 +51,28 @@ export const getJntBeneficiary = async (contractAddress) =>
   JNTPayableServiceInterface.at(contractAddress).getJntBeneficiary.call();
 
 
+
+export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
+                                     actionName, jntPriceWei) => {
+  global.console.log('\tSet JNT beneficiary of JNT payable service:');
+  global.console.log(`\t\tjntPayableServiceAddress - ${jntPayableServiceAddress}`);
+  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
+  global.console.log(`\t\tactionName - ${actionName}`);
+  global.console.log(`\t\tjntPriceWei - ${jntPriceWei}`);
+  await submitTxAndWaitConfirmation(
+    JNTPayableServiceInterface
+      .at(jntPayableServiceAddress)
+      .setActionPrice
+      .sendTransaction,
+    [actionName, jntPriceWei, { from: managerAddress }]);
+  global.console.log('\tJNT beneficiary of JNT payable service successfully set');
+  return null;
+};
+
+export const getActionPrice = async (contractAddress) =>
+  JNTPayableServiceInterface.at(contractAddress).getActionPrice.call();
+
+
 /**
  * Events
  */
@@ -93,7 +115,7 @@ export const grantManagerPermissions = async (jntPayableServiceAddress, ownerAdd
   const managerPermissions = [
     'set_jnt_controller',
     'set_jnt_beneficiary',
-    'withdraw_jnt',
+    'set_action_price',
   ];
 
   await ManageableJSAPI.grantManagerPermissions(jntPayableServiceAddress, ownerAddress, managerAddress, managerPermissions);
