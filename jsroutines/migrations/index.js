@@ -1,29 +1,32 @@
 /* Migration scripts */
 
-const JNTStorage    = global.artifacts.require('JNTStorage.sol');
-const JNTController = global.artifacts.require('JNTController.sol');
-const JNTViewERC20  = global.artifacts.require('JNTViewERC20.sol');
+const JNTStorageArtifact    = global.artifacts.require('JNTStorage.sol');
+const JNTControllerArtifact = global.artifacts.require('JNTController.sol');
+const JNTViewERC20Artifact  = global.artifacts.require('JNTViewERC20.sol');
 
-const jUSDStorage    = global.artifacts.require('jUSDStorage.sol');
-const jUSDController = global.artifacts.require('jUSDController.sol');
-const jUSDViewERC20  = global.artifacts.require('jUSDViewERC20.sol');
+const jUSDStorageArtifact         = global.artifacts.require('jUSDStorage.sol');
+const jUSDLicenseRegistryArtifact = global.artifacts.require('jUSDLicenseRegistry.sol');
+const jUSDControllerArtifact      = global.artifacts.require('jUSDController.sol');
+const jUSDViewERC20Artifact       = global.artifacts.require('jUSDViewERC20.sol');
 
-const jKRWStorage    = global.artifacts.require('jKRWStorage.sol');
-const jKRWController = global.artifacts.require('jKRWController.sol');
-const jKRWViewERC20  = global.artifacts.require('jKRWViewERC20.sol');
+const jKRWStorageArtifact         = global.artifacts.require('jKRWStorage.sol');
+const jKRWLicenseRegistryArtifact = global.artifacts.require('jKRWLicenseRegistry.sol');
+const jKRWControllerArtifact      = global.artifacts.require('jKRWController.sol');
+const jKRWViewERC20Artifact       = global.artifacts.require('jKRWViewERC20.sol');
+
+const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 const CrydrInit = require('../jsinit/CrydrInit');
-const CrydrControllerInit = require('../jsinit/CrydrControllerInit');
-const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
+const JcashRegistrarInit = require('../jsinit/JcashRegistrarInit');
 
 
 /* Migration #2 */
 
 export const executeMigrationNumber2 = async () => {
-  await CrydrInit.initCrydr(JNTStorage, JNTController, JNTViewERC20, 'erc20');
-  await CrydrInit.upauseCrydrContract(JNTStorage, 'storage');
-  await CrydrInit.upauseCrydrContract(JNTController, 'controller');
+  await CrydrInit.initCrydr(JNTStorageArtifact, JNTControllerArtifact, JNTViewERC20Artifact, 'erc20');
+  await CrydrInit.upauseCrydrContract(JNTStorageArtifact, 'storage');
+  await CrydrInit.upauseCrydrContract(JNTControllerArtifact, 'controller');
 };
 
 export const verifyMigrationNumber2 = async () => {
@@ -34,33 +37,64 @@ export const verifyMigrationNumber2 = async () => {
 /* Migration #3 */
 
 const executeMigrationNumber3 = async () => {
-  await CrydrInit.upauseCrydrContract(JNTViewERC20, 'view');
+  await CrydrInit.upauseCrydrContract(JNTViewERC20Artifact, 'view');
 };
 
 const verifyMigrationNumber3 = async () => {
   // todo verify migration, make integration tests
 };
 
-
-/* Migration #3 */
+/* Migration #4 */
 
 const executeMigrationNumber4 = async () => {
-  const JNTControllerInstance = await JNTController.deployed();
-  const JNTControllerAddress = JNTControllerInstance.address;
+  /* jUSD */
 
-  await CrydrInit.initCrydr(jUSDStorage, jUSDController, jUSDViewERC20, 'erc20');
-  const jUSDControllerInstance = await jUSDController.deployed();
+  await CrydrInit.initLicensedCrydr(jUSDStorageArtifact, jUSDLicenseRegistryArtifact, jUSDControllerArtifact, jUSDViewERC20Artifact, 'erc20');
+
+  await CrydrInit.upauseCrydrContract(jUSDStorageArtifact, 'storage');
+  await CrydrInit.upauseCrydrContract(jUSDLicenseRegistryArtifact, 'license_registry');
+  await CrydrInit.upauseCrydrContract(jUSDControllerArtifact, 'controller');
+  await CrydrInit.upauseCrydrContract(jUSDViewERC20Artifact, 'view');
+
+  const jUSDStorageInstance = await jUSDStorageArtifact.deployed();
+  const jUSDStorageAddress = jUSDStorageInstance.address;
+  const jUSDLicenseRegistryInstance = await jUSDLicenseRegistryArtifact.deployed();
+  const jUSDLicenseRegistryAddress = jUSDLicenseRegistryInstance.address;
+  const jUSDControllerInstance = await jUSDControllerArtifact.deployed();
   const jUSDControllerAddress = jUSDControllerInstance.address;
-  await CrydrControllerInit.configureJntPayableService(jUSDControllerAddress, JNTControllerAddress);
-  await CrydrInit.upauseCrydrContract(jUSDStorage, 'storage');
-  await CrydrInit.upauseCrydrContract(jUSDController, 'controller');
+  const jUSDViewERC20Instance = await jUSDViewERC20Artifact.deployed();
+  const jUSDViewERC20Address = jUSDViewERC20Instance.address;
 
-  await CrydrInit.initCrydr(jKRWStorage, jKRWController, jKRWViewERC20, 'erc20');
-  const jKRWControllerInstance = await jKRWController.deployed();
+  global.console.log('  jUSD deployed, configured and unpaused:');
+  global.console.log(`\tjUSDStorageAddress: ${jUSDStorageAddress}`);
+  global.console.log(`\tjUSDLicenseRegistryAddress: ${jUSDLicenseRegistryAddress}`);
+  global.console.log(`\tjUSDControllerAddress: ${jUSDControllerAddress}`);
+  global.console.log(`\tjUSDViewERC20Address: ${jUSDViewERC20Address}`);
+
+
+  /* jKRW */
+
+  await CrydrInit.initLicensedCrydr(jKRWStorageArtifact, jKRWLicenseRegistryArtifact, jKRWControllerArtifact, jKRWViewERC20Artifact, 'erc20');
+
+  await CrydrInit.upauseCrydrContract(jKRWStorageArtifact, 'storage');
+  await CrydrInit.upauseCrydrContract(jKRWLicenseRegistryArtifact, 'license_registry');
+  await CrydrInit.upauseCrydrContract(jKRWControllerArtifact, 'controller');
+  await CrydrInit.upauseCrydrContract(jKRWViewERC20Artifact, 'view');
+
+  const jKRWStorageInstance = await jKRWStorageArtifact.deployed();
+  const jKRWStorageAddress = jKRWStorageInstance.address;
+  const jKRWLicenseRegistryInstance = await jKRWLicenseRegistryArtifact.deployed();
+  const jKRWLicenseRegistryAddress = jKRWLicenseRegistryInstance.address;
+  const jKRWControllerInstance = await jKRWControllerArtifact.deployed();
   const jKRWControllerAddress = jKRWControllerInstance.address;
-  await CrydrControllerInit.configureJntPayableService(jKRWControllerAddress, JNTControllerAddress);
-  await CrydrInit.upauseCrydrContract(jKRWStorage, 'storage');
-  await CrydrInit.upauseCrydrContract(jKRWController, 'controller');
+  const jKRWViewERC20Instance = await jKRWViewERC20Artifact.deployed();
+  const jKRWViewERC20Address = jKRWViewERC20Instance.address;
+
+  global.console.log('  jKRW deployed, configured and unpaused:');
+  global.console.log(`\tjKRWStorageAddress: ${jKRWStorageAddress}`);
+  global.console.log(`\tjKRWLicenseRegistryAddress: ${jKRWLicenseRegistryAddress}`);
+  global.console.log(`\tjKRWControllerAddress: ${jKRWControllerAddress}`);
+  global.console.log(`\tjKRWViewERC20Address: ${jKRWViewERC20Address}`);
 };
 
 const verifyMigrationNumber4 = async () => {
@@ -71,14 +105,17 @@ const verifyMigrationNumber4 = async () => {
 /* Migration #5 */
 
 const executeMigrationNumber5 = async () => {
-  await CrydrInit.upauseCrydrContract(jUSDViewERC20, 'view');
-  await CrydrInit.upauseCrydrContract(jKRWViewERC20, 'view');
+  const { owner, managerJcash, managerJcashReplenisher } = DeployConfig.getAccounts();
+  await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, owner);
+  const JcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
+  const JcashRegistrarAddress = JcashRegistrarInstance.address;
+
+  await JcashRegistrarInit.configureJcashRegistrar(JcashRegistrarAddress, owner, managerJcash, managerJcashReplenisher);
 };
 
 const verifyMigrationNumber5 = async () => {
   // todo verify migration, make integration tests
 };
-
 
 
 /* Migrations */
