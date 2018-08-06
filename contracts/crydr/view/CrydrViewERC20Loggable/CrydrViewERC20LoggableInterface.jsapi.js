@@ -1,6 +1,6 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
-const CrydrViewERC20LoggableInterface = global.artifacts.require('CrydrViewERC20LoggableInterface.sol');
+const CrydrViewERC20LoggableInterfaceArtifact = global.artifacts.require('CrydrViewERC20LoggableInterface.sol');
 
 
 export const emitTransferEvent = async (crydrViewAddress, managerAddress,
@@ -12,7 +12,7 @@ export const emitTransferEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20LoggableInterface
+    CrydrViewERC20LoggableInterfaceArtifact
       .at(crydrViewAddress)
       .emitTransferEvent
       .sendTransaction,
@@ -30,7 +30,7 @@ export const emitApprovalEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20LoggableInterface
+    CrydrViewERC20LoggableInterfaceArtifact
       .at(crydrViewAddress)
       .emitApprovalEvent
       .sendTransaction,
