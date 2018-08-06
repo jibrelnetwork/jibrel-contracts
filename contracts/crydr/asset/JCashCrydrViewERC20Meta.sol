@@ -3,7 +3,7 @@
 pragma solidity ^0.4.24;
 
 import './JCashCrydrViewERC20.sol';
-import '../view/CrydrViewMetadata.sol';
+import '../view/CrydrViewMetadata/CrydrViewMetadata.sol';
 
 
 contract JCashCrydrViewERC20Meta is JCashCrydrViewERC20,
