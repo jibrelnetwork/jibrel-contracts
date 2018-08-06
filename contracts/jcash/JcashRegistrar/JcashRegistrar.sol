@@ -3,13 +3,14 @@
 pragma solidity ^0.4.24;
 
 
-import '../util/CommonModifiers.sol';
-import '../lifecycle/Ownable.sol';
-import '../lifecycle/Manageable.sol';
-import '../lifecycle/Pausable.sol';
-import '../crydr/view/CrydrViewERC20Interface.sol';
-import '../crydr/jnt/JNTPayableService.sol';
+import '../../util/CommonModifiers/CommonModifiers.sol';
+import '../../lifecycle/Ownable/Ownable.sol';
+import '../../lifecycle/Manageable/Manageable.sol';
+import '../../lifecycle/Pausable/Pausable.sol';
+import '../../crydr/jnt/JNTPayableService/JNTPayableService.sol';
 import './JcashRegistrarInterface.sol';
+
+import '../../crydr/view/CrydrViewERC20/CrydrViewERC20Interface.sol';
 
 
 /**
