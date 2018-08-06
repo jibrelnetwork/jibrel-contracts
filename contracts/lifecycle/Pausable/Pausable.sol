@@ -3,7 +3,7 @@
 pragma solidity ^0.4.24;
 
 
-import './ManageableInterface.sol';
+import '../Manageable/ManageableInterface.sol';
 import './PausableInterface.sol';
 
 

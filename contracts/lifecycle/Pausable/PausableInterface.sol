@@ -3,9 +3,6 @@
 pragma solidity ^0.4.24;
 
 
-import './ManageableInterface.sol';
-
-
 /**
  * @title PausableInterface
  * @dev Base contract which allows children to implement an emergency stop mechanism.
