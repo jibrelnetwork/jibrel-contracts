@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const JNTControllerStub = global.artifacts.require('JNTControllerStub.sol');
+const JNTControllerStubArtifact = global.artifacts.require('JNTControllerStub.sol');
 
 
 /**
@@ -17,7 +17,7 @@ export const chargeJNT = async (contractAddress, senderAddress, fromAddress, toA
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   const txHash = await submitTxAndWaitConfirmation(
-    JNTControllerStub
+    JNTControllerStubArtifact
       .at(contractAddress)
       .chargeJNT
       .sendTransaction,
@@ -32,7 +32,7 @@ export const chargeJNT = async (contractAddress, senderAddress, fromAddress, toA
  * Getters
  */
 
-export const counter = async (contractAddress) => JNTControllerStub.at(contractAddress).counter.call();
+export const counter = async (contractAddress) => JNTControllerStubArtifact.at(contractAddress).counter.call();
 
 
 /**
@@ -40,7 +40,7 @@ export const counter = async (contractAddress) => JNTControllerStub.at(contractA
  */
 
 export const getJNTChargedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JNTControllerStub.at(contractAddress).JNTChargedEvent(eventDataFilter, commonFilter);
+  const eventObj = JNTControllerStubArtifact.at(contractAddress).JNTChargedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };

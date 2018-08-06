@@ -2,12 +2,12 @@
 
 pragma solidity ^0.4.24;
 
-import '../util/CommonModifiers.sol';
-import '../feature/assetid/AssetID.sol';
-import '../lifecycle/Ownable.sol';
-import '../lifecycle/Manageable.sol';
-import '../lifecycle/Pausable.sol';
-import '../crydr/controller/CrydrControllerBase.sol';
+import '../util/CommonModifiers/CommonModifiers.sol';
+import '../feature/AssetID/AssetID.sol';
+import '../lifecycle/Ownable/Ownable.sol';
+import '../lifecycle/Manageable/Manageable.sol';
+import '../lifecycle/Pausable/Pausable.sol';
+import '../crydr/controller/CrydrControllerBase/CrydrControllerBase.sol';
 
 
 /**

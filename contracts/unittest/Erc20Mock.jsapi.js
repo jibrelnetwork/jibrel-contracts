@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const Erc20Mock = global.artifacts.require('Erc20Mock.sol');
+const Erc20MockArtifact = global.artifacts.require('Erc20Mock.sol');
 
 
 /**
@@ -16,7 +16,7 @@ export const transfer = async (contractAddress, senderAddress, toAddress, valueW
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   const txHash = await submitTxAndWaitConfirmation(
-    Erc20Mock
+    Erc20MockArtifact
       .at(contractAddress)
       .transfer
       .sendTransaction,
@@ -32,7 +32,7 @@ export const mint = async (contractAddress, contractOwner, toAddress, valueWei) 
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   const txHash = await submitTxAndWaitConfirmation(
-    Erc20Mock
+    Erc20MockArtifact
       .at(contractAddress)
       .mint
       .sendTransaction,
@@ -47,10 +47,10 @@ export const mint = async (contractAddress, contractOwner, toAddress, valueWei) 
  */
 
 export const totalSupply = async (contractAddress) =>
-  Erc20Mock.at(contractAddress).totalSupply.call();
+  Erc20MockArtifact.at(contractAddress).totalSupply.call();
 
 export const balanceOf = async (contractAddress, userAddress) =>
-  Erc20Mock.at(contractAddress).balanceOf.call(userAddress);
+  Erc20MockArtifact.at(contractAddress).balanceOf.call(userAddress);
 
 
 /**
@@ -58,13 +58,13 @@ export const balanceOf = async (contractAddress, userAddress) =>
  */
 
 export const getTransferEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Erc20Mock.at(contractAddress).Transfer(eventDataFilter, commonFilter);
+  const eventObj = Erc20MockArtifact.at(contractAddress).Transfer(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getMintEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Erc20Mock.at(contractAddress).MintEvent(eventDataFilter, commonFilter);
+  const eventObj = Erc20MockArtifact.at(contractAddress).MintEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };

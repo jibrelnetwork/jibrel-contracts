@@ -2,9 +2,9 @@
 
 pragma solidity ^0.4.24;
 
-import '../lifecycle/Ownable.sol';
-import '../lifecycle/Manageable.sol';
-import '../lifecycle/Pausable.sol';
+import '../lifecycle/Ownable/Ownable.sol';
+import '../lifecycle/Manageable/Manageable.sol';
+import '../lifecycle/Pausable/Pausable.sol';
 
 
 /**
