@@ -3,10 +3,10 @@
 pragma solidity ^0.4.24;
 
 
-import '../../util/CommonModifiersInterface.sol';
-import '../../feature/assetid/AssetIDInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
+import '../../../feature/AssetID/AssetIDInterface.sol';
+import '../../../lifecycle/Manageable/ManageableInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
 import './CrydrStorageBaseInterface.sol';
 
 
