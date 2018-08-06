@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const Ownable = global.artifacts.require('Ownable.sol');
+const OwnableArtifact = global.artifacts.require('Ownable.sol');
 
 
 /**
@@ -16,7 +16,7 @@ export const createOwnershipOffer = async (contractAddress, ownerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tproposedOwner - ${proposedOwner}`);
   await submitTxAndWaitConfirmation(
-    Ownable
+    OwnableArtifact
       .at(contractAddress)
       .createOwnershipOffer
       .sendTransaction,
@@ -30,7 +30,7 @@ export const acceptOwnershipOffer = async (contractAddress, proposedOwner) => {
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tproposedOwner - ${proposedOwner}`);
   await submitTxAndWaitConfirmation(
-    Ownable
+    OwnableArtifact
       .at(contractAddress)
       .acceptOwnershipOffer
       .sendTransaction,
@@ -44,7 +44,7 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\towner/proposedOwner - ${ownerAddress}`);
   await submitTxAndWaitConfirmation(
-    Ownable
+    OwnableArtifact
       .at(contractAddress)
       .cancelOwnershipOffer
       .sendTransaction,
@@ -58,9 +58,7 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
  * Getters
  */
 
-export const getOwner = async (contractAddress) => Ownable.at(contractAddress).getOwner.call();
-
-export const getProposedOwner = async (contractAddress) => Ownable.at(contractAddress).getProposedOwner.call();
+export const getProposedOwner = async (contractAddress) => OwnableArtifact.at(contractAddress).getProposedOwner.call();
 
 
 /**
@@ -68,39 +66,25 @@ export const getProposedOwner = async (contractAddress) => Ownable.at(contractAd
  */
 
 export const getOwnerAssignedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Ownable.at(contractAddress).OwnerAssignedEvent(eventDataFilter, commonFilter);
+  const eventObj = OwnableArtifact.at(contractAddress).OwnerAssignedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getOwnershipOfferCreatedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Ownable.at(contractAddress).OwnershipOfferCreatedEvent(eventDataFilter, commonFilter);
+  const eventObj = OwnableArtifact.at(contractAddress).OwnershipOfferCreatedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getOwnershipOfferAcceptedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Ownable.at(contractAddress).OwnershipOfferAcceptedEvent(eventDataFilter, commonFilter);
+  const eventObj = OwnableArtifact.at(contractAddress).OwnershipOfferAcceptedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getOwnershipOfferCancelledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Ownable.at(contractAddress).OwnershipOfferCancelledEvent(eventDataFilter, commonFilter);
+  const eventObj = OwnableArtifact.at(contractAddress).OwnershipOfferCancelledEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
-};
-
-
-/**
- * For the test suits
- */
-
-export const verifyOwner = async (contractAddress, contractOwner) => {
-  const receivedContractOwner = await getOwner(contractAddress);
-  const result = (receivedContractOwner === contractOwner);
-  if (result !== true) {
-    global.console.log(`\t\tERROR: owner "${receivedContractOwner}" of a contract "${contractAddress}" does not match expected value "${contractOwner}"`);
-  }
-  return result;
 };
