@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const ERC20Interface = global.artifacts.require('CrydrViewERC20Interface.sol');
+const ERC20InterfaceArtifact = global.artifacts.require('CrydrViewERC20Interface.sol');
 
 
 /**
@@ -10,13 +10,13 @@ const ERC20Interface = global.artifacts.require('CrydrViewERC20Interface.sol');
  */
 
 export const name = async (contractAddress) =>
-  ERC20Interface.at(contractAddress).name.call();
+  ERC20InterfaceArtifact.at(contractAddress).name.call();
 
 export const symbol = async (contractAddress) =>
-  ERC20Interface.at(contractAddress).symbol.call();
+  ERC20InterfaceArtifact.at(contractAddress).symbol.call();
 
 export const decimals = async (contractAddress) =>
-  ERC20Interface.at(contractAddress).decimals.call();
+  ERC20InterfaceArtifact.at(contractAddress).decimals.call();
 
 
 export const transfer = async (crydrViewAddress, spenderAddress,
@@ -27,7 +27,7 @@ export const transfer = async (crydrViewAddress, spenderAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
   await submitTxAndWaitConfirmation(
-    ERC20Interface
+    ERC20InterfaceArtifact
       .at(crydrViewAddress)
       .transfer
       .sendTransaction,
@@ -37,10 +37,10 @@ export const transfer = async (crydrViewAddress, spenderAddress,
 };
 
 export const totalSupply = async (contractAddress) =>
-  ERC20Interface.at(contractAddress).totalSupply.call();
+  ERC20InterfaceArtifact.at(contractAddress).totalSupply.call();
 
 export const balanceOf = async (contractAddress, ownerAddress) =>
-  ERC20Interface.at(contractAddress).balanceOf.call(ownerAddress);
+  ERC20InterfaceArtifact.at(contractAddress).balanceOf.call(ownerAddress);
 
 
 export const approve = async (crydrViewAddress, approverAddress,
@@ -51,7 +51,7 @@ export const approve = async (crydrViewAddress, approverAddress,
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueApproved - ${valueApproved}`);
   await submitTxAndWaitConfirmation(
-    ERC20Interface
+    ERC20InterfaceArtifact
       .at(crydrViewAddress)
       .approve
       .sendTransaction,
@@ -69,7 +69,7 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
   await submitTxAndWaitConfirmation(
-    ERC20Interface
+    ERC20InterfaceArtifact
       .at(crydrViewAddress)
       .transferFrom
       .sendTransaction,
@@ -79,7 +79,7 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
 };
 
 export const allowance = async (contractAddress, ownerAddress, spenderAddress) =>
-  ERC20Interface.at(contractAddress).allowance.call(ownerAddress, spenderAddress);
+  ERC20InterfaceArtifact.at(contractAddress).allowance.call(ownerAddress, spenderAddress);
 
 
 /**
@@ -87,7 +87,7 @@ export const allowance = async (contractAddress, ownerAddress, spenderAddress) =
  */
 
 export const getTransferEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = ERC20Interface
+  const eventObj = ERC20InterfaceArtifact
     .at(contractAddress)
     .Transfer(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -95,7 +95,7 @@ export const getTransferEvents = (contractAddress, eventDataFilter = {}, commonF
 };
 
 export const getApprovalEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = ERC20Interface
+  const eventObj = ERC20InterfaceArtifact
     .at(contractAddress)
     .Approval(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
