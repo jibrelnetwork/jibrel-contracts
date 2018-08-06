@@ -3,12 +3,12 @@
 pragma solidity ^0.4.24;
 
 
-import '../../util/CommonModifiersInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
+import '../../../lifecycle/Manageable/ManageableInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
 import './CrydrControllerBaseInterface.sol';
 
-import '../view/CrydrViewBaseInterface.sol';
+import '../../view/CrydrViewBase/CrydrViewBaseInterface.sol';
 
 
 /**
