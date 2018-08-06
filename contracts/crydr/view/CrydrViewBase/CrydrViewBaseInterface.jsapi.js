@@ -1,10 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrViewBaseInterface = global.artifacts.require('CrydrViewBaseInterface.sol');
-
-const ManageableJSAPI = require('../../lifecycle/Manageable');
+const CrydrViewBaseInterfaceArtifact = global.artifacts.require('CrydrViewBaseInterface.sol');
 
 
 /**
@@ -18,7 +16,7 @@ export const setCrydrController = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewBaseInterface
+    CrydrViewBaseInterfaceArtifact
       .at(crydrViewAddress)
       .setCrydrController
       .sendTransaction,
@@ -28,13 +26,13 @@ export const setCrydrController = async (crydrViewAddress, managerAddress,
 };
 
 export const getCrydrController = async (contractAddress) =>
-  CrydrViewBaseInterface.at(contractAddress).getCrydrController.call();
+  CrydrViewBaseInterfaceArtifact.at(contractAddress).getCrydrController.call();
 
 export const getCrydrViewStandardName = async (contractAddress) =>
-  CrydrViewBaseInterface.at(contractAddress).getCrydrViewStandardName.call();
+  CrydrViewBaseInterfaceArtifact.at(contractAddress).getCrydrViewStandardName.call();
 
 export const getCrydrViewStandardNameHash = async (contractAddress) =>
-  CrydrViewBaseInterface.at(contractAddress).getCrydrViewStandardNameHash.call();
+  CrydrViewBaseInterfaceArtifact.at(contractAddress).getCrydrViewStandardNameHash.call();
 
 
 /**
@@ -42,30 +40,9 @@ export const getCrydrViewStandardNameHash = async (contractAddress) =>
  */
 
 export const getCrydrControllerChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrViewBaseInterface
+  const eventObj = CrydrViewBaseInterfaceArtifact
     .at(contractAddress)
     .CrydrControllerChangedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
-};
-
-
-/**
- * Permissions
- */
-
-export const grantManagerPermissions = async (jntViewAddress, ownerAddress, managerAddress) => {
-  global.console.log('\tConfiguring manager permissions for crydr view ...');
-  global.console.log(`\t\tjntViewAddress - ${jntViewAddress}`);
-  global.console.log(`\t\townerAddress - ${ownerAddress}`);
-  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-
-  const managerPermissions = [
-    'set_crydr_controller',
-  ];
-
-  await ManageableJSAPI.grantManagerPermissions(jntViewAddress, ownerAddress, managerAddress, managerPermissions);
-
-  global.console.log('\tPermissions to the manager of crydr view granted');
-  return null;
 };
