@@ -1,6 +1,6 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
-const CrydrControllerERC20Interface = global.artifacts.require('CrydrControllerERC20Interface.sol');
+const CrydrControllerERC20InterfaceArtifact = global.artifacts.require('CrydrControllerERC20Interface.sol');
 
 
 /* Configuration */
@@ -14,7 +14,7 @@ export const transfer = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueToTransfer - ${valueToTransfer}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerERC20Interface
+    CrydrControllerERC20InterfaceArtifact
       .at(crydrControllerAddress)
       .transfer
       .sendTransaction,
@@ -24,10 +24,10 @@ export const transfer = async (crydrControllerAddress, callerAddress,
 };
 
 export const getTotalSupply = async (contractAddress) =>
-  CrydrControllerERC20Interface.at(contractAddress).getTotalSupply.call();
+  CrydrControllerERC20InterfaceArtifact.at(contractAddress).getTotalSupply.call();
 
 export const getBalance = async (contractAddress, targetAccount) =>
-  CrydrControllerERC20Interface.at(contractAddress).getBalance.call(targetAccount);
+  CrydrControllerERC20InterfaceArtifact.at(contractAddress).getBalance.call(targetAccount);
 
 
 export const approve = async (crydrControllerAddress, callerAddress,
@@ -39,7 +39,7 @@ export const approve = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueToApprove - ${valueToApprove}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerERC20Interface
+    CrydrControllerERC20InterfaceArtifact
       .at(crydrControllerAddress)
       .approve
       .sendTransaction,
@@ -58,7 +58,7 @@ export const transferFrom = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueToTransfer - ${valueToTransfer}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerERC20Interface
+    CrydrControllerERC20InterfaceArtifact
       .at(crydrControllerAddress)
       .transferFrom
       .sendTransaction,
@@ -68,4 +68,4 @@ export const transferFrom = async (crydrControllerAddress, callerAddress,
 };
 
 export const getAllowance = async (contractAddress, ownerAccount, spenderAccount) =>
-  CrydrControllerERC20Interface.at(contractAddress).getAllowance.call(ownerAccount, spenderAccount);
+  CrydrControllerERC20InterfaceArtifact.at(contractAddress).getAllowance.call(ownerAccount, spenderAccount);
