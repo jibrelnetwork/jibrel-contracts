@@ -1,8 +1,6 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
-const CrydrViewERC20NamedInterface = global.artifacts.require('CrydrViewERC20NamedInterface.sol');
-
-const ManageableJSAPI = require('../../lifecycle/Manageable');
+const CrydrViewERC20NamedInterfaceArtifact = global.artifacts.require('CrydrViewERC20NamedInterface.sol');
 
 
 export const setName = async (crydrViewAddress, managerAddress,
@@ -12,7 +10,7 @@ export const setName = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tnewName - ${newName}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20NamedInterface
+    CrydrViewERC20NamedInterfaceArtifact
       .at(crydrViewAddress)
       .setName
       .sendTransaction,
@@ -28,7 +26,7 @@ export const setSymbol = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tnewSymbol - ${newSymbol}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20NamedInterface
+    CrydrViewERC20NamedInterfaceArtifact
       .at(crydrViewAddress)
       .setSymbol
       .sendTransaction,
@@ -44,37 +42,11 @@ export const setDecimals = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tnewSymbol - ${newDecimals}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20NamedInterface
+    CrydrViewERC20NamedInterfaceArtifact
       .at(crydrViewAddress)
       .setDecimals
       .sendTransaction,
     [newDecimals, { from: managerAddress }]);
   global.console.log('\tDecimals of crydr view configured');
-  return null;
-};
-
-
-/**
- * Permissions
- */
-
-export const grantManagerPermissions = async (crydrViewAddress, ownerAddress, managerAddress) => {
-  global.console.log('\tConfiguring manager permissions for named crydr view...');
-  global.console.log(`\t\tcrydrControllerAddress - ${crydrViewAddress}`);
-  global.console.log(`\t\townerAddress - ${ownerAddress}`);
-  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-
-  const managerPermissions = [
-    'set_crydr_name',
-    'set_crydr_symbol',
-    'set_crydr_decimals',
-  ];
-
-  await ManageableJSAPI.grantManagerPermissions(crydrViewAddress,
-                                                ownerAddress,
-                                                managerAddress,
-                                                managerPermissions);
-
-  global.console.log('\tPermissions to the manager of named crydr view granted');
   return null;
 };
