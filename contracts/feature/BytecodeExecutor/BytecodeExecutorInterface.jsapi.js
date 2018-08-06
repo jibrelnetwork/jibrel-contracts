@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const BytecodeExecutor = global.artifacts.require('BytecodeExecutor.sol');
+const BytecodeExecutorInterfaceArtifact = global.artifacts.require('BytecodeExecutorInterface.sol');
 
 
 /**
@@ -18,7 +18,7 @@ export const executeCall = async (contractAddress, managerAddress,
   global.console.log(`\t\tsuppliedGas - ${suppliedGas}`);
   global.console.log(`\t\tethValue - ${ethValue}`);
   await submitTxAndWaitConfirmation(
-    BytecodeExecutor
+    BytecodeExecutorInterfaceArtifact
       .at(contractAddress)
       .executeCall
       .sendTransaction,
@@ -35,7 +35,7 @@ export const executeDelegatecall = async (contractAddress, managerAddress,
   global.console.log(`\t\ttargetAddress - ${targetAddress}`);
   global.console.log(`\t\tsuppliedGas - ${suppliedGas}`);
   await submitTxAndWaitConfirmation(
-    BytecodeExecutor
+    BytecodeExecutorInterfaceArtifact
       .at(contractAddress)
       .executeDelegatecall
       .sendTransaction,
@@ -50,13 +50,13 @@ export const executeDelegatecall = async (contractAddress, managerAddress,
  */
 
 export const getCallExecutedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = BytecodeExecutor.at(contractAddress).CallExecutedEvent(eventDataFilter, commonFilter);
+  const eventObj = BytecodeExecutorInterfaceArtifact.at(contractAddress).CallExecutedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getDelegatecallExecutedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = BytecodeExecutor.at(contractAddress).DelegatecallExecutedEvent(eventDataFilter, commonFilter);
+  const eventObj = BytecodeExecutorInterfaceArtifact.at(contractAddress).DelegatecallExecutedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
