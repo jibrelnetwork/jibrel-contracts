@@ -3,8 +3,8 @@
 pragma solidity ^0.4.24;
 
 
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrViewBaseInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../CrydrViewBase/CrydrViewBaseInterface.sol';
 import './CrydrViewERC20MintableInterface.sol';
 
 

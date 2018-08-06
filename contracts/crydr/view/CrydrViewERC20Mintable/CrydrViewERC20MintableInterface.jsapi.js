@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrViewERC20MintableInterface = global.artifacts.require('CrydrViewERC20MintableInterface.sol');
+const CrydrViewERC20MintableInterfaceArtifact = global.artifacts.require('CrydrViewERC20MintableInterface.sol');
 
 
 export const emitMintEvent = async (crydrViewAddress, managerAddress,
@@ -13,7 +13,7 @@ export const emitMintEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\t_owner - ${_owner}`);
   global.console.log(`\t\t_value - ${_value}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20MintableInterface
+    CrydrViewERC20MintableInterfaceArtifact
       .at(crydrViewAddress)
       .emitMintEvent
       .sendTransaction,
@@ -30,7 +30,7 @@ export const emitBurnEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\t_owner - ${_owner}`);
   global.console.log(`\t\t_value - ${_value}`);
   await submitTxAndWaitConfirmation(
-    CrydrViewERC20MintableInterface
+    CrydrViewERC20MintableInterfaceArtifact
       .at(crydrViewAddress)
       .emitBurnEvent
       .sendTransaction,
@@ -45,7 +45,7 @@ export const emitBurnEvent = async (crydrViewAddress, managerAddress,
  */
 
 export const getMintEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrViewERC20MintableInterface
+  const eventObj = CrydrViewERC20MintableInterfaceArtifact
     .at(contractAddress)
     .MintEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -53,7 +53,7 @@ export const getMintEvents = (contractAddress, eventDataFilter = {}, commonFilte
 };
 
 export const getBurnEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrViewERC20MintableInterface
+  const eventObj = CrydrViewERC20MintableInterfaceArtifact
     .at(contractAddress)
     .BurnEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
