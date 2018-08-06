@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrStorageERC20Interface = global.artifacts.require('CrydrStorageERC20Interface.sol');
+const CrydrStorageERC20InterfaceArtifact = global.artifacts.require('CrydrStorageERC20Interface.sol');
 
 
 /**
@@ -18,7 +18,7 @@ export const transfer = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageERC20Interface
+    CrydrStorageERC20InterfaceArtifact
       .at(crydrStorageAddress)
       .transfer
       .sendTransaction,
@@ -36,7 +36,7 @@ export const transferFrom = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageERC20Interface
+    CrydrStorageERC20InterfaceArtifact
       .at(crydrStorageAddress)
       .transferFrom
       .sendTransaction,
@@ -53,7 +53,7 @@ export const approve = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageERC20Interface
+    CrydrStorageERC20InterfaceArtifact
       .at(crydrStorageAddress)
       .approve
       .sendTransaction,
@@ -67,7 +67,7 @@ export const approve = async (crydrStorageAddress, crydrControllerAddress,
  */
 
 export const getCrydrTransferredEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageERC20Interface
+  const eventObj = CrydrStorageERC20InterfaceArtifact
     .at(contractAddress)
     .CrydrTransferredEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -75,7 +75,7 @@ export const getCrydrTransferredEvents = (contractAddress, eventDataFilter = {},
 };
 
 export const getCrydrTransferredFromEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageERC20Interface
+  const eventObj = CrydrStorageERC20InterfaceArtifact
     .at(contractAddress)
     .CrydrTransferredFromEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -83,7 +83,7 @@ export const getCrydrTransferredFromEvents = (contractAddress, eventDataFilter =
 };
 
 export const getCrydrSpendingApprovedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageERC20Interface
+  const eventObj = CrydrStorageERC20InterfaceArtifact
     .at(contractAddress)
     .CrydrSpendingApprovedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);

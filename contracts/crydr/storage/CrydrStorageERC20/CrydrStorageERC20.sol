@@ -3,12 +3,12 @@
 pragma solidity ^0.4.24;
 
 
-import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrStorageBaseInterface.sol';
-import './CrydrStorageBalanceInterface.sol';
-import './CrydrStorageAllowanceInterface.sol';
-import './CrydrStorageBlocksInterface.sol';
+import '../../../third-party/zeppelin-solidity/SafeMathInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../CrydrStorageBase/CrydrStorageBaseInterface.sol';
+import '../CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
+import '../CrydrStorageAllowance/CrydrStorageAllowanceInterface.sol';
+import '../CrydrStorageBlocks/CrydrStorageBlocksInterface.sol';
 import './CrydrStorageERC20Interface.sol';
 
 
