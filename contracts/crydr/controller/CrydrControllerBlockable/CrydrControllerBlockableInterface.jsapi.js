@@ -1,8 +1,6 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
-const CrydrControllerBlockableInterface = global.artifacts.require('CrydrControllerBlockableInterface.sol');
-
-const ManageableJSAPI = require('../../lifecycle/Manageable');
+const CrydrControllerBlockableInterfaceArtifact = global.artifacts.require('CrydrControllerBlockableInterface.sol');
 
 
 /* Configuration */
@@ -14,7 +12,7 @@ export const blockAccount = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerBlockableInterface
+    CrydrControllerBlockableInterfaceArtifact
       .at(crydrControllerAddress)
       .blockAccount
       .sendTransaction,
@@ -30,7 +28,7 @@ export const unblockAccount = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tmanager - ${managerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerBlockableInterface
+    CrydrControllerBlockableInterfaceArtifact
       .at(crydrControllerAddress)
       .unblockAccount
       .sendTransaction,
@@ -48,7 +46,7 @@ export const blockAccountFunds = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tblockedValue - ${blockedValue}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerBlockableInterface
+    CrydrControllerBlockableInterfaceArtifact
       .at(crydrControllerAddress)
       .blockAccount
       .sendTransaction,
@@ -65,35 +63,11 @@ export const unblockAccountFunds = async (crydrControllerAddress, managerAddress
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tblockedValue - ${blockedValue}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerBlockableInterface
+    CrydrControllerBlockableInterfaceArtifact
       .at(crydrControllerAddress)
       .unblockAccountFunds
       .sendTransaction,
     [accountAddress, blockedValue, { from: managerAddress }]);
   global.console.log('\tAccount funds successfully unblocked via CryDR controller');
-  return null;
-};
-
-
-/**
- * Permissions
- */
-
-export const grantManagerPermissions = async (crydrControllerAddress, ownerAddress, managerAddress) => {
-  global.console.log('\tConfiguring manager permissions for crydr controller ...');
-  global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
-  global.console.log(`\t\townerAddress - ${ownerAddress}`);
-  global.console.log(`\t\tmanager - ${managerAddress}`);
-
-  const managerPermissions = [
-    'block_account',
-    'unblock_account',
-    'block_account_funds',
-    'unblock_account_funds',
-  ];
-
-  await ManageableJSAPI.grantManagerPermissions(crydrControllerAddress, ownerAddress, managerAddress, managerPermissions);
-
-  global.console.log('\tPermissions to the manager of crydr controller granted');
   return null;
 };

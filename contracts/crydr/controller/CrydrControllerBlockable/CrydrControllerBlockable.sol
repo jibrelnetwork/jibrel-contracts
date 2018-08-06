@@ -3,11 +3,11 @@
 pragma solidity ^0.4.24;
 
 
-import '../../lifecycle/ManageableInterface.sol';
-import './CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/ManageableInterface.sol';
+import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import './CrydrControllerBlockableInterface.sol';
 
-import '../storage/CrydrStorageBlocksInterface.sol';
+import '../../storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.sol';
 
 
 /**
