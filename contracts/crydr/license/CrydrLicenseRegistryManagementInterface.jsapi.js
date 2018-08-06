@@ -1,10 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrLicenseRegistryManagementInterface = global.artifacts.require('CrydrLicenseRegistryManagementInterface.sol');
-
-const ManageableJSAPI = require('../../lifecycle/Manageable');
+const CrydrLicenseRegistryManagementInterfaceArtifact = global.artifacts.require('CrydrLicenseRegistryManagementInterface.sol');
 
 
 /**
@@ -18,7 +16,7 @@ export const admitUser = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
   await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterface
+    CrydrLicenseRegistryManagementInterfaceArtifact
       .at(licenseRegistryAddress)
       .admitUser
       .sendTransaction,
@@ -33,13 +31,21 @@ export const denyUser = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
   await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterface
+    CrydrLicenseRegistryManagementInterfaceArtifact
       .at(licenseRegistryAddress)
       .denyUser
       .sendTransaction,
     [userAddress, { from: managerAddress }]);
   global.console.log('\tUser successfully denied');
 };
+
+export const isUserAdmitted = async (contractAddress, userAddress) => {
+  global.console.log('\tFetch whether user is admitted to a crydr contracts or not');
+  const result = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress).isUserAdmitted.call(userAddress);
+  global.console.log(`\t\tResult: ${result}`);
+  return result;
+};
+
 
 export const grantUserLicense = async (licenseRegistryAddress, managerAddress,
                                        userAddress, licenseName, expirationTimestamp) => {
@@ -50,7 +56,7 @@ export const grantUserLicense = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tlicenseName - ${licenseName}`);
   global.console.log(`\t\texpirationTimestamp - ${expirationTimestamp}`);
   await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterface
+    CrydrLicenseRegistryManagementInterfaceArtifact
       .at(licenseRegistryAddress)
       .grantUserLicense
       .sendTransaction,
@@ -67,7 +73,7 @@ export const renewUserLicense = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tlicenseName - ${licenseName}`);
   global.console.log(`\t\texpirationTimestamp - ${expirationTimestamp}`);
   await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterface
+    CrydrLicenseRegistryManagementInterfaceArtifact
       .at(licenseRegistryAddress)
       .renewUserLicense
       .sendTransaction,
@@ -83,12 +89,19 @@ export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tuserAddress - ${userAddress}`);
   global.console.log(`\t\tlicenseName - ${licenseName}`);
   await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterface
+    CrydrLicenseRegistryManagementInterfaceArtifact
       .at(licenseRegistryAddress)
       .revokeUserLicense
       .sendTransaction,
     [userAddress, licenseName, { from: managerAddress }]);
   global.console.log('\tUser license successfully revoked');
+};
+
+export const isUserGranted = async (contractAddress, userAddress, licenseName) => {
+  global.console.log('\tFetch whether user is granted permission for a given action to a crydr contracts or not');
+  const result = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress).isUserGranted.call(userAddress, licenseName);
+  global.console.log(`\t\tResult: ${result}`);
+  return result;
 };
 
 
@@ -97,7 +110,7 @@ export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,
  */
 
 export const getUserAdmittedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterface
+  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
     .at(contractAddress)
     .UserAdmittedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -105,7 +118,7 @@ export const getUserAdmittedEvents = (contractAddress, eventDataFilter = {}, com
 };
 
 export const getUserDeniedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterface
+  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
     .at(contractAddress)
     .UserDeniedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -113,7 +126,7 @@ export const getUserDeniedEvents = (contractAddress, eventDataFilter = {}, commo
 };
 
 export const getUserLicenseGrantedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterface
+  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
     .at(contractAddress)
     .UserLicenseGrantedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -121,7 +134,7 @@ export const getUserLicenseGrantedEvents = (contractAddress, eventDataFilter = {
 };
 
 export const getUserLicenseRenewedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterface
+  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
     .at(contractAddress)
     .UserLicenseRenewedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -129,38 +142,9 @@ export const getUserLicenseRenewedEvents = (contractAddress, eventDataFilter = {
 };
 
 export const getUserLicenseRevokedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterface
+  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
     .at(contractAddress)
     .UserLicenseRevokedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
-
-
-/**
- * Permissions
- */
-
-export const grantManagerPermissions = async (crydrControllerAddress, ownerAddress, managerAddress) => {
-  global.console.log('\tConfiguring manager permissions for license registry ...');
-  global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
-  global.console.log(`\t\townerAddress - ${ownerAddress}`);
-  global.console.log(`\t\tmanager - ${managerAddress}`);
-
-  const managerPermissions = [
-    'admit_user',
-    'deny_user',
-    'grant_license',
-    'renew_license',
-    'revoke_license',
-  ];
-
-  await ManageableJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                ownerAddress,
-                                                managerAddress,
-                                                managerPermissions);
-
-  global.console.log('\tPermissions to the manager of license registry granted');
-  return null;
-};
-

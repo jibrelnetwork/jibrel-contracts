@@ -3,7 +3,7 @@
 pragma solidity ^0.4.24;
 
 
-import "../../lifecycle/Manageable.sol";
+import "../../lifecycle/Manageable/ManageableInterface.sol";
 import "./CrydrLicenseRegistryInterface.sol";
 import "./CrydrLicenseRegistryManagementInterface.sol";
 
@@ -21,6 +21,23 @@ contract CrydrLicenseRegistry is ManageableInterface,
   mapping (address => bool) userAdmittance;
   mapping (address => mapping (string => bool)) userLicenses;
   mapping (address => mapping (string => uint256)) userLicensesExpiration;
+
+
+  /* CrydrLicenseRegistryInterface */
+
+  function isUserAllowed(
+    address _userAddress, string _licenseName
+  )
+    public
+    constant
+    onlyValidAddress(_userAddress)
+    onlyValidLicenseName(_licenseName)
+    returns (bool)
+  {
+    return userAdmittance[_userAddress] &&
+           userLicenses[_userAddress][_licenseName] &&
+           (userLicensesExpiration[_userAddress][_licenseName] >= now);
+  }
 
 
   /* CrydrLicenseRegistryManagementInterface */
@@ -52,6 +69,18 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
     emit UserDeniedEvent(_userAddress);
   }
+
+  function isUserAdmitted(
+    address _userAddress
+  )
+    public
+    constant
+    onlyValidAddress(_userAddress)
+    returns (bool)
+  {
+    return userAdmittance[_userAddress];
+  }
+
 
   function grantUserLicense(
     address _userAddress, string _licenseName, uint256 _expirationTimestamp
@@ -102,20 +131,6 @@ contract CrydrLicenseRegistry is ManageableInterface,
     emit UserLicenseRevokedEvent(_userAddress, _licenseName);
   }
 
-
-  /* CrydrLicenseRegistryInterface */
-
-  function isUserAdmitted(
-    address _userAddress
-  )
-    public
-    constant
-    onlyValidAddress(_userAddress)
-    returns (bool)
-  {
-    return userAdmittance[_userAddress];
-  }
-
   function isUserGranted(
     address _userAddress, string _licenseName
   )
@@ -138,20 +153,6 @@ contract CrydrLicenseRegistry is ManageableInterface,
     returns (bool)
   {
     return userLicenses[_userAddress][_licenseName] &&
-           (userLicensesExpiration[_userAddress][_licenseName] >= now);
-  }
-
-  function isUserAllowed(
-    address _userAddress, string _licenseName
-  )
-    public
-    constant
-    onlyValidAddress(_userAddress)
-    onlyValidLicenseName(_licenseName)
-    returns (bool)
-  {
-    return userAdmittance[_userAddress] &&
-           userLicenses[_userAddress][_licenseName] &&
            (userLicensesExpiration[_userAddress][_licenseName] >= now);
   }
 
