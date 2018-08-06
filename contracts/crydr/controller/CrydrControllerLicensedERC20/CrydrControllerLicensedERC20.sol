@@ -3,10 +3,10 @@
 pragma solidity ^0.4.24;
 
 
-import './CrydrControllerERC20Interface.sol';
-import './CrydrControllerLicensedBaseInterface.sol';
+import '../CrydrControllerERC20/CrydrControllerERC20Interface.sol';
+import '../CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.sol';
 
-import '../license/CrydrLicenseRegistryInterface.sol';
+import '../../license/CrydrLicenseRegistryInterface.sol';
 
 
 /**
