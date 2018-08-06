@@ -1,10 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrControllerForcedTransferInterface = global.artifacts.require('CrydrControllerForcedTransferInterface.sol');
-
-const ManageableJSAPI = require('../../lifecycle/Manageable');
+const CrydrControllerForcedTransferInterfaceArtifact = global.artifacts.require('CrydrControllerForcedTransferInterface.sol');
 
 
 /**
@@ -20,7 +18,7 @@ export const forcedTransfer = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueToTransfer - ${valueToTransfer}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerForcedTransferInterface
+    CrydrControllerForcedTransferInterfaceArtifact
       .at(crydrControllerAddress)
       .forcedTransfer
       .sendTransaction,
@@ -38,7 +36,7 @@ export const forcedTransferAll = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   await submitTxAndWaitConfirmation(
-    CrydrControllerForcedTransferInterface
+    CrydrControllerForcedTransferInterfaceArtifact
       .at(crydrControllerAddress)
       .forcedTransferAll
       .sendTransaction,
@@ -53,30 +51,9 @@ export const forcedTransferAll = async (crydrControllerAddress, callerAddress,
  */
 
 export const getCrydrStorageChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrControllerForcedTransferInterface
+  const eventObj = CrydrControllerForcedTransferInterfaceArtifact
     .at(contractAddress)
     .ForcedTransferEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
-};
-
-
-/**
- * Permissions
- */
-
-export const grantManagerPermissions = async (crydrControllerAddress, ownerAddress, managerAddress) => {
-  global.console.log('\tConfiguring manager permissions for mintable crydr controller ...');
-  global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
-  global.console.log(`\t\townerAddress - ${ownerAddress}`);
-  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-
-  const managerPermissions = [
-    'forced_transfer',
-  ];
-
-  await ManageableJSAPI.grantManagerPermissions(crydrControllerAddress, ownerAddress, managerAddress, managerPermissions);
-
-  global.console.log('\tPermissions to the manager of ForcedTransfer crydr controller granted');
-  return null;
 };

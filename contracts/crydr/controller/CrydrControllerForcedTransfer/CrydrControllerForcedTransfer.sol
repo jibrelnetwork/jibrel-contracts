@@ -3,13 +3,12 @@
 pragma solidity ^0.4.24;
 
 
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
-
-import './CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/ManageableInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import './CrydrControllerForcedTransferInterface.sol';
 
-import '../storage/CrydrStorageBalanceInterface.sol';
+import '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
 
 
 /**
