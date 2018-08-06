@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrStorageBalanceInterface = global.artifacts.require('CrydrStorageBalanceInterface.sol');
+const CrydrStorageBalanceInterfaceArtifact = global.artifacts.require('CrydrStorageBalanceInterface.sol');
 
 
 /**
@@ -17,7 +17,7 @@ export const increaseBalance = async (crydrStorageAddress, crydrControllerAddres
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageBalanceInterface
+    CrydrStorageBalanceInterfaceArtifact
       .at(crydrStorageAddress)
       .increaseBalance
       .sendTransaction,
@@ -33,7 +33,7 @@ export const decreaseBalance = async (crydrStorageAddress, crydrControllerAddres
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageBalanceInterface
+    CrydrStorageBalanceInterfaceArtifact
       .at(crydrStorageAddress)
       .decreaseBalance
       .sendTransaction,
@@ -42,10 +42,10 @@ export const decreaseBalance = async (crydrStorageAddress, crydrControllerAddres
 };
 
 export const getBalance = async (crydrStorageAddress, accountAddress) =>
-  CrydrStorageBalanceInterface.at(crydrStorageAddress).getBalance.call(accountAddress);
+  CrydrStorageBalanceInterfaceArtifact.at(crydrStorageAddress).getBalance.call(accountAddress);
 
 export const getTotalSupply = async (crydrStorageAddress) =>
-  CrydrStorageBalanceInterface.at(crydrStorageAddress).getTotalSupply.call();
+  CrydrStorageBalanceInterfaceArtifact.at(crydrStorageAddress).getTotalSupply.call();
 
 
 /**
@@ -54,7 +54,7 @@ export const getTotalSupply = async (crydrStorageAddress) =>
 
 
 export const getAccountBalanceIncreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageBalanceInterface
+  const eventObj = CrydrStorageBalanceInterfaceArtifact
     .at(contractAddress)
     .AccountBalanceIncreasedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -62,7 +62,7 @@ export const getAccountBalanceIncreasedEvents = (contractAddress, eventDataFilte
 };
 
 export const getAccountBalanceDecreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageBalanceInterface
+  const eventObj = CrydrStorageBalanceInterfaceArtifact
     .at(contractAddress)
     .AccountBalanceDecreasedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
