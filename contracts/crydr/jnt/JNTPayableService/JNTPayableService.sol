@@ -3,14 +3,14 @@
 pragma solidity ^0.4.24;
 
 
-import '../../util/CommonModifiersInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
+import '../../../lifecycle/Manageable/ManageableInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
 import './JNTPayableServiceInterface.sol';
 
-import '../view/CrydrViewERC20Interface.sol';
-import '../controller/CrydrControllerBaseInterface.sol';
-import '../jnt/JNTControllerInterface.sol';
+import '../../view/CrydrViewERC20/CrydrViewERC20Interface.sol';
+import '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';
+import '../JNTControllerInterface/JNTControllerInterface.sol';
 
 
 contract JNTPayableService is CommonModifiersInterface,
