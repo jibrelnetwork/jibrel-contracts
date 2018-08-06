@@ -3,13 +3,13 @@
 pragma solidity ^0.4.24;
 
 
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/ManageableInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import './CrydrControllerMintableInterface.sol';
 
-import '../storage/CrydrStorageBalanceInterface.sol';
-import '../view/CrydrViewERC20MintableInterface.sol';
+import '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
+import '../../view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.sol';
 
 
 /**
