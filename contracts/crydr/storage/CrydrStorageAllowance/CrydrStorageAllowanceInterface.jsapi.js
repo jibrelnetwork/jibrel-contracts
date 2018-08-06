@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const CrydrStorageAllowanceInterface = global.artifacts.require('CrydrStorageAllowanceInterface.sol');
+const CrydrStorageAllowanceInterfaceArtifact = global.artifacts.require('CrydrStorageAllowanceInterface.sol');
 
 
 /* Low-level change of allowance */
@@ -16,7 +16,7 @@ export const increaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageAllowanceInterface
+    CrydrStorageAllowanceInterfaceArtifact
       .at(crydrStorageAddress)
       .increaseAllowance
       .sendTransaction,
@@ -33,7 +33,7 @@ export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
   await submitTxAndWaitConfirmation(
-    CrydrStorageAllowanceInterface
+    CrydrStorageAllowanceInterfaceArtifact
       .at(crydrStorageAddress)
       .decreaseAllowance
       .sendTransaction,
@@ -42,7 +42,7 @@ export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddr
 };
 
 export const getAllowance = async (crydrStorageAddress, ownerAddress, spenderAddress) =>
-  CrydrStorageAllowanceInterface.at(crydrStorageAddress).getAllowance.call(ownerAddress, spenderAddress);
+  CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress).getAllowance.call(ownerAddress, spenderAddress);
 
 
 /**
@@ -50,7 +50,7 @@ export const getAllowance = async (crydrStorageAddress, ownerAddress, spenderAdd
  */
 
 export const getAccountAllowanceIncreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageAllowanceInterface
+  const eventObj = CrydrStorageAllowanceInterfaceArtifact
     .at(contractAddress)
     .AccountAllowanceIncreasedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
@@ -58,7 +58,7 @@ export const getAccountAllowanceIncreasedEvents = (contractAddress, eventDataFil
 };
 
 export const getAccountAllowanceDecreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageAllowanceInterface
+  const eventObj = CrydrStorageAllowanceInterfaceArtifact
     .at(contractAddress)
     .AccountAllowanceDecreasedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);

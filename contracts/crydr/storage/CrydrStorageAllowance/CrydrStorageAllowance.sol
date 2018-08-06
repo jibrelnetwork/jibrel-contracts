@@ -3,12 +3,11 @@
 pragma solidity ^0.4.24;
 
 
-import '../../third-party/zeppelin-solidity/SafeMathInterface.sol';
-import '../../util/CommonModifiersInterface.sol';
-import '../../feature/assetid/AssetIDInterface.sol';
-import '../../lifecycle/ManageableInterface.sol';
-import '../../lifecycle/PausableInterface.sol';
-import './CrydrStorageBaseInterface.sol';
+import '../../../third-party/zeppelin-solidity/SafeMathInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
+import '../../../feature/AssetID/AssetIDInterface.sol';
+import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../CrydrStorageBase/CrydrStorageBaseInterface.sol';
 import './CrydrStorageAllowanceInterface.sol';
 
 
