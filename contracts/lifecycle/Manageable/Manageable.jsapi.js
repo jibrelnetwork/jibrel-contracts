@@ -1,8 +1,8 @@
-import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
+import { submitTxAndWaitConfirmation } from '../../../jsroutines/util/SubmitTx';
 
 const Promise = require('bluebird');
 
-const Manageable = global.artifacts.require('Manageable.sol');
+const ManageableArtifact = global.artifacts.require('Manageable.sol');
 
 
 /**
@@ -16,7 +16,7 @@ export const enableManager = async (contractAddress, ownerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   await submitTxAndWaitConfirmation(
-    Manageable
+    ManageableArtifact
       .at(contractAddress)
       .enableManager
       .sendTransaction,
@@ -31,7 +31,7 @@ export const disableManager = async (contractAddress, ownerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   await submitTxAndWaitConfirmation(
-    Manageable
+    ManageableArtifact
       .at(contractAddress)
       .disableManager
       .sendTransaction,
@@ -49,7 +49,7 @@ export const grantManagerPermissions = async (contractAddress, ownerAddress,
   await Promise.all(
     permissionsList.map((permissionName) =>
                           submitTxAndWaitConfirmation(
-                            Manageable
+                            ManageableArtifact
                               .at(contractAddress)
                               .grantManagerPermission
                               .sendTransaction,
@@ -67,7 +67,7 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
   await Promise.all(
     permissionsList.map((permissionName) =>
                           submitTxAndWaitConfirmation(
-                            Manageable
+                            ManageableArtifact
                               .at(contractAddress)
                               .revokeManagerPermission
                               .sendTransaction,
@@ -81,13 +81,10 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
  */
 
 export const isManagerEnabled = (contractAddress, manager) =>
-  Manageable.at(contractAddress).isManagerEnabled.call(manager);
+  ManageableArtifact.at(contractAddress).isManagerEnabled.call(manager);
 
 export const isPermissionGranted = (contractAddress, manager, permissionName) =>
-  Manageable.at(contractAddress).isPermissionGranted.call(manager, permissionName);
-
-export const isManagerAllowed = (contractAddress, manager, permissionName) =>
-  Manageable.at(contractAddress).isManagerAllowed.call(manager, permissionName);
+  ManageableArtifact.at(contractAddress).isPermissionGranted.call(manager, permissionName);
 
 
 /**
@@ -95,38 +92,25 @@ export const isManagerAllowed = (contractAddress, manager, permissionName) =>
  */
 
 export const getManagerEnabledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Manageable.at(contractAddress).ManagerEnabledEvent(eventDataFilter, commonFilter);
+  const eventObj = ManageableArtifact.at(contractAddress).ManagerEnabledEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getManagerDisabledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Manageable.at(contractAddress).ManagerDisabledEvent(eventDataFilter, commonFilter);
+  const eventObj = ManageableArtifact.at(contractAddress).ManagerDisabledEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getManagerPermissionGrantedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Manageable.at(contractAddress).ManagerPermissionGrantedEvent(eventDataFilter, commonFilter);
+  const eventObj = ManageableArtifact.at(contractAddress).ManagerPermissionGrantedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
 };
 
 export const getManagerPermissionRevokedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Manageable.at(contractAddress).ManagerPermissionRevokedEvent(eventDataFilter, commonFilter);
+  const eventObj = ManageableArtifact.at(contractAddress).ManagerPermissionRevokedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
   return eventGet();
-};
-
-
-/**
- * For the test suits
- */
-
-export const verifyManagerAllowed = async (contractAddress, contractManager, permissionName) => {
-  const isAllowed = await isManagerAllowed(contractAddress, contractManager, permissionName);
-  if (isAllowed !== true) {
-    global.console.log(`\t\tERROR: manager "${contractManager}" of a contract "${contractAddress}" is not allowed for the action "${permissionName}"`);
-  }
-  return isAllowed;
 };

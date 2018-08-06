@@ -3,7 +3,7 @@
 pragma solidity ^0.4.24;
 
 
-import './OwnableInterface.sol';
+import '../Ownable/OwnableInterface.sol';
 import './ManageableInterface.sol';
 
 
