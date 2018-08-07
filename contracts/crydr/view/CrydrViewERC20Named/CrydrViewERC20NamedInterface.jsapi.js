@@ -14,7 +14,9 @@ export const setName = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .setName
       .sendTransaction,
-    [newName, { from: managerAddress }]);
+    [newName],
+    { from: managerAddress }
+  );
   global.console.log('\tName of crydr view configured');
   return null;
 };
@@ -30,7 +32,9 @@ export const setSymbol = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .setSymbol
       .sendTransaction,
-    [newSymbol, { from: managerAddress }]);
+    [newSymbol],
+    { from: managerAddress }
+  );
   global.console.log('\tSymbol of crydr view configured');
   return null;
 };
@@ -46,7 +50,9 @@ export const setDecimals = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .setDecimals
       .sendTransaction,
-    [newDecimals, { from: managerAddress }]);
+    [newDecimals],
+    { from: managerAddress }
+  );
   global.console.log('\tDecimals of crydr view configured');
   return null;
 };

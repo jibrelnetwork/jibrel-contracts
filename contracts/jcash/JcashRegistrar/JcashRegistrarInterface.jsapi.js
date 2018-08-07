@@ -25,7 +25,8 @@ export const withdrawEth = async (contractAddress, replenisherAddress, value) =>
       .at(contractAddress)
       .withdrawEth
       .sendTransaction,
-    [value, { from: replenisherAddress }]
+    [value],
+    { from: replenisherAddress }
   );
   global.console.log('\tSuccessfully withdraw');
   return txHash;
@@ -42,7 +43,8 @@ export const withdrawToken = async (contractAddress, replenisherAddress, tokenAd
       .at(contractAddress)
       .withdrawToken
       .sendTransaction,
-    [tokenAddress, value, { from: replenisherAddress }]
+    [tokenAddress, value],
+    { from: replenisherAddress }
   );
   global.console.log('\tSuccessfully withdraw');
   return txHash;
@@ -65,7 +67,8 @@ export const refundEth = async (contractAddress, managerAddress, refundedTxHash,
       .at(contractAddress)
       .refundEth
       .sendTransaction,
-    [refundedTxHash, destinationAddress, value, { from: managerAddress }]
+    [refundedTxHash, destinationAddress, value],
+    { from: managerAddress }
   );
   global.console.log('\tSuccessfully refund');
   return txHash;
@@ -84,7 +87,8 @@ export const refundToken = async (contractAddress, managerAddress, refundedTxHas
       .at(contractAddress)
       .refundToken
       .sendTransaction,
-    [refundedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress }]
+    [refundedTxHash, tokenAddress, destinationAddress, value],
+    { from: managerAddress }
   );
   global.console.log('\tSuccessfully refund');
   return txHash;
@@ -101,7 +105,8 @@ export const transferEth = async (contractAddress, managerAddress, processedTxHa
       .at(contractAddress)
       .transferEth
       .sendTransaction,
-    [processedTxHash, destinationAddress, value, { from: managerAddress }]
+    [processedTxHash, destinationAddress, value],
+    { from: managerAddress }
   );
   global.console.log('\tSuccessfully transfer');
   return txHash;
@@ -119,7 +124,8 @@ export const transferToken = async (contractAddress, managerAddress, processedTx
       .at(contractAddress)
       .transferToken
       .sendTransaction,
-    [processedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress }]
+    [processedTxHash, tokenAddress, destinationAddress, value],
+    { from: managerAddress }
   );
   global.console.log('\tSuccessfully transfer');
   return txHash;

@@ -20,7 +20,9 @@ export const transfer = async (contractAddress, senderAddress, toAddress, valueW
       .at(contractAddress)
       .transfer
       .sendTransaction,
-    [toAddress, valueWei, { from: senderAddress }]);
+    [toAddress, valueWei],
+    { from: senderAddress }
+  );
   global.console.log('\tTokens successfully transferred');
   return txHash;
 };
@@ -36,7 +38,9 @@ export const mint = async (contractAddress, contractOwner, toAddress, valueWei) 
       .at(contractAddress)
       .mint
       .sendTransaction,
-    [toAddress, valueWei, { from: contractOwner }]);
+    [toAddress, valueWei],
+    { from: contractOwner }
+  );
   global.console.log('\tTokens successfully minted');
   return txHash;
 };

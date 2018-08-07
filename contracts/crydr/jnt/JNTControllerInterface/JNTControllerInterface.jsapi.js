@@ -22,7 +22,9 @@ export const chargeJNT = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .chargeJNT
       .sendTransaction,
-    [fromAccount, toAccount, valueToCharge, { from: managerAddress }]);
+    [fromAccount, toAccount, valueToCharge],
+    { from: managerAddress }
+  );
   global.console.log('\tJNT successfully charged');
   return null;
 };

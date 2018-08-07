@@ -20,7 +20,9 @@ export const setCrydrController = async (crydrStorageAddress, managerAddress,
       .at(crydrStorageAddress)
       .setCrydrController
       .sendTransaction,
-    [crydrControllerAddress, { from: managerAddress }]);
+    [crydrControllerAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tController of CryDR storage successfully set');
 };
 

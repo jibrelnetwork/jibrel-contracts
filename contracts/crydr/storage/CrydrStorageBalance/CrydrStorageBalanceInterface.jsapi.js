@@ -21,7 +21,9 @@ export const increaseBalance = async (crydrStorageAddress, crydrControllerAddres
       .at(crydrStorageAddress)
       .increaseBalance
       .sendTransaction,
-    [accountAddress, valueWei, { from: crydrControllerAddress }]);
+    [accountAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tBalance successfully increased');
 };
 
@@ -37,7 +39,9 @@ export const decreaseBalance = async (crydrStorageAddress, crydrControllerAddres
       .at(crydrStorageAddress)
       .decreaseBalance
       .sendTransaction,
-    [accountAddress, valueWei, { from: crydrControllerAddress }]);
+    [accountAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tBalance successfully decreased');
 };
 

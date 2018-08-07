@@ -20,7 +20,8 @@ export const createOwnershipOffer = async (contractAddress, ownerAddress,
       .at(contractAddress)
       .createOwnershipOffer
       .sendTransaction,
-    [proposedOwner, { from: ownerAddress }],
+    [proposedOwner],
+    { from: ownerAddress }
   );
   global.console.log('\t\tOwnership offer successfully created');
 };
@@ -34,7 +35,8 @@ export const acceptOwnershipOffer = async (contractAddress, proposedOwner) => {
       .at(contractAddress)
       .acceptOwnershipOffer
       .sendTransaction,
-    [{ from: proposedOwner }],
+    [],
+    { from: proposedOwner }
   );
   global.console.log('\t\tOwnership offer successfully accepted');
 };
@@ -48,7 +50,8 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
       .at(contractAddress)
       .cancelOwnershipOffer
       .sendTransaction,
-    [{ from: ownerAddress }],
+    [],
+    { from: ownerAddress }
   );
   global.console.log('\t\tOwnership offer successfully canceled');
 };

@@ -31,7 +31,9 @@ export const transfer = async (crydrViewAddress, spenderAddress,
       .at(crydrViewAddress)
       .transfer
       .sendTransaction,
-    [toAddress, valueTransferred, { from: spenderAddress }]);
+    [toAddress, valueTransferred],
+    { from: spenderAddress }
+  );
   global.console.log('\tTokens successfully transferred');
   return null;
 };
@@ -55,7 +57,9 @@ export const approve = async (crydrViewAddress, approverAddress,
       .at(crydrViewAddress)
       .approve
       .sendTransaction,
-    [spenderAddress, valueApproved, { from: approverAddress }]);
+    [spenderAddress, valueApproved],
+    { from: approverAddress }
+  );
   global.console.log('\tSpending of tokens successfully approved');
   return null;
 };
@@ -73,7 +77,9 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
       .at(crydrViewAddress)
       .transferFrom
       .sendTransaction,
-    [fromAddress, toAddress, valueTransferred, { from: spenderAddress }]);
+    [fromAddress, toAddress, valueTransferred],
+    { from: spenderAddress }
+  );
   global.console.log('\tTokens successfully transferred From');
   return null;
 };

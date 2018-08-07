@@ -104,7 +104,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
       crydrStorageInstance.address,
       managerPause,
       crydrStorageInstance.setCrydrController.sendTransaction,
-      [storageProxyInstance01.address, { from: managerGeneral }]);
+      [storageProxyInstance01.address],
+      { from: managerGeneral }
+    );
 
     let crydrController01Received = await crydrStorageInstance.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, storageProxyInstance01.address,
@@ -118,7 +120,9 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
       crydrStorageInstance.address,
       managerPause,
       crydrStorageInstance.setCrydrController.sendTransaction,
-      [storageProxyInstance02.address, { from: managerGeneral }]);
+      [storageProxyInstance02.address],
+      { from: managerGeneral }
+    );
 
     crydrController01Received = await crydrStorageInstance.getCrydrController.call();
     global.assert.strictEqual(crydrController01Received, storageProxyInstance02.address,
@@ -300,25 +304,29 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
       crydrStorageInstance.address,
       managerPause,
       storageProxyInstance01.increaseBalance.sendTransaction,
-      [testInvestor1, 5 * (10 ** 18), { from: owner }]
+      [testInvestor1, 5 * (10 ** 18)],
+      { from: owner }
     );
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageInstance.address,
       managerPause,
       storageProxyInstance01.decreaseBalance.sendTransaction,
-      [testInvestor1, 5 * (10 ** 18), { from: owner }]
+      [testInvestor1, 5 * (10 ** 18)],
+      { from: owner }
     );
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageInstance.address,
       managerPause,
       storageProxyInstance01.increaseAllowance.sendTransaction,
-      [testInvestor1, testInvestor2, 5 * (10 ** 18), { from: owner }]
+      [testInvestor1, testInvestor2, 5 * (10 ** 18)],
+      { from: owner }
     );
     await PausableTestSuite.assertWhenContractNotPaused(
       crydrStorageInstance.address,
       managerPause,
       storageProxyInstance01.decreaseAllowance.sendTransaction,
-      [testInvestor1, testInvestor2, 5 * (10 ** 18), { from: owner }]
+      [testInvestor1, testInvestor2, 5 * (10 ** 18)],
+      { from: owner }
     );
   });
 

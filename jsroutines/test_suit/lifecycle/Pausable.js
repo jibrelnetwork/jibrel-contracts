@@ -83,7 +83,7 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs) 
 };
 
 export const assertWhenContractPaused =
-  async (pausableContractAddress, managerPause, testedContractFunction, functionArgs = []) => {
+  async (pausableContractAddress, managerPause, testedContractFunction, functionArgs = [], txArgs = {}) => {
     global.console.log('\tTest that function works when contract is paused and throws when contract is unpaused');
 
     // get initial state and unpause if needed
@@ -103,7 +103,7 @@ export const assertWhenContractPaused =
 
 
     global.console.log('\tTest that function works when contract is paused');
-    await submitTxAndWaitConfirmation(testedContractFunction, functionArgs);
+    await submitTxAndWaitConfirmation(testedContractFunction, functionArgs, txArgs);
 
 
     // restore state
@@ -113,7 +113,7 @@ export const assertWhenContractPaused =
   };
 
 export const assertWhenContractNotPaused = async (
-  pausableContractAddress, managerPause, testedContractFunction, functionArgs = []) => {
+  pausableContractAddress, managerPause, testedContractFunction, functionArgs = [], txArgs = {}) => {
   global.console.log('\tTest that function works when contract is unpaused and throws when contract is paused');
 
 
@@ -134,7 +134,7 @@ export const assertWhenContractNotPaused = async (
 
 
   global.console.log('\tTest that function works when contract is unpaused');
-  await submitTxAndWaitConfirmation(testedContractFunction, functionArgs);
+  await submitTxAndWaitConfirmation(testedContractFunction, functionArgs, txArgs);
 
 
   // restore state

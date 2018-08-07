@@ -20,7 +20,9 @@ export const admitUser = async (licenseRegistryAddress, managerAddress,
       .at(licenseRegistryAddress)
       .admitUser
       .sendTransaction,
-    [userAddress, { from: managerAddress }]);
+    [userAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tUser successfully admitted');
 };
 
@@ -35,7 +37,9 @@ export const denyUser = async (licenseRegistryAddress, managerAddress,
       .at(licenseRegistryAddress)
       .denyUser
       .sendTransaction,
-    [userAddress, { from: managerAddress }]);
+    [userAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tUser successfully denied');
 };
 
@@ -60,7 +64,9 @@ export const grantUserLicense = async (licenseRegistryAddress, managerAddress,
       .at(licenseRegistryAddress)
       .grantUserLicense
       .sendTransaction,
-    [userAddress, licenseName, expirationTimestamp, { from: managerAddress }]);
+    [userAddress, licenseName, expirationTimestamp],
+    { from: managerAddress }
+  );
   global.console.log('\tUser license successfully granted');
 };
 
@@ -77,7 +83,9 @@ export const renewUserLicense = async (licenseRegistryAddress, managerAddress,
       .at(licenseRegistryAddress)
       .renewUserLicense
       .sendTransaction,
-    [userAddress, licenseName, expirationTimestamp, { from: managerAddress }]);
+    [userAddress, licenseName, expirationTimestamp],
+    { from: managerAddress }
+  );
   global.console.log('\tUser license successfully renewed');
 };
 
@@ -93,7 +101,9 @@ export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,
       .at(licenseRegistryAddress)
       .revokeUserLicense
       .sendTransaction,
-    [userAddress, licenseName, { from: managerAddress }]);
+    [userAddress, licenseName],
+    { from: managerAddress }
+  );
   global.console.log('\tUser license successfully revoked');
 };
 
