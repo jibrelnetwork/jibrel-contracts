@@ -1,12 +1,13 @@
-const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
-const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
-const CrydrControllerBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBaseInterface');
-const CrydrControllerLicensedBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerLicensedBaseInterface');
-const CrydrControllerBlockableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBlockableInterface');
-const CrydrControllerMintableInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerMintableInterface');
-const CrydrControllerForcedTransferInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerForcedTransferInterface');
-const JNTControllerInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTControllerInterface');
-const JNTPayableServiceInterfaceJSAPI = require('../jsapi/crydr/jnt/JNTPayableServiceInterface');
+const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
+const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
+const CrydrControllerBaseJSAPI = require('../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBase.jsapi');
+const CrydrControllerBlockableJSAPI = require('../../contracts/crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.jsapi');
+const CrydrControllerMintableJSAPI = require('../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.jsapi');
+const CrydrControllerForcedTransferJSAPI = require('../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.jsapi');
+const CrydrControllerLicensedBaseJSAPI = require('../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi');
+const JNTControllerJSAPI = require('../../contracts/asset/JNT/JNTController.jsapi');
+const JNTPayableServiceInterfaceJSAPI = require('../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi');
+const JNTPayableServiceJSAPI = require('../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi');
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 
@@ -37,20 +38,20 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress) =
   await PausableJSAPI.grantManagerPermissions(crydrControllerAddress, owner, managerPause);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerPause);
 
-  await CrydrControllerBaseInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                  owner, managerGeneral);
+  await CrydrControllerBaseJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                         owner, managerGeneral);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerGeneral);
 
-  await CrydrControllerBlockableInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                       owner, managerBlock);
+  await CrydrControllerBlockableJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                              owner, managerBlock);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerBlock);
 
-  await CrydrControllerMintableInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                      owner, managerMint);
+  await CrydrControllerMintableJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                             owner, managerMint);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerMint);
 
-  await CrydrControllerForcedTransferInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                            owner, managerForcedTransfer);
+  await CrydrControllerForcedTransferJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                   owner, managerForcedTransfer);
   await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerForcedTransfer);
 
   global.console.log('\tManagers of crydr controller successfully configured');
@@ -65,8 +66,8 @@ export const configureCrydrControllerLicensedManagers = async (crydrControllerAd
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
 
-  await CrydrControllerLicensedBaseInterfaceJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                          owner, managerGeneral);
+  await CrydrControllerLicensedBaseJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                 owner, managerGeneral);
   // assumed manager has been enabled already
   // await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerGeneral);
 
@@ -82,13 +83,13 @@ export const configureJntPayableService = async (jntPayableServiceAddress, jntCo
   const { owner, managerJNT, jntBeneficiary } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
 
-  await JNTPayableServiceInterfaceJSAPI.grantManagerPermissions(jntPayableServiceAddress, owner, managerJNT);
+  await JNTPayableServiceJSAPI.grantManagerPermissions(jntPayableServiceAddress, owner, managerJNT);
   await ManageableJSAPI.enableManager(jntPayableServiceAddress, owner, managerJNT);
 
   await JNTPayableServiceInterfaceJSAPI.setJntController(jntPayableServiceAddress, managerJNT, jntControllerAddress);
   await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jntPayableServiceAddress, managerJNT, jntBeneficiary);
 
-  await JNTControllerInterfaceJSAPI.grantManagerPermissions(jntControllerAddress, owner, jntPayableServiceAddress);
+  await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, owner, jntPayableServiceAddress);
   await ManageableJSAPI.enableManager(jntControllerAddress, owner, jntPayableServiceAddress);
 
   global.console.log('\tJNT payable service successfully configured');

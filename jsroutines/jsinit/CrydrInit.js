@@ -1,8 +1,8 @@
-const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
-const CrydrStorageBaseInterfaceJSAPI = require('../jsapi/crydr/storage/CrydrStorageBaseInterface');
-const CrydrControllerBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerBaseInterface');
-const CrydrControllerLicensedBaseInterfaceJSAPI = require('../jsapi/crydr/controller/CrydrControllerLicensedBaseInterface');
-const CrydrViewBaseInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewBaseInterface');
+const PausableJSAPI = require('../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
+const CrydrStorageBaseInterfaceJSAPI = require('../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi');
+const CrydrControllerBaseInterfaceJSAPI = require('../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi');
+const CrydrControllerLicensedBaseInterfaceJSAPI = require('../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.jsapi');
+const CrydrViewBaseInterfaceJSAPI = require('../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi');
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 

@@ -1,6 +1,6 @@
-const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
-const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
-const CrydrLicenseRegistryManagementInterfaceJSAPI = require('../jsapi/crydr/license/CrydrLicenseRegistryManagementInterface');
+const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
+const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
+const CrydrLicenseRegistryManagementJSAPI = require('../../contracts/crydr/license/CrydrLicenseRegistry.jsapi');
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 
@@ -29,7 +29,7 @@ export const configureLicenseRegistryManagers = async (licenseRegistryAddress) =
   await PausableJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerPause);
   await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerPause);
 
-  await CrydrLicenseRegistryManagementInterfaceJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerLicense);
+  await CrydrLicenseRegistryManagementJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerLicense);
   await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerLicense);
 
   global.console.log('\tManagers of license registry successfully configured');

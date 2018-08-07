@@ -1,11 +1,13 @@
 import * as DeployUtils from '../util/DeployUtils';
 
-import * as JcashRegistrarJSAPI from '../jsapi/jcash/JcashRegistrar.jsapi';
-import * as OwnableJSAPI from '../jsapi/lifecycle/Ownable';
-import * as ManageableJSAPI from '../jsapi/lifecycle/Manageable';
-import * as PausableJSAPI from '../jsapi/lifecycle/Pausable';
-import * as JNTPayableServiceInterfaceJSAPI from '../jsapi/crydr/jnt/JNTPayableServiceInterface';
-import * as JNTControllerInterfaceJSAPI from '../jsapi/crydr/jnt/JNTControllerInterface';
+import * as OwnableJSAPI from '../../contracts/lifecycle/Ownable/Ownable.jsapi';
+import * as OwnableInterfaceJSAPI from '../../contracts/lifecycle/Ownable/OwnableInterface.jsapi';
+import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as JNTPayableServiceInterfaceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
+import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
+import * as JNTControllerJSAPI from '../../contracts/asset/JNT/JNTController.jsapi';
+import * as JcashRegistrarJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrar.jsapi';
 
 
 export const deployJcashRegistrar = async (jcashRegistrarArtifact, contractOwner) => {
@@ -37,7 +39,7 @@ export const configureManagers = async (
 export const verifyManagers = async (
   jcashRegistrarAddress, contractOwner, managerPause, managerJcashReplenisher, managerJcashExchange
 ) => {
-  const isVerified1 = await OwnableJSAPI.verifyOwner(jcashRegistrarAddress, contractOwner);
+  const isVerified1 = await OwnableInterfaceJSAPI.verifyOwner(jcashRegistrarAddress, contractOwner);
   const isVerified2 = await PausableJSAPI.verifyManagerPermissions(jcashRegistrarAddress, managerPause);
   const isVerified3 = await JcashRegistrarJSAPI.verifyReplenisherPermissions(jcashRegistrarAddress, managerJcashReplenisher);
   const isVerified4 = await JcashRegistrarJSAPI.verifyExchangeManagerPermissions(jcashRegistrarAddress, managerJcashExchange);
@@ -54,7 +56,7 @@ export const configureJNTConnection = async (
   global.console.log('\tConfigure connections JcashRegistrar<->JNTController:');
 
   global.console.log('\tConfigure JNT manager');
-  await JNTPayableServiceInterfaceJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerJNT);
+  await JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerJNT);
   await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJNT);
 
   global.console.log('\tConfigure contract params');
@@ -64,7 +66,7 @@ export const configureJNTConnection = async (
   await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_token', transferCost);
 
   global.console.log('\tAllow JcashRegistrar charge JNT');
-  await JNTControllerInterfaceJSAPI.grantManagerPermissions(jntControllerAddress, contractOwner, jcashRegistrarAddress);
+  await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, contractOwner, jcashRegistrarAddress);
   await ManageableJSAPI.enableManager(jntControllerAddress, contractOwner, jcashRegistrarAddress);
 
   global.console.log('\tConnection JcashRegistrar<->JNTController successfully configured');
@@ -75,7 +77,7 @@ export const verifyJNTConnection = async (
   jcashRegistrarAddress, jntControllerAddress, managerJNT, jntBeneficiary, transferCost
 ) => {
   global.console.log('\tVerify JNT manager');
-  const isVerified1 = await JNTPayableServiceInterfaceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, managerJNT);
+  const isVerified1 = await JNTPayableServiceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, managerJNT);
 
 
   global.console.log('\tVerify contract params');
@@ -106,7 +108,7 @@ export const verifyJNTConnection = async (
 
 
   global.console.log('\tVerify that JcashRegistrar is allowed to charge JNT');
-  const isVerified6 = await JNTControllerInterfaceJSAPI.verifyManagerPermissions(jntControllerAddress, jcashRegistrarAddress);
+  const isVerified6 = await JNTControllerJSAPI.verifyManagerPermissions(jntControllerAddress, jcashRegistrarAddress);
 
 
   return (isVerified1 === true
