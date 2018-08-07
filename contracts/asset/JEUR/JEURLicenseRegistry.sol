@@ -6,6 +6,6 @@ pragma solidity ^0.4.24;
 import '../../crydr/asset/JCashLicenseRegistry.sol';
 
 
-contract jEURLicenseRegistry is JCashLicenseRegistry {
-  constructor () public JCashLicenseRegistry('jEUR') {}
+contract JEURLicenseRegistry is JCashLicenseRegistry {
+  constructor () public JCashLicenseRegistry('JEUR') {}
 }

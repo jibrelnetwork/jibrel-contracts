@@ -5,6 +5,6 @@ pragma solidity ^0.4.24;
 import '../../crydr/asset/JCashCrydrStorage.sol';
 
 
-contract jGBPStorage is JCashCrydrStorage {
-  constructor () public JCashCrydrStorage('jGBP') {}
+contract JKRWStorage is JCashCrydrStorage {
+  constructor () public JCashCrydrStorage('JKRW') {}
 }

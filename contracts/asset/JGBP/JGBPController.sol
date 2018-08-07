@@ -6,6 +6,6 @@ pragma solidity ^0.4.24;
 import '../../crydr/asset/JCashCrydrControllerLicensed.sol';
 
 
-contract jJODController is JCashCrydrControllerLicensed {
-  constructor () public JCashCrydrControllerLicensed('jJOD') {}
+contract JGBPController is JCashCrydrControllerLicensed {
+  constructor () public JCashCrydrControllerLicensed('JGBP') {}
 }
