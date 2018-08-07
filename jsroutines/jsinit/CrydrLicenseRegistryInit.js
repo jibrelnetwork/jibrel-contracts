@@ -26,12 +26,15 @@ export const configureLicenseRegistryManagers = async (licenseRegistryAddress) =
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerLicense - ${managerLicense}`);
 
-  await PausableJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerPause);
-  await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerPause),
+      await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerPause),
 
-  await CrydrLicenseRegistryManagementJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerLicense);
-  await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerLicense);
-
+      await CrydrLicenseRegistryManagementJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerLicense),
+      await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerLicense),
+    ]
+  );
   global.console.log('\tManagers of license registry successfully configured');
   return null;
 };

@@ -26,12 +26,16 @@ export const configureCrydrViewManagers = async (crydrViewAddress) => {
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
 
-  await PausableJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerPause);
-  await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerPause),
+      await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerPause),
 
-  await CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
-  await CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
-  await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerGeneral);
+      await CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral),
+      await CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral),
+      await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerGeneral),
+    ]
+  );
 
   global.console.log('\tManagers of crydr view successfully configured');
   return null;

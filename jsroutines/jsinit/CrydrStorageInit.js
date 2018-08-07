@@ -26,11 +26,15 @@ export const configureCrydrStorageManagers = async (crydrStorageAddress) => {
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
 
-  await PausableJSAPI.grantManagerPermissions(crydrStorageAddress, owner, managerPause);
-  await ManageableJSAPI.enableManager(crydrStorageAddress, owner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(crydrStorageAddress, owner, managerPause),
+      await ManageableJSAPI.enableManager(crydrStorageAddress, owner, managerPause),
 
-  await CrydrStorageBaseJSAPI.grantManagerPermissions(crydrStorageAddress, owner, managerGeneral);
-  await ManageableJSAPI.enableManager(crydrStorageAddress, owner, managerGeneral);
+      await CrydrStorageBaseJSAPI.grantManagerPermissions(crydrStorageAddress, owner, managerGeneral),
+      await ManageableJSAPI.enableManager(crydrStorageAddress, owner, managerGeneral),
+    ]
+  );
 
   global.console.log('\tManagers of crydr storage successfully configured');
   return null;

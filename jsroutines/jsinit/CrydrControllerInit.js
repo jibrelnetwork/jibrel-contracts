@@ -35,24 +35,28 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress) =
   global.console.log(`\t\tmanagerMint - ${managerMint}`);
   global.console.log(`\t\tmanagerForcedTransfer - ${managerForcedTransfer}`);
 
-  await PausableJSAPI.grantManagerPermissions(crydrControllerAddress, owner, managerPause);
-  await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(crydrControllerAddress, owner, managerPause),
+      await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerPause),
 
-  await CrydrControllerBaseJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                         owner, managerGeneral);
-  await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerGeneral);
+      await CrydrControllerBaseJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                             owner, managerGeneral),
+      await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerGeneral),
 
-  await CrydrControllerBlockableJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                              owner, managerBlock);
-  await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerBlock);
+      await CrydrControllerBlockableJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                  owner, managerBlock),
+      await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerBlock),
 
-  await CrydrControllerMintableJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                             owner, managerMint);
-  await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerMint);
+      await CrydrControllerMintableJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                 owner, managerMint),
+      await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerMint),
 
-  await CrydrControllerForcedTransferJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                   owner, managerForcedTransfer);
-  await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerForcedTransfer);
+      await CrydrControllerForcedTransferJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                       owner, managerForcedTransfer),
+      await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerForcedTransfer),
+    ]
+  );
 
   global.console.log('\tManagers of crydr controller successfully configured');
   return null;
@@ -83,14 +87,26 @@ export const configureJntPayableService = async (jntPayableServiceAddress, jntCo
   const { owner, managerJNT, jntBeneficiary } = DeployConfig.getAccounts();
   global.console.log(`\t\towner - ${owner}`);
 
-  await JNTPayableServiceJSAPI.grantManagerPermissions(jntPayableServiceAddress, owner, managerJNT);
-  await ManageableJSAPI.enableManager(jntPayableServiceAddress, owner, managerJNT);
+  await Promise.all(
+    [
+      await JNTPayableServiceJSAPI.grantManagerPermissions(jntPayableServiceAddress, owner, managerJNT),
+      await ManageableJSAPI.enableManager(jntPayableServiceAddress, owner, managerJNT),
+    ]
+  );
 
-  await JNTPayableServiceInterfaceJSAPI.setJntController(jntPayableServiceAddress, managerJNT, jntControllerAddress);
-  await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jntPayableServiceAddress, managerJNT, jntBeneficiary);
+  await Promise.all(
+    [
+      await JNTPayableServiceInterfaceJSAPI.setJntController(jntPayableServiceAddress, managerJNT, jntControllerAddress),
+      await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jntPayableServiceAddress, managerJNT, jntBeneficiary),
+    ]
+  );
 
-  await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, owner, jntPayableServiceAddress);
-  await ManageableJSAPI.enableManager(jntControllerAddress, owner, jntPayableServiceAddress);
+  await Promise.all(
+    [
+      await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, owner, jntPayableServiceAddress),
+      await ManageableJSAPI.enableManager(jntControllerAddress, owner, jntPayableServiceAddress),
+    ]
+  );
 
   global.console.log('\tJNT payable service successfully configured');
   return null;
