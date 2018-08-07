@@ -20,7 +20,9 @@ export const setLicenseRegistry = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .setLicenseRegistry
       .sendTransaction,
-    [licenseRegistryAddress, { from: managerAddress }]);
+    [licenseRegistryAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tLicense registry of CryDR controller successfully set');
 };
 

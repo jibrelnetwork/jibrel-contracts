@@ -17,7 +17,9 @@ export const emitMintEvent = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .emitMintEvent
       .sendTransaction,
-    [_owner, _value, { from: managerAddress }]);
+    [_owner, _value],
+    { from: managerAddress }
+  );
   global.console.log('\tMintEvent successfully emitted');
   return null;
 };
@@ -34,7 +36,9 @@ export const emitBurnEvent = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .emitBurnEvent
       .sendTransaction,
-    [_owner, _value, { from: managerAddress }]);
+    [_owner, _value],
+    { from: managerAddress }
+  );
   global.console.log('\tBurnEvent successfully emitted');
   return null;
 };

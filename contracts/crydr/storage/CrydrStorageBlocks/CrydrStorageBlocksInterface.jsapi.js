@@ -18,7 +18,9 @@ export const blockAccount = async (crydrStorageAddress, crydrControllerAddress,
       .at(crydrStorageAddress)
       .blockAccount
       .sendTransaction,
-    [accountAddress, { from: crydrControllerAddress }]);
+    [accountAddress],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tAccount successfully blocked');
 };
 
@@ -33,7 +35,9 @@ export const unblockAccount = async (crydrStorageAddress, crydrControllerAddress
       .at(crydrStorageAddress)
       .unblockAccount
       .sendTransaction,
-    [accountAddress, { from: crydrControllerAddress }]);
+    [accountAddress],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tAccount successfully unlocked');
 };
 
@@ -53,7 +57,9 @@ export const blockAccountFunds = async (crydrStorageAddress, crydrControllerAddr
       .at(crydrStorageAddress)
       .blockAccountFunds
       .sendTransaction,
-    [accountAddress, valueWei, { from: crydrControllerAddress }]);
+    [accountAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tFunds successfully blocked');
 };
 
@@ -69,7 +75,9 @@ export const unblockAccountFunds = async (crydrStorageAddress, crydrControllerAd
       .at(crydrStorageAddress)
       .unblockAccountFunds
       .sendTransaction,
-    [accountAddress, valueWei, { from: crydrControllerAddress }]);
+    [accountAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tFunds successfully unlocked');
 };
 

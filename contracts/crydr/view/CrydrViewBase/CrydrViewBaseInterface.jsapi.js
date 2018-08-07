@@ -20,7 +20,9 @@ export const setCrydrController = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .setCrydrController
       .sendTransaction,
-    [crydrControllerAddress, { from: managerAddress }]);
+    [crydrControllerAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tController of crydr view successfully set');
   return null;
 };

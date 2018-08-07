@@ -18,7 +18,9 @@ export const setCrydrStorage = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .setCrydrStorage
       .sendTransaction,
-    [crydrStorageAddress, { from: managerAddress }]);
+    [crydrStorageAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tStorage of CryDR controller successfully set');
   return null;
 };
@@ -44,7 +46,9 @@ export const setCrydrView = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .setCrydrView
       .sendTransaction,
-    [crydrViewAddress, crydrViewStandardName, { from: managerAddress }]);
+    [crydrViewAddress, crydrViewStandardName],
+    { from: managerAddress }
+  );
   global.console.log('\tView of CryDR controller successfully set');
   return null;
 };
@@ -60,7 +64,9 @@ export const removeCrydrView = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .removeCrydrView
       .sendTransaction,
-    [viewApiStandardName, { from: managerAddress }]);
+    [viewApiStandardName],
+    { from: managerAddress }
+  );
   global.console.log('\tView of CryDR controller successfully removed');
   return null;
 };

@@ -42,8 +42,11 @@ export async function waitTxConfirmation(txHash) {
   }
 }
 
-export async function submitTxAndWaitConfirmation(txTemplate, args = []) {
-  const txHash = await txTemplate(...args);
+export async function submitTxAndWaitConfirmation(txTemplate, methodArgs = [], txArgs = {}) {
+  const txSubmitParams = TxConfig.getTxSubmitParams();
+  const txArgsToSubmit = { ...txArgs, gasPrice: txSubmitParams.gasPrice };
+
+  const txHash = await txTemplate(...methodArgs, txArgsToSubmit);
   global.console.log(`\tTX submitted: ${txHash}`);
   await waitTxConfirmation(txHash);
   return txHash;

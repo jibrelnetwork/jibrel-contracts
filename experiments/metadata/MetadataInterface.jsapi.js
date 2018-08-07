@@ -19,7 +19,9 @@ export const setMetadata = async (contractAddress, managerAddress,
       .at(contractAddress)
       .setMetadata
       .sendTransaction,
-    [metadataKey, metadataValue, { from: managerAddress }]);
+    [metadataKey, metadataValue],
+    { from: managerAddress }
+  );
   global.console.log('\tContract metadata successfully set');
 };
 

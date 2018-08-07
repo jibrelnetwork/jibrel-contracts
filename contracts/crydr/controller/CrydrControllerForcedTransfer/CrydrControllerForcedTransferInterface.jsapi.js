@@ -22,7 +22,9 @@ export const forcedTransfer = async (crydrControllerAddress, callerAddress,
       .at(crydrControllerAddress)
       .forcedTransfer
       .sendTransaction,
-    [fromAddress, toAddress, valueToTransfer, { from: callerAddress }]);
+    [fromAddress, toAddress, valueToTransfer],
+    { from: callerAddress }
+  );
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
 };
@@ -40,7 +42,9 @@ export const forcedTransferAll = async (crydrControllerAddress, callerAddress,
       .at(crydrControllerAddress)
       .forcedTransferAll
       .sendTransaction,
-    [fromAddress, toAddress, { from: callerAddress }]);
+    [fromAddress, toAddress],
+    { from: callerAddress }
+  );
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
 };

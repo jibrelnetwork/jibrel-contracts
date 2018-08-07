@@ -23,14 +23,18 @@ export const configureManagers = async (
   jcashRegistrarAddress, contractOwner, managerPause, managerJcashReplenisher, managerJcashExchange) => {
   global.console.log('\tConfigure managers of JcashRegistrar contract:');
 
-  await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerPause);
-  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerPause),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerPause),
 
-  await JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, contractOwner, managerJcashReplenisher);
-  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashReplenisher);
+      await JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, contractOwner, managerJcashReplenisher),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashReplenisher),
 
-  await JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, contractOwner, managerJcashExchange);
-  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashExchange);
+      await JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, contractOwner, managerJcashExchange),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashExchange),
+    ]
+  );
 
   global.console.log('\tManagers of JcashRegistrar contract successfully configured');
   return null;
@@ -56,18 +60,29 @@ export const configureJNTConnection = async (
   global.console.log('\tConfigure connections JcashRegistrar<->JNTController:');
 
   global.console.log('\tConfigure JNT manager');
-  await JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerJNT);
-  await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJNT);
+  await Promise.all(
+    [
+      await JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerJNT),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJNT),
+    ]
+  );
 
   global.console.log('\tConfigure contract params');
-  await JNTPayableServiceInterfaceJSAPI.setJntController(jcashRegistrarAddress, managerJNT, jntControllerAddress);
-  await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jcashRegistrarAddress, managerJNT, jntBeneficiary);
-  await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_eth', transferCost);
-  await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_token', transferCost);
+  await Promise.all(
+    [
+      await JNTPayableServiceInterfaceJSAPI.setJntController(jcashRegistrarAddress, managerJNT, jntControllerAddress),
+      await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jcashRegistrarAddress, managerJNT, jntBeneficiary),
+      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_eth', transferCost),
+      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_token', transferCost),
+    ]
+  );
 
   global.console.log('\tAllow JcashRegistrar charge JNT');
-  await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, contractOwner, jcashRegistrarAddress);
-  await ManageableJSAPI.enableManager(jntControllerAddress, contractOwner, jcashRegistrarAddress);
+  await Promise.all(
+    [
+      await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, contractOwner, jcashRegistrarAddress),
+      await ManageableJSAPI.enableManager(jntControllerAddress, contractOwner, jcashRegistrarAddress),
+    ]);
 
   global.console.log('\tConnection JcashRegistrar<->JNTController successfully configured');
   return null;

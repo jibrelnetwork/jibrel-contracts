@@ -20,7 +20,9 @@ export const enableManager = async (contractAddress, ownerAddress,
       .at(contractAddress)
       .enableManager
       .sendTransaction,
-    [managerAddress, { from: ownerAddress }]);
+    [managerAddress],
+    { from: ownerAddress }
+  );
   global.console.log('\tManager successfully enabled');
 };
 
@@ -35,7 +37,9 @@ export const disableManager = async (contractAddress, ownerAddress,
       .at(contractAddress)
       .disableManager
       .sendTransaction,
-    [managerAddress, { from: ownerAddress }]);
+    [managerAddress],
+    { from: ownerAddress }
+  );
   global.console.log('\tManager successfully disabled');
 };
 
@@ -53,7 +57,9 @@ export const grantManagerPermissions = async (contractAddress, ownerAddress,
                               .at(contractAddress)
                               .grantManagerPermission
                               .sendTransaction,
-                            [managerAddress, permissionName, { from: ownerAddress }])));
+                            [managerAddress, permissionName],
+                            { from: ownerAddress }
+                          )));
   global.console.log('\tPermissions to the manager successfully granted');
 };
 
@@ -71,7 +77,10 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
                               .at(contractAddress)
                               .revokeManagerPermission
                               .sendTransaction,
-                            [managerAddress, permissionName, { from: ownerAddress }])));
+                            [managerAddress, permissionName],
+                            { from: ownerAddress }
+                          ))
+  );
   global.console.log('\tPermissions to the manager successfully revoked');
 };
 

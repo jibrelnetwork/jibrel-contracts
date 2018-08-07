@@ -15,7 +15,9 @@ export const mint = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .mint
       .sendTransaction,
-    [receiverAddress, amount, { from: managerAddress }]);
+    [receiverAddress, amount],
+    { from: managerAddress }
+  );
   global.console.log('\tTokens successfully minted');
   return null;
 };
@@ -32,7 +34,9 @@ export const burn = async (crydrControllerAddress, managerAddress,
       .at(crydrControllerAddress)
       .burn
       .sendTransaction,
-    [loserAddress, amount, { from: managerAddress }]);
+    [loserAddress, amount],
+    { from: managerAddress }
+  );
   global.console.log('\tTokens successfully burned');
   return null;
 };

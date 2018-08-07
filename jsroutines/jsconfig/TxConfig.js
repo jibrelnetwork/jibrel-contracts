@@ -14,10 +14,11 @@ export function getWeb3() {
 /* Functions */
 
 const txSubmitParamsProd = {
-  minConfirmations:   2,
+  minConfirmations:   1,
   pollingInterval:    500,
-  maxTimeoutMillisec: 5 * 60 * 1000,
-  maxTimeoutBlocks:   20,
+  maxTimeoutMillisec: 10 * 60 * 1000,
+  maxTimeoutBlocks:   50,
+  gasPrice:           1,
 };
 
 const txSubmitParamsTestNetwork = {
@@ -25,6 +26,7 @@ const txSubmitParamsTestNetwork = {
   pollingInterval:    50,
   maxTimeoutMillisec: 60 * 1000,
   maxTimeoutBlocks:   5,
+  gasPrice:           1,
 };
 
 let txSubmitParams = null;

@@ -22,7 +22,8 @@ export const executeCall = async (contractAddress, managerAddress,
       .at(contractAddress)
       .executeCall
       .sendTransaction,
-    [targetAddress, suppliedGas, ethValue, transactionBytecode, { from: managerAddress }],
+    [targetAddress, suppliedGas, ethValue, transactionBytecode],
+    { from: managerAddress }
   );
   global.console.log('\t\t"call" opcode successfully executed');
 };
@@ -39,7 +40,8 @@ export const executeDelegatecall = async (contractAddress, managerAddress,
       .at(contractAddress)
       .executeDelegatecall
       .sendTransaction,
-    [targetAddress, suppliedGas, transactionBytecode, { from: managerAddress }],
+    [targetAddress, suppliedGas, transactionBytecode],
+    { from: managerAddress },
   );
   global.console.log('\t\t"delegatecall" opcode successfully executed');
 };

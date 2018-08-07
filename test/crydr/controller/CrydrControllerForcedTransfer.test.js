@@ -2,17 +2,17 @@ const CrydrControllerForcedTransferMock = global.artifacts.require('CrydrControl
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
-const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const CrydrStorageBalanceInterfaceJSAPI = require('../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi');
-const CrydrControllerBaseInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi');
-const CrydrControllerMintableInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi');
-const CrydrControllerForcedTransferInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransferInterface.jsapi');
+import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
+import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
+import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
+import * as CrydrControllerForcedTransferInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransferInterface.jsapi';
 
-const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
-const CrydrStorageInitJSAPI = require('../../../jsroutines/jsinit/CrydrStorageInit');
-const CrydrControllerInitJSAPI = require('../../../jsroutines/jsinit/CrydrControllerInit');
-const CrydrViewInitJSAPI = require('../../../jsroutines/jsinit/CrydrViewInit');
-const CrydrInit = require('../../../jsroutines/jsinit/CrydrInit');
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as CrydrStorageInitJSAPI from '../../../jsroutines/jsinit/CrydrStorageInit';
+import * as CrydrControllerInitJSAPI from '../../../jsroutines/jsinit/CrydrControllerInit';
+import * as CrydrViewInitJSAPI from '../../../jsroutines/jsinit/CrydrViewInit';
+import * as CrydrInit from '../../../jsroutines/jsinit/CrydrInit';
 
 
 global.contract('CrydrControllerForcedTransfer', (accounts) => {

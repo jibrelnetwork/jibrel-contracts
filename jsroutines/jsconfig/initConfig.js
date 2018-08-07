@@ -1,5 +1,5 @@
-const TxConfig = require('./TxConfig');
-const DeployConfig = require('./DeployConfig');
+import * as TxConfig from './TxConfig';
+import * as DeployConfig from './DeployConfig';
 
 module.exports = function initConfig(web3, deployer, network, accounts) {
   global.console.log(`  Network:  ${network}`);

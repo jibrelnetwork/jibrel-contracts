@@ -16,7 +16,9 @@ export const emitTransferEvent = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .emitTransferEvent
       .sendTransaction,
-    [fromAddress, toAddress, valueTransferred, { from: managerAddress }]);
+    [fromAddress, toAddress, valueTransferred],
+    { from: managerAddress }
+  );
   global.console.log('\tEvent Transfer successfully emitted');
   return null;
 };
@@ -34,7 +36,9 @@ export const emitApprovalEvent = async (crydrViewAddress, managerAddress,
       .at(crydrViewAddress)
       .emitApprovalEvent
       .sendTransaction,
-    [ownerAddress, spenderAddress, valueTransferred, { from: managerAddress }]);
+    [ownerAddress, spenderAddress, valueTransferred],
+    { from: managerAddress }
+  );
   global.console.log('\tEvent Approval successfully emitted');
   return null;
 };

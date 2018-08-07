@@ -1,11 +1,11 @@
-const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
-const CrydrViewBaseJSAPI = require('../../contracts/crydr/view/CrydrViewBase/CrydrViewBase.jsapi');
-const CrydrViewERC20NamedJSAPI = require('../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi');
+import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as CrydrViewBaseJSAPI from '../../contracts/crydr/view/CrydrViewBase/CrydrViewBase.jsapi';
+import * as CrydrViewERC20NamedJSAPI from '../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi';
 
-const DeployConfig = require('../jsconfig/DeployConfig');
+import * as DeployConfig from '../jsconfig/DeployConfig';
 
-const DeployUtils = require('../util/DeployUtils');
+import * as DeployUtils from '../util/DeployUtils';
 
 
 export const deployCrydrView = async (crydrViewContractArtifact, contractOwner) => {
@@ -26,12 +26,16 @@ export const configureCrydrViewManagers = async (crydrViewAddress) => {
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
 
-  await PausableJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerPause);
-  await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerPause),
+      await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerPause),
 
-  await CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
-  await CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
-  await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerGeneral);
+      await CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral),
+      await CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral),
+      await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerGeneral),
+    ]
+  );
 
   global.console.log('\tManagers of crydr view successfully configured');
   return null;

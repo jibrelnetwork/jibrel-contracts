@@ -72,10 +72,10 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await submitTxAndWaitConfirmation(global.web3.eth.sendTransaction,
-                                      [{ from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }]);
+                                      [], { from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend });
 
     const events = await JcashRegistrarInterfaceJSAPI.getReceiveEthEvents(jcashRegistrarAddress,
-                                                                 { from: testInvestor1 }, { fromBlock: blockNumber + 1 });
+                                                                          { from: testInvestor1 }, { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
     global.assert.strictEqual(events[0].args.from, testInvestor1);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
@@ -87,10 +87,10 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await submitTxAndWaitConfirmation(global.web3.eth.sendTransaction,
-                                      [{ from: managerJcashReplenisher, to: jcashRegistrarAddress, value: valueToSend }]);
+                                      [], { from: managerJcashReplenisher, to: jcashRegistrarAddress, value: valueToSend });
 
     const events = await JcashRegistrarInterfaceJSAPI.getReplenishEthEvents(jcashRegistrarAddress,
-                                                                   { from: managerJcashReplenisher }, { fromBlock: blockNumber + 1 });
+                                                                            { from: managerJcashReplenisher }, { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
     global.assert.strictEqual(events[0].args.from, managerJcashReplenisher);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
@@ -105,7 +105,7 @@ global.contract('JcashRegistrar', (accounts) => {
     const replenisherBalanceStart = await global.web3.eth.getBalance(managerJcashReplenisher);
     await submitTxAndWaitConfirmation(
       global.web3.eth.sendTransaction,
-      [{ from: managerJcashReplenisher, to: jcashRegistrarAddress, value: valueToSend }]
+      [], { from: managerJcashReplenisher, to: jcashRegistrarAddress, value: valueToSend }
     );
 
     // withdraw ETH from the contract
@@ -164,13 +164,13 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const txHash = await submitTxAndWaitConfirmation(
       global.web3.eth.sendTransaction,
-      [{ from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }]
+      [], { from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }
     );
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await JcashRegistrarInterfaceJSAPI.refundEth(jcashRegistrarAddress, managerJcashExchange, txHash, testInvestor1, valueToSend);
 
     const events = await JcashRegistrarInterfaceJSAPI.getRefundEthEvents(jcashRegistrarAddress,
-                                                                { txhash: txHash }, { fromBlock: blockNumber + 1 });
+                                                                         { txhash: txHash }, { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
     global.assert.strictEqual(events[0].args.txhash, txHash);
     global.assert.strictEqual(events[0].args.to, testInvestor1);
@@ -183,7 +183,7 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const txHash = await submitTxAndWaitConfirmation(
       global.web3.eth.sendTransaction,
-      [{ from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }]
+      [], { from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }
     );
 
     await JcashRegistrarInterfaceJSAPI.refundEth(jcashRegistrarAddress, managerJcashExchange, txHash, testInvestor1, valueToSend);
@@ -251,7 +251,7 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const txHash = await submitTxAndWaitConfirmation(
       global.web3.eth.sendTransaction,
-      [{ from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }]
+      [], { from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }
     );
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await JcashRegistrarInterfaceJSAPI.transferEth(jcashRegistrarAddress, managerJcashExchange, txHash, testInvestor1, valueToSend);
@@ -278,7 +278,7 @@ global.contract('JcashRegistrar', (accounts) => {
 
     const txHash = await submitTxAndWaitConfirmation(
       global.web3.eth.sendTransaction,
-      [{ from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }]
+      [], { from: testInvestor1, to: jcashRegistrarAddress, value: valueToSend }
     );
 
     await JcashRegistrarInterfaceJSAPI.transferEth(jcashRegistrarAddress, managerJcashExchange, txHash, testInvestor1, valueToSend);

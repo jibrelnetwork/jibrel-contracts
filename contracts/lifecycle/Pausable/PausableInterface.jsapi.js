@@ -18,7 +18,8 @@ export const unpauseContract = async (contractAddress, managerAddress) => {
       .at(contractAddress)
       .unpauseContract
       .sendTransaction,
-    [{ from: managerAddress }],
+    [],
+    { from: managerAddress }
   );
   global.console.log('\t\tContract successfully unpaused');
 };
@@ -32,7 +33,8 @@ export const pauseContract = async (contractAddress, managerAddress) => {
       .at(contractAddress)
       .pauseContract
       .sendTransaction,
-    [{ from: managerAddress }],
+    [],
+    { from: managerAddress }
   );
   global.console.log('\t\tContract successfully paused');
 };

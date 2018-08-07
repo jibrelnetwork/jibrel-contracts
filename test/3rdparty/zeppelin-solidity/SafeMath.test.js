@@ -1,6 +1,6 @@
 const SafeMathMock = global.artifacts.require('SafeMathMock.sol');
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 
 global.contract('SafeMath', (accounts) => {

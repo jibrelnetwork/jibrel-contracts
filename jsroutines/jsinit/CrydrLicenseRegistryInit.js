@@ -1,10 +1,10 @@
-const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
-const CrydrLicenseRegistryManagementJSAPI = require('../../contracts/crydr/license/CrydrLicenseRegistry.jsapi');
+import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as CrydrLicenseRegistryManagementJSAPI from '../../contracts/crydr/license/CrydrLicenseRegistry.jsapi';
 
-const DeployConfig = require('../jsconfig/DeployConfig');
+import * as DeployConfig from '../jsconfig/DeployConfig';
 
-const DeployUtils = require('../util/DeployUtils');
+import * as DeployUtils from '../util/DeployUtils';
 
 
 export const deployLicenseRegistry = async (licenseRegistryArtifact, contractOwner) => {
@@ -26,12 +26,15 @@ export const configureLicenseRegistryManagers = async (licenseRegistryAddress) =
   global.console.log(`\t\tmanagerPause - ${managerPause}`);
   global.console.log(`\t\tmanagerLicense - ${managerLicense}`);
 
-  await PausableJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerPause);
-  await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerPause);
+  await Promise.all(
+    [
+      await PausableJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerPause),
+      await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerPause),
 
-  await CrydrLicenseRegistryManagementJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerLicense);
-  await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerLicense);
-
+      await CrydrLicenseRegistryManagementJSAPI.grantManagerPermissions(licenseRegistryAddress, owner, managerLicense),
+      await ManageableJSAPI.enableManager(licenseRegistryAddress, owner, managerLicense),
+    ]
+  );
   global.console.log('\tManagers of license registry successfully configured');
   return null;
 };

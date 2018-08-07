@@ -1,5 +1,5 @@
-const ManageableInterfaceJSAPI = require('../../lifecycle/Manageable/ManageableInterface.jsapi');
-const ManageableJSAPI = require('../../lifecycle/Manageable/Manageable.jsapi');
+import * as ManageableInterfaceJSAPI from '../../lifecycle/Manageable/ManageableInterface.jsapi';
+import * as ManageableJSAPI from '../../lifecycle/Manageable/Manageable.jsapi';
 
 
 /**

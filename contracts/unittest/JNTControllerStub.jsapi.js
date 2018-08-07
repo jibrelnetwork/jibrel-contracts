@@ -21,7 +21,8 @@ export const chargeJNT = async (contractAddress, senderAddress, fromAddress, toA
       .at(contractAddress)
       .chargeJNT
       .sendTransaction,
-    [fromAddress, toAddress, valueWei, { from: senderAddress }]
+    [fromAddress, toAddress, valueWei],
+    { from: senderAddress }
   );
   global.console.log('\tJNT successfully charged');
   return txHash;

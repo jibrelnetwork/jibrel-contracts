@@ -20,7 +20,9 @@ export const setJntController = async (jntPayableServiceAddress, managerAddress,
       .at(jntPayableServiceAddress)
       .setJntController
       .sendTransaction,
-    [jntControllerAddress, { from: managerAddress }]);
+    [jntControllerAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tJNT controller of JNT payable service successfully set');
   return null;
 };
@@ -40,7 +42,9 @@ export const setJntBeneficiary = async (jntPayableServiceAddress, managerAddress
       .at(jntPayableServiceAddress)
       .setJntBeneficiary
       .sendTransaction,
-    [jntBeneficiaryAddress, { from: managerAddress }]);
+    [jntBeneficiaryAddress],
+    { from: managerAddress }
+  );
   global.console.log('\tJNT beneficiary of JNT payable service successfully set');
   return null;
 };
@@ -62,7 +66,9 @@ export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
       .at(jntPayableServiceAddress)
       .setActionPrice
       .sendTransaction,
-    [actionName, jntPriceWei, { from: managerAddress }]);
+    [actionName, jntPriceWei],
+    { from: managerAddress }
+  );
   global.console.log('\tJNT beneficiary of JNT payable service successfully set');
   return null;
 };

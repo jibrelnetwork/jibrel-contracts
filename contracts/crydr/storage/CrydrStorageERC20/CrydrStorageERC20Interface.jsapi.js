@@ -22,7 +22,9 @@ export const transfer = async (crydrStorageAddress, crydrControllerAddress,
       .at(crydrStorageAddress)
       .transfer
       .sendTransaction,
-    [msgsenderAddress, toAddress, valueWei, { from: crydrControllerAddress }]);
+    [msgsenderAddress, toAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tBalance successfully increased');
 };
 
@@ -40,7 +42,9 @@ export const transferFrom = async (crydrStorageAddress, crydrControllerAddress,
       .at(crydrStorageAddress)
       .transferFrom
       .sendTransaction,
-    [msgsenderAddress, fromAddress, toAddress, valueWei, { from: crydrControllerAddress }]);
+    [msgsenderAddress, fromAddress, toAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tBalance successfully decreased');
 };
 
@@ -57,7 +61,9 @@ export const approve = async (crydrStorageAddress, crydrControllerAddress,
       .at(crydrStorageAddress)
       .approve
       .sendTransaction,
-    [msgsenderAddress, spenderAddress, valueWei, { from: crydrControllerAddress }]);
+    [msgsenderAddress, spenderAddress, valueWei],
+    { from: crydrControllerAddress }
+  );
   global.console.log('\tBalance successfully increased');
 };
 

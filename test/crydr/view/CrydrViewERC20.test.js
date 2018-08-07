@@ -1,17 +1,17 @@
 const CrydrControllerERC20Stub    = global.artifacts.require('CrydrControllerERC20Stub.sol');
 const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
-const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const CrydrViewBaseInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi');
-const ERC20InterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi');
-const CrydrViewERC20LoggableInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.jsapi');
+import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as CrydrViewBaseInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
+import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi';
+import * as CrydrViewERC20LoggableInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.jsapi';
 
-const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausable');
+import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
 
-const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
-const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 
 global.contract('CrydrViewERC20', (accounts) => {

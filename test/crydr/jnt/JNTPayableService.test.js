@@ -1,15 +1,15 @@
 const JNTPayableServiceMock = global.artifacts.require('JNTPayableServiceMock.sol');
 const JNTControllerStub = global.artifacts.require('JNTControllerStub.sol');
 
-const ManageableJSAPI = require('../../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const PausableJSAPI = require('../../../contracts/lifecycle/Pausable/Pausable.jsapi');
-const JNTPayableServiceInterfaceJSAPI = require('../../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi');
-const JNTPayableServiceJSAPI = require('../../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi');
+import * as ManageableJSAPI from '../../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as PausableJSAPI from '../../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as JNTPayableServiceInterfaceJSAPI from '../../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
+import * as JNTPayableServiceJSAPI from '../../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
 
-const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 
 global.contract('JNTPayableService', (accounts) => {

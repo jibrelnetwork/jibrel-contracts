@@ -18,7 +18,9 @@ export const transfer = async (crydrControllerAddress, callerAddress,
       .at(crydrControllerAddress)
       .transfer
       .sendTransaction,
-    [msgsenderAddress, toAddress, valueToTransfer, { from: callerAddress }]);
+    [msgsenderAddress, toAddress, valueToTransfer],
+    { from: callerAddress }
+  );
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
 };
@@ -43,7 +45,9 @@ export const approve = async (crydrControllerAddress, callerAddress,
       .at(crydrControllerAddress)
       .approve
       .sendTransaction,
-    [msgsenderAddress, spenderAddress, valueToApprove, { from: callerAddress }]);
+    [msgsenderAddress, spenderAddress, valueToApprove],
+    { from: callerAddress }
+  );
   global.console.log('\tSpending successfully approved via CryDR Controller');
   return null;
 };
@@ -62,7 +66,9 @@ export const transferFrom = async (crydrControllerAddress, callerAddress,
       .at(crydrControllerAddress)
       .transferFrom
       .sendTransaction,
-    [msgsenderAddress, fromAddress, toAddress, valueToTransfer, { from: callerAddress }]);
+    [msgsenderAddress, fromAddress, toAddress, valueToTransfer],
+    { from: callerAddress }
+  );
   global.console.log('\tTransfer From successfully executed via CryDR Controller');
   return null;
 };
