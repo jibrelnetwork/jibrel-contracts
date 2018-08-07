@@ -1,11 +1,11 @@
-const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
-const CrydrViewBaseJSAPI = require('../../contracts/crydr/view/CrydrViewBase/CrydrViewBase.jsapi');
-const CrydrViewERC20NamedJSAPI = require('../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi');
+import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as CrydrViewBaseJSAPI from '../../contracts/crydr/view/CrydrViewBase/CrydrViewBase.jsapi';
+import * as CrydrViewERC20NamedJSAPI from '../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi';
 
-const DeployConfig = require('../jsconfig/DeployConfig');
+import * as DeployConfig from '../jsconfig/DeployConfig';
 
-const DeployUtils = require('../util/DeployUtils');
+import * as DeployUtils from '../util/DeployUtils';
 
 
 export const deployCrydrView = async (crydrViewContractArtifact, contractOwner) => {

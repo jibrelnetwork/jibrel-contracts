@@ -1,17 +1,17 @@
-const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
-const CrydrControllerBaseJSAPI = require('../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBase.jsapi');
-const CrydrControllerBlockableJSAPI = require('../../contracts/crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.jsapi');
-const CrydrControllerMintableJSAPI = require('../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.jsapi');
-const CrydrControllerForcedTransferJSAPI = require('../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.jsapi');
-const CrydrControllerLicensedBaseJSAPI = require('../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi');
-const JNTControllerJSAPI = require('../../contracts/jnt/JNTController.jsapi');
-const JNTPayableServiceInterfaceJSAPI = require('../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi');
-const JNTPayableServiceJSAPI = require('../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi');
+import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as CrydrControllerBaseJSAPI from '../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBase.jsapi';
+import * as CrydrControllerBlockableJSAPI from '../../contracts/crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.jsapi';
+import * as CrydrControllerMintableJSAPI from '../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.jsapi';
+import * as CrydrControllerForcedTransferJSAPI from '../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.jsapi';
+import * as CrydrControllerLicensedBaseJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi';
+import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
+import * as JNTPayableServiceInterfaceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
+import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
 
-const DeployConfig = require('../jsconfig/DeployConfig');
+import * as DeployConfig from '../jsconfig/DeployConfig';
 
-const DeployUtils = require('../util/DeployUtils');
+import * as DeployUtils from '../util/DeployUtils';
 
 
 export const deployCrydrController = async (crydrControllerContractArtifact, contractOwner) => {

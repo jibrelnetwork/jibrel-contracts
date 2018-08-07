@@ -1,11 +1,11 @@
 const Ownable = global.artifacts.require('Ownable.sol');
 
-const OwnableInterfaceJSAPI = require('../../contracts/lifecycle/Ownable/OwnableInterface.jsapi');
-const OwnableJSAPI = require('../../contracts/lifecycle/Ownable/Ownable.jsapi');
+import * as OwnableInterfaceJSAPI from '../../contracts/lifecycle/Ownable/OwnableInterface.jsapi';
+import * as OwnableJSAPI from '../../contracts/lifecycle/Ownable/Ownable.jsapi';
 
-const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
+import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
 
-const CheckExceptions  = require('../../jsroutines/util/CheckExceptions');
+import * as CheckExceptions  from '../../jsroutines/util/CheckExceptions';
 
 
 global.contract('Ownable', (accounts) => {

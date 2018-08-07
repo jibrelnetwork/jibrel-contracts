@@ -1,15 +1,15 @@
-const PausableJSAPI = require('../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const CrydrStorageBaseInterfaceJSAPI = require('../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi');
-const CrydrControllerBaseInterfaceJSAPI = require('../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi');
-const CrydrControllerLicensedBaseInterfaceJSAPI = require('../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.jsapi');
-const CrydrViewBaseInterfaceJSAPI = require('../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi');
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as CrydrStorageBaseInterfaceJSAPI from '../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi';
+import * as CrydrControllerBaseInterfaceJSAPI from '../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
+import * as CrydrControllerLicensedBaseInterfaceJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.jsapi';
+import * as CrydrViewBaseInterfaceJSAPI from '../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
 
-const DeployConfig = require('../jsconfig/DeployConfig');
+import * as DeployConfig from '../jsconfig/DeployConfig';
 
-const CrydrStorageInitJSAPI = require('./CrydrStorageInit');
-const CrydrLicenseRegistryInitJSAPI = require('./CrydrLicenseRegistryInit');
-const CrydrControllerInitJSAPI = require('./CrydrControllerInit');
-const CrydrViewInitJSAPI = require('./CrydrViewInit');
+import * as CrydrStorageInitJSAPI from './CrydrStorageInit';
+import * as CrydrLicenseRegistryInitJSAPI from './CrydrLicenseRegistryInit';
+import * as CrydrControllerInitJSAPI from './CrydrControllerInit';
+import * as CrydrViewInitJSAPI from './CrydrViewInit';
 
 
 export const linkCrydrStorage = async (crydrStorageAddress,

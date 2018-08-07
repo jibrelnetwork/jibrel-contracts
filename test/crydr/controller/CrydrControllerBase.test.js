@@ -2,13 +2,13 @@ const CrydrControllerBaseMock = global.artifacts.require('CrydrControllerBaseMoc
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 
-const PausableInterfaceJSAPI            = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const CrydrControllerBaseInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi');
+import * as PausableInterfaceJSAPI            from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 
-const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
-const CrydrControllerInit = require('../../../jsroutines/jsinit/CrydrControllerInit');
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 
 global.contract('CrydrControllerBase', (accounts) => {

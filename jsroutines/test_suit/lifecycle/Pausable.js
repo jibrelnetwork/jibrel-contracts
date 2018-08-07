@@ -1,13 +1,13 @@
 import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
 
 
-const ManageableJSAPI = require('../../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableInterfaceJSAPI   = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const PausableJSAPI   = require('../../../contracts/lifecycle/Pausable/Pausable.jsapi');
+import * as ManageableJSAPI from '../../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableInterfaceJSAPI   from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as PausableJSAPI   from '../../../contracts/lifecycle/Pausable/Pausable.jsapi';
 
-const DeployConfig = require('../../jsconfig/DeployConfig');
+import * as DeployConfig from '../../jsconfig/DeployConfig';
 
-const CheckExceptions = require('../../util/CheckExceptions');
+import * as CheckExceptions from '../../util/CheckExceptions';
 
 
 export const testContractIsPausable = async (contractArtifact, constructorArgs) => {

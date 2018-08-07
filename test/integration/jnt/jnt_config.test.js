@@ -2,13 +2,13 @@ const Migrations = global.artifacts.require('Migrations.sol');
 const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
 
-const CrydrControllerMintableInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi');
-const ERC20InterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi');
-const CrydrViewERC20MintableInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.jsapi');
+import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
+import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi';
+import * as CrydrViewERC20MintableInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.jsapi';
 
-const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 
 global.contract('JNT Integration tests', (accounts) => {

@@ -3,17 +3,17 @@ const BigNumber = require('bignumber.js');
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
 
-const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
-const CrydrStorageBaseInterfaceJSAPI = require('../../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi');
-const CrydrStorageBalanceInterfaceJSAPI = require('../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi');
-const CrydrStorageAllowanceInterfaceJSAPI = require('../../../contracts/crydr/storage/CrydrStorageAllowance/CrydrStorageAllowanceInterface.jsapi');
-const CrydrStorageBlocksInterfaceJSAPI = require('../../../contracts/crydr/storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.jsapi');
+import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+import * as CrydrStorageBaseInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi';
+import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
+import * as CrydrStorageAllowanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageAllowance/CrydrStorageAllowanceInterface.jsapi';
+import * as CrydrStorageBlocksInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.jsapi';
 
-const CrydrStorageInit = require('../../../jsroutines/jsinit/CrydrStorageInit');
-const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
+import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
-const CheckExceptions = require('../../../jsroutines/util/CheckExceptions');
-const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausable');
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
 
 
 global.contract('CrydrStorageBaseInterface', (accounts) => {

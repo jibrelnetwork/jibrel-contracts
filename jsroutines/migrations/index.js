@@ -31,10 +31,10 @@ const JJODViewERC20Artifact       = global.artifacts.require('JJODViewERC20.sol'
 
 const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 
-const DeployConfig = require('../jsconfig/DeployConfig');
-const CrydrInit = require('../jsinit/CrydrInit');
-const JcashRegistrarInit = require('../jsinit/JcashRegistrarInit');
-const PausableInterfaceJSAPI = require('../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
+import * as DeployConfig from '../jsconfig/DeployConfig';
+import * as CrydrInit from '../jsinit/CrydrInit';
+import * as JcashRegistrarInit from '../jsinit/JcashRegistrarInit';
+import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 
 
 /* Migration #2 */

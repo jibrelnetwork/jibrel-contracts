@@ -1,10 +1,10 @@
-const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
-const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
-const CrydrLicenseRegistryManagementJSAPI = require('../../contracts/crydr/license/CrydrLicenseRegistry.jsapi');
+import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
+import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as CrydrLicenseRegistryManagementJSAPI from '../../contracts/crydr/license/CrydrLicenseRegistry.jsapi';
 
-const DeployConfig = require('../jsconfig/DeployConfig');
+import * as DeployConfig from '../jsconfig/DeployConfig';
 
-const DeployUtils = require('../util/DeployUtils');
+import * as DeployUtils from '../util/DeployUtils';
 
 
 export const deployLicenseRegistry = async (licenseRegistryArtifact, contractOwner) => {
