@@ -18,7 +18,7 @@ const txSubmitParamsProd = {
   pollingInterval:    500,
   maxTimeoutMillisec: 10 * 60 * 1000,
   maxTimeoutBlocks:   50,
-  gasPrice:           1,
+  gasPrice:           100 * 1000000000,
 };
 
 const txSubmitParamsTestNetwork = {
@@ -26,7 +26,7 @@ const txSubmitParamsTestNetwork = {
   pollingInterval:    50,
   maxTimeoutMillisec: 60 * 1000,
   maxTimeoutBlocks:   5,
-  gasPrice:           1,
+  gasPrice:           100 * 1000000000,
 };
 
 let txSubmitParams = null;
