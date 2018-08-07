@@ -1,8 +1,8 @@
 const PausableMockV1 = global.artifacts.require('PausableMockV1.sol');
 const PausableMockV2 = global.artifacts.require('PausableMockV2.sol');
 
-const ManageableJSAPI = require('../../jsroutines/jsapi/lifecycle/Manageable');
-const PausableJSAPI   = require('../../jsroutines/jsapi/lifecycle/Pausable');
+const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
+const PausableJSAPI   = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
 
 const PausableTestSuite = require('../../jsroutines/test_suit/lifecycle/Pausable');
 

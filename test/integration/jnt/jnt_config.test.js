@@ -2,9 +2,9 @@ const Migrations = global.artifacts.require('Migrations.sol');
 const JNTController = global.artifacts.require('JNTController.sol');
 const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
 
-const controllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
-const ERC20InterfaceJSAPI = require('../../../jsroutines/jsapi/crydr/view/ERC20Interface');
-const ERC20MintableInterfaceJSAPI = require('../../../jsroutines/jsapi/crydr/view/ERC20MintableInterface');
+const CrydrControllerMintableInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi');
+const ERC20InterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi');
+const CrydrViewERC20MintableInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.jsapi');
 
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 
@@ -24,12 +24,12 @@ global.contract('JNT Integration tests', (accounts) => {
     const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     const blockNumber = global.web3.eth.blockNumber;
 
-    await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
+    await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
 
     const balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + mintedValue);
 
-    const pastEvents = await ERC20MintableInterfaceJSAPI.getMintEvents(
+    const pastEvents = await CrydrViewERC20MintableInterfaceJSAPI.getMintEvents(
       JNTViewERC20Instance.address,
       {
         owner: testInvestor1,
@@ -51,19 +51,19 @@ global.contract('JNT Integration tests', (accounts) => {
 
     const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
 
-    await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
+    await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
 
     let balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + mintedValue);
 
     const blockNumber = global.web3.eth.blockNumber;
 
-    await controllerMintableJSAPI.burn(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
+    await CrydrControllerMintableInterfaceJSAPI.burn(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
 
     balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber());
 
-    const pastEvents = await ERC20MintableInterfaceJSAPI.getBurnEvents(
+    const pastEvents = await CrydrViewERC20MintableInterfaceJSAPI.getBurnEvents(
       JNTViewERC20Instance.address,
       {
         owner: testInvestor1,
@@ -87,7 +87,7 @@ global.contract('JNT Integration tests', (accounts) => {
 
     const lastMigration = await MigrationsInstance.last_completed_migration.call();
 
-    await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
+    await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
 
     const investor1BalanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     const investor2BalanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor2);
@@ -213,7 +213,7 @@ global.contract('JNT Integration tests', (accounts) => {
       return;
     }
 
-    await controllerMintableJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
+    await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerInstance.address, managerMint, testInvestor1, mintedValue);
 
     const investor1BalanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor1);
     const investor2BalanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, testInvestor2);

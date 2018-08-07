@@ -1,10 +1,10 @@
 const CrydrControllerERC20Stub    = global.artifacts.require('CrydrControllerERC20Stub.sol');
 const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
-const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
-const CrydrViewBaseJSAPI = require('../../../jsroutines/jsapi/crydr/view/CrydrViewBaseInterface');
-const CrydrViewERC20JSAPI = require('../../../jsroutines/jsapi/crydr/view/ERC20Interface');
-const CrydrViewERC20LoggableJSAPI = require('../../../jsroutines/jsapi/crydr/view/ERC20LoggableInterface');
+const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
+const CrydrViewBaseInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi');
+const ERC20InterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi');
+const CrydrViewERC20LoggableInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.jsapi');
 
 const PausableTestSuite = require('../../../jsroutines/test_suit/lifecycle/Pausable');
 
@@ -47,17 +47,17 @@ global.contract('CrydrViewERC20', (accounts) => {
 
     global.console.log('\tStart to configure test contracts:');
     await CrydrViewInit.configureCrydrViewManagers(jcashCrydrViewERC20Instance.address);
-    await CrydrViewBaseJSAPI.setCrydrController(jcashCrydrViewERC20Instance.address,
-                                                managerGeneral,
-                                                controllerStubInstance.address);
-    await PausableJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
+    await CrydrViewBaseInterfaceJSAPI.setCrydrController(jcashCrydrViewERC20Instance.address,
+                                                         managerGeneral,
+                                                         controllerStubInstance.address);
+    await PausableInterfaceJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
 
 
     global.console.log('\tStart to verify configuration of test contracts:');
-    const controllerAddress = await CrydrViewBaseJSAPI.getCrydrController(jcashCrydrViewERC20Instance.address);
+    const controllerAddress = await CrydrViewBaseInterfaceJSAPI.getCrydrController(jcashCrydrViewERC20Instance.address);
     global.assert.strictEqual(controllerAddress, controllerStubInstance.address,
                               'Expected that view configured properly');
-    const isPaused = await PausableJSAPI.getPaused(jcashCrydrViewERC20Instance.address);
+    const isPaused = await PausableInterfaceJSAPI.getPaused(jcashCrydrViewERC20Instance.address);
     global.assert.strictEqual(isPaused, false, 'Expected that contract is paused');
   });
 
@@ -79,17 +79,17 @@ global.contract('CrydrViewERC20', (accounts) => {
     global.assert.strictEqual(contractSymbolHash, originalSymbolHash);
 
 
-    await CrydrViewERC20JSAPI.transfer(jcashCrydrViewERC20Instance.address, testInvestor1,
+    await ERC20InterfaceJSAPI.transfer(jcashCrydrViewERC20Instance.address, testInvestor1,
                                        testInvestor1, 10 * (10 ** 18));
     const transferCounter = await controllerStubInstance.transferCounter.call();
     global.assert.strictEqual(transferCounter.toNumber(), 1);
 
-    await CrydrViewERC20JSAPI.approve(jcashCrydrViewERC20Instance.address, testInvestor1,
+    await ERC20InterfaceJSAPI.approve(jcashCrydrViewERC20Instance.address, testInvestor1,
                                       testInvestor1, 10 * (10 ** 18));
     const approveCounter = await controllerStubInstance.approveCounter.call();
     global.assert.strictEqual(approveCounter.toNumber(), 1);
 
-    await CrydrViewERC20JSAPI.transferFrom(jcashCrydrViewERC20Instance.address, testInvestor1,
+    await ERC20InterfaceJSAPI.transferFrom(jcashCrydrViewERC20Instance.address, testInvestor1,
                                            testInvestor1, testInvestor2, 10 * (10 ** 18));
     const transferFromCounter = await controllerStubInstance.transferFromCounter.call();
     global.assert.strictEqual(transferFromCounter.toNumber(), 1);
@@ -105,21 +105,21 @@ global.contract('CrydrViewERC20', (accounts) => {
   });
 
   global.it('should test that functions covered by pause modifiers', async () => {
-    PausableJSAPI.pauseContract(jcashCrydrViewERC20Instance.address, managerPause);
+    PausableInterfaceJSAPI.pauseContract(jcashCrydrViewERC20Instance.address, managerPause);
 
     await PausableTestSuite
       .assertWhenContractNotPaused(jcashCrydrViewERC20Instance.address, managerPause,
-                                   CrydrViewERC20JSAPI.transfer,
+                                   ERC20InterfaceJSAPI.transfer,
                                    [jcashCrydrViewERC20Instance.address, testInvestor1,
                                     testInvestor2, 10 * (10 ** 18)]);
     await PausableTestSuite
       .assertWhenContractNotPaused(jcashCrydrViewERC20Instance.address, managerPause,
-                                   CrydrViewERC20JSAPI.approve,
+                                   ERC20InterfaceJSAPI.approve,
                                    [jcashCrydrViewERC20Instance.address, testInvestor1,
                                     testInvestor2, 10 * (10 ** 18)]);
     await PausableTestSuite
       .assertWhenContractNotPaused(jcashCrydrViewERC20Instance.address, managerPause,
-                                   CrydrViewERC20JSAPI.transferFrom,
+                                   ERC20InterfaceJSAPI.transferFrom,
                                    [jcashCrydrViewERC20Instance.address, testInvestor1,
                                     testInvestor1, testInvestor2, 10 * (10 ** 18)]);
   });
@@ -127,12 +127,12 @@ global.contract('CrydrViewERC20', (accounts) => {
   global.it('should test that only controller is allowed to emit events', async () => {
     // direct call to the view, not through the controller
     let isThrows = await CheckExceptions
-      .isContractThrows(CrydrViewERC20LoggableJSAPI.emitTransferEvent,
+      .isContractThrows(CrydrViewERC20LoggableInterfaceJSAPI.emitTransferEvent,
                         [jcashCrydrViewERC20Instance.address, testInvestor1,
                          testInvestor1, testInvestor2, 10 * (10 ** 18)]);
     global.assert.strictEqual(isThrows, true, 'Only CrydrController can emit transfer event');
     isThrows = await CheckExceptions
-      .isContractThrows(CrydrViewERC20LoggableJSAPI.emitApprovalEvent,
+      .isContractThrows(CrydrViewERC20LoggableInterfaceJSAPI.emitApprovalEvent,
                         [jcashCrydrViewERC20Instance.address, testInvestor1,
                          testInvestor1, testInvestor2, 10 * (10 ** 18)]);
     global.assert.strictEqual(isThrows, true, 'Only CrydrController can emit approval event');
@@ -142,10 +142,10 @@ global.contract('CrydrViewERC20', (accounts) => {
     const value = 10 * (10 ** 18);
 
     let blockNumber = global.web3.eth.blockNumber;
-    await CrydrViewERC20LoggableJSAPI
+    await CrydrViewERC20LoggableInterfaceJSAPI
       .emitTransferEvent(controllerStubInstance.address, testInvestor1,
                          testInvestor1, testInvestor2, value);
-    let pastEvents = await CrydrViewERC20JSAPI
+    let pastEvents = await ERC20InterfaceJSAPI
       .getTransferEvents(jcashCrydrViewERC20Instance.address,
                          {
                            from: testInvestor1,
@@ -160,10 +160,10 @@ global.contract('CrydrViewERC20', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
     blockNumber = global.web3.eth.blockNumber;
-    await CrydrViewERC20LoggableJSAPI
+    await CrydrViewERC20LoggableInterfaceJSAPI
       .emitApprovalEvent(controllerStubInstance.address, testInvestor1,
                          testInvestor1, testInvestor2, value);
-    pastEvents = await CrydrViewERC20JSAPI
+    pastEvents = await ERC20InterfaceJSAPI
       .getApprovalEvents(jcashCrydrViewERC20Instance.address,
                          {
                            owner:   testInvestor1,

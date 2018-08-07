@@ -1,8 +1,8 @@
 const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20Stub.sol');
 
-const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
-const CrydrViewBaseJSAPI = require('../../../jsroutines/jsapi/crydr/view/CrydrViewBaseInterface');
+const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
+const CrydrViewBaseInterfaceJSAPI = require('../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi');
 
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrViewInit = require('../../../jsroutines/jsinit/CrydrViewInit');
@@ -39,53 +39,53 @@ global.contract('CrydrViewBase', (accounts) => {
 
     global.console.log('\tStart to configure test contracts:');
     await CrydrViewInit.configureCrydrViewManagers(crydrViewBaseInstance.address);
-    await CrydrViewBaseJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                managerGeneral,
-                                                controllerStubInstance01.address);
-    await PausableJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
+    await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
+                                                         managerGeneral,
+                                                         controllerStubInstance01.address);
+    await PausableInterfaceJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
 
 
     global.console.log('\tStart to verify configuration of test contracts:');
-    const controllerAddress = await CrydrViewBaseJSAPI.getCrydrController(crydrViewBaseInstance.address);
+    const controllerAddress = await CrydrViewBaseInterfaceJSAPI.getCrydrController(crydrViewBaseInstance.address);
     global.assert.strictEqual(controllerAddress, controllerStubInstance01.address,
                               'Expected that view configured properly');
-    const isPaused = await PausableJSAPI.getPaused(crydrViewBaseInstance.address);
+    const isPaused = await PausableInterfaceJSAPI.getPaused(crydrViewBaseInstance.address);
     global.assert.strictEqual(isPaused, false, 'Expected that contract is paused');
   });
 
   global.it('should test basic getters', async () => {
-    const viewName = await CrydrViewBaseJSAPI.getCrydrViewStandardName(crydrViewBaseInstance.address);
+    const viewName = await CrydrViewBaseInterfaceJSAPI.getCrydrViewStandardName(crydrViewBaseInstance.address);
     global.assert.strictEqual(viewName, viewStandard);
 
-    const viewNameHash = await CrydrViewBaseJSAPI.getCrydrViewStandardNameHash(crydrViewBaseInstance.address);
+    const viewNameHash = await CrydrViewBaseInterfaceJSAPI.getCrydrViewStandardNameHash(crydrViewBaseInstance.address);
     global.assert.strictEqual(viewNameHash, viewStandardHash);
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
-    await PausableJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
 
 
-    let isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseJSAPI.setCrydrController,
+    let isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseInterfaceJSAPI.setCrydrController,
                                                           [crydrViewBaseInstance.address,
                                                            testInvestor1,
                                                            controllerStubInstance02.address]);
     global.assert.strictEqual(isThrows, true, 'Only manager should be able to set crydrController');
-    isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseJSAPI.setCrydrController,
+    isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseInterfaceJSAPI.setCrydrController,
                                                       [crydrViewBaseInstance.address,
                                                        managerGeneral,
                                                        0x0]);
     global.assert.strictEqual(isThrows, true, 'Should be a valid address of crydrController');
-    isThrows = await CrydrViewBaseJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                           managerGeneral,
-                                                           controllerStubInstance02.address);
+    isThrows = await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
+                                                                    managerGeneral,
+                                                                    controllerStubInstance02.address);
 
 
-    await PausableJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
     const isPaused = await crydrViewBaseInstance.getPaused.call();
     global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
 
-    isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseJSAPI.setCrydrController,
+    isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseInterfaceJSAPI.setCrydrController,
                                                       [crydrViewBaseInstance.address,
                                                        managerGeneral,
                                                        0x0]);
@@ -93,14 +93,14 @@ global.contract('CrydrViewBase', (accounts) => {
   });
 
   global.it('should test that functions fire events', async () => {
-    await PausableJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
 
     const blockNumber = global.web3.eth.blockNumber;
-    await CrydrViewBaseJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                managerGeneral,
-                                                controllerStubInstance02.address);
+    await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
+                                                         managerGeneral,
+                                                         controllerStubInstance02.address);
 
-    const pastEvents = await CrydrViewBaseJSAPI
+    const pastEvents = await CrydrViewBaseInterfaceJSAPI
       .getCrydrControllerChangedEvents(crydrViewBaseInstance.address,
                                        {
                                          crydrcontroller: controllerStubInstance02.address,
