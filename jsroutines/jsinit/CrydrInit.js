@@ -130,7 +130,6 @@ export const initLicensedCrydr = async (crydrStorageContractArtifact,
   global.console.log('\tConfiguring license managers');
   await CrydrLicenseRegistryInitJSAPI.configureLicenseRegistryManagers(licenseRegistryAddress);
   await CrydrControllerInitJSAPI.configureCrydrControllerLicensedManagers(crydrControllerAddress);
-  await CrydrViewInitJSAPI.configureCrydrViewMetadataManagers(crydrViewAddress);
   global.console.log('\tLicense managers successfully configured');
 
   global.console.log('\tLink license registry and controller');

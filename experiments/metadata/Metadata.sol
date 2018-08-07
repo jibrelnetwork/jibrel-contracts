@@ -4,18 +4,18 @@ pragma solidity ^0.4.24;
 
 
 import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import './CrydrViewMetadataInterface.sol';
+import './MetadataInterface.sol';
 
 
-contract CrydrViewMetadata is ManageableInterface,
-                              CrydrViewMetadataInterface {
+contract Metadata is ManageableInterface,
+                     MetadataInterface {
 
   /* Storage */
 
   mapping (bytes32 => string) meta;
 
 
-  /* CrydrViewMetadataInterface */
+  /* MetadataInterface */
 
   function setMetadata(
     string _key, string _value
