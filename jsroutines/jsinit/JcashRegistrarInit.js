@@ -6,7 +6,7 @@ import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageabl
 import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
 import * as JNTPayableServiceInterfaceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
 import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
-import * as JNTControllerJSAPI from '../../contracts/asset/JNT/JNTController.jsapi';
+import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
 import * as JcashRegistrarJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrar.jsapi';
 
 

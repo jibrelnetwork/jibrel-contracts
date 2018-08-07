@@ -5,7 +5,7 @@ const CrydrControllerBlockableJSAPI = require('../../contracts/crydr/controller/
 const CrydrControllerMintableJSAPI = require('../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.jsapi');
 const CrydrControllerForcedTransferJSAPI = require('../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.jsapi');
 const CrydrControllerLicensedBaseJSAPI = require('../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi');
-const JNTControllerJSAPI = require('../../contracts/asset/JNT/JNTController.jsapi');
+const JNTControllerJSAPI = require('../../contracts/jnt/JNTController.jsapi');
 const JNTPayableServiceInterfaceJSAPI = require('../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi');
 const JNTPayableServiceJSAPI = require('../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi');
 
