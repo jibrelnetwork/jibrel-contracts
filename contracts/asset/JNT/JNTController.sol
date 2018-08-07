@@ -3,19 +3,19 @@
 pragma solidity ^0.4.24;
 
 
-import '../../util/CommonModifiers.sol';
-import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../../crydr/controller/CrydrControllerBase.sol';
-import '../../crydr/controller/CrydrControllerBlockable.sol';
-import '../../crydr/controller/CrydrControllerMintable.sol';
-import '../../crydr/controller/CrydrControllerERC20.sol';
-import '../../crydr/jnt/JNTControllerInterface.sol';
+import '../../util/CommonModifiers/CommonModifiers.sol';
+import '../../feature/AssetID/AssetID.sol';
+import '../../lifecycle/Ownable/Ownable.sol';
+import '../../lifecycle/Manageable/Manageable.sol';
+import '../../lifecycle/Pausable/Pausable.sol';
+import '../../feature/BytecodeExecutor/BytecodeExecutor.sol';
+import '../../crydr/controller/CrydrControllerBase/CrydrControllerBase.sol';
+import '../../crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.sol';
+import '../../crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol';
+import '../../crydr/controller/CrydrControllerERC20/CrydrControllerERC20.sol';
+import '../../crydr/jnt/JNTControllerInterface/JNTControllerInterface.sol';
 
-import '../../crydr/storage/CrydrStorageERC20Interface.sol';
+import '../../crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
 
 
 /**

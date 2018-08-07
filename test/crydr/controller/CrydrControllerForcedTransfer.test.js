@@ -2,11 +2,11 @@ const CrydrControllerForcedTransferMock = global.artifacts.require('CrydrControl
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
-const PausableJSAPI = require('../../../jsroutines/jsapi/lifecycle/Pausable');
-const CrydrStorageBalanceJSAPI = require('../../../jsroutines/jsapi/crydr/storage/CrydrStorageBalanceInterface');
-const CrydrControllerBaseJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerBaseInterface');
-const CrydrControllerMintableJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerMintableInterface');
-const CrydrControllerForcedTransferJSAPI = require('../../../jsroutines/jsapi/crydr/controller/CrydrControllerForcedTransferInterface');
+const PausableInterfaceJSAPI = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
+const CrydrStorageBalanceInterfaceJSAPI = require('../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi');
+const CrydrControllerBaseInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi');
+const CrydrControllerMintableInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi');
+const CrydrControllerForcedTransferInterfaceJSAPI = require('../../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransferInterface.jsapi');
 
 const DeployConfig = require('../../../jsroutines/jsconfig/DeployConfig');
 const CrydrStorageInitJSAPI = require('../../../jsroutines/jsinit/CrydrStorageInit');
@@ -70,16 +70,16 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
     global.assert.notStrictEqual(jcashCrydrViewERC20Instance.address,
                                  '0x0000000000000000000000000000000000000000');
 
-    const isPaused = await PausableJSAPI.getPaused(crydrControllerInstance.address);
+    const isPaused = await PausableInterfaceJSAPI.getPaused(crydrControllerInstance.address);
     global.assert.strictEqual(isPaused, true,
                               'Just configured crydrControllerMintable contract must be paused');
 
-    const storageAddress = await CrydrControllerBaseJSAPI
+    const storageAddress = await CrydrControllerBaseInterfaceJSAPI
       .getCrydrStorageAddress(crydrControllerInstance.address);
     global.assert.strictEqual(storageAddress, crydrStorageInstance.address,
                               'Just configured crydrControllerMintable should have initialized crydrStorage address');
 
-    const viewAddress = await CrydrControllerBaseJSAPI
+    const viewAddress = await CrydrControllerBaseInterfaceJSAPI
       .getCrydrViewAddress(crydrControllerInstance.address, viewStandard);
     global.assert.strictEqual(viewAddress, jcashCrydrViewERC20Instance.address,
                               'Expected that crydrView is set');
@@ -90,24 +90,24 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   });
 
   global.it('should test that contract allows to transfer tokens by a manager', async () => {
-    await PausableJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
-    await PausableJSAPI.unpauseContract(crydrControllerInstance.address, managerPause);
-    await PausableJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrControllerInstance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
 
 
-    await CrydrControllerMintableJSAPI.mint(crydrControllerInstance.address, managerMint,
-                                            testInvestor1, 10 * (10 ** 18));
-    let balance = await CrydrStorageBalanceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerInstance.address, managerMint,
+                                                     testInvestor1, 10 * (10 ** 18));
+    let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
                               'Expected that balance has increased');
 
-    await CrydrControllerForcedTransferJSAPI.forcedTransfer(crydrControllerInstance.address, managerForcedTransfer,
-                                                            testInvestor1, testInvestor2, 1 * (10 ** 18));
+    await CrydrControllerForcedTransferInterfaceJSAPI.forcedTransfer(crydrControllerInstance.address, managerForcedTransfer,
+                                                                     testInvestor1, testInvestor2, 1 * (10 ** 18));
 
-    balance = await CrydrStorageBalanceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 9 * (10 ** 18),
                               'Expected that balance has reduced due to forced transfer');
-    balance = await CrydrStorageBalanceJSAPI.getBalance(crydrStorageInstance.address, testInvestor2);
+    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor2);
     global.assert.strictEqual(balance.toNumber(), 1 * (10 ** 18),
                               'Expected that balance has increased due to forced transfer');
   });

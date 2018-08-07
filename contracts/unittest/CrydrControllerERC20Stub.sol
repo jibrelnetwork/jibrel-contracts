@@ -3,9 +3,9 @@
 pragma solidity ^0.4.24;
 
 
-import '../feature/assetid/AssetID.sol';
-import '../../contracts/crydr/controller/CrydrControllerERC20Interface.sol';
-import '../../contracts/crydr/view/CrydrViewERC20LoggableInterface.sol';
+import '../feature/AssetID/AssetID.sol';
+import '../../contracts/crydr/controller/CrydrControllerERC20/CrydrControllerERC20Interface.sol';
+import '../../contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
 
 
 /**

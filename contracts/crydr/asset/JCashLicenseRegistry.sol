@@ -3,11 +3,11 @@
 pragma solidity ^0.4.24;
 
 
-import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
+import '../../feature/AssetID/AssetID.sol';
+import '../../lifecycle/Ownable/Ownable.sol';
+import '../../lifecycle/Manageable/Manageable.sol';
+import '../../lifecycle/Pausable/Pausable.sol';
+import '../../feature/BytecodeExecutor/BytecodeExecutor.sol';
 import '../license/CrydrLicenseRegistry.sol';
 
 

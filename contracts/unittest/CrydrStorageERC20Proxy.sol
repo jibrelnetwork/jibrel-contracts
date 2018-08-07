@@ -3,12 +3,12 @@
 pragma solidity ^0.4.24;
 
 
-import '../feature/assetid/AssetID.sol';
-import '../crydr/storage/CrydrStorageBaseInterface.sol';
-import '../crydr/storage/CrydrStorageBalanceInterface.sol';
-import '../crydr/storage/CrydrStorageAllowanceInterface.sol';
-import '../crydr/storage/CrydrStorageBlocksInterface.sol';
-import '../crydr/storage/CrydrStorageERC20Interface.sol';
+import '../feature/AssetID/AssetID.sol';
+import '../crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.sol';
+import '../crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
+import '../crydr/storage/CrydrStorageAllowance/CrydrStorageAllowanceInterface.sol';
+import '../crydr/storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.sol';
+import '../crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
 
 
 /**

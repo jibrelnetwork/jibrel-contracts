@@ -1,8 +1,8 @@
-const ManageableJSAPI = require('../jsapi/lifecycle/Manageable');
-const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
-const CrydrViewBaseInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewBaseInterface');
-const CrydrViewERC20NamedInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewERC20NamedInterface');
-const CrydrViewMetadataInterfaceJSAPI = require('../jsapi/crydr/view/CrydrViewMetadataInterface');
+const ManageableJSAPI = require('../../contracts/lifecycle/Manageable/Manageable.jsapi');
+const PausableJSAPI = require('../../contracts/lifecycle/Pausable/Pausable.jsapi');
+const CrydrViewBaseJSAPI = require('../../contracts/crydr/view/CrydrViewBase/CrydrViewBase.jsapi');
+const CrydrViewERC20NamedJSAPI = require('../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi');
+const CrydrViewMetadataJSAPI = require('../../contracts/crydr/view/CrydrViewMetadata/CrydrViewMetadata.jsapi');
 
 const DeployConfig = require('../jsconfig/DeployConfig');
 
@@ -30,8 +30,8 @@ export const configureCrydrViewManagers = async (crydrViewAddress) => {
   await PausableJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerPause);
   await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerPause);
 
-  await CrydrViewBaseInterfaceJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
-  await CrydrViewERC20NamedInterfaceJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
+  await CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
+  await CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, owner, managerGeneral);
   await ManageableJSAPI.enableManager(crydrViewAddress, owner, managerGeneral);
 
   global.console.log('\tManagers of crydr view successfully configured');
@@ -46,8 +46,8 @@ export const configureCrydrViewMetadataManagers = async (crydrViewAddress) => {
   global.console.log(`\t\towner - ${owner}`);
   global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
 
-  await CrydrViewMetadataInterfaceJSAPI.grantManagerPermissions(crydrViewAddress,
-                                                                owner, managerGeneral);
+  await CrydrViewMetadataJSAPI.grantManagerPermissions(crydrViewAddress,
+                                                       owner, managerGeneral);
   // assumed manager has been enabled already
   // await ManageableJSAPI.enableManager(crydrControllerAddress, owner, managerGeneral);
 

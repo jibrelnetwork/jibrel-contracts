@@ -3,9 +3,9 @@
 pragma solidity ^0.4.24;
 
 
-import '../lifecycle/Ownable.sol';
-import '../lifecycle/Manageable.sol';
-import '../crydr/jnt/JNTControllerInterface.sol';
+import '../lifecycle/Ownable/Ownable.sol';
+import '../lifecycle/Manageable/Manageable.sol';
+import '../crydr/jnt/JNTControllerInterface/JNTControllerInterface.sol';
 
 
 /**

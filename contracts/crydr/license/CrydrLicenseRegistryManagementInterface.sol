@@ -33,6 +33,14 @@ contract CrydrLicenseRegistryManagementInterface {
   function denyUser(address _userAddress) external;
 
   /**
+   * @dev Function to check admittance of an user
+   * @param _userAddress address User`s address
+   * @return True if investor is in the registry and admitted
+   */
+  function isUserAdmitted(address _userAddress) public constant returns (bool);
+
+
+  /**
    * @dev Function to grant license to an user
    * @param _userAddress         address User`s address
    * @param _licenseName         string  name of the license
@@ -54,4 +62,12 @@ contract CrydrLicenseRegistryManagementInterface {
    * @param _licenseName string  name of the license
    */
   function revokeUserLicense(address _userAddress, string _licenseName) external;
+
+  /**
+   * @dev Function to check license of an investor
+   * @param _userAddress address User`s address
+   * @param _licenseName string  License name
+   * @return True if investor has been granted needed license
+   */
+  function isUserGranted(address _userAddress, string _licenseName) public constant returns (bool);
 }

@@ -4,17 +4,17 @@ pragma solidity ^0.4.24;
 
 
 import '../../third-party/zeppelin-solidity/SafeMath.sol';
-import '../../util/CommonModifiers.sol';
-import '../../feature/assetid/AssetID.sol';
-import '../../lifecycle/Ownable.sol';
-import '../../lifecycle/Manageable.sol';
-import '../../lifecycle/Pausable.sol';
-import '../../feature/bytecode/BytecodeExecutor.sol';
-import '../storage/CrydrStorageBase.sol';
-import '../storage/CrydrStorageBalance.sol';
-import '../storage/CrydrStorageAllowance.sol';
-import '../storage/CrydrStorageBlocks.sol';
-import '../storage/CrydrStorageERC20.sol';
+import '../../util/CommonModifiers/CommonModifiers.sol';
+import '../../feature/AssetID/AssetID.sol';
+import '../../lifecycle/Ownable/Ownable.sol';
+import '../../lifecycle/Manageable/Manageable.sol';
+import '../../lifecycle/Pausable/Pausable.sol';
+import '../../feature/BytecodeExecutor/BytecodeExecutor.sol';
+import '../storage/CrydrStorageBase/CrydrStorageBase.sol';
+import '../storage/CrydrStorageBalance/CrydrStorageBalance.sol';
+import '../storage/CrydrStorageAllowance/CrydrStorageAllowance.sol';
+import '../storage/CrydrStorageBlocks/CrydrStorageBlocks.sol';
+import '../storage/CrydrStorageERC20/CrydrStorageERC20.sol';
 
 
 /**

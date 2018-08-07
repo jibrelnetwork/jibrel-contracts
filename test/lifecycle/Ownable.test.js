@@ -1,6 +1,7 @@
 const Ownable = global.artifacts.require('Ownable.sol');
 
-const OwnableJSAPI = require('../../jsroutines/jsapi/lifecycle/Ownable');
+const OwnableInterfaceJSAPI = require('../../contracts/lifecycle/Ownable/OwnableInterface.jsapi');
+const OwnableJSAPI = require('../../contracts/lifecycle/Ownable/Ownable.jsapi');
 
 const DeployConfig = require('../../jsroutines/jsconfig/DeployConfig');
 
@@ -18,7 +19,7 @@ global.contract('Ownable', (accounts) => {
     ownableInstanceAddress = ownableInstance.address;
 
     global.console.log('\t\tcheck initial state of the deployed Ownable instance');
-    const ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    const ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     const proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, '0x0000000000000000000000000000000000000000');
@@ -27,7 +28,7 @@ global.contract('Ownable', (accounts) => {
   global.it('should check that offer to transfer ownership can be created', async () => {
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    const ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    const ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     const proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, testInvestor1);
@@ -36,14 +37,14 @@ global.contract('Ownable', (accounts) => {
   global.it('should check that offer to transfer ownership can be cancelled', async () => {
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    let ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    let ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     let proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, testInvestor1);
 
     await OwnableJSAPI.cancelOwnershipOffer(ownableInstanceAddress, owner);
 
-    ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, '0x0000000000000000000000000000000000000000');
@@ -51,14 +52,14 @@ global.contract('Ownable', (accounts) => {
 
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, testInvestor1);
 
     await OwnableJSAPI.cancelOwnershipOffer(ownableInstanceAddress, testInvestor1);
 
-    ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, '0x0000000000000000000000000000000000000000');
@@ -67,14 +68,14 @@ global.contract('Ownable', (accounts) => {
   global.it('should check that offer to transfer ownership can be accepted', async () => {
     await OwnableJSAPI.createOwnershipOffer(ownableInstanceAddress, owner, testInvestor1);
 
-    let ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    let ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, owner);
     let proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, testInvestor1);
 
     await OwnableJSAPI.acceptOwnershipOffer(ownableInstanceAddress, testInvestor1);
 
-    ownerReceived = await OwnableJSAPI.getOwner(ownableInstanceAddress);
+    ownerReceived = await OwnableInterfaceJSAPI.getOwner(ownableInstanceAddress);
     global.assert.strictEqual(ownerReceived, testInvestor1);
     proposedOwner = await OwnableJSAPI.getProposedOwner(ownableInstanceAddress);
     global.assert.strictEqual(proposedOwner, '0x0000000000000000000000000000000000000000');

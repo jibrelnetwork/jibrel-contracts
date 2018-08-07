@@ -1,9 +1,9 @@
 import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
 
-// const Pausable = global.artifacts.require('Pausable.sol');
 
-const ManageableJSAPI = require('../../jsapi/lifecycle/Manageable');
-const PausableJSAPI   = require('../../jsapi/lifecycle/Pausable');
+const ManageableJSAPI = require('../../../contracts/lifecycle/Manageable/Manageable.jsapi');
+const PausableInterfaceJSAPI   = require('../../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
+const PausableJSAPI   = require('../../../contracts/lifecycle/Pausable/Pausable.jsapi');
 
 const DeployConfig = require('../../jsconfig/DeployConfig');
 
@@ -22,63 +22,63 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs) 
   await ManageableJSAPI.enableManager(pausableInstanceAddress, owner, managerPause);
 
 
-  let isPaused = await PausableJSAPI.getPaused(pausableInstanceAddress);
+  let isPaused = await PausableInterfaceJSAPI.getPaused(pausableInstanceAddress);
   global.assert.strictEqual(isPaused, true, 'New deployed contract should be paused');
 
 
-  let isThrows = await CheckExceptions.isContractThrows(PausableJSAPI.unpauseContract,
+  let isThrows = await CheckExceptions.isContractThrows(PausableInterfaceJSAPI.unpauseContract,
                                                         [pausableInstanceAddress, owner]);
   global.assert.strictEqual(isThrows, true, 'Only allowed manager should be able to unpause contract');
 
-  isThrows = await CheckExceptions.isContractThrows(PausableJSAPI.unpauseContract,
+  isThrows = await CheckExceptions.isContractThrows(PausableInterfaceJSAPI.unpauseContract,
                                                     [pausableInstanceAddress, testInvestor1]);
   global.assert.strictEqual(isThrows, true, 'Only allowed manager should be able to unpause contract');
 
-  isThrows = await CheckExceptions.isContractThrows(PausableJSAPI.pauseContract,
+  isThrows = await CheckExceptions.isContractThrows(PausableInterfaceJSAPI.pauseContract,
                                                     [pausableInstanceAddress, managerPause]);
   global.assert.strictEqual(isThrows, true, 'Contract can not be paused again');
 
 
   let blockNumber = global.web3.eth.blockNumber;
-  await PausableJSAPI.unpauseContract(pausableInstanceAddress, managerPause);
-  let pastEvents = await PausableJSAPI.getUnpauseEvents(pausableInstanceAddress,
-                                                        {},
-                                                        {
-                                                          fromBlock: blockNumber + 1,
-                                                          toBlock:   blockNumber + 1,
-                                                          address:   managerPause,
-                                                        });
+  await PausableInterfaceJSAPI.unpauseContract(pausableInstanceAddress, managerPause);
+  let pastEvents = await PausableInterfaceJSAPI.getUnpauseEvents(pausableInstanceAddress,
+                                                                 {},
+                                                                 {
+                                                                   fromBlock: blockNumber + 1,
+                                                                   toBlock:   blockNumber + 1,
+                                                                   address:   managerPause,
+                                                                 });
   global.assert.strictEqual(pastEvents.length, 1);
 
 
-  isPaused = await PausableJSAPI.getPaused(pausableInstanceAddress);
+  isPaused = await PausableInterfaceJSAPI.getPaused(pausableInstanceAddress);
   global.assert.strictEqual(isPaused, false, 'Manager should be able to unpause contract');
 
 
-  isThrows = await CheckExceptions.isContractThrows(PausableJSAPI.pauseContract,
+  isThrows = await CheckExceptions.isContractThrows(PausableInterfaceJSAPI.pauseContract,
                                                     [pausableInstanceAddress, owner]);
   global.assert.strictEqual(isThrows, true, 'Only allowed manager should be able to pause contract');
-  isThrows = await CheckExceptions.isContractThrows(PausableJSAPI.pauseContract,
+  isThrows = await CheckExceptions.isContractThrows(PausableInterfaceJSAPI.pauseContract,
                                                     [pausableInstanceAddress, testInvestor1]);
   global.assert.strictEqual(isThrows, true, 'Only allowed manager should be able to pause contract');
-  isThrows = await CheckExceptions.isContractThrows(PausableJSAPI.unpauseContract,
+  isThrows = await CheckExceptions.isContractThrows(PausableInterfaceJSAPI.unpauseContract,
                                                     [pausableInstanceAddress, managerPause]);
   global.assert.strictEqual(isThrows, true, 'Contract can not be unpaused again');
 
 
   blockNumber = global.web3.eth.blockNumber;
-  await PausableJSAPI.pauseContract(pausableInstanceAddress, managerPause);
-  pastEvents = await PausableJSAPI.getPauseEvents(pausableInstanceAddress,
-                                                  {},
-                                                  {
-                                                    fromBlock: blockNumber + 1,
-                                                    toBlock:   blockNumber + 1,
-                                                    address:   managerPause,
-                                                  });
+  await PausableInterfaceJSAPI.pauseContract(pausableInstanceAddress, managerPause);
+  pastEvents = await PausableInterfaceJSAPI.getPauseEvents(pausableInstanceAddress,
+                                                           {},
+                                                           {
+                                                             fromBlock: blockNumber + 1,
+                                                             toBlock:   blockNumber + 1,
+                                                             address:   managerPause,
+                                                           });
   global.assert.strictEqual(pastEvents.length, 1);
 
 
-  isPaused = await PausableJSAPI.getPaused(pausableInstanceAddress);
+  isPaused = await PausableInterfaceJSAPI.getPaused(pausableInstanceAddress);
   global.assert.strictEqual(isPaused, true, 'Manager should be able to pause contract');
 };
 
@@ -87,9 +87,9 @@ export const assertWhenContractPaused =
     global.console.log('\tTest that function works when contract is paused and throws when contract is unpaused');
 
     // get initial state and unpause if needed
-    let isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
+    let isPaused = await PausableInterfaceJSAPI.getPaused(pausableContractAddress);
     if (isPaused) {
-      await PausableJSAPI.unpauseContract(pausableContractAddress, managerPause);
+      await PausableInterfaceJSAPI.unpauseContract(pausableContractAddress, managerPause);
     }
 
 
@@ -97,8 +97,8 @@ export const assertWhenContractPaused =
     const isThrows = await CheckExceptions.isContractThrows(testedContractFunction, functionArgs);
     global.assert.strictEqual(isThrows, true, 'Function must throw when contract is unpaused');
 
-    await PausableJSAPI.pauseContract(pausableContractAddress, managerPause);
-    isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
+    await PausableInterfaceJSAPI.pauseContract(pausableContractAddress, managerPause);
+    isPaused = await PausableInterfaceJSAPI.getPaused(pausableContractAddress);
     global.assert.strictEqual(isPaused, true);
 
 
@@ -108,7 +108,7 @@ export const assertWhenContractPaused =
 
     // restore state
     if (isPaused === false) {
-      await PausableJSAPI.unpauseContract(pausableContractAddress, managerPause);
+      await PausableInterfaceJSAPI.unpauseContract(pausableContractAddress, managerPause);
     }
   };
 
@@ -118,9 +118,9 @@ export const assertWhenContractNotPaused = async (
 
 
   // get initial state and pause if needed
-  let isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
+  let isPaused = await PausableInterfaceJSAPI.getPaused(pausableContractAddress);
   if (isPaused === false) {
-    await PausableJSAPI.pauseContract(pausableContractAddress, managerPause);
+    await PausableInterfaceJSAPI.pauseContract(pausableContractAddress, managerPause);
   }
 
 
@@ -128,8 +128,8 @@ export const assertWhenContractNotPaused = async (
   const isThrows = await CheckExceptions.isContractThrows(testedContractFunction, functionArgs);
   global.assert.strictEqual(isThrows, true, 'Function must throw when contract is paused');
 
-  await PausableJSAPI.unpauseContract(pausableContractAddress, managerPause);
-  isPaused = await PausableJSAPI.getPaused(pausableContractAddress);
+  await PausableInterfaceJSAPI.unpauseContract(pausableContractAddress, managerPause);
+  isPaused = await PausableInterfaceJSAPI.getPaused(pausableContractAddress);
   global.assert.strictEqual(isPaused, false);
 
 
@@ -139,6 +139,6 @@ export const assertWhenContractNotPaused = async (
 
   // restore state
   if (isPaused === false) {
-    await PausableJSAPI.pauseContract(pausableContractAddress, managerPause);
+    await PausableInterfaceJSAPI.pauseContract(pausableContractAddress, managerPause);
   }
 };

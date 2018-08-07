@@ -34,7 +34,7 @@ const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 const DeployConfig = require('../jsconfig/DeployConfig');
 const CrydrInit = require('../jsinit/CrydrInit');
 const JcashRegistrarInit = require('../jsinit/JcashRegistrarInit');
-const PausableJSAPI = require('../jsapi/lifecycle/Pausable');
+const PausableInterfaceJSAPI = require('../../contracts/lifecycle/Pausable/PausableInterface.jsapi');
 
 
 /* Migration #2 */
@@ -217,7 +217,7 @@ const executeMigrationNumber5 = async () => {
                                              managerPause, managerJcashReplenisher, managerJcashExchange);
   await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, owner,
                                                   jntControllerAddress, managerJNT, jntBeneficiary, 10 ** 18);
-  await PausableJSAPI.unpauseContract(JcashRegistrarAddress, managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, managerPause);
 };
 
 const verifyMigrationNumber5 = async () => {
