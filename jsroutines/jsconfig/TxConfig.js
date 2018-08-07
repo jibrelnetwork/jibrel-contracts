@@ -14,7 +14,7 @@ export function getWeb3() {
 /* Functions */
 
 const txSubmitParamsProd = {
-  minConfirmations:   2,
+  minConfirmations:   1,
   pollingInterval:    500,
   maxTimeoutMillisec: 5 * 60 * 1000,
   maxTimeoutBlocks:   20,
