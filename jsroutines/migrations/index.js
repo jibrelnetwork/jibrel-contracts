@@ -60,6 +60,7 @@ const verifyMigrationNumber3 = async () => {
   // todo verify migration, make integration tests
 };
 
+
 /* Migration #4 */
 
 const executeMigrationNumber4 = async () => {
@@ -86,8 +87,16 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tJUSDLicenseRegistryAddress: ${JUSDLicenseRegistryAddress}`);
   global.console.log(`\tJUSDControllerAddress: ${JUSDControllerAddress}`);
   global.console.log(`\tJUSDViewERC20Address: ${JUSDViewERC20Address}`);
+};
+
+const verifyMigrationNumber4 = async () => {
+  // todo verify migration, make integration tests
+};
 
 
+/* Migration #5 */
+
+const executeMigrationNumber5 = async () => {
   /* JEUR */
 
   await CrydrInit.initLicensedCrydr(JEURStorageArtifact, JEURLicenseRegistryArtifact, JEURControllerArtifact, JEURViewERC20Artifact, 'erc20');
@@ -111,8 +120,16 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tJEURLicenseRegistryAddress: ${JEURLicenseRegistryAddress}`);
   global.console.log(`\tJEURControllerAddress: ${JEURControllerAddress}`);
   global.console.log(`\tJEURViewERC20Address: ${JEURViewERC20Address}`);
+};
+
+const verifyMigrationNumber5 = async () => {
+  // todo verify migration, make integration tests
+};
 
 
+/* Migration #6 */
+
+const executeMigrationNumber6 = async () => {
   /* JGBP */
 
   await CrydrInit.initLicensedCrydr(JGBPStorageArtifact, JGBPLicenseRegistryArtifact, JGBPControllerArtifact, JGBPViewERC20Artifact, 'erc20');
@@ -136,8 +153,16 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tJGBPLicenseRegistryAddress: ${JGBPLicenseRegistryAddress}`);
   global.console.log(`\tJGBPControllerAddress: ${JGBPControllerAddress}`);
   global.console.log(`\tJGBPViewERC20Address: ${JGBPViewERC20Address}`);
+};
+
+const verifyMigrationNumber6 = async () => {
+  // todo verify migration, make integration tests
+};
 
 
+/* Migration #7 */
+
+const executeMigrationNumber7 = async () => {
   /* JKRW */
 
   await CrydrInit.initLicensedCrydr(JKRWStorageArtifact, JKRWLicenseRegistryArtifact, JKRWControllerArtifact, JKRWViewERC20Artifact, 'erc20');
@@ -161,8 +186,16 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tJKRWLicenseRegistryAddress: ${JKRWLicenseRegistryAddress}`);
   global.console.log(`\tJKRWControllerAddress: ${JKRWControllerAddress}`);
   global.console.log(`\tJKRWViewERC20Address: ${JKRWViewERC20Address}`);
+};
+
+const verifyMigrationNumber7 = async () => {
+  // todo verify migration, make integration tests
+};
 
 
+/* Migration #8 */
+
+const executeMigrationNumber8 = async () => {
   /* JJOD */
 
   await CrydrInit.initLicensedCrydr(JJODStorageArtifact, JJODLicenseRegistryArtifact, JJODControllerArtifact, JJODViewERC20Artifact, 'erc20');
@@ -188,14 +221,14 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tJJODViewERC20Address: ${JJODViewERC20Address}`);
 };
 
-const verifyMigrationNumber4 = async () => {
+const verifyMigrationNumber8 = async () => {
   // todo verify migration, make integration tests
 };
 
 
-/* Migration #5 */
+/* Migration #9 */
 
-const executeMigrationNumber5 = async () => {
+const executeMigrationNumber9 = async () => {
   const {
     owner,
     managerPause,
@@ -220,7 +253,7 @@ const executeMigrationNumber5 = async () => {
   await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, managerPause);
 };
 
-const verifyMigrationNumber5 = async () => {
+const verifyMigrationNumber9 = async () => {
   const {
     owner,
     managerPause,
@@ -257,6 +290,14 @@ export const executeMigration = async (migrationNumber) => {
     await executeMigrationNumber4();
   } else if (migrationNumber === 5) {
     await executeMigrationNumber5();
+  } else if (migrationNumber === 6) {
+    await executeMigrationNumber6();
+  } else if (migrationNumber === 7) {
+    await executeMigrationNumber7();
+  } else if (migrationNumber === 8) {
+    await executeMigrationNumber8();
+  } else if (migrationNumber === 9) {
+    await executeMigrationNumber9();
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }
@@ -271,6 +312,14 @@ export const verifyMigration = async (migrationNumber) => {
     await verifyMigrationNumber4();
   } else if (migrationNumber === 5) {
     await verifyMigrationNumber5();
+  } else if (migrationNumber === 6) {
+    await verifyMigrationNumber6();
+  } else if (migrationNumber === 7) {
+    await verifyMigrationNumber7();
+  } else if (migrationNumber === 8) {
+    await verifyMigrationNumber8();
+  } else if (migrationNumber === 9) {
+    await verifyMigrationNumber9();
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }
