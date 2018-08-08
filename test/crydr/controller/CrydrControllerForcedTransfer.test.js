@@ -5,9 +5,9 @@ import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr
 import * as CrydrControllerForcedTransferInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransferInterface.jsapi';
 
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
-import * as CrydrStorageInitJSAPI from '../../../jsroutines/jsinit/CrydrStorageInit';
-import * as CrydrControllerInitJSAPI from '../../../jsroutines/jsinit/CrydrControllerInit';
-import * as CrydrViewInitJSAPI from '../../../jsroutines/jsinit/CrydrViewInit';
+import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
+import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
+import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 import * as CrydrInit from '../../../jsroutines/jsinit/CrydrInit';
 
 const CrydrControllerForcedTransferMock = global.artifacts.require('CrydrControllerForcedTransferMock.sol');
@@ -20,8 +20,8 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   let crydrStorageInstance;
   let jcashCrydrViewERC20Instance;
 
-  DeployConfig.setAccounts(accounts);
-  const { owner, managerPause, managerMint, managerForcedTransfer, testInvestor1, testInvestor2 } = DeployConfig.getAccounts();
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
 
   const viewStandard = 'erc20';
   const viewName = 'viewName';
@@ -30,10 +30,10 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   const assetID = 'jASSET';
 
   global.beforeEach(async () => {
-    crydrControllerInstance = await CrydrControllerForcedTransferMock.new(assetID, { from: owner });
-    crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: owner });
+    crydrControllerInstance = await CrydrControllerForcedTransferMock.new(assetID, { from: ethAccounts.owner });
+    crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: ethAccounts.owner });
     jcashCrydrViewERC20Instance = await JCashCrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals,
-                                                                { from: owner });
+                                                                { from: ethAccounts.owner });
 
     const crydrStorageAddress = crydrStorageInstance.address;
     const crydrControllerAddress = crydrControllerInstance.address;
@@ -45,14 +45,14 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
     global.console.log(`\t\tjcashCrydrViewERC20Instance: ${jcashCrydrViewERC20Instance.address}`);
 
     global.console.log('\tConfiguring crydr managers');
-    await CrydrStorageInitJSAPI.configureCrydrStorageManagers(crydrStorageAddress);
-    await CrydrControllerInitJSAPI.configureCrydrControllerManagers(crydrControllerAddress);
-    await CrydrViewInitJSAPI.configureCrydrViewManagers(crydrViewAddress);
+    await CrydrStorageInit.configureCrydrStorageManagers(crydrStorageAddress, ethAccounts);
+    await CrydrControllerInit.configureCrydrControllerManagers(crydrControllerAddress, ethAccounts);
+    await CrydrViewInit.configureCrydrViewManagers(crydrViewAddress, ethAccounts);
     global.console.log('\tCrydr managers successfully configured');
 
     global.console.log('\tLink crydr contracts');
-    await CrydrInit.linkCrydrStorage(crydrStorageAddress, crydrControllerAddress);
-    await CrydrInit.linkCrydrView(crydrControllerAddress, crydrViewAddress, 'erc20');
+    await CrydrInit.linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts);
+    await CrydrInit.linkCrydrView(crydrControllerAddress, crydrViewAddress, 'erc20', ethAccounts);
     global.console.log('\tCrydr contracts successfully linked');
 
 
@@ -84,30 +84,30 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
     global.assert.strictEqual(viewAddress, jcashCrydrViewERC20Instance.address,
                               'Expected that crydrView is set');
 
-    const initialBalance = await crydrStorageInstance.getBalance.call(testInvestor1);
+    const initialBalance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
     global.assert.strictEqual(initialBalance.toNumber(), 0,
                               'Expected that initial balance is 0');
   });
 
   global.it('should test that contract allows to transfer tokens by a manager', async () => {
-    await PausableInterfaceJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
-    await PausableInterfaceJSAPI.unpauseContract(crydrControllerInstance.address, managerPause);
-    await PausableInterfaceJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrStorageInstance.address, ethAccounts.managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrControllerInstance.address, ethAccounts.managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, ethAccounts.managerPause);
 
 
-    await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerInstance.address, managerMint,
-                                                     testInvestor1, 10 * (10 ** 18));
-    let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerInstance.address, ethAccounts.managerMint,
+                                                     ethAccounts.testInvestor1, 10 * (10 ** 18));
+    let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
                               'Expected that balance has increased');
 
-    await CrydrControllerForcedTransferInterfaceJSAPI.forcedTransfer(crydrControllerInstance.address, managerForcedTransfer,
-                                                                     testInvestor1, testInvestor2, 1 * (10 ** 18));
+    await CrydrControllerForcedTransferInterfaceJSAPI.forcedTransfer(crydrControllerInstance.address, ethAccounts.managerForcedTransfer,
+                                                                     ethAccounts.testInvestor1, ethAccounts.testInvestor2, 1 * (10 ** 18));
 
-    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 9 * (10 ** 18),
                               'Expected that balance has reduced due to forced transfer');
-    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor2);
+    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor2);
     global.assert.strictEqual(balance.toNumber(), 1 * (10 ** 18),
                               'Expected that balance has increased due to forced transfer');
   });
@@ -135,11 +135,11 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   //   global.assert.strictEqual(isThrows, true, 'Should be a valid account address');
   //
   //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.mint.sendTransaction,
-  //                                                     [testInvestor1, 0, { from: managerMint }]);
+  //                                                     [ethAccounts.testInvestor1, 0, { from: managerMint }]);
   //   global.assert.strictEqual(isThrows, true, 'Should be a positive value');
   //
   //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.mint.sendTransaction,
-  //                                                     [testInvestor1, 100 * (10 ** 18), { from: managerMint }]);
+  //                                                     [ethAccounts.testInvestor1, 100 * (10 ** 18), { from: managerMint }]);
   //   global.assert.strictEqual(isThrows, true, 'Only manager should be able to mint');
   //
   //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.burn.sendTransaction,
@@ -147,11 +147,11 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   //   global.assert.strictEqual(isThrows, true, 'Should be a valid account address');
   //
   //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.burn.sendTransaction,
-  //                                                     [testInvestor1, 0, { from: managerMint }]);
+  //                                                     [ethAccounts.testInvestor1, 0, { from: managerMint }]);
   //   global.assert.strictEqual(isThrows, true, 'Should be a positive value');
   //
   //   isThrows = await CheckExceptions.isContractThrows(crydrControllerInstance.burn.sendTransaction,
-  //                                                     [testInvestor1, 100 * (10 ** 18), { from: testInvestor1 }]);
+  //                                                     [ethAccounts.testInvestor1, 100 * (10 ** 18), { from: ethAccounts.testInvestor1 }]);
   //   global.assert.strictEqual(isThrows, true, 'Only manager should be able to burn');
   // });
 });

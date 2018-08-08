@@ -4,9 +4,9 @@ import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/con
 import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
 
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
-import * as CrydrStorageInitJSAPI from '../../../jsroutines/jsinit/CrydrStorageInit';
-import * as CrydrControllerInitJSAPI from '../../../jsroutines/jsinit/CrydrControllerInit';
-import * as CrydrViewInitJSAPI from '../../../jsroutines/jsinit/CrydrViewInit';
+import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
+import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
+import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 import * as CrydrInit from '../../../jsroutines/jsinit/CrydrInit';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
@@ -21,8 +21,8 @@ global.contract('CrydrControllerMintable', (accounts) => {
   let crydrStorageInstance;
   let jcashCrydrViewERC20Instance;
 
-  DeployConfig.setAccounts(accounts);
-  const { owner, managerPause, managerMint, testInvestor1 } = DeployConfig.getAccounts();
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
 
   const viewStandard = 'erc20';
   const viewName = 'viewName';
@@ -31,10 +31,10 @@ global.contract('CrydrControllerMintable', (accounts) => {
   const assetID = 'jASSET';
 
   global.beforeEach(async () => {
-    crydrControllerMintableInstance = await CrydrControllerMintableMock.new(assetID, { from: owner });
-    crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: owner });
+    crydrControllerMintableInstance = await CrydrControllerMintableMock.new(assetID, { from: ethAccounts.owner });
+    crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: ethAccounts.owner });
     jcashCrydrViewERC20Instance = await JCashCrydrViewERC20.new(assetID, viewName, viewSymbol, viewDecimals,
-                                                                { from: owner });
+                                                                { from: ethAccounts.owner });
 
     const crydrStorageAddress = crydrStorageInstance.address;
     const crydrControllerAddress = crydrControllerMintableInstance.address;
@@ -46,14 +46,14 @@ global.contract('CrydrControllerMintable', (accounts) => {
     global.console.log(`\t\tjcashCrydrViewERC20Instance: ${jcashCrydrViewERC20Instance.address}`);
 
     global.console.log('\tConfiguring crydr managers');
-    await CrydrStorageInitJSAPI.configureCrydrStorageManagers(crydrStorageAddress);
-    await CrydrControllerInitJSAPI.configureCrydrControllerManagers(crydrControllerAddress);
-    await CrydrViewInitJSAPI.configureCrydrViewManagers(crydrViewAddress);
+    await CrydrStorageInit.configureCrydrStorageManagers(crydrStorageAddress, ethAccounts);
+    await CrydrControllerInit.configureCrydrControllerManagers(crydrControllerAddress, ethAccounts);
+    await CrydrViewInit.configureCrydrViewManagers(crydrViewAddress, ethAccounts);
     global.console.log('\tCrydr managers successfully configured');
 
     global.console.log('\tLink crydr contracts');
-    await CrydrInit.linkCrydrStorage(crydrStorageAddress, crydrControllerAddress);
-    await CrydrInit.linkCrydrView(crydrControllerAddress, crydrViewAddress, 'erc20');
+    await CrydrInit.linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts);
+    await CrydrInit.linkCrydrView(crydrControllerAddress, crydrViewAddress, 'erc20', ethAccounts);
     global.console.log('\tCrydr contracts successfully linked');
   });
 
@@ -84,25 +84,25 @@ global.contract('CrydrControllerMintable', (accounts) => {
     global.assert.strictEqual(viewAddress, jcashCrydrViewERC20Instance.address,
                               'Expected that crydrView is set');
 
-    const initialBalance = await crydrStorageInstance.getBalance.call(testInvestor1);
+    const initialBalance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
     global.assert.strictEqual(initialBalance.toNumber(), 0,
                               'Expected that initial balance is 0');
 
 
-    await PausableInterfaceJSAPI.unpauseContract(crydrStorageInstance.address, managerPause);
-    await PausableInterfaceJSAPI.unpauseContract(crydrControllerMintableInstance.address, managerPause);
-    await PausableInterfaceJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrStorageInstance.address, ethAccounts.managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrControllerMintableInstance.address, ethAccounts.managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(jcashCrydrViewERC20Instance.address, ethAccounts.managerPause);
 
 
-    await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerMintableInstance.address, managerMint,
-                                            testInvestor1, 10 * (10 ** 18));
-    let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerMintableInstance.address, ethAccounts.managerMint,
+                                                     ethAccounts.testInvestor1, 10 * (10 ** 18));
+    let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
                               'Expected that balance has increased');
 
-    await CrydrControllerMintableInterfaceJSAPI.burn(crydrControllerMintableInstance.address, managerMint,
-                                            testInvestor1, 5 * (10 ** 18));
-    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, testInvestor1);
+    await CrydrControllerMintableInterfaceJSAPI.burn(crydrControllerMintableInstance.address, ethAccounts.managerMint,
+                                                     ethAccounts.testInvestor1, 5 * (10 ** 18));
+    balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
     global.assert.strictEqual(balance.toNumber(), 5 * (10 ** 18),
                               'Expected that balance has decreased');
   });
@@ -126,27 +126,27 @@ global.contract('CrydrControllerMintable', (accounts) => {
 
 
     let isThrows = await CheckExceptions.isContractThrows(crydrControllerMintableInstance.mint.sendTransaction,
-                                                          [0x0, 100 * (10 ** 18), { from: managerMint }]);
+                                                          [0x0, 100 * (10 ** 18), { from: ethAccounts.managerMint }]);
     global.assert.strictEqual(isThrows, true, 'Should be a valid account address');
 
     isThrows = await CheckExceptions.isContractThrows(crydrControllerMintableInstance.mint.sendTransaction,
-                                                      [testInvestor1, 0, { from: managerMint }]);
+                                                      [ethAccounts.testInvestor1, 0, { from: ethAccounts.managerMint }]);
     global.assert.strictEqual(isThrows, true, 'Should be a positive value');
 
     isThrows = await CheckExceptions.isContractThrows(crydrControllerMintableInstance.mint.sendTransaction,
-                                                      [testInvestor1, 100 * (10 ** 18), { from: managerMint }]);
+                                                      [ethAccounts.testInvestor1, 100 * (10 ** 18), { from: ethAccounts.managerMint }]);
     global.assert.strictEqual(isThrows, true, 'Only manager should be able to mint');
 
     isThrows = await CheckExceptions.isContractThrows(crydrControllerMintableInstance.burn.sendTransaction,
-                                                      [0x0, 100 * (10 ** 18), { from: managerMint }]);
+                                                      [0x0, 100 * (10 ** 18), { from: ethAccounts.managerMint }]);
     global.assert.strictEqual(isThrows, true, 'Should be a valid account address');
 
     isThrows = await CheckExceptions.isContractThrows(crydrControllerMintableInstance.burn.sendTransaction,
-                                                      [testInvestor1, 0, { from: managerMint }]);
+                                                      [ethAccounts.testInvestor1, 0, { from: ethAccounts.managerMint }]);
     global.assert.strictEqual(isThrows, true, 'Should be a positive value');
 
     isThrows = await CheckExceptions.isContractThrows(crydrControllerMintableInstance.burn.sendTransaction,
-                                                      [testInvestor1, 100 * (10 ** 18), { from: testInvestor1 }]);
+                                                      [ethAccounts.testInvestor1, 100 * (10 ** 18), { from: ethAccounts.testInvestor1 }]);
     global.assert.strictEqual(isThrows, true, 'Only manager should be able to burn');
   });
 });

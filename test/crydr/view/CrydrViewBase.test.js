@@ -16,8 +16,8 @@ global.contract('CrydrViewBase', (accounts) => {
   let controllerStubInstance01;
   let controllerStubInstance02;
 
-  DeployConfig.setAccounts(accounts);
-  const { owner, managerGeneral, managerPause, testInvestor1 } = DeployConfig.getAccounts();
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
 
   const viewStandard = 'testName';
   const viewStandardHash = '0x698c8efcda9e563cf153563941b60fc5ac88336fc58d361eb0888686fadb9976';
@@ -25,13 +25,13 @@ global.contract('CrydrViewBase', (accounts) => {
 
 
   global.beforeEach(async () => {
-    crydrViewBaseInstance = await CrydrViewBaseMock.new(assetID, viewStandard, { from: owner });
+    crydrViewBaseInstance = await CrydrViewBaseMock.new(assetID, viewStandard, { from: ethAccounts.owner });
     controllerStubInstance01 = await CrydrControllerERC20Stub.new(assetID,
                                                                   crydrViewBaseInstance.address,
-                                                                  { from: owner });
+                                                                  { from: ethAccounts.owner });
     controllerStubInstance02 = await CrydrControllerERC20Stub.new(assetID,
                                                                   crydrViewBaseInstance.address,
-                                                                  { from: owner });
+                                                                  { from: ethAccounts.owner });
 
 
     global.console.log('\tContracts deployed for tests CrydrViewBase:');
@@ -40,11 +40,11 @@ global.contract('CrydrViewBase', (accounts) => {
     global.console.log(`\t\tcontrollerStubInstance02: ${controllerStubInstance02}`);
 
     global.console.log('\tStart to configure test contracts:');
-    await CrydrViewInit.configureCrydrViewManagers(crydrViewBaseInstance.address);
+    await CrydrViewInit.configureCrydrViewManagers(crydrViewBaseInstance.address, ethAccounts);
     await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                         managerGeneral,
+                                                         ethAccounts.managerGeneral,
                                                          controllerStubInstance01.address);
-    await PausableInterfaceJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrViewBaseInstance.address, ethAccounts.managerPause);
 
 
     global.console.log('\tStart to verify configuration of test contracts:');
@@ -64,42 +64,42 @@ global.contract('CrydrViewBase', (accounts) => {
   });
 
   global.it('should test that functions throw if general conditions are not met', async () => {
-    await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, ethAccounts.managerPause);
 
 
     let isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseInterfaceJSAPI.setCrydrController,
                                                           [crydrViewBaseInstance.address,
-                                                           testInvestor1,
+                                                           ethAccounts.testInvestor1,
                                                            controllerStubInstance02.address]);
     global.assert.strictEqual(isThrows, true, 'Only manager should be able to set crydrController');
     isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseInterfaceJSAPI.setCrydrController,
                                                       [crydrViewBaseInstance.address,
-                                                       managerGeneral,
+                                                       ethAccounts.managerGeneral,
                                                        0x0]);
     global.assert.strictEqual(isThrows, true, 'Should be a valid address of crydrController');
-    isThrows = await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                                    managerGeneral,
-                                                                    controllerStubInstance02.address);
+    await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
+                                                         ethAccounts.managerGeneral,
+                                                         controllerStubInstance02.address);
 
 
-    await PausableInterfaceJSAPI.unpauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.unpauseContract(crydrViewBaseInstance.address, ethAccounts.managerPause);
     const isPaused = await crydrViewBaseInstance.getPaused.call();
     global.assert.strictEqual(isPaused, false, 'Expected that contract is unpaused');
 
 
     isThrows = await CheckExceptions.isContractThrows(CrydrViewBaseInterfaceJSAPI.setCrydrController,
                                                       [crydrViewBaseInstance.address,
-                                                       managerGeneral,
+                                                       ethAccounts.managerGeneral,
                                                        0x0]);
     global.assert.strictEqual(isThrows, true, 'configuration os crydrController should be prohibited if unpaused');
   });
 
   global.it('should test that functions fire events', async () => {
-    await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
+    await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, ethAccounts.managerPause);
 
     const blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
-                                                         managerGeneral,
+                                                         ethAccounts.managerGeneral,
                                                          controllerStubInstance02.address);
 
     const pastEvents = await CrydrViewBaseInterfaceJSAPI
@@ -110,7 +110,7 @@ global.contract('CrydrViewBase', (accounts) => {
                                        {
                                          fromBlock: blockNumber + 1,
                                          toBlock:   blockNumber + 1,
-                                         address:   managerGeneral,
+                                         address:   ethAccounts.managerGeneral,
                                        });
     global.assert.strictEqual(pastEvents.length, 1);
   });

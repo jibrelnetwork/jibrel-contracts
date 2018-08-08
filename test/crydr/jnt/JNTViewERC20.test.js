@@ -1,13 +1,16 @@
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+
 const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
 
 
 global.contract('JNTViewERC20', (accounts) => {
   let jntViewERC20Instance;
 
-  const owner = accounts[0];
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
 
   global.beforeEach(async () => {
-    jntViewERC20Instance = await JNTViewERC20.new({ from: owner });
+    jntViewERC20Instance = await JNTViewERC20.new({ from: ethAccounts.owner });
   });
 
   global.it('should test that contract works as expected', async () => {
