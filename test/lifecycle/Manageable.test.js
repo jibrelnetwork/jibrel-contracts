@@ -1,5 +1,3 @@
-const ManageableMock = global.artifacts.require('ManageableMock.sol');
-
 import * as ManageableInterfaceJSAPI from '../../contracts/lifecycle/Manageable/ManageableInterface.jsapi';
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 
@@ -7,6 +5,8 @@ import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
 
 import * as CheckExceptions from '../../jsroutines/util/CheckExceptions';
+
+const ManageableMock = global.artifacts.require('ManageableMock.sol');
 
 
 global.contract('Manageable', (accounts) => {

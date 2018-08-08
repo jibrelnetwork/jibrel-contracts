@@ -1,8 +1,3 @@
-const BigNumber = require('bignumber.js');
-
-const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
-const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
-
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrStorageBaseInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi';
 import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
@@ -15,6 +10,11 @@ import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
+
+const BigNumber = require('bignumber.js');
+
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
+const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
 
 
 global.contract('CrydrStorageBaseInterface', (accounts) => {

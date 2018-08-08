@@ -1,6 +1,3 @@
-const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
-const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20Stub.sol');
-
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrViewBaseInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
 
@@ -9,6 +6,9 @@ import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
+const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20Stub.sol');
 
 
 global.contract('CrydrViewBase', (accounts) => {

@@ -1,7 +1,3 @@
-const CrydrControllerForcedTransferMock = global.artifacts.require('CrydrControllerForcedTransferMock.sol');
-const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
-const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
-
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
@@ -13,6 +9,10 @@ import * as CrydrStorageInitJSAPI from '../../../jsroutines/jsinit/CrydrStorageI
 import * as CrydrControllerInitJSAPI from '../../../jsroutines/jsinit/CrydrControllerInit';
 import * as CrydrViewInitJSAPI from '../../../jsroutines/jsinit/CrydrViewInit';
 import * as CrydrInit from '../../../jsroutines/jsinit/CrydrInit';
+
+const CrydrControllerForcedTransferMock = global.artifacts.require('CrydrControllerForcedTransferMock.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
+const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
 
 global.contract('CrydrControllerForcedTransfer', (accounts) => {

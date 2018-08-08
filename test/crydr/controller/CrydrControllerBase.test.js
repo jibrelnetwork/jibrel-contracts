@@ -1,7 +1,3 @@
-const CrydrControllerBaseMock = global.artifacts.require('CrydrControllerBaseMock.sol');
-const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
-const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
-
 import * as PausableInterfaceJSAPI            from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 
@@ -10,6 +6,10 @@ import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+const CrydrControllerBaseMock = global.artifacts.require('CrydrControllerBaseMock.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
+const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 
 
 global.contract('CrydrControllerBase', (accounts) => {

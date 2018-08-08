@@ -1,12 +1,12 @@
-const PausableMockV1 = global.artifacts.require('PausableMockV1.sol');
-const PausableMockV2 = global.artifacts.require('PausableMockV2.sol');
-
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableJSAPI   from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
 
 import * as PausableTestSuite from '../../jsroutines/test_suit/lifecycle/Pausable';
 
 import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
+
+const PausableMockV1 = global.artifacts.require('PausableMockV1.sol');
+const PausableMockV2 = global.artifacts.require('PausableMockV2.sol');
 
 
 global.contract('Pausable', (accounts) => {

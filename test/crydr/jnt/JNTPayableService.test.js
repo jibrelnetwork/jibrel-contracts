@@ -1,6 +1,3 @@
-const JNTPayableServiceMock = global.artifacts.require('JNTPayableServiceMock.sol');
-const JNTControllerStub = global.artifacts.require('JNTControllerStub.sol');
-
 import * as ManageableJSAPI from '../../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as PausableJSAPI from '../../../contracts/lifecycle/Pausable/Pausable.jsapi';
@@ -10,6 +7,9 @@ import * as JNTPayableServiceJSAPI from '../../../contracts/crydr/jnt/JNTPayable
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+const JNTPayableServiceMock = global.artifacts.require('JNTPayableServiceMock.sol');
+const JNTControllerStub = global.artifacts.require('JNTControllerStub.sol');
 
 
 global.contract('JNTPayableService', (accounts) => {

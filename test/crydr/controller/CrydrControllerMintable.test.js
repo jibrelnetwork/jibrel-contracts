@@ -1,7 +1,3 @@
-const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
-const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
-const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
-
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
@@ -14,6 +10,10 @@ import * as CrydrViewInitJSAPI from '../../../jsroutines/jsinit/CrydrViewInit';
 import * as CrydrInit from '../../../jsroutines/jsinit/CrydrInit';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
+const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
+const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
 
 global.contract('CrydrControllerMintable', (accounts) => {
