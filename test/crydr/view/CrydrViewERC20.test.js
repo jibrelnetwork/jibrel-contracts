@@ -17,12 +17,15 @@ const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 
 
 global.contract('CrydrViewERC20', (accounts) => {
-  let jcashCrydrViewERC20Instance;
-  let controllerStubInstance;
-
+  TxConfig.setWeb3(global.web3);
 
   DeployConfig.setEthAccounts(accounts);
   const ethAccounts = DeployConfig.getEthAccounts();
+
+
+  let jcashCrydrViewERC20Instance;
+  let controllerStubInstance;
+
 
   const originalName = 'testName';
   const originalSymbol = 'testSymbol';

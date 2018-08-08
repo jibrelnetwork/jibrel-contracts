@@ -1,6 +1,7 @@
 import * as PausableInterfaceJSAPI            from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
@@ -13,16 +14,18 @@ const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 
 
 global.contract('CrydrControllerBase', (accounts) => {
+  TxConfig.setWeb3(global.web3);
+
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
+
+
   let crydrControllerBaseInstance;
   let crydrStorageInstance;
   let crydrViewBaseInstance;
 
   let crydrStorageInstanceStub01;
   let crydrViewBaseInstanceStub01;
-
-
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
 
 
   const viewStandard = 'TestView';
@@ -171,7 +174,7 @@ global.contract('CrydrControllerBase', (accounts) => {
 
 
   global.it('should test that functions fire events', async () => {
-    let blockNumber = await AsyncWeb3.getBlockNumber();
+    let blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrControllerBaseInterfaceJSAPI.setCrydrStorage(crydrControllerBaseInstance.address,
                                                             ethAccounts.managerGeneral,
                                                             crydrStorageInstance.address);
@@ -188,7 +191,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                     });
     global.assert.strictEqual(pastEvents.length, 1);
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrControllerBaseInterfaceJSAPI.setCrydrView(crydrControllerBaseInstance.address,
                                                          ethAccounts.managerGeneral,
                                                          crydrViewBaseInstance.address,
@@ -206,7 +209,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                });
     global.assert.strictEqual(pastEvents.length, 1);
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrControllerBaseInterfaceJSAPI.removeCrydrView(crydrControllerBaseInstance.address,
                                                             ethAccounts.managerGeneral,
                                                             viewStandard);

@@ -5,6 +5,7 @@ import * as ManageableJSAPI from '../../../contracts/lifecycle/Manageable/Manage
 import * as PausableInterfaceJSAPI   from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as PausableJSAPI   from '../../../contracts/lifecycle/Pausable/Pausable.jsapi';
 
+import * as TxConfig from '../../jsconfig/TxConfig';
 import * as DeployConfig from '../../jsconfig/DeployConfig';
 
 import * as AsyncWeb3 from '../../util/AsyncWeb3';
@@ -41,7 +42,7 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs) 
   global.assert.strictEqual(isThrows, true, 'Contract can not be paused again');
 
 
-  let blockNumber = await AsyncWeb3.getBlockNumber();
+  let blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
   await PausableInterfaceJSAPI.unpauseContract(pausableInstanceAddress, ethAccounts.managerPause);
   let pastEvents = await PausableInterfaceJSAPI.getUnpauseEvents(pausableInstanceAddress,
                                                                  {},
@@ -68,7 +69,7 @@ export const testContractIsPausable = async (contractArtifact, constructorArgs) 
   global.assert.strictEqual(isThrows, true, 'Contract can not be unpaused again');
 
 
-  blockNumber = await AsyncWeb3.getBlockNumber();
+  blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
   await PausableInterfaceJSAPI.pauseContract(pausableInstanceAddress, ethAccounts.managerPause);
   pastEvents = await PausableInterfaceJSAPI.getPauseEvents(pausableInstanceAddress,
                                                            {},

@@ -1,6 +1,7 @@
 import * as ManageableInterfaceJSAPI from '../../contracts/lifecycle/Manageable/ManageableInterface.jsapi';
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 
+import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
 
@@ -10,10 +11,14 @@ const ManageableMock = global.artifacts.require('ManageableMock.sol');
 
 
 global.contract('Manageable', (accounts) => {
-  let manageableInstanceAddress;
+  TxConfig.setWeb3(global.web3);
 
   DeployConfig.setEthAccounts(accounts);
   const ethAccounts = DeployConfig.getEthAccounts();
+
+
+  let manageableInstanceAddress;
+
 
   global.beforeEach(async () => {
     const manageableInstance = await ManageableMock.new({ from: ethAccounts.owner });
@@ -269,7 +274,7 @@ global.contract('Manageable', (accounts) => {
   });
 
   global.it('should test that functions fire events', async () => {
-    let blockNumber = await AsyncWeb3.getBlockNumber();
+    let blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await ManageableJSAPI.enableManager(manageableInstanceAddress, ethAccounts.owner, ethAccounts.managerGeneral);
     let pastEvents = await ManageableJSAPI.getManagerEnabledEvents(manageableInstanceAddress,
                                                                    {
@@ -283,7 +288,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await ManageableJSAPI.disableManager(manageableInstanceAddress, ethAccounts.owner, ethAccounts.managerGeneral);
     pastEvents = await ManageableJSAPI.getManagerDisabledEvents(manageableInstanceAddress,
                                                                 {
@@ -297,7 +302,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await ManageableJSAPI.grantManagerPermissions(manageableInstanceAddress, ethAccounts.owner, ethAccounts.managerGeneral, ['permission_01']);
     pastEvents = await ManageableJSAPI.getManagerPermissionGrantedEvents(manageableInstanceAddress,
                                                                          {
@@ -311,7 +316,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await ManageableJSAPI.revokeManagerPermissions(manageableInstanceAddress, ethAccounts.owner, ethAccounts.managerGeneral, ['permission_01']);
     pastEvents = await ManageableJSAPI.getManagerPermissionRevokedEvents(manageableInstanceAddress,
                                                                          {

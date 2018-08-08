@@ -21,13 +21,17 @@ const JNTControllerStubArtifact = global.artifacts.require('JNTControllerStub.so
 
 
 global.contract('JcashRegistrar', (accounts) => {
+  TxConfig.setWeb3(global.web3);
+
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
+
+
   const exchangePrice = (10 ** 18);
 
   let jntControllerAddress;
   let jcashRegistrarAddress;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
 
   global.beforeEach(async () => {
     jntControllerAddress = await DeployUtils.deployContractSimple(JNTControllerStubArtifact, ethAccounts.owner);

@@ -5,6 +5,7 @@ import * as CrydrStorageAllowanceInterfaceJSAPI from '../../../contracts/crydr/s
 import * as CrydrStorageBlocksInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.jsapi';
 import * as CrydrStorageERC20InterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.jsapi';
 
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
@@ -16,12 +17,16 @@ const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.
 
 
 global.contract('CrydrStorageERC20Interface', (accounts) => {
+  TxConfig.setWeb3(global.web3);
+
   DeployConfig.setEthAccounts(accounts);
   const ethAccounts = DeployConfig.getEthAccounts();
+
 
   let crydrStorageInstance;
   let storageProxyInstance01;
   let storageProxyInstance02;
+
 
   global.beforeEach(async () => {
     crydrStorageInstance = await JCashCrydrStorage.new('jXYZ', { from: ethAccounts.owner });
@@ -183,7 +188,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
                                                             ethAccounts.testInvestor1, 10 * (10 ** 18));
 
 
-    let blockNumber = await AsyncWeb3.getBlockNumber();
+    let blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrStorageERC20InterfaceJSAPI.transfer(storageProxyInstance01.address, ethAccounts.owner,
                                                    ethAccounts.testInvestor1, ethAccounts.testInvestor2, 5 * (10 ** 18));
     const controllerAddress = storageProxyInstance01.address;
@@ -202,7 +207,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrStorageERC20InterfaceJSAPI.approve(storageProxyInstance01.address, ethAccounts.owner,
                                                   ethAccounts.testInvestor1, ethAccounts.testInvestor2, 5 * (10 ** 18));
     pastEvents = await CrydrStorageERC20InterfaceJSAPI.getCrydrSpendingApprovedEvents(
@@ -220,7 +225,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = await AsyncWeb3.getBlockNumber();
+    blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrStorageERC20InterfaceJSAPI.transferFrom(storageProxyInstance01.address, ethAccounts.owner,
                                                        ethAccounts.testInvestor2, ethAccounts.testInvestor1, ethAccounts.testInvestor2, 5 * (10 ** 18));
     pastEvents = await CrydrStorageERC20InterfaceJSAPI.getCrydrTransferredFromEvents(

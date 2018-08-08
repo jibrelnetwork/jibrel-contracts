@@ -2,6 +2,7 @@ import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr
 import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi';
 import * as CrydrViewERC20MintableInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.jsapi';
 
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
@@ -13,6 +14,8 @@ const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
 
 
 global.contract('JNT Integration tests', (accounts) => {
+  TxConfig.setWeb3(global.web3);
+
   DeployConfig.setEthAccounts(accounts);
   const ethAccounts = DeployConfig.getEthAccounts();
 
@@ -23,7 +26,7 @@ global.contract('JNT Integration tests', (accounts) => {
     const JNTViewERC20Instance = await JNTViewERC20.deployed();
 
     const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, ethAccounts.testInvestor1);
-    const blockNumber = await AsyncWeb3.getBlockNumber();
+    const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
 
     await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerInstance.address, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
@@ -58,7 +61,7 @@ global.contract('JNT Integration tests', (accounts) => {
     let balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, ethAccounts.testInvestor1);
     global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + mintedValue);
 
-    const blockNumber = await AsyncWeb3.getBlockNumber();
+    const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
 
     await CrydrControllerMintableInterfaceJSAPI.burn(JNTControllerInstance.address, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
@@ -94,7 +97,7 @@ global.contract('JNT Integration tests', (accounts) => {
 
     const investor1BalanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, ethAccounts.testInvestor1);
     const investor2BalanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Instance.address, ethAccounts.testInvestor2);
-    const blockNumber = await AsyncWeb3.getBlockNumber();
+    const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
 
     if (lastMigration.toNumber() <= 2) {
       global.console.log('    JNT ERC20 view not unpaused yet');
@@ -162,7 +165,7 @@ global.contract('JNT Integration tests', (accounts) => {
                                                                     ethAccounts.testInvestor1, ethAccounts.testInvestor3);
     }
 
-    const blockNumber = await AsyncWeb3.getBlockNumber();
+    const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
 
     if (lastMigration.toNumber() <= 2) {
       global.console.log('    JNT ERC20 view not unpaused yet');
@@ -234,7 +237,7 @@ global.contract('JNT Integration tests', (accounts) => {
     approvedSpendingInitial = await ERC20InterfaceJSAPI.allowance(JNTViewERC20Instance.address,
                                                                   ethAccounts.testInvestor1, ethAccounts.testInvestor3);
 
-    const blockNumber = await AsyncWeb3.getBlockNumber();
+    const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
 
     await ERC20InterfaceJSAPI.transferFrom(JNTViewERC20Instance.address,
                                            ethAccounts.testInvestor3, ethAccounts.testInvestor1, ethAccounts.testInvestor2, transferredValue);

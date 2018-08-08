@@ -1,6 +1,7 @@
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrViewBaseInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
 
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
@@ -12,12 +13,16 @@ const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20S
 
 
 global.contract('CrydrViewBase', (accounts) => {
+  TxConfig.setWeb3(global.web3);
+
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
+
+
   let crydrViewBaseInstance;
   let controllerStubInstance01;
   let controllerStubInstance02;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
 
   const viewStandard = 'testName';
   const viewStandardHash = '0x698c8efcda9e563cf153563941b60fc5ac88336fc58d361eb0888686fadb9976';
@@ -97,7 +102,7 @@ global.contract('CrydrViewBase', (accounts) => {
   global.it('should test that functions fire events', async () => {
     await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, ethAccounts.managerPause);
 
-    const blockNumber = await AsyncWeb3.getBlockNumber();
+    const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
     await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
                                                          ethAccounts.managerGeneral,
                                                          controllerStubInstance02.address);
