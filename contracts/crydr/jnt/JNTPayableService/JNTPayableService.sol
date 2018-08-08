@@ -112,7 +112,7 @@ contract JNTPayableService is CommonModifiersInterface,
 
     jntController.chargeJNT(_from, jntBeneficiary, _actionPrice);
 
-    emit JNTChargedEvent(_from, jntBeneficiary, _actionPrice, _actionName);
+    emit JNTChargedEvent(_from, jntBeneficiary, _actionPrice, keccak256(_actionName));
   }
 
 

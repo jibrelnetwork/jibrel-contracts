@@ -13,7 +13,7 @@ contract JNTPayableServiceInterface {
 
   event JNTControllerChangedEvent(address jntcontroller);
   event JNTBeneficiaryChangedEvent(address jntbeneficiary);
-  event JNTChargedEvent(address indexed payer, address indexed to, uint256 value, string actionname);
+  event JNTChargedEvent(address indexed payer, address indexed to, uint256 value, bytes32 actionname);
 
 
   /* Configuration */

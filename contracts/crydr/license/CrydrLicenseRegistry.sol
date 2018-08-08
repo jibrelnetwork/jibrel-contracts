@@ -96,7 +96,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     userLicenses[_userAddress][_licenseName] = true;
     userLicensesExpiration[_userAddress][_licenseName] = _expirationTimestamp;
 
-    emit UserLicenseGrantedEvent(_userAddress, _licenseName, _expirationTimestamp);
+    emit UserLicenseGrantedEvent(_userAddress, keccak256(_licenseName), _expirationTimestamp);
   }
 
   function renewUserLicense(
@@ -112,7 +112,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
     userLicensesExpiration[_userAddress][_licenseName] = _expirationTimestamp;
 
-    emit UserLicenseRenewedEvent(_userAddress, _licenseName, _expirationTimestamp);
+    emit UserLicenseRenewedEvent(_userAddress, keccak256(_licenseName), _expirationTimestamp);
   }
 
   function revokeUserLicense(
@@ -128,7 +128,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     userLicenses[_userAddress][_licenseName] = false;
     userLicensesExpiration[_userAddress][_licenseName] = 0;
 
-    emit UserLicenseRevokedEvent(_userAddress, _licenseName);
+    emit UserLicenseRevokedEvent(_userAddress, keccak256(_licenseName));
   }
 
   function isUserGranted(

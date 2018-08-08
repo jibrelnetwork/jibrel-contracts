@@ -13,9 +13,9 @@ contract CrydrLicenseRegistryManagementInterface {
 
   event UserAdmittedEvent(address indexed useraddress);
   event UserDeniedEvent(address indexed useraddress);
-  event UserLicenseGrantedEvent(address indexed useraddress, string licensename, uint256 indexed expirationtimestamp);
-  event UserLicenseRenewedEvent(address indexed useraddress, string licensename, uint256 indexed expirationtimestamp);
-  event UserLicenseRevokedEvent(address indexed useraddress, string licensename);
+  event UserLicenseGrantedEvent(address indexed useraddress, bytes32 licensename, uint256 indexed expirationtimestamp);
+  event UserLicenseRenewedEvent(address indexed useraddress, bytes32 licensename, uint256 indexed expirationtimestamp);
+  event UserLicenseRevokedEvent(address indexed useraddress, bytes32 licensename);
 
 
   /* Configuration */

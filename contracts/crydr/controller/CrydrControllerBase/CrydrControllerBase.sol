@@ -69,7 +69,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
     crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
     isRegisteredView[_newCrydrView] = true;
 
-    emit CrydrViewAddedEvent(_newCrydrView, _viewApiStandardName);
+    emit CrydrViewAddedEvent(_newCrydrView, keccak256(_viewApiStandardName));
   }
 
   function removeCrydrView(
@@ -88,7 +88,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
     crydrViewsAddresses[_viewApiStandardName] == address(0x0);
     isRegisteredView[removedView] = false;
 
-    emit CrydrViewRemovedEvent(removedView, _viewApiStandardName);
+    emit CrydrViewRemovedEvent(removedView, keccak256(_viewApiStandardName));
   }
 
   function getCrydrViewAddress(

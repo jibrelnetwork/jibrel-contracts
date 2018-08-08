@@ -35,8 +35,8 @@ contract Exchange {
 
   /* Events */
 
-  event ExchangeQueryEvent(address indexed sender, bytes32 id, uint timestamp, string symbol, uint value);
-  event ExchangedEvent(address indexed sender, uint timestamp, string symbol, uint price, uint value);
+  event ExchangeQueryEvent(address indexed sender, bytes32 id, uint timestamp, bytes32 symbol, uint value);
+  event ExchangedEvent(address indexed sender, uint timestamp, bytes32 symbol, uint price, uint value);
 
 
   /* Constructor */

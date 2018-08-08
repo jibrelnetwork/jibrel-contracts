@@ -35,12 +35,12 @@ contract BODC {
 
   /* Events */
 
-  event ProposalForNewMemberEvent(address indexed initiator, address indexed newMemberAddress, string newMemberName);
+  event ProposalForNewMemberEvent(address indexed initiator, address indexed newMemberAddress, bytes32 newMemberName);
   event ProposalForDismissMemberEvent(address indexed initiator, uint256 indexed dismissedMemberId);
   event ProposalForMembershidVotedEvent(address indexed voter, bool indexed inSupport);
-  event NewMemberApprovedEvent(address indexed newMemberId, address indexed newMemberAddress, string newMemberName);
-  event MemberDismissedEvent(address indexed dismissedMemberId, address indexed dismissedMemberAddress, string dismissedMemberName);
-  event MemberLeavedEvent(address indexed leavedMemberId, address indexed leavedMemberAddress, string leavedMemberName);
+  event NewMemberApprovedEvent(address indexed newMemberId, address indexed newMemberAddress, bytes32 newMemberName);
+  event MemberDismissedEvent(address indexed dismissedMemberId, address indexed dismissedMemberAddress, bytes32 dismissedMemberName);
+  event MemberLeavedEvent(address indexed leavedMemberId, address indexed leavedMemberAddress, bytes32 leavedMemberName);
 
 
   /* Constructor */
