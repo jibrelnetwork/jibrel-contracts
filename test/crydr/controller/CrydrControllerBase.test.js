@@ -6,6 +6,7 @@ import * as PausableInterfaceJSAPI            from '../../../contracts/lifecycle
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
@@ -170,7 +171,7 @@ global.contract('CrydrControllerBase', (accounts) => {
 
 
   global.it('should test that functions fire events', async () => {
-    let blockNumber = global.web3.eth.blockNumber;
+    let blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrControllerBaseInterfaceJSAPI.setCrydrStorage(crydrControllerBaseInstance.address, managerGeneral,
                                                             crydrStorageInstance.address);
     const crydrStorageAddress = crydrStorageInstance.address;
@@ -186,7 +187,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                     });
     global.assert.strictEqual(pastEvents.length, 1);
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrControllerBaseInterfaceJSAPI.setCrydrView(crydrControllerBaseInstance.address, managerGeneral,
                                                          crydrViewBaseInstance.address, viewStandard);
     const crydrViewAddress = crydrViewBaseInstance.address;
@@ -202,7 +203,7 @@ global.contract('CrydrControllerBase', (accounts) => {
                                });
     global.assert.strictEqual(pastEvents.length, 1);
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrControllerBaseInterfaceJSAPI.removeCrydrView(crydrControllerBaseInstance.address, managerGeneral,
                                                             viewStandard);
     pastEvents = await CrydrControllerBaseInterfaceJSAPI

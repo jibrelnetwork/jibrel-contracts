@@ -4,6 +4,7 @@ import * as ManageableInterfaceJSAPI from '../../contracts/lifecycle/Manageable/
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 
 import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
+import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
 
 import * as CheckExceptions from '../../jsroutines/util/CheckExceptions';
 
@@ -268,7 +269,7 @@ global.contract('Manageable', (accounts) => {
   });
 
   global.it('should test that functions fire events', async () => {
-    let blockNumber = global.web3.eth.blockNumber;
+    let blockNumber = await AsyncWeb3.getBlockNumber();
     await ManageableJSAPI.enableManager(manageableInstanceAddress, owner, managerGeneral);
     let pastEvents = await ManageableJSAPI.getManagerEnabledEvents(manageableInstanceAddress,
                                                                    {
@@ -282,7 +283,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await ManageableJSAPI.disableManager(manageableInstanceAddress, owner, managerGeneral);
     pastEvents = await ManageableJSAPI.getManagerDisabledEvents(manageableInstanceAddress,
                                                                 {
@@ -296,7 +297,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await ManageableJSAPI.grantManagerPermissions(manageableInstanceAddress, owner, managerGeneral, ['permission_01']);
     pastEvents = await ManageableJSAPI.getManagerPermissionGrantedEvents(manageableInstanceAddress,
                                                                          {
@@ -310,7 +311,7 @@ global.contract('Manageable', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await ManageableJSAPI.revokeManagerPermissions(manageableInstanceAddress, owner, managerGeneral, ['permission_01']);
     pastEvents = await ManageableJSAPI.getManagerPermissionRevokedEvents(manageableInstanceAddress,
                                                                          {

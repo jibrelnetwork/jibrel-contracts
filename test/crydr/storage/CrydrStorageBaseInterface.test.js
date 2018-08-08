@@ -9,6 +9,7 @@ import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/sto
 import * as CrydrStorageAllowanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageAllowance/CrydrStorageAllowanceInterface.jsapi';
 import * as CrydrStorageBlocksInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.jsapi';
 
+import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
@@ -131,7 +132,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
 
   global.it('should test that configuration functions fire events', async () => {
     await PausableInterfaceJSAPI.pauseContract(crydrStorageInstance.address, managerPause);
-    const blockNumber = global.web3.eth.blockNumber;
+    const blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBaseInterfaceJSAPI.setCrydrController(crydrStorageInstance.address, managerGeneral,
                                                             storageProxyInstance02.address);
     const controllerAddress = storageProxyInstance02.address;
@@ -201,7 +202,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
   });
 
   global.it('should test that low-level setters fire events', async () => {
-    let blockNumber = global.web3.eth.blockNumber;
+    let blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBalanceInterfaceJSAPI.increaseBalance(storageProxyInstance01.address, owner,
                                                             testInvestor1, 10 * (10 ** 18));
     const controllerAddress = storageProxyInstance01.address;
@@ -218,7 +219,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBalanceInterfaceJSAPI.decreaseBalance(storageProxyInstance01.address, owner,
                                                             testInvestor1, 5 * (10 ** 18));
     pastEvents = await CrydrStorageBalanceInterfaceJSAPI.getAccountBalanceDecreasedEvents(
@@ -234,7 +235,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageAllowanceInterfaceJSAPI.increaseAllowance(storageProxyInstance01.address, owner,
                                                                 testInvestor1, testInvestor2, 10 * (10 ** 18));
     pastEvents = await CrydrStorageAllowanceInterfaceJSAPI.getAccountAllowanceIncreasedEvents(
@@ -251,7 +252,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageAllowanceInterfaceJSAPI.decreaseAllowance(storageProxyInstance01.address, owner,
                                                                 testInvestor1, testInvestor2, 5 * (10 ** 18));
     pastEvents = await CrydrStorageAllowanceInterfaceJSAPI.getAccountAllowanceDecreasedEvents(
@@ -504,7 +505,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     const controllerAddress = storageProxyInstance01.address;
 
 
-    let blockNumber = global.web3.eth.blockNumber;
+    let blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBlocksInterfaceJSAPI.blockAccountFunds(storageProxyInstance01.address, owner,
                                                              testInvestor1, 10 * (10 ** 18));
     let pastEvents = await CrydrStorageBlocksInterfaceJSAPI.getAccountFundsBlockedEvents(
@@ -520,7 +521,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBlocksInterfaceJSAPI.unblockAccountFunds(storageProxyInstance01.address, owner,
                                                                testInvestor1, 5 * (10 ** 18));
     pastEvents = await CrydrStorageBlocksInterfaceJSAPI.getAccountFundsUnblockedEvents(
@@ -536,7 +537,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBlocksInterfaceJSAPI.blockAccount(storageProxyInstance01.address, owner,
                                                         testInvestor1);
     pastEvents = await CrydrStorageBlocksInterfaceJSAPI.getAccountBlockedEvents(
@@ -552,7 +553,7 @@ global.contract('CrydrStorageBaseInterface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageBlocksInterfaceJSAPI.unblockAccount(storageProxyInstance01.address, owner,
                                                           testInvestor1);
     pastEvents = await CrydrStorageBlocksInterfaceJSAPI.getAccountUnblockedEvents(

@@ -8,6 +8,7 @@ import * as CrydrViewERC20LoggableInterfaceJSAPI from '../../../contracts/crydr/
 
 import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
 
+import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 
@@ -141,7 +142,7 @@ global.contract('CrydrViewERC20', (accounts) => {
   global.it('should test that functions fire events', async () => {
     const value = 10 * (10 ** 18);
 
-    let blockNumber = global.web3.eth.blockNumber;
+    let blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrViewERC20LoggableInterfaceJSAPI
       .emitTransferEvent(controllerStubInstance.address, testInvestor1,
                          testInvestor1, testInvestor2, value);
@@ -159,7 +160,7 @@ global.contract('CrydrViewERC20', (accounts) => {
                          });
     global.assert.strictEqual(pastEvents.length, 1);
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrViewERC20LoggableInterfaceJSAPI
       .emitApprovalEvent(controllerStubInstance.address, testInvestor1,
                          testInvestor1, testInvestor2, value);

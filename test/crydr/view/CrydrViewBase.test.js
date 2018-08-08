@@ -4,10 +4,12 @@ const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20S
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrViewBaseInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
 
+import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
 
 global.contract('CrydrViewBase', (accounts) => {
   let crydrViewBaseInstance;
@@ -95,7 +97,7 @@ global.contract('CrydrViewBase', (accounts) => {
   global.it('should test that functions fire events', async () => {
     await PausableInterfaceJSAPI.pauseContract(crydrViewBaseInstance.address, managerPause);
 
-    const blockNumber = global.web3.eth.blockNumber;
+    const blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrViewBaseInterfaceJSAPI.setCrydrController(crydrViewBaseInstance.address,
                                                          managerGeneral,
                                                          controllerStubInstance02.address);

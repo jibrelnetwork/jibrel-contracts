@@ -8,6 +8,7 @@ import * as CrydrStorageAllowanceInterfaceJSAPI from '../../../contracts/crydr/s
 import * as CrydrStorageBlocksInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.jsapi';
 import * as CrydrStorageERC20InterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.jsapi';
 
+import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 
@@ -183,7 +184,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
                                                             testInvestor1, 10 * (10 ** 18));
 
 
-    let blockNumber = global.web3.eth.blockNumber;
+    let blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageERC20InterfaceJSAPI.transfer(storageProxyInstance01.address, owner,
                                                    testInvestor1, testInvestor2, 5 * (10 ** 18));
     const controllerAddress = storageProxyInstance01.address;
@@ -201,7 +202,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageERC20InterfaceJSAPI.approve(storageProxyInstance01.address, owner,
                                                   testInvestor1, testInvestor2, 5 * (10 ** 18));
     pastEvents = await CrydrStorageERC20InterfaceJSAPI.getCrydrSpendingApprovedEvents(
@@ -218,7 +219,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     global.assert.strictEqual(pastEvents.length, 1);
 
 
-    blockNumber = global.web3.eth.blockNumber;
+    blockNumber = await AsyncWeb3.getBlockNumber();
     await CrydrStorageERC20InterfaceJSAPI.transferFrom(storageProxyInstance01.address, owner,
                                                        testInvestor2, testInvestor1, testInvestor2, 5 * (10 ** 18));
     pastEvents = await CrydrStorageERC20InterfaceJSAPI.getCrydrTransferredFromEvents(
