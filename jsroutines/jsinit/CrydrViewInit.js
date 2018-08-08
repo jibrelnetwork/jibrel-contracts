@@ -15,7 +15,7 @@ export const deployCrydrView = async (crydrViewContractArtifact, ethAccounts: Et
   const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrViewContractArtifact, ethAccounts.owner);
 
   global.console.log(`\tView of a crydr successfully deployed: ${contractAddress}`);
-  return null;
+  return contractAddress;
 };
 
 export const configureCrydrViewManagers = async (crydrViewAddress, ethAccounts: EthereumAccounts) => {

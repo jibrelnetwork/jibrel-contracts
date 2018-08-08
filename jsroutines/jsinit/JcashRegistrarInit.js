@@ -19,7 +19,7 @@ export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: 
   const contractAddress = await DeployUtils.deployContractAndPersistArtifact(jcashRegistrarArtifact, ethAccounts.owner);
 
   global.console.log(`\tEthRegistrar successfully deployed: ${contractAddress}`);
-  return null;
+  return contractAddress;
 };
 
 export const configureManagers = async (jcashRegistrarAddress, ethAccounts: EthereumAccounts) => {

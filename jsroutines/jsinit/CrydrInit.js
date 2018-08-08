@@ -14,9 +14,11 @@ import * as CrydrControllerInit from './CrydrControllerInit';
 import * as CrydrViewInit from './CrydrViewInit';
 
 
-export const linkCrydrStorage = async (crydrStorageAddress,
-                                       crydrControllerAddress,
-                                       ethAccounts: EthereumAccounts) => {
+export const linkCrydrStorage = async (
+  crydrStorageAddress,
+  crydrControllerAddress,
+  ethAccounts: EthereumAccounts
+) => {
   global.console.log('\tLink crydr storage to controller...');
   global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
@@ -30,10 +32,12 @@ export const linkCrydrStorage = async (crydrStorageAddress,
   return null;
 };
 
-export const linkCrydrView = async (crydrControllerAddress,
-                                    crydrViewAddress,
-                                    crydrViewApiStandardName,
-                                    ethAccounts: EthereumAccounts) => {
+export const linkCrydrView = async (
+  crydrControllerAddress,
+  crydrViewAddress,
+  crydrViewApiStandardName,
+  ethAccounts: EthereumAccounts
+) => {
   global.console.log('\tLink crydr view to controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
@@ -48,9 +52,11 @@ export const linkCrydrView = async (crydrControllerAddress,
   return null;
 };
 
-export const linkLicenseRegistry = async (licenseRegistryAddress,
-                                          crydrControllerAddress,
-                                          ethAccounts: EthereumAccounts) => {
+export const linkLicenseRegistry = async (
+  licenseRegistryAddress,
+  crydrControllerAddress,
+  ethAccounts: EthereumAccounts
+) => {
   global.console.log('\tLink license registry and controller...');
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
@@ -63,11 +69,13 @@ export const linkLicenseRegistry = async (licenseRegistryAddress,
 };
 
 
-export const initCrydr = async (crydrStorageContractArtifact,
-                                crydrControllerContractArtifact,
-                                crydrViewContractArtifact,
-                                crydrViewApiStandardName,
-                                ethAccounts: EthereumAccounts) => {
+export const initCrydr = async (
+  crydrStorageContractArtifact,
+  crydrControllerContractArtifact,
+  crydrViewContractArtifact,
+  crydrViewApiStandardName,
+  ethAccounts: EthereumAccounts
+) => {
   global.console.log('\tDeploy and init JCash crydr...');
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
@@ -99,12 +107,14 @@ export const initCrydr = async (crydrStorageContractArtifact,
   return null;
 };
 
-export const initLicensedCrydr = async (crydrStorageContractArtifact,
-                                        licenseRegistryArtifact,
-                                        crydrControllerContractArtifact,
-                                        crydrViewContractArtifact,
-                                        crydrViewApiStandardName,
-                                        ethAccounts: EthereumAccounts) => {
+export const initLicensedCrydr = async (
+  crydrStorageContractArtifact,
+  licenseRegistryArtifact,
+  crydrControllerContractArtifact,
+  crydrViewContractArtifact,
+  crydrViewApiStandardName,
+  ethAccounts: EthereumAccounts
+) => {
   global.console.log('\tDeploy and init licensed JCash crydr...');
 
   await initCrydr(crydrStorageContractArtifact,

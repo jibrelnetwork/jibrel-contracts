@@ -7,9 +7,6 @@ import * as CrydrControllerBlockableJSAPI from '../../contracts/crydr/controller
 import * as CrydrControllerMintableJSAPI from '../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.jsapi';
 import * as CrydrControllerForcedTransferJSAPI from '../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.jsapi';
 import * as CrydrControllerLicensedBaseJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi';
-import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
-import * as JNTPayableServiceInterfaceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
-import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
 
 import { EthereumAccounts } from '../jsconfig/DeployConfig';
 import * as DeployUtils from '../util/DeployUtils';
@@ -21,7 +18,7 @@ export const deployCrydrController = async (crydrControllerContractArtifact, eth
   const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrControllerContractArtifact, ethAccounts.owner);
 
   global.console.log(`\tController of a crydr successfully deployed: ${contractAddress}`);
-  return null;
+  return contractAddress;
 };
 
 export const configureCrydrControllerManagers = async (crydrControllerAddress, ethAccounts: EthereumAccounts) => {

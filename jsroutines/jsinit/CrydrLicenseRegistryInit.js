@@ -14,8 +14,7 @@ export const deployLicenseRegistry = async (licenseRegistryArtifact, ethAccounts
   const contractAddress = await DeployUtils.deployContractAndPersistArtifact(licenseRegistryArtifact, ethAccounts.owner);
 
   global.console.log(`\tLicense registry of a crydr successfully deployed: ${contractAddress}`);
-
-  return null;
+  return contractAddress;
 };
 
 export const configureLicenseRegistryManagers = async (licenseRegistryAddress, ethAccounts: EthereumAccounts) => {
