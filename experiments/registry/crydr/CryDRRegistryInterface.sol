@@ -16,8 +16,8 @@ contract CryDRRegistryInterface {
 
   /* Events */
 
-  event CryDRAddedEvent(string crydrsymbol, string crydrname, address indexed crydrcontroller);
-  event CryDRRemovedEvent(string crydrsymbol, string crydrname, address indexed crydrcontroller);
+  event CryDRAddedEvent(bytes32 crydrsymbol, bytes32 crydrname, address indexed crydrcontroller);
+  event CryDRRemovedEvent(bytes32 crydrsymbol, bytes32 crydrname, address indexed crydrcontroller);
 
 
   /* Public functions */

@@ -20,8 +20,8 @@ contract Manageable is OwnableInterface,
 
   event ManagerEnabledEvent(address indexed manager);
   event ManagerDisabledEvent(address indexed manager);
-  event ManagerPermissionGrantedEvent(address indexed manager, string permission);
-  event ManagerPermissionRevokedEvent(address indexed manager, string permission);
+  event ManagerPermissionGrantedEvent(address indexed manager, bytes32 permission);
+  event ManagerPermissionRevokedEvent(address indexed manager, bytes32 permission);
 
 
   /* Configure contract */
@@ -67,7 +67,7 @@ contract Manageable is OwnableInterface,
 
     managerPermissions[_manager][_permissionName] = true;
 
-    emit ManagerPermissionGrantedEvent(_manager, _permissionName);
+    emit ManagerPermissionGrantedEvent(_manager, keccak256(_permissionName));
   }
 
   /**
@@ -87,7 +87,7 @@ contract Manageable is OwnableInterface,
 
     managerPermissions[_manager][_permissionName] = false;
 
-    emit ManagerPermissionRevokedEvent(_manager, _permissionName);
+    emit ManagerPermissionRevokedEvent(_manager, keccak256(_permissionName));
   }
 
 

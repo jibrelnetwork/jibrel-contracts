@@ -24,7 +24,7 @@ contract JibrelDAOInterface {
     function isProposalApproved(uint256 _proposalId) returns (bool _isApproved);
 
     // events
-    event ProposalAddedEvent(uint256 indexed initiator, string description);
+    event ProposalAddedEvent(uint256 indexed initiator, bytes32 description);
     event ProposalVotedEvent(uint256 indexed proposalId, address indexed voter, bool indexed inSupport);
     event ProposalResolvedEvent(uint256 indexed proposalId, bool indexed inSupport);
 }

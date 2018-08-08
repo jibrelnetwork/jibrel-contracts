@@ -14,7 +14,7 @@ contract CryDRRegistryManagementInterface is CryDRRegistryInterface {
 
   /* Events */
 
-  event CryDRControllerChangedEvent(string crydrsymbol, string crydrname, address indexed crydrcontroller);
+  event CryDRControllerChangedEvent(bytes32 crydrsymbol, bytes32 crydrname, address indexed crydrcontroller);
 
 
   /* Public functions */
