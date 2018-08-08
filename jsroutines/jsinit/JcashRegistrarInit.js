@@ -1,6 +1,7 @@
+// @flow
+
 import * as DeployUtils from '../util/DeployUtils';
 
-import * as OwnableJSAPI from '../../contracts/lifecycle/Ownable/Ownable.jsapi';
 import * as OwnableInterfaceJSAPI from '../../contracts/lifecycle/Ownable/OwnableInterface.jsapi';
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
@@ -9,30 +10,31 @@ import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableSer
 import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
 import * as JcashRegistrarJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrar.jsapi';
 
+import { EthereumAccounts } from '../jsconfig/DeployConfig';
 
-export const deployJcashRegistrar = async (jcashRegistrarArtifact, contractOwner) => {
+
+export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: EthereumAccounts) => {
   global.console.log('\tDeploying EthRegistrar');
 
-  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(jcashRegistrarArtifact, contractOwner);
+  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(jcashRegistrarArtifact, ethAccounts.owner);
 
   global.console.log(`\tEthRegistrar successfully deployed: ${contractAddress}`);
   return null;
 };
 
-export const configureManagers = async (
-  jcashRegistrarAddress, contractOwner, managerPause, managerJcashReplenisher, managerJcashExchange) => {
+export const configureManagers = async (jcashRegistrarAddress, ethAccounts: EthereumAccounts) => {
   global.console.log('\tConfigure managers of JcashRegistrar contract:');
 
   await Promise.all(
     [
-      await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerPause),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerPause),
+      await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerPause),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerPause),
 
-      await JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, contractOwner, managerJcashReplenisher),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashReplenisher),
+      await JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashReplenisher),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashReplenisher),
 
-      await JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, contractOwner, managerJcashExchange),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJcashExchange),
+      await JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashExchange),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashExchange),
     ]
   );
 
@@ -40,13 +42,11 @@ export const configureManagers = async (
   return null;
 };
 
-export const verifyManagers = async (
-  jcashRegistrarAddress, contractOwner, managerPause, managerJcashReplenisher, managerJcashExchange
-) => {
-  const isVerified1 = await OwnableInterfaceJSAPI.verifyOwner(jcashRegistrarAddress, contractOwner);
-  const isVerified2 = await PausableJSAPI.verifyManagerPermissions(jcashRegistrarAddress, managerPause);
-  const isVerified3 = await JcashRegistrarJSAPI.verifyReplenisherPermissions(jcashRegistrarAddress, managerJcashReplenisher);
-  const isVerified4 = await JcashRegistrarJSAPI.verifyExchangeManagerPermissions(jcashRegistrarAddress, managerJcashExchange);
+export const verifyManagers = async (jcashRegistrarAddress, ethAccounts: EthereumAccounts) => {
+  const isVerified1 = await OwnableInterfaceJSAPI.verifyOwner(jcashRegistrarAddress, ethAccounts.owner);
+  const isVerified2 = await PausableJSAPI.verifyManagerPermissions(jcashRegistrarAddress, ethAccounts.managerPause);
+  const isVerified3 = await JcashRegistrarJSAPI.verifyReplenisherPermissions(jcashRegistrarAddress, ethAccounts.managerJcashReplenisher);
+  const isVerified4 = await JcashRegistrarJSAPI.verifyExchangeManagerPermissions(jcashRegistrarAddress, ethAccounts.managerJcashExchange);
 
   return (isVerified1 === true
     && isVerified2 === true
@@ -54,45 +54,42 @@ export const verifyManagers = async (
     && isVerified4 === true);
 };
 
-export const configureJNTConnection = async (
-  jcashRegistrarAddress, contractOwner, jntControllerAddress, managerJNT, jntBeneficiary, transferCost
-) => {
+export const configureJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: EthereumAccounts, transferCost) => {
   global.console.log('\tConfigure connections JcashRegistrar<->JNTController:');
 
   global.console.log('\tConfigure JNT manager');
   await Promise.all(
     [
-      await JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, contractOwner, managerJNT),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, contractOwner, managerJNT),
+      await JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJNT),
+      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJNT),
     ]
   );
 
   global.console.log('\tConfigure contract params');
   await Promise.all(
     [
-      await JNTPayableServiceInterfaceJSAPI.setJntController(jcashRegistrarAddress, managerJNT, jntControllerAddress),
-      await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jcashRegistrarAddress, managerJNT, jntBeneficiary),
-      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_eth', transferCost),
-      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, managerJNT, 'transfer_token', transferCost),
+      await JNTPayableServiceInterfaceJSAPI.setJntController(jcashRegistrarAddress, ethAccounts.managerJNT, jntControllerAddress),
+      await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jcashRegistrarAddress, ethAccounts.managerJNT, ethAccounts.jntBeneficiary),
+      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, ethAccounts.managerJNT, 'transfer_eth', transferCost),
+      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, ethAccounts.managerJNT, 'transfer_token', transferCost),
     ]
   );
 
   global.console.log('\tAllow JcashRegistrar charge JNT');
   await Promise.all(
     [
-      await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, contractOwner, jcashRegistrarAddress),
-      await ManageableJSAPI.enableManager(jntControllerAddress, contractOwner, jcashRegistrarAddress),
-    ]);
+      await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, ethAccounts.owner, jcashRegistrarAddress),
+      await ManageableJSAPI.enableManager(jntControllerAddress, ethAccounts.owner, jcashRegistrarAddress),
+    ]
+  );
 
   global.console.log('\tConnection JcashRegistrar<->JNTController successfully configured');
   return null;
 };
 
-export const verifyJNTConnection = async (
-  jcashRegistrarAddress, jntControllerAddress, managerJNT, jntBeneficiary, transferCost
-) => {
+export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: EthereumAccounts, transferCost) => {
   global.console.log('\tVerify JNT manager');
-  const isVerified1 = await JNTPayableServiceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, managerJNT);
+  const isVerified1 = await JNTPayableServiceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, ethAccounts.managerJNT);
 
 
   global.console.log('\tVerify contract params');
@@ -104,9 +101,9 @@ export const verifyJNTConnection = async (
   }
 
   const receivedJntBeneficiary = await JNTPayableServiceInterfaceJSAPI.getJntBeneficiary(jcashRegistrarAddress);
-  const isVerified3 = (receivedJntBeneficiary === jntBeneficiary);
+  const isVerified3 = (receivedJntBeneficiary === ethAccounts.jntBeneficiary);
   if (isVerified3 !== true) {
-    global.console.log(`\t\tERROR: JNT beneficiary "${receivedJntBeneficiary}" configured for the contract "${jcashRegistrarAddress}" does not match expected value "${jntBeneficiary}"`);
+    global.console.log(`\t\tERROR: JNT beneficiary "${receivedJntBeneficiary}" configured for the contract "${jcashRegistrarAddress}" does not match expected value "${ethAccounts.jntBeneficiary}"`);
   }
 
   const receivedTransferEthPrice = await JNTPayableServiceInterfaceJSAPI.getActionPrice(jcashRegistrarAddress, 'transfer_eth');

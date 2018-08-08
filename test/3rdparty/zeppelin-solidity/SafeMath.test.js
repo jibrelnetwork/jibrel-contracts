@@ -1,15 +1,17 @@
-const SafeMathMock = global.artifacts.require('SafeMathMock.sol');
-
+import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+const SafeMathMock = global.artifacts.require('SafeMathMock.sol');
 
 
 global.contract('SafeMath', (accounts) => {
-  const owner = accounts[1];
+  DeployConfig.setEthAccounts(accounts);
+  const ethAccounts = DeployConfig.getEthAccounts();
 
   let safeMathMockInstance;
 
   global.before(async () => {
-    safeMathMockInstance = await SafeMathMock.new({ from: owner });
+    safeMathMockInstance = await SafeMathMock.new({ from: ethAccounts.owner });
   });
 
   global.it('multiplies correctly', async () => {

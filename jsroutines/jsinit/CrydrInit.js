@@ -1,30 +1,30 @@
+// @flow
+
 import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrStorageBaseInterfaceJSAPI from '../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBaseInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 import * as CrydrControllerLicensedBaseInterfaceJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.jsapi';
 import * as CrydrViewBaseInterfaceJSAPI from '../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
 
-import * as DeployConfig from '../jsconfig/DeployConfig';
+import { EthereumAccounts } from '../jsconfig/DeployConfig';
 
-import * as CrydrStorageInitJSAPI from './CrydrStorageInit';
-import * as CrydrLicenseRegistryInitJSAPI from './CrydrLicenseRegistryInit';
-import * as CrydrControllerInitJSAPI from './CrydrControllerInit';
-import * as CrydrViewInitJSAPI from './CrydrViewInit';
+import * as CrydrStorageInit from './CrydrStorageInit';
+import * as CrydrLicenseRegistryInit from './CrydrLicenseRegistryInit';
+import * as CrydrControllerInit from './CrydrControllerInit';
+import * as CrydrViewInit from './CrydrViewInit';
 
 
 export const linkCrydrStorage = async (crydrStorageAddress,
-                                       crydrControllerAddress) => {
+                                       crydrControllerAddress,
+                                       ethAccounts: EthereumAccounts) => {
   global.console.log('\tLink crydr storage to controller...');
   global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  const { managerGeneral } = DeployConfig.getAccounts();
-  global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
-
   await CrydrStorageBaseInterfaceJSAPI
-    .setCrydrController(crydrStorageAddress, managerGeneral, crydrControllerAddress);
+    .setCrydrController(crydrStorageAddress, ethAccounts.managerGeneral, crydrControllerAddress);
   await CrydrControllerBaseInterfaceJSAPI
-    .setCrydrStorage(crydrControllerAddress, managerGeneral, crydrStorageAddress);
+    .setCrydrStorage(crydrControllerAddress, ethAccounts.managerGeneral, crydrStorageAddress);
 
   global.console.log('\tCrydr storage successfully linked');
   return null;
@@ -32,35 +32,31 @@ export const linkCrydrStorage = async (crydrStorageAddress,
 
 export const linkCrydrView = async (crydrControllerAddress,
                                     crydrViewAddress,
-                                    crydrViewApiStandardName) => {
+                                    crydrViewApiStandardName,
+                                    ethAccounts: EthereumAccounts) => {
   global.console.log('\tLink crydr view to controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
-  const { managerGeneral } = DeployConfig.getAccounts();
-  global.console.log(`\t\tmanagerGeneral - ${managerGeneral}`);
-
   await CrydrViewBaseInterfaceJSAPI
-    .setCrydrController(crydrViewAddress, managerGeneral, crydrControllerAddress);
+    .setCrydrController(crydrViewAddress, ethAccounts.managerGeneral, crydrControllerAddress);
   await CrydrControllerBaseInterfaceJSAPI
-    .setCrydrView(crydrControllerAddress, managerGeneral, crydrViewAddress, crydrViewApiStandardName);
+    .setCrydrView(crydrControllerAddress, ethAccounts.managerGeneral, crydrViewAddress, crydrViewApiStandardName);
 
   global.console.log('\tCrydr view successfully linked');
   return null;
 };
 
 export const linkLicenseRegistry = async (licenseRegistryAddress,
-                                          crydrControllerAddress) => {
+                                          crydrControllerAddress,
+                                          ethAccounts: EthereumAccounts) => {
   global.console.log('\tLink license registry and controller...');
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  const { managerGeneral } = DeployConfig.getAccounts();
-  global.console.log(`\t\tmanagerLicense - ${managerGeneral}`);
-
   await CrydrControllerLicensedBaseInterfaceJSAPI
-    .setLicenseRegistry(crydrControllerAddress, managerGeneral, licenseRegistryAddress);
+    .setLicenseRegistry(crydrControllerAddress, ethAccounts.managerGeneral, licenseRegistryAddress);
 
   global.console.log('\tLicense registry and controller successfully linked');
   return null;
@@ -70,15 +66,15 @@ export const linkLicenseRegistry = async (licenseRegistryAddress,
 export const initCrydr = async (crydrStorageContractArtifact,
                                 crydrControllerContractArtifact,
                                 crydrViewContractArtifact,
-                                crydrViewApiStandardName) => {
+                                crydrViewApiStandardName,
+                                ethAccounts: EthereumAccounts) => {
   global.console.log('\tDeploy and init JCash crydr...');
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
   global.console.log('\tDeploying crydr contracts');
-  const { owner } = DeployConfig.getAccounts();
-  await CrydrStorageInitJSAPI.deployCrydrStorage(crydrStorageContractArtifact, owner);
-  await CrydrControllerInitJSAPI.deployCrydrController(crydrControllerContractArtifact, owner);
-  await CrydrViewInitJSAPI.deployCrydrView(crydrViewContractArtifact, owner);
+  await CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts);
+  await CrydrControllerInit.deployCrydrController(crydrControllerContractArtifact, ethAccounts);
+  await CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts);
   global.console.log('\tCrydr contracts successfully deployed');
 
   const crydrStorageInstance = await crydrStorageContractArtifact.deployed();
@@ -89,14 +85,14 @@ export const initCrydr = async (crydrStorageContractArtifact,
   const crydrViewAddress = crydrViewInstance.address;
 
   global.console.log('\tConfiguring crydr managers');
-  await CrydrStorageInitJSAPI.configureCrydrStorageManagers(crydrStorageAddress);
-  await CrydrControllerInitJSAPI.configureCrydrControllerManagers(crydrControllerAddress);
-  await CrydrViewInitJSAPI.configureCrydrViewManagers(crydrViewAddress);
+  await CrydrStorageInit.configureCrydrStorageManagers(crydrStorageAddress, ethAccounts);
+  await CrydrControllerInit.configureCrydrControllerManagers(crydrControllerAddress, ethAccounts);
+  await CrydrViewInit.configureCrydrViewManagers(crydrViewAddress, ethAccounts);
   global.console.log('\tCrydr managers successfully configured');
 
   global.console.log('\tLink crydr contracts');
-  await linkCrydrStorage(crydrStorageAddress, crydrControllerAddress);
-  await linkCrydrView(crydrControllerAddress, crydrViewAddress, crydrViewApiStandardName);
+  await linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts);
+  await linkCrydrView(crydrControllerAddress, crydrViewAddress, crydrViewApiStandardName, ethAccounts);
   global.console.log('\tCrydr contracts successfully linked');
 
   global.console.log('\tJCash crydr successfully initialized');
@@ -107,33 +103,32 @@ export const initLicensedCrydr = async (crydrStorageContractArtifact,
                                         licenseRegistryArtifact,
                                         crydrControllerContractArtifact,
                                         crydrViewContractArtifact,
-                                        crydrViewApiStandardName) => {
+                                        crydrViewApiStandardName,
+                                        ethAccounts: EthereumAccounts) => {
   global.console.log('\tDeploy and init licensed JCash crydr...');
 
   await initCrydr(crydrStorageContractArtifact,
                   crydrControllerContractArtifact,
                   crydrViewContractArtifact,
-                  crydrViewApiStandardName);
+                  crydrViewApiStandardName,
+                  ethAccounts);
 
   global.console.log('\tDeploying license registry contract');
-  const { owner } = DeployConfig.getAccounts();
-  await CrydrLicenseRegistryInitJSAPI.deployLicenseRegistry(licenseRegistryArtifact, owner);
+  await CrydrLicenseRegistryInit.deployLicenseRegistry(licenseRegistryArtifact, ethAccounts);
   global.console.log('\tLicense registry successfully deployed');
 
   const licenseRegistryInstance = await licenseRegistryArtifact.deployed();
   const licenseRegistryAddress = licenseRegistryInstance.address;
-  const crydrViewInstance = await crydrViewContractArtifact.deployed();
-  const crydrViewAddress = crydrViewInstance.address;
   const crydrControllerInstance = await crydrControllerContractArtifact.deployed();
   const crydrControllerAddress = crydrControllerInstance.address;
 
   global.console.log('\tConfiguring license managers');
-  await CrydrLicenseRegistryInitJSAPI.configureLicenseRegistryManagers(licenseRegistryAddress);
-  await CrydrControllerInitJSAPI.configureCrydrControllerLicensedManagers(crydrControllerAddress);
+  await CrydrLicenseRegistryInit.configureLicenseRegistryManagers(licenseRegistryAddress, ethAccounts);
+  await CrydrControllerInit.configureCrydrControllerLicensedManagers(crydrControllerAddress, ethAccounts);
   global.console.log('\tLicense managers successfully configured');
 
   global.console.log('\tLink license registry and controller');
-  await linkLicenseRegistry(licenseRegistryAddress, crydrControllerAddress);
+  await linkLicenseRegistry(licenseRegistryAddress, crydrControllerAddress, ethAccounts);
   global.console.log('\tLicense registry and controller successfully linked');
 
   global.console.log('\tLicensed JCash crydr successfully initialized');
@@ -141,16 +136,13 @@ export const initLicensedCrydr = async (crydrStorageContractArtifact,
 };
 
 
-export const upauseCrydrContract = async (crydrContractArtifact, contractType) => {
+export const upauseCrydrContract = async (crydrContractArtifact, contractType, ethAccounts: EthereumAccounts) => {
   global.console.log(`\tUnpause ${contractType} of JCash crydr...`);
-
-  const { managerPause } = DeployConfig.getAccounts();
-  global.console.log(`\t\tmanagerPause - ${managerPause}`);
 
   const crydrContractInstance = await crydrContractArtifact.deployed();
   const crydrContractAddress = crydrContractInstance.address;
 
-  await PausableJSAPI.unpauseContract(crydrContractAddress, managerPause);
+  await PausableJSAPI.unpauseContract(crydrContractAddress, ethAccounts.managerPause);
 
   global.console.log(`\t${contractType} of JCash crydr successfully unpaused`);
   return null;

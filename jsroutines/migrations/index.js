@@ -1,5 +1,10 @@
 /* Migration scripts */
 
+import * as DeployConfig from '../jsconfig/DeployConfig';
+import * as CrydrInit from '../jsinit/CrydrInit';
+import * as JcashRegistrarInit from '../jsinit/JcashRegistrarInit';
+import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+
 const JNTStorageArtifact    = global.artifacts.require('JNTStorage.sol');
 const JNTControllerArtifact = global.artifacts.require('JNTController.sol');
 const JNTViewERC20Artifact  = global.artifacts.require('JNTViewERC20.sol');
@@ -31,18 +36,13 @@ const JJODViewERC20Artifact       = global.artifacts.require('JJODViewERC20.sol'
 
 const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 
-import * as DeployConfig from '../jsconfig/DeployConfig';
-import * as CrydrInit from '../jsinit/CrydrInit';
-import * as JcashRegistrarInit from '../jsinit/JcashRegistrarInit';
-import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
-
 
 /* Migration #2 */
 
 export const executeMigrationNumber2 = async () => {
-  await CrydrInit.initCrydr(JNTStorageArtifact, JNTControllerArtifact, JNTViewERC20Artifact, 'erc20');
-  await CrydrInit.upauseCrydrContract(JNTStorageArtifact, 'storage');
-  await CrydrInit.upauseCrydrContract(JNTControllerArtifact, 'controller');
+  await CrydrInit.initCrydr(JNTStorageArtifact, JNTControllerArtifact, JNTViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JNTStorageArtifact, 'storage', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JNTControllerArtifact, 'controller', DeployConfig.getEthAccounts());
 };
 
 export const verifyMigrationNumber2 = async () => {
@@ -53,7 +53,7 @@ export const verifyMigrationNumber2 = async () => {
 /* Migration #3 */
 
 const executeMigrationNumber3 = async () => {
-  await CrydrInit.upauseCrydrContract(JNTViewERC20Artifact, 'view');
+  await CrydrInit.upauseCrydrContract(JNTViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
 };
 
 const verifyMigrationNumber3 = async () => {
@@ -66,12 +66,12 @@ const verifyMigrationNumber3 = async () => {
 const executeMigrationNumber4 = async () => {
   /* JUSD */
 
-  await CrydrInit.initLicensedCrydr(JUSDStorageArtifact, JUSDLicenseRegistryArtifact, JUSDControllerArtifact, JUSDViewERC20Artifact, 'erc20');
+  await CrydrInit.initLicensedCrydr(JUSDStorageArtifact, JUSDLicenseRegistryArtifact, JUSDControllerArtifact, JUSDViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
 
-  await CrydrInit.upauseCrydrContract(JUSDStorageArtifact, 'storage');
-  await CrydrInit.upauseCrydrContract(JUSDLicenseRegistryArtifact, 'license_registry');
-  await CrydrInit.upauseCrydrContract(JUSDControllerArtifact, 'controller');
-  await CrydrInit.upauseCrydrContract(JUSDViewERC20Artifact, 'view');
+  await CrydrInit.upauseCrydrContract(JUSDStorageArtifact, 'storage', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JUSDLicenseRegistryArtifact, 'license_registry', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JUSDControllerArtifact, 'controller', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JUSDViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
 
   const JUSDStorageInstance = await JUSDStorageArtifact.deployed();
   const JUSDStorageAddress = JUSDStorageInstance.address;
@@ -99,12 +99,12 @@ const verifyMigrationNumber4 = async () => {
 const executeMigrationNumber5 = async () => {
   /* JEUR */
 
-  await CrydrInit.initLicensedCrydr(JEURStorageArtifact, JEURLicenseRegistryArtifact, JEURControllerArtifact, JEURViewERC20Artifact, 'erc20');
+  await CrydrInit.initLicensedCrydr(JEURStorageArtifact, JEURLicenseRegistryArtifact, JEURControllerArtifact, JEURViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
 
-  await CrydrInit.upauseCrydrContract(JEURStorageArtifact, 'storage');
-  await CrydrInit.upauseCrydrContract(JEURLicenseRegistryArtifact, 'license_registry');
-  await CrydrInit.upauseCrydrContract(JEURControllerArtifact, 'controller');
-  await CrydrInit.upauseCrydrContract(JEURViewERC20Artifact, 'view');
+  await CrydrInit.upauseCrydrContract(JEURStorageArtifact, 'storage', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JEURLicenseRegistryArtifact, 'license_registry', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JEURControllerArtifact, 'controller', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JEURViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
 
   const JEURStorageInstance = await JEURStorageArtifact.deployed();
   const JEURStorageAddress = JEURStorageInstance.address;
@@ -132,12 +132,12 @@ const verifyMigrationNumber5 = async () => {
 const executeMigrationNumber6 = async () => {
   /* JGBP */
 
-  await CrydrInit.initLicensedCrydr(JGBPStorageArtifact, JGBPLicenseRegistryArtifact, JGBPControllerArtifact, JGBPViewERC20Artifact, 'erc20');
+  await CrydrInit.initLicensedCrydr(JGBPStorageArtifact, JGBPLicenseRegistryArtifact, JGBPControllerArtifact, JGBPViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
 
-  await CrydrInit.upauseCrydrContract(JGBPStorageArtifact, 'storage');
-  await CrydrInit.upauseCrydrContract(JGBPLicenseRegistryArtifact, 'license_registry');
-  await CrydrInit.upauseCrydrContract(JGBPControllerArtifact, 'controller');
-  await CrydrInit.upauseCrydrContract(JGBPViewERC20Artifact, 'view');
+  await CrydrInit.upauseCrydrContract(JGBPStorageArtifact, 'storage', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JGBPLicenseRegistryArtifact, 'license_registry', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JGBPControllerArtifact, 'controller', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JGBPViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
 
   const JGBPStorageInstance = await JGBPStorageArtifact.deployed();
   const JGBPStorageAddress = JGBPStorageInstance.address;
@@ -165,12 +165,12 @@ const verifyMigrationNumber6 = async () => {
 const executeMigrationNumber7 = async () => {
   /* JKRW */
 
-  await CrydrInit.initLicensedCrydr(JKRWStorageArtifact, JKRWLicenseRegistryArtifact, JKRWControllerArtifact, JKRWViewERC20Artifact, 'erc20');
+  await CrydrInit.initLicensedCrydr(JKRWStorageArtifact, JKRWLicenseRegistryArtifact, JKRWControllerArtifact, JKRWViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
 
-  await CrydrInit.upauseCrydrContract(JKRWStorageArtifact, 'storage');
-  await CrydrInit.upauseCrydrContract(JKRWLicenseRegistryArtifact, 'license_registry');
-  await CrydrInit.upauseCrydrContract(JKRWControllerArtifact, 'controller');
-  await CrydrInit.upauseCrydrContract(JKRWViewERC20Artifact, 'view');
+  await CrydrInit.upauseCrydrContract(JKRWStorageArtifact, 'storage', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JKRWLicenseRegistryArtifact, 'license_registry', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JKRWControllerArtifact, 'controller', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JKRWViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
 
   const JKRWStorageInstance = await JKRWStorageArtifact.deployed();
   const JKRWStorageAddress = JKRWStorageInstance.address;
@@ -198,12 +198,12 @@ const verifyMigrationNumber7 = async () => {
 const executeMigrationNumber8 = async () => {
   /* JJOD */
 
-  await CrydrInit.initLicensedCrydr(JJODStorageArtifact, JJODLicenseRegistryArtifact, JJODControllerArtifact, JJODViewERC20Artifact, 'erc20');
+  await CrydrInit.initLicensedCrydr(JJODStorageArtifact, JJODLicenseRegistryArtifact, JJODControllerArtifact, JJODViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
 
-  await CrydrInit.upauseCrydrContract(JJODStorageArtifact, 'storage');
-  await CrydrInit.upauseCrydrContract(JJODLicenseRegistryArtifact, 'license_registry');
-  await CrydrInit.upauseCrydrContract(JJODControllerArtifact, 'controller');
-  await CrydrInit.upauseCrydrContract(JJODViewERC20Artifact, 'view');
+  await CrydrInit.upauseCrydrContract(JJODStorageArtifact, 'storage', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JJODLicenseRegistryArtifact, 'license_registry', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JJODControllerArtifact, 'controller', DeployConfig.getEthAccounts());
+  await CrydrInit.upauseCrydrContract(JJODViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
 
   const JJODStorageInstance = await JJODStorageArtifact.deployed();
   const JJODStorageAddress = JJODStorageInstance.address;
@@ -229,50 +229,28 @@ const verifyMigrationNumber8 = async () => {
 /* Migration #9 */
 
 const executeMigrationNumber9 = async () => {
-  const {
-    owner,
-    managerPause,
-    managerJcashReplenisher,
-    managerJcashExchange,
-    managerJNT,
-    jntBeneficiary,
-  } = DeployConfig.getAccounts();
-
   const jntControllerInstance = await JNTControllerArtifact.deployed();
   const jntControllerAddress = jntControllerInstance.address;
 
-
-  await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, owner);
+  await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, DeployConfig.getEthAccounts());
   const JcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
   const JcashRegistrarAddress = JcashRegistrarInstance.address;
 
-  await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, owner,
-                                             managerPause, managerJcashReplenisher, managerJcashExchange);
-  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, owner,
-                                                  jntControllerAddress, managerJNT, jntBeneficiary, 10 ** 18);
-  await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, managerPause);
+  await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, DeployConfig.getEthAccounts());
+  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddress, DeployConfig.getEthAccounts(), 10 ** 18);
+  await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, DeployConfig.getEthAccounts().managerPause);
 };
 
 const verifyMigrationNumber9 = async () => {
-  const {
-    owner,
-    managerPause,
-    managerJcashReplenisher,
-    managerJcashExchange,
-    managerJNT,
-    jntBeneficiary,
-  } = DeployConfig.getAccounts();
-
   const jntControllerInstance = await JNTControllerArtifact.deployed();
   const jntControllerAddress = jntControllerInstance.address;
 
   const jcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
   const jcashRegistrarAddress = jcashRegistrarInstance.address;
 
-  const isVerified1 = await JcashRegistrarInit.verifyManagers(jcashRegistrarAddress, owner,
-                                                              managerPause, managerJcashReplenisher, managerJcashExchange);
+  const isVerified1 = await JcashRegistrarInit.verifyManagers(jcashRegistrarAddress, DeployConfig.getEthAccounts());
   const isVerified2 = await JcashRegistrarInit.verifyJNTConnection(jcashRegistrarAddress,
-                                                                   jntControllerAddress, managerJNT, jntBeneficiary, 10 ** 18);
+                                                                   jntControllerAddress, DeployConfig.getEthAccounts(), 10 ** 18);
   if (isVerified1 !== true || isVerified2 !== true) {
     throw new Error('Failed to verify deployed JcashRegistrar');
   }

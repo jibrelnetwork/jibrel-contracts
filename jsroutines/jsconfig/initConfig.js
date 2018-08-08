@@ -9,5 +9,5 @@ module.exports = function initConfig(web3, deployer, network, accounts) {
   TxConfig.setNetworkType(network);
 
   DeployConfig.setDeployer(deployer);
-  DeployConfig.setAccounts(accounts);
+  DeployConfig.setEthAccounts(accounts);
 };
