@@ -43,7 +43,7 @@ ganache_running() {
 
 start_ganache() {
   # We define 20 accounts with balance 1M ether, needed for high-value tests.
-  for i in {0..20}
+  for i in {0..40}
   do
     keys[i]=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
   done
@@ -70,6 +70,25 @@ start_ganache() {
     --account="0x${keys[18]},1000000000000000000000000"  \
     --account="0x${keys[19]},1000000000000000000000000"  \
     --account="0x${keys[20]},1000000000000000000000000"  \
+    --account="0x${keys[21]},1000000000000000000000000"  \
+    --account="0x${keys[22]},1000000000000000000000000"  \
+    --account="0x${keys[23]},1000000000000000000000000"  \
+    --account="0x${keys[24]},1000000000000000000000000"  \
+    --account="0x${keys[25]},1000000000000000000000000"  \
+    --account="0x${keys[26]},1000000000000000000000000"  \
+    --account="0x${keys[27]},1000000000000000000000000"  \
+    --account="0x${keys[28]},1000000000000000000000000"  \
+    --account="0x${keys[29]},1000000000000000000000000"  \
+    --account="0x${keys[30]},1000000000000000000000000"  \
+    --account="0x${keys[31]},1000000000000000000000000"  \
+    --account="0x${keys[32]},1000000000000000000000000"  \
+    --account="0x${keys[33]},1000000000000000000000000"  \
+    --account="0x${keys[34]},1000000000000000000000000"  \
+    --account="0x${keys[35]},1000000000000000000000000"  \
+    --account="0x${keys[36]},1000000000000000000000000"  \
+    --account="0x${keys[37]},1000000000000000000000000"  \
+    --account="0x${keys[38]},1000000000000000000000000"  \
+    --account="0x${keys[39]},1000000000000000000000000"  \
   )
 
   if [ "$SOLIDITY_COVERAGE" = true ]; then
