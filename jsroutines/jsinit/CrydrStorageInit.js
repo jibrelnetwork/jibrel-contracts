@@ -14,8 +14,7 @@ export const deployCrydrStorage = async (crydrStorageContractArtifact, ethAccoun
   const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrStorageContractArtifact, ethAccounts.owner);
 
   global.console.log(`\tStorage of a crydr successfully deployed: ${contractAddress}`);
-
-  return null;
+  return contractAddress;
 };
 
 export const configureCrydrStorageManagers = async (crydrStorageAddress, ethAccounts: EthereumAccounts) => {
@@ -24,11 +23,11 @@ export const configureCrydrStorageManagers = async (crydrStorageAddress, ethAcco
 
   await Promise.all(
     [
-      await PausableJSAPI.grantManagerPermissions(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerPause),
-      await ManageableJSAPI.enableManager(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerPause),
+      PausableJSAPI.grantManagerPermissions(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerPause),
+      ManageableJSAPI.enableManager(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerPause),
 
-      await CrydrStorageBaseJSAPI.grantManagerPermissions(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerGeneral),
-      await ManageableJSAPI.enableManager(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerGeneral),
+      CrydrStorageBaseJSAPI.grantManagerPermissions(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerGeneral),
+      ManageableJSAPI.enableManager(crydrStorageAddress, ethAccounts.owner, ethAccounts.managerGeneral),
     ]
   );
 
