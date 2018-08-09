@@ -24,12 +24,12 @@ export const configureCrydrViewManagers = async (crydrViewAddress, ethAccounts: 
 
   await Promise.all(
     [
-      await PausableJSAPI.grantManagerPermissions(crydrViewAddress, ethAccounts.owner, ethAccounts.managerPause),
-      await ManageableJSAPI.enableManager(crydrViewAddress, ethAccounts.owner, ethAccounts.managerPause),
+      PausableJSAPI.grantManagerPermissions(crydrViewAddress, ethAccounts.owner, ethAccounts.managerPause),
+      ManageableJSAPI.enableManager(crydrViewAddress, ethAccounts.owner, ethAccounts.managerPause),
 
-      await CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, ethAccounts.owner, ethAccounts.managerGeneral),
-      await CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, ethAccounts.owner, ethAccounts.managerGeneral),
-      await ManageableJSAPI.enableManager(crydrViewAddress, ethAccounts.owner, ethAccounts.managerGeneral),
+      CrydrViewBaseJSAPI.grantManagerPermissions(crydrViewAddress, ethAccounts.owner, ethAccounts.managerGeneral),
+      CrydrViewERC20NamedJSAPI.grantManagerPermissions(crydrViewAddress, ethAccounts.owner, ethAccounts.managerGeneral),
+      ManageableJSAPI.enableManager(crydrViewAddress, ethAccounts.owner, ethAccounts.managerGeneral),
     ]
   );
 

@@ -27,14 +27,14 @@ export const configureManagers = async (jcashRegistrarAddress, ethAccounts: Ethe
 
   await Promise.all(
     [
-      await PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerPause),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerPause),
+      PausableJSAPI.grantManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerPause),
+      ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerPause),
 
-      await JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashReplenisher),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashReplenisher),
+      JcashRegistrarJSAPI.grantReplenisherPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashReplenisher),
+      ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashReplenisher),
 
-      await JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashExchange),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashExchange),
+      JcashRegistrarJSAPI.grantExchangeManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashExchange),
+      ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJcashExchange),
     ]
   );
 
@@ -60,26 +60,26 @@ export const configureJNTConnection = async (jcashRegistrarAddress, jntControlle
   global.console.log('\tConfigure JNT manager');
   await Promise.all(
     [
-      await JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJNT),
-      await ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJNT),
+      JNTPayableServiceJSAPI.grantManagerPermissions(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJNT),
+      ManageableJSAPI.enableManager(jcashRegistrarAddress, ethAccounts.owner, ethAccounts.managerJNT),
     ]
   );
 
   global.console.log('\tConfigure contract params');
   await Promise.all(
     [
-      await JNTPayableServiceInterfaceJSAPI.setJntController(jcashRegistrarAddress, ethAccounts.managerJNT, jntControllerAddress),
-      await JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jcashRegistrarAddress, ethAccounts.managerJNT, ethAccounts.jntBeneficiary),
-      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, ethAccounts.managerJNT, 'transfer_eth', transferCost),
-      await JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, ethAccounts.managerJNT, 'transfer_token', transferCost),
+      JNTPayableServiceInterfaceJSAPI.setJntController(jcashRegistrarAddress, ethAccounts.managerJNT, jntControllerAddress),
+      JNTPayableServiceInterfaceJSAPI.setJntBeneficiary(jcashRegistrarAddress, ethAccounts.managerJNT, ethAccounts.jntBeneficiary),
+      JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, ethAccounts.managerJNT, 'transfer_eth', transferCost),
+      JNTPayableServiceInterfaceJSAPI.setActionPrice(jcashRegistrarAddress, ethAccounts.managerJNT, 'transfer_token', transferCost),
     ]
   );
 
   global.console.log('\tAllow JcashRegistrar charge JNT');
   await Promise.all(
     [
-      await JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, ethAccounts.owner, jcashRegistrarAddress),
-      await ManageableJSAPI.enableManager(jntControllerAddress, ethAccounts.owner, jcashRegistrarAddress),
+      JNTControllerJSAPI.grantManagerPermissions(jntControllerAddress, ethAccounts.owner, jcashRegistrarAddress),
+      ManageableJSAPI.enableManager(jntControllerAddress, ethAccounts.owner, jcashRegistrarAddress),
     ]
   );
 

@@ -27,24 +27,24 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress, e
 
   await Promise.all(
     [
-      await PausableJSAPI.grantManagerPermissions(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerPause),
-      await ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerPause),
+      PausableJSAPI.grantManagerPermissions(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerPause),
+      ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerPause),
 
-      await CrydrControllerBaseJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                             ethAccounts.owner, ethAccounts.managerGeneral),
-      await ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerGeneral),
+      CrydrControllerBaseJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                       ethAccounts.owner, ethAccounts.managerGeneral),
+      ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerGeneral),
 
-      await CrydrControllerBlockableJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                  ethAccounts.owner, ethAccounts.managerBlock),
-      await ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerBlock),
+      CrydrControllerBlockableJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                            ethAccounts.owner, ethAccounts.managerBlock),
+      ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerBlock),
 
-      await CrydrControllerMintableJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                 ethAccounts.owner, ethAccounts.managerMint),
-      await ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerMint),
+      CrydrControllerMintableJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                           ethAccounts.owner, ethAccounts.managerMint),
+      ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerMint),
 
-      await CrydrControllerForcedTransferJSAPI.grantManagerPermissions(crydrControllerAddress,
-                                                                       ethAccounts.owner, ethAccounts.managerForcedTransfer),
-      await ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerForcedTransfer),
+      CrydrControllerForcedTransferJSAPI.grantManagerPermissions(crydrControllerAddress,
+                                                                 ethAccounts.owner, ethAccounts.managerForcedTransfer),
+      ManageableJSAPI.enableManager(crydrControllerAddress, ethAccounts.owner, ethAccounts.managerForcedTransfer),
     ]
   );
 

@@ -25,9 +25,9 @@ export const linkCrydrStorage = async (
 
   await Promise.all(
     [
-      await CrydrStorageBaseInterfaceJSAPI
+      CrydrStorageBaseInterfaceJSAPI
         .setCrydrController(crydrStorageAddress, ethAccounts.managerGeneral, crydrControllerAddress),
-      await CrydrControllerBaseInterfaceJSAPI
+      CrydrControllerBaseInterfaceJSAPI
         .setCrydrStorage(crydrControllerAddress, ethAccounts.managerGeneral, crydrStorageAddress),
     ]
   );
@@ -49,9 +49,9 @@ export const linkCrydrView = async (
 
   await Promise.all(
     [
-      await CrydrViewBaseInterfaceJSAPI
+      CrydrViewBaseInterfaceJSAPI
         .setCrydrController(crydrViewAddress, ethAccounts.managerGeneral, crydrControllerAddress),
-      await CrydrControllerBaseInterfaceJSAPI
+      CrydrControllerBaseInterfaceJSAPI
         .setCrydrView(crydrControllerAddress, ethAccounts.managerGeneral, crydrViewAddress, crydrViewApiStandardName),
     ]
   );
@@ -90,9 +90,9 @@ export const initCrydr = async (
   global.console.log('\tDeploying crydr contracts');
   await Promise.all(
     [
-      await CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts),
-      await CrydrControllerInit.deployCrydrController(crydrControllerContractArtifact, ethAccounts),
-      await CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts),
+      CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts),
+      CrydrControllerInit.deployCrydrController(crydrControllerContractArtifact, ethAccounts),
+      CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts),
     ]
   );
 
@@ -114,8 +114,8 @@ export const initCrydr = async (
   global.console.log('\tLink crydr contracts');
   await Promise.all(
     [
-      await linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts),
-      await linkCrydrView(crydrControllerAddress, crydrViewAddress, crydrViewApiStandardName, ethAccounts),
+      linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts),
+      linkCrydrView(crydrControllerAddress, crydrViewAddress, crydrViewApiStandardName, ethAccounts),
     ]
   );
 
