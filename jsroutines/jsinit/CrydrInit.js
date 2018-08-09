@@ -23,10 +23,14 @@ export const linkCrydrStorage = async (
   global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
-  await CrydrStorageBaseInterfaceJSAPI
-    .setCrydrController(crydrStorageAddress, ethAccounts.managerGeneral, crydrControllerAddress);
-  await CrydrControllerBaseInterfaceJSAPI
-    .setCrydrStorage(crydrControllerAddress, ethAccounts.managerGeneral, crydrStorageAddress);
+  await Promise.all(
+    [
+      await CrydrStorageBaseInterfaceJSAPI
+        .setCrydrController(crydrStorageAddress, ethAccounts.managerGeneral, crydrControllerAddress),
+      await CrydrControllerBaseInterfaceJSAPI
+        .setCrydrStorage(crydrControllerAddress, ethAccounts.managerGeneral, crydrStorageAddress),
+    ]
+  );
 
   global.console.log('\tCrydr storage successfully linked');
   return null;
@@ -43,10 +47,14 @@ export const linkCrydrView = async (
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
-  await CrydrViewBaseInterfaceJSAPI
-    .setCrydrController(crydrViewAddress, ethAccounts.managerGeneral, crydrControllerAddress);
-  await CrydrControllerBaseInterfaceJSAPI
-    .setCrydrView(crydrControllerAddress, ethAccounts.managerGeneral, crydrViewAddress, crydrViewApiStandardName);
+  await Promise.all(
+    [
+      await CrydrViewBaseInterfaceJSAPI
+        .setCrydrController(crydrViewAddress, ethAccounts.managerGeneral, crydrControllerAddress),
+      await CrydrControllerBaseInterfaceJSAPI
+        .setCrydrView(crydrControllerAddress, ethAccounts.managerGeneral, crydrViewAddress, crydrViewApiStandardName),
+    ]
+  );
 
   global.console.log('\tCrydr view successfully linked');
   return null;
@@ -80,9 +88,14 @@ export const initCrydr = async (
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
   global.console.log('\tDeploying crydr contracts');
-  await CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts);
-  await CrydrControllerInit.deployCrydrController(crydrControllerContractArtifact, ethAccounts);
-  await CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts);
+  await Promise.all(
+    [
+      await CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts),
+      await CrydrControllerInit.deployCrydrController(crydrControllerContractArtifact, ethAccounts),
+      await CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts),
+    ]
+  );
+
   global.console.log('\tCrydr contracts successfully deployed');
 
   const crydrStorageInstance = await crydrStorageContractArtifact.deployed();
@@ -99,8 +112,13 @@ export const initCrydr = async (
   global.console.log('\tCrydr managers successfully configured');
 
   global.console.log('\tLink crydr contracts');
-  await linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts);
-  await linkCrydrView(crydrControllerAddress, crydrViewAddress, crydrViewApiStandardName, ethAccounts);
+  await Promise.all(
+    [
+      await linkCrydrStorage(crydrStorageAddress, crydrControllerAddress, ethAccounts),
+      await linkCrydrView(crydrControllerAddress, crydrViewAddress, crydrViewApiStandardName, ethAccounts),
+    ]
+  );
+
   global.console.log('\tCrydr contracts successfully linked');
 
   global.console.log('\tJCash crydr successfully initialized');
