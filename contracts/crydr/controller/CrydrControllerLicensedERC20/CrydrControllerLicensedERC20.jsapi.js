@@ -7,13 +7,11 @@ import * as CrydrLicenseRegistryManagementInterfaceJSAPI from '../../license/Cry
  */
 
 // eslint-disable-next-line
-export const grantUserLicenses = async (licenseRegistryAddress, managerAddress,
-                                        userAddress, expirationTimestamp) => {
+export const grantUserLicenses = async (licenseRegistryAddress, managerAddress, userAddress) => {
   global.console.log('\tAdmit and grant all ERC20 licenses to an user:');
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
-  global.console.log(`\t\texpirationTimestamp - ${expirationTimestamp}`);
 
   const licenseNamesList = [
     'transfer_funds',
@@ -26,7 +24,7 @@ export const grantUserLicenses = async (licenseRegistryAddress, managerAddress,
   const promisesList = licenseNamesList.map((licenseName) =>
                          CrydrLicenseRegistryManagementInterfaceJSAPI
                            .grantUserLicense(licenseRegistryAddress, managerAddress,
-                                             userAddress, licenseName, expirationTimestamp));
+                                             userAddress, licenseName));
   promisesList.push(
     CrydrLicenseRegistryManagementInterfaceJSAPI
       .admitUser(licenseRegistryAddress, managerAddress, userAddress));

@@ -16,7 +16,6 @@ export const grantManagerPermissions = async (crydrControllerAddress, ownerAddre
     'admit_user',
     'deny_user',
     'grant_license',
-    'renew_license',
     'revoke_license',
   ];
 

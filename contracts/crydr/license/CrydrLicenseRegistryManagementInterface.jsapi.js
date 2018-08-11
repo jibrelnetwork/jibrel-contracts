@@ -52,41 +52,21 @@ export const isUserAdmitted = async (contractAddress, userAddress) => {
 
 
 export const grantUserLicense = async (licenseRegistryAddress, managerAddress,
-                                       userAddress, licenseName, expirationTimestamp) => {
+                                       userAddress, licenseName) => {
   global.console.log('\tGrant user license:');
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
   global.console.log(`\t\tlicenseName - ${licenseName}`);
-  global.console.log(`\t\texpirationTimestamp - ${expirationTimestamp}`);
   await submitTxAndWaitConfirmation(
     CrydrLicenseRegistryManagementInterfaceArtifact
       .at(licenseRegistryAddress)
       .grantUserLicense
       .sendTransaction,
-    [userAddress, licenseName, expirationTimestamp],
+    [userAddress, licenseName],
     { from: managerAddress }
   );
   global.console.log('\tUser license successfully granted');
-};
-
-export const renewUserLicense = async (licenseRegistryAddress, managerAddress,
-                                       userAddress, licenseName, expirationTimestamp) => {
-  global.console.log('\tRenew user license:');
-  global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
-  global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  global.console.log(`\t\tuserAddress - ${userAddress}`);
-  global.console.log(`\t\tlicenseName - ${licenseName}`);
-  global.console.log(`\t\texpirationTimestamp - ${expirationTimestamp}`);
-  await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterfaceArtifact
-      .at(licenseRegistryAddress)
-      .renewUserLicense
-      .sendTransaction,
-    [userAddress, licenseName, expirationTimestamp],
-    { from: managerAddress }
-  );
-  global.console.log('\tUser license successfully renewed');
 };
 
 export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,

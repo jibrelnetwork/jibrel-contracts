@@ -13,8 +13,8 @@ contract CrydrLicenseRegistryManagementInterface {
 
   event UserAdmittedEvent(address indexed useraddress);
   event UserDeniedEvent(address indexed useraddress);
-  event UserLicenseGrantedEvent(address indexed useraddress, bytes32 licensename, uint256 indexed expirationtimestamp);
-  event UserLicenseRenewedEvent(address indexed useraddress, bytes32 licensename, uint256 indexed expirationtimestamp);
+  event UserLicenseGrantedEvent(address indexed useraddress, bytes32 licensename);
+  event UserLicenseRenewedEvent(address indexed useraddress, bytes32 licensename);
   event UserLicenseRevokedEvent(address indexed useraddress, bytes32 licensename);
 
 
@@ -44,17 +44,8 @@ contract CrydrLicenseRegistryManagementInterface {
    * @dev Function to grant license to an user
    * @param _userAddress         address User`s address
    * @param _licenseName         string  name of the license
-   * @param _expirationTimestamp uint256 Expiration of the license
    */
-  function grantUserLicense(address _userAddress, string _licenseName, uint256 _expirationTimestamp) external;
-
-  /**
-   * @dev Function to change expiration time of the user
-   * @param _userAddress         address User`s address
-   * @param _licenseName         string  name of the license
-   * @param _expirationTimestamp uint256 Expiration of the license
-   */
-  function renewUserLicense(address _userAddress, string _licenseName, uint256 _expirationTimestamp) external;
+  function grantUserLicense(address _userAddress, string _licenseName) external;
 
   /**
    * @dev Function to revoke license from the user
