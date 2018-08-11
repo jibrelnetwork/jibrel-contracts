@@ -154,16 +154,3 @@ export const initLicensedCrydr = async (
   global.console.log('\tLicensed JCash crydr successfully initialized');
   return contractAddresses;
 };
-
-
-export const upauseCrydrContract = async (crydrContractArtifact, contractType, ethAccounts: EthereumAccounts) => {
-  global.console.log(`\tUnpause ${contractType} of JCash crydr...`);
-
-  const crydrContractInstance = await crydrContractArtifact.deployed();
-  const crydrContractAddress = crydrContractInstance.address;
-
-  await PausableJSAPI.unpauseContract(crydrContractAddress, ethAccounts.managerPause);
-
-  global.console.log(`\t${contractType} of JCash crydr successfully unpaused`);
-  return null;
-};
