@@ -22,26 +22,26 @@ module.exports = {
       port:       8550,
       network_id: 3, // official id of the ropsten network
       gas:        6600000,
-      gasPrice:   1000000000, // 1 Gwei
+      gasPrice:   100000000000, // 100 Gwei
     },
     ropsten_hd: {
       provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8550', 0, 50),
       network_id: 3, // official id of the ropsten network
       gas:        6600000,
-      gasPrice:   1000000000, // 1 Gwei
+      gasPrice:   100000000000, // 100 Gwei
     },
     main: {
       host:       'localhost',
       port:       8545,
       network_id: 1, // official id of the main network
       gas:        8000000,
-      gasPrice:   1000000000, // 1 Gwei
+      gasPrice:   100000000000, // 100 Gwei
     },
     main_hd: {
       provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8545', 0, 50),
       network_id: 1, // official id of the main network
       gas:        8000000,
-      gasPrice:   1000000000, // 1 Gwei
+      gasPrice:   100000000000, // 100 Gwei
     },
     coverage: {
       host:       'localhost',
