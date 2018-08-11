@@ -11,7 +11,7 @@ import * as DeployUtils from '../util/DeployUtils';
 export const deployCrydrStorage = async (crydrStorageContractArtifact, ethAccounts: EthereumAccounts) => {
   global.console.log('\tDeploying storage of a crydr.');
 
-  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(crydrStorageContractArtifact, ethAccounts.owner);
+  const contractAddress = await DeployUtils.deployContract(crydrStorageContractArtifact, ethAccounts.owner);
 
   global.console.log(`\tStorage of a crydr successfully deployed: ${contractAddress}`);
   return contractAddress;

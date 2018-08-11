@@ -142,11 +142,9 @@ export const initLicensedCrydr = async (
                   ethAccounts);
 
   global.console.log('\tDeploying license registry contract');
-  await CrydrLicenseRegistryInit.deployLicenseRegistry(licenseRegistryArtifact, ethAccounts);
+  const licenseRegistryAddress = await CrydrLicenseRegistryInit.deployLicenseRegistry(licenseRegistryArtifact, ethAccounts);
   global.console.log('\tLicense registry successfully deployed');
 
-  const licenseRegistryInstance = await licenseRegistryArtifact.deployed();
-  const licenseRegistryAddress = licenseRegistryInstance.address;
   const crydrControllerInstance = await crydrControllerContractArtifact.deployed();
   const crydrControllerAddress = crydrControllerInstance.address;
 

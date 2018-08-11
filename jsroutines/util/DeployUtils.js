@@ -78,3 +78,14 @@ export const deployContractSimple = async (contractArtifact, contractOwner) => {
 
   return contractAddress;
 };
+
+export const deployContract = async (contractArtifact, contractOwner) => {
+  const deployer = DeployConfig.getDeployer();
+  let contractAddress;
+  if (deployer !== null && typeof deployer !== 'undefined') {
+    contractAddress = await deployContractAndPersistArtifact(contractArtifact, contractOwner);
+  } else {
+    contractAddress = await deployContractSimple(contractArtifact, contractOwner);
+  }
+  return contractAddress;
+};

@@ -16,7 +16,7 @@ import { EthereumAccounts } from '../jsconfig/DeployConfig';
 export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: EthereumAccounts) => {
   global.console.log('\tDeploying EthRegistrar');
 
-  const contractAddress = await DeployUtils.deployContractAndPersistArtifact(jcashRegistrarArtifact, ethAccounts.owner);
+  const contractAddress = await DeployUtils.deployContract(jcashRegistrarArtifact, ethAccounts.owner);
 
   global.console.log(`\tEthRegistrar successfully deployed: ${contractAddress}`);
   return contractAddress;
