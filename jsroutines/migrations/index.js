@@ -40,9 +40,15 @@ const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 /* Migration #2 */
 
 const executeMigrationNumber2 = async () => {
-  await CrydrInit.initCrydr(JNTStorageArtifact, JNTControllerArtifact, JNTViewERC20Artifact, 'erc20', DeployConfig.getEthAccounts());
-  await CrydrInit.upauseCrydrContract(JNTStorageArtifact, 'storage', DeployConfig.getEthAccounts());
-  await CrydrInit.upauseCrydrContract(JNTControllerArtifact, 'controller', DeployConfig.getEthAccounts());
+  const contractAddresses = await CrydrInit.initCrydr(JNTStorageArtifact,
+                                                      JNTControllerArtifact,
+                                                      JNTViewERC20Artifact,
+                                                      'erc20',
+                                                      DeployConfig.getEthAccounts());
+
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
 };
 
 const verifyMigrationNumber2 = async () => {
@@ -53,17 +59,6 @@ const verifyMigrationNumber2 = async () => {
 /* Migration #3 */
 
 const executeMigrationNumber3 = async () => {
-  await CrydrInit.upauseCrydrContract(JNTViewERC20Artifact, 'view', DeployConfig.getEthAccounts());
-};
-
-const verifyMigrationNumber3 = async () => {
-  // todo verify migration, make integration tests
-};
-
-
-/* Migration #4 */
-
-const executeMigrationNumber4 = async () => {
   /* JUSD */
 
   const contractAddresses = await CrydrInit.initLicensedCrydr(JUSDStorageArtifact,
@@ -85,14 +80,14 @@ const executeMigrationNumber4 = async () => {
   global.console.log(`\tJUSDViewERC20Address: ${contractAddresses[2]}`);
 };
 
-const verifyMigrationNumber4 = async () => {
+const verifyMigrationNumber3 = async () => {
   // todo verify migration, make integration tests
 };
 
 
-/* Migration #5 */
+/* Migration #4 */
 
-const executeMigrationNumber5 = async () => {
+const executeMigrationNumber4 = async () => {
   /* JEUR */
 
   const contractAddresses = await CrydrInit.initLicensedCrydr(JEURStorageArtifact,
@@ -114,14 +109,14 @@ const executeMigrationNumber5 = async () => {
   global.console.log(`\tJEURViewERC20Address: ${contractAddresses[2]}`);
 };
 
-const verifyMigrationNumber5 = async () => {
+const verifyMigrationNumber4 = async () => {
   // todo verify migration, make integration tests
 };
 
 
-/* Migration #6 */
+/* Migration #5 */
 
-const executeMigrationNumber6 = async () => {
+const executeMigrationNumber5 = async () => {
   /* JGBP */
 
   const contractAddresses = await CrydrInit.initLicensedCrydr(JGBPStorageArtifact,
@@ -143,14 +138,14 @@ const executeMigrationNumber6 = async () => {
   global.console.log(`\tJGBPViewERC20Address: ${contractAddresses[2]}`);
 };
 
-const verifyMigrationNumber6 = async () => {
+const verifyMigrationNumber5 = async () => {
   // todo verify migration, make integration tests
 };
 
 
-/* Migration #7 */
+/* Migration #6 */
 
-const executeMigrationNumber7 = async () => {
+const executeMigrationNumber6 = async () => {
   /* JKRW */
 
   const contractAddresses = await CrydrInit.initLicensedCrydr(JKRWStorageArtifact,
@@ -172,14 +167,14 @@ const executeMigrationNumber7 = async () => {
   global.console.log(`\tJKRWViewERC20Address: ${contractAddresses[2]}`);
 };
 
-const verifyMigrationNumber7 = async () => {
+const verifyMigrationNumber6 = async () => {
   // todo verify migration, make integration tests
 };
 
 
-/* Migration #8 */
+/* Migration #7 */
 
-const executeMigrationNumber8 = async () => {
+const executeMigrationNumber7 = async () => {
   /* JJOD */
 
   const contractAddresses = await CrydrInit.initLicensedCrydr(JJODStorageArtifact,
@@ -201,27 +196,25 @@ const executeMigrationNumber8 = async () => {
   global.console.log(`\tJJODViewERC20Address: ${contractAddresses[2]}`);
 };
 
-const verifyMigrationNumber8 = async () => {
+const verifyMigrationNumber7 = async () => {
   // todo verify migration, make integration tests
 };
 
 
-/* Migration #9 */
+/* Migration #8 */
 
-const executeMigrationNumber9 = async () => {
+const executeMigrationNumber8 = async () => {
   const jntControllerInstance = await JNTControllerArtifact.deployed();
   const jntControllerAddress = jntControllerInstance.address;
 
-  await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, DeployConfig.getEthAccounts());
-  const JcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
-  const JcashRegistrarAddress = JcashRegistrarInstance.address;
+  const JcashRegistrarAddress = await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, DeployConfig.getEthAccounts());
 
   await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, DeployConfig.getEthAccounts());
   await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddress, DeployConfig.getEthAccounts(), 10 ** 18);
   await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, DeployConfig.getEthAccounts().managerPause);
 };
 
-const verifyMigrationNumber9 = async () => {
+const verifyMigrationNumber8 = async () => {
   const jntControllerInstance = await JNTControllerArtifact.deployed();
   const jntControllerAddress = jntControllerInstance.address;
 
@@ -254,8 +247,6 @@ export const executeMigration = async (migrationNumber) => {
     await executeMigrationNumber7();
   } else if (migrationNumber === 8) {
     await executeMigrationNumber8();
-  } else if (migrationNumber === 9) {
-    await executeMigrationNumber9();
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }
@@ -276,8 +267,6 @@ export const verifyMigration = async (migrationNumber) => {
     await verifyMigrationNumber7();
   } else if (migrationNumber === 8) {
     await verifyMigrationNumber8();
-  } else if (migrationNumber === 9) {
-    await verifyMigrationNumber9();
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }

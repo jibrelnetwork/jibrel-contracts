@@ -39,24 +39,21 @@ export const deployContractAndPersistArtifact = async (contractArtifact, contrac
   global.console.log('\tDeploying contract and persist artifact to the hard drive.');
   global.console.log(`\t\towner - ${contractOwner}`);
 
-  const deployer = DeployConfig.getDeployer();
-
+  // record initial state of contract owner - to get info about deployed contract later
   const blockNumberStart = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
   const txCount = await AsyncWeb3.getTransactionCount(TxConfig.getWeb3(), contractOwner);
 
-  await deployer.deploy(contractArtifact, { from: contractOwner });
+  // delpoy contract
+  const contractInstance = await DeployConfig.getDeployer().deploy(contractArtifact, { from: contractOwner });
+  global.console.log(`\t\tContract successfully deployed: ${contractInstance.address}`);
 
+  // record state after the deployment
   const blockNumberEnd = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
-
-  // find out contract address
-  const contractInstance = await contractArtifact.deployed();
-  const contractAddress = contractInstance.address;
-  global.console.log(`\t\tContract successfully deployed: ${contractAddress}`);
 
   // find out amount of gas spent
   await logUsedTxGas(blockNumberStart, blockNumberEnd, contractOwner, txCount);
 
-  return contractAddress;
+  return contractInstance.address;
 };
 
 export const deployContractSimple = async (contractArtifact, contractOwner) => {
