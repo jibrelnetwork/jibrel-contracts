@@ -139,7 +139,6 @@ export const initLicensedCrydr = async (
 
   global.console.log('\tDeploying license registry contract');
   const licenseRegistryAddress = await CrydrLicenseRegistryInit.deployLicenseRegistry(licenseRegistryArtifact, ethAccounts);
-  contractAddresses.push(licenseRegistryAddress);
   global.console.log('\tLicense registry successfully deployed');
 
   global.console.log('\tConfiguring license managers');
@@ -152,5 +151,5 @@ export const initLicensedCrydr = async (
   global.console.log('\tLicense registry and controller successfully linked');
 
   global.console.log('\tLicensed JCash crydr successfully initialized');
-  return contractAddresses;
+  return [contractAddresses[0], licenseRegistryAddress, contractAddresses[1], contractAddresses[2]];
 };
