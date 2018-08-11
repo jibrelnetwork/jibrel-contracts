@@ -34,8 +34,6 @@ contract JCashCrydrControllerLicensed is CommonModifiers,
                                          CrydrControllerLicensedBase,
                                          CrydrControllerLicensedERC20 {
 
-  // todo make it JNTPayableService
-
   /* Constructor */
 
   constructor (string _assetID)
