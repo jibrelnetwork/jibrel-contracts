@@ -13,7 +13,7 @@ module.exports = {
       gas:        8000000,
     },
     development_hd: {
-      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8560', 0, 20),
+      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8560', 0, 50),
       network_id: '*', // Match any network id
       gas:        8000000,
     },
@@ -25,7 +25,7 @@ module.exports = {
       gasPrice:   1000000000, // 1 Gwei
     },
     ropsten_hd: {
-      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8550', 0, 20),
+      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8550', 0, 50),
       network_id: 3, // official id of the ropsten network
       gas:        6600000,
       gasPrice:   1000000000, // 1 Gwei
@@ -38,7 +38,7 @@ module.exports = {
       gasPrice:   1000000000, // 1 Gwei
     },
     main_hd: {
-      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8545', 0, 20),
+      provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8545', 0, 50),
       network_id: 1, // official id of the main network
       gas:        8000000,
       gasPrice:   1000000000, // 1 Gwei
