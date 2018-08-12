@@ -112,7 +112,7 @@ export async function submitTxAndWaitConfirmation(txTemplate, methodArgs = [], t
   const txArgsToSubmit = {
     ...txArgs,
     gasPrice: txSubmitParams.gasPrice,
-    gasLimit: TxConfig.getTxSubmitParams().gasLimit,
+    gas:      txSubmitParams.gasLimit,
   };
   if (nonceTrackerEnabled === true) {
     txArgsToSubmit.nonce = await getTxNonce(txArgs.from);
