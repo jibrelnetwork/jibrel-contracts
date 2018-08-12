@@ -1,0 +1,875 @@
+{
+  "contractName": "CommonModifiers",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a723058205f6eb126c7114dd072d4cc5291585625a993240b734272b7b9b0a06748a2fd870029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a723058205f6eb126c7114dd072d4cc5291585625a993240b734272b7b9b0a06748a2fd870029",
+  "sourceMap": "215:484:97:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;215:484:97;;;;;;;",
+  "deployedSourceMap": "215:484:97:-;;;;;",
+  "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.24;\n\nimport './CommonModifiersInterface.sol';\n\n\n/**\n * @title CommonModifiers\n * @dev Base contract which contains common checks.\n */\ncontract CommonModifiers is CommonModifiersInterface {\n\n  /**\n   * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.\n   */\n  function isContract(address _targetAddress) internal constant returns (bool) {\n    require (_targetAddress != address(0x0));\n\n    uint256 length;\n    assembly {\n      //retrieve the size of the code on target address, this needs assembly\n      length := extcodesize(_targetAddress)\n    }\n    return (length > 0);\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiers.sol",
+  "ast": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiers.sol",
+    "exportedSymbols": {
+      "CommonModifiers": [
+        7424
+      ]
+    },
+    "id": 7425,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 7395,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "60:24:97"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiersInterface.sol",
+        "file": "./CommonModifiersInterface.sol",
+        "id": 7396,
+        "nodeType": "ImportDirective",
+        "scope": 7425,
+        "sourceUnit": 7449,
+        "src": "86:40:97",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 7397,
+              "name": "CommonModifiersInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 7448,
+              "src": "243:24:97",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CommonModifiersInterface_$7448",
+                "typeString": "contract CommonModifiersInterface"
+              }
+            },
+            "id": 7398,
+            "nodeType": "InheritanceSpecifier",
+            "src": "243:24:97"
+          }
+        ],
+        "contractDependencies": [
+          7448
+        ],
+        "contractKind": "contract",
+        "documentation": "@title CommonModifiers\n@dev Base contract which contains common checks.",
+        "fullyImplemented": true,
+        "id": 7424,
+        "linearizedBaseContracts": [
+          7424,
+          7448
+        ],
+        "name": "CommonModifiers",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 7422,
+              "nodeType": "Block",
+              "src": "458:239:97",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 7410,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7406,
+                          "name": "_targetAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7400,
+                          "src": "473:14:97",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "307830",
+                              "id": 7408,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "499:3:97",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0x0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "id": 7407,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "491:7:97",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": "address"
+                          },
+                          "id": 7409,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "491:12:97",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "473:30:97",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 7405,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7466,
+                        7467
+                      ],
+                      "referencedDeclaration": 7466,
+                      "src": "464:7:97",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 7411,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "464:40:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7412,
+                  "nodeType": "ExpressionStatement",
+                  "src": "464:40:97"
+                },
+                {
+                  "assignments": [],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 7414,
+                      "name": "length",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 7423,
+                      "src": "511:14:97",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 7413,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "511:7:97",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 7415,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "511:14:97"
+                },
+                {
+                  "externalReferences": [
+                    {
+                      "length": {
+                        "declaration": 7414,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "625:6:97",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "_targetAddress": {
+                        "declaration": 7400,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "647:14:97",
+                        "valueSize": 1
+                      }
+                    }
+                  ],
+                  "id": 7416,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    length := extcodesize(_targetAddress)\n}",
+                  "src": "531:148:97"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 7419,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7417,
+                          "name": "length",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7414,
+                          "src": "681:6:97",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "30",
+                          "id": 7418,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "690:1:97",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "681:10:97",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "id": 7420,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "680:12:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 7404,
+                  "id": 7421,
+                  "nodeType": "Return",
+                  "src": "673:19:97"
+                }
+              ]
+            },
+            "documentation": "@dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.",
+            "id": 7423,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isContract",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 7401,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7400,
+                  "name": "_targetAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7423,
+                  "src": "401:22:97",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7399,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "401:7:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "400:24:97"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 7404,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7403,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7423,
+                  "src": "452:4:97",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 7402,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "452:4:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "451:6:97"
+            },
+            "scope": 7424,
+            "src": "381:316:97",
+            "stateMutability": "view",
+            "superFunction": 7433,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 7425,
+        "src": "215:484:97"
+      }
+    ],
+    "src": "60:640:97"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiers.sol",
+    "exportedSymbols": {
+      "CommonModifiers": [
+        7424
+      ]
+    },
+    "id": 7425,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 7395,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "60:24:97"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiersInterface.sol",
+        "file": "./CommonModifiersInterface.sol",
+        "id": 7396,
+        "nodeType": "ImportDirective",
+        "scope": 7425,
+        "sourceUnit": 7449,
+        "src": "86:40:97",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 7397,
+              "name": "CommonModifiersInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 7448,
+              "src": "243:24:97",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CommonModifiersInterface_$7448",
+                "typeString": "contract CommonModifiersInterface"
+              }
+            },
+            "id": 7398,
+            "nodeType": "InheritanceSpecifier",
+            "src": "243:24:97"
+          }
+        ],
+        "contractDependencies": [
+          7448
+        ],
+        "contractKind": "contract",
+        "documentation": "@title CommonModifiers\n@dev Base contract which contains common checks.",
+        "fullyImplemented": true,
+        "id": 7424,
+        "linearizedBaseContracts": [
+          7424,
+          7448
+        ],
+        "name": "CommonModifiers",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 7422,
+              "nodeType": "Block",
+              "src": "458:239:97",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 7410,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7406,
+                          "name": "_targetAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7400,
+                          "src": "473:14:97",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "307830",
+                              "id": 7408,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "499:3:97",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0x0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "id": 7407,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "491:7:97",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": "address"
+                          },
+                          "id": 7409,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "491:12:97",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "473:30:97",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 7405,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7466,
+                        7467
+                      ],
+                      "referencedDeclaration": 7466,
+                      "src": "464:7:97",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 7411,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "464:40:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 7412,
+                  "nodeType": "ExpressionStatement",
+                  "src": "464:40:97"
+                },
+                {
+                  "assignments": [],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 7414,
+                      "name": "length",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 7423,
+                      "src": "511:14:97",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 7413,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "511:7:97",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 7415,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "511:14:97"
+                },
+                {
+                  "externalReferences": [
+                    {
+                      "length": {
+                        "declaration": 7414,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "625:6:97",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "_targetAddress": {
+                        "declaration": 7400,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "647:14:97",
+                        "valueSize": 1
+                      }
+                    }
+                  ],
+                  "id": 7416,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    length := extcodesize(_targetAddress)\n}",
+                  "src": "531:148:97"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 7419,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 7417,
+                          "name": "length",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7414,
+                          "src": "681:6:97",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "30",
+                          "id": 7418,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "690:1:97",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "681:10:97",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "id": 7420,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "680:12:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 7404,
+                  "id": 7421,
+                  "nodeType": "Return",
+                  "src": "673:19:97"
+                }
+              ]
+            },
+            "documentation": "@dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.",
+            "id": 7423,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isContract",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 7401,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7400,
+                  "name": "_targetAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7423,
+                  "src": "401:22:97",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7399,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "401:7:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "400:24:97"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 7404,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7403,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7423,
+                  "src": "452:4:97",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 7402,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "452:4:97",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "451:6:97"
+            },
+            "scope": 7424,
+            "src": "381:316:97",
+            "stateMutability": "view",
+            "superFunction": 7433,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 7425,
+        "src": "215:484:97"
+      }
+    ],
+    "src": "60:640:97"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-08-12T00:59:03.537Z"
+}
