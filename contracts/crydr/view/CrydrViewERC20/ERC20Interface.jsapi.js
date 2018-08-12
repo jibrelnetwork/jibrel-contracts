@@ -26,7 +26,7 @@ export const transfer = async (crydrViewAddress, spenderAddress,
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
-  await submitTxAndWaitConfirmation(
+  const txHash = await submitTxAndWaitConfirmation(
     ERC20InterfaceArtifact
       .at(crydrViewAddress)
       .transfer
@@ -34,8 +34,8 @@ export const transfer = async (crydrViewAddress, spenderAddress,
     [toAddress, valueTransferred],
     { from: spenderAddress }
   );
-  global.console.log('\tTokens successfully transferred');
-  return null;
+  global.console.log(`\tTokens successfully transferred: ${txHash}`);
+  return txHash;
 };
 
 export const totalSupply = async (contractAddress) =>
@@ -52,7 +52,7 @@ export const approve = async (crydrViewAddress, approverAddress,
   global.console.log(`\t\tapproverAddress - ${approverAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueApproved - ${valueApproved}`);
-  await submitTxAndWaitConfirmation(
+  const txHash = await submitTxAndWaitConfirmation(
     ERC20InterfaceArtifact
       .at(crydrViewAddress)
       .approve
@@ -60,8 +60,8 @@ export const approve = async (crydrViewAddress, approverAddress,
     [spenderAddress, valueApproved],
     { from: approverAddress }
   );
-  global.console.log('\tSpending of tokens successfully approved');
-  return null;
+  global.console.log(`\tSpending of tokens successfully approved: ${txHash}`);
+  return txHash;
 };
 
 export const transferFrom = async (crydrViewAddress, spenderAddress,
@@ -72,7 +72,7 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
-  await submitTxAndWaitConfirmation(
+  const txHash = await submitTxAndWaitConfirmation(
     ERC20InterfaceArtifact
       .at(crydrViewAddress)
       .transferFrom
@@ -80,8 +80,8 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
     [fromAddress, toAddress, valueTransferred],
     { from: spenderAddress }
   );
-  global.console.log('\tTokens successfully transferred From');
-  return null;
+  global.console.log(`\tTokens successfully transferred From: ${txHash}`);
+  return txHash;
 };
 
 export const allowance = async (contractAddress, ownerAddress, spenderAddress) =>
