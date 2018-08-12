@@ -12,12 +12,14 @@ import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
 import * as JcashRegistrarJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrar.jsapi';
 
 import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as SubmitTx from '../util/SubmitTx';
 
 
 export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: EthereumAccounts) => {
   global.console.log('\tDeploying EthRegistrar');
 
   const contractAddress = await DeployUtils.deployContract(jcashRegistrarArtifact, ethAccounts.owner);
+  await SubmitTx.syncTxNonceWithBlockchain(ethAccounts.owner);
 
   global.console.log(`\tEthRegistrar successfully deployed: ${contractAddress}`);
   return contractAddress;

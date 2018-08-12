@@ -6,6 +6,7 @@ import * as CrydrViewBaseJSAPI from '../../contracts/crydr/view/CrydrViewBase/Cr
 import * as CrydrViewERC20NamedJSAPI from '../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi';
 
 import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
@@ -13,6 +14,7 @@ export const deployCrydrView = async (crydrViewContractArtifact, ethAccounts: Et
   global.console.log('\tDeploying view of a crydr.');
 
   const contractAddress = await DeployUtils.deployContract(crydrViewContractArtifact, ethAccounts.owner);
+  await SubmitTx.syncTxNonceWithBlockchain(ethAccounts.owner);
 
   global.console.log(`\tView of a crydr successfully deployed: ${contractAddress}`);
   return contractAddress;
