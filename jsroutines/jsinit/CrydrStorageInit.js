@@ -5,6 +5,7 @@ import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsap
 import * as CrydrStorageBaseJSAPI from '../../contracts/crydr/storage/CrydrStorageBase/CrydrStorageBase.jsapi';
 
 import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
@@ -12,6 +13,7 @@ export const deployCrydrStorage = async (crydrStorageContractArtifact, ethAccoun
   global.console.log('\tDeploying storage of a crydr.');
 
   const contractAddress = await DeployUtils.deployContract(crydrStorageContractArtifact, ethAccounts.owner);
+  await SubmitTx.syncTxNonceWithBlockchain(ethAccounts.owner);
 
   global.console.log(`\tStorage of a crydr successfully deployed: ${contractAddress}`);
   return contractAddress;

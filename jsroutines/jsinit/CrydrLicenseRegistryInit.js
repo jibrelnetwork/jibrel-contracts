@@ -5,6 +5,7 @@ import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsap
 import * as CrydrLicenseRegistryManagementJSAPI from '../../contracts/crydr/license/CrydrLicenseRegistry.jsapi';
 
 import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
@@ -12,6 +13,7 @@ export const deployLicenseRegistry = async (licenseRegistryArtifact, ethAccounts
   global.console.log('\tDeploying license registry of a crydr.');
 
   const contractAddress = await DeployUtils.deployContract(licenseRegistryArtifact, ethAccounts.owner);
+  await SubmitTx.syncTxNonceWithBlockchain(ethAccounts.owner);
 
   global.console.log(`\tLicense registry of a crydr successfully deployed: ${contractAddress}`);
   return contractAddress;

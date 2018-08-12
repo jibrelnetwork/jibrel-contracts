@@ -9,6 +9,7 @@ import * as CrydrControllerForcedTransferJSAPI from '../../contracts/crydr/contr
 import * as CrydrControllerLicensedBaseJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi';
 
 import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
@@ -16,6 +17,7 @@ export const deployCrydrController = async (crydrControllerContractArtifact, eth
   global.console.log('\tDeploying controller of a crydr');
 
   const contractAddress = await DeployUtils.deployContract(crydrControllerContractArtifact, ethAccounts.owner);
+  await SubmitTx.syncTxNonceWithBlockchain(ethAccounts.owner);
 
   global.console.log(`\tController of a crydr successfully deployed: ${contractAddress}`);
   return contractAddress;
