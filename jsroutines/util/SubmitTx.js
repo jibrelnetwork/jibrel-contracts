@@ -103,7 +103,10 @@ async function waitTxConfirmation(txHash) {
       throw new Error(`Transaction not minted in ${txSubmitParams.maxTimeoutBlocks} blocks`);
     }
 
-    await doSleep(txSubmitParams.pollingInterval); // eslint-disable-line no-await-in-loop
+    // randomise sleep time a little bit - we shouldn't make too many concurrent requests to the Infura
+    let sleepTime = txSubmitParams.pollingInterval * (1 + (Math.random() * 0.2) - 0.1);
+    sleepTime = Math.round(sleepTime);
+    await doSleep(sleepTime); // eslint-disable-line no-await-in-loop
   }
 }
 
