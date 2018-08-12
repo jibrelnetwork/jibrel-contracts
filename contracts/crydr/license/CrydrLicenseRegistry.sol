@@ -20,7 +20,6 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
   mapping (address => bool) userAdmittance;
   mapping (address => mapping (string => bool)) userLicenses;
-  mapping (address => mapping (string => uint256)) userLicensesExpiration;
 
 
   /* CrydrLicenseRegistryInterface */
@@ -35,8 +34,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     returns (bool)
   {
     return userAdmittance[_userAddress] &&
-           userLicenses[_userAddress][_licenseName] &&
-           (userLicensesExpiration[_userAddress][_licenseName] >= now);
+           userLicenses[_userAddress][_licenseName];
   }
 
 
@@ -83,36 +81,18 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
 
   function grantUserLicense(
-    address _userAddress, string _licenseName, uint256 _expirationTimestamp
+    address _userAddress, string _licenseName
   )
     external
     onlyValidAddress(_userAddress)
     onlyValidLicenseName(_licenseName)
     onlyAllowedManager('grant_license')
   {
-    require(_expirationTimestamp > now);
     require(userLicenses[_userAddress][_licenseName] == false);
 
     userLicenses[_userAddress][_licenseName] = true;
-    userLicensesExpiration[_userAddress][_licenseName] = _expirationTimestamp;
 
-    emit UserLicenseGrantedEvent(_userAddress, keccak256(_licenseName), _expirationTimestamp);
-  }
-
-  function renewUserLicense(
-    address _userAddress, string _licenseName, uint256 _expirationTimestamp
-  )
-    external
-    onlyValidAddress(_userAddress)
-    onlyValidLicenseName(_licenseName)
-    onlyAllowedManager('renew_license')
-  {
-    require(_expirationTimestamp > now);
-    require(userLicenses[_userAddress][_licenseName] == true);
-
-    userLicensesExpiration[_userAddress][_licenseName] = _expirationTimestamp;
-
-    emit UserLicenseRenewedEvent(_userAddress, keccak256(_licenseName), _expirationTimestamp);
+    emit UserLicenseGrantedEvent(_userAddress, keccak256(_licenseName));
   }
 
   function revokeUserLicense(
@@ -126,7 +106,6 @@ contract CrydrLicenseRegistry is ManageableInterface,
     require(userLicenses[_userAddress][_licenseName] == true);
 
     userLicenses[_userAddress][_licenseName] = false;
-    userLicensesExpiration[_userAddress][_licenseName] = 0;
 
     emit UserLicenseRevokedEvent(_userAddress, keccak256(_licenseName));
   }
@@ -152,8 +131,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     onlyValidLicenseName(_licenseName)
     returns (bool)
   {
-    return userLicenses[_userAddress][_licenseName] &&
-           (userLicensesExpiration[_userAddress][_licenseName] >= now);
+    return userLicenses[_userAddress][_licenseName];
   }
 
 

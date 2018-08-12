@@ -50,4 +50,5 @@ export async function submitTxAndWaitConfirmation(txTemplate, methodArgs = [], t
   global.console.log(`\tTX submitted: ${txHash}`);
   await waitTxConfirmation(txHash);
   return txHash;
+  // todo fix all methods that use this method - return txhash to the caller
 }

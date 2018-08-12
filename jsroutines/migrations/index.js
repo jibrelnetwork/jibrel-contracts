@@ -49,6 +49,13 @@ const executeMigrationNumber2 = async () => {
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
+
+  global.console.log('  JNT deployed, configured and unpaused:');
+  global.console.log(`\tJNTStorageAddress: ${contractAddresses[0]}`);
+  global.console.log(`\tJNTControllerAddress: ${contractAddresses[1]}`);
+  global.console.log(`\tJNTViewERC20Address: ${contractAddresses[2]}`);
+
+  return contractAddresses;
 };
 
 const verifyMigrationNumber2 = async () => {
@@ -75,9 +82,11 @@ const executeMigrationNumber3 = async () => {
 
   global.console.log('  JUSD deployed, configured and unpaused:');
   global.console.log(`\tJUSDStorageAddress: ${contractAddresses[0]}`);
-  global.console.log(`\tJUSDLicenseRegistryAddress: ${contractAddresses[3]}`);
-  global.console.log(`\tJUSDControllerAddress: ${contractAddresses[1]}`);
-  global.console.log(`\tJUSDViewERC20Address: ${contractAddresses[2]}`);
+  global.console.log(`\tJUSDLicenseRegistryAddress: ${contractAddresses[1]}`);
+  global.console.log(`\tJUSDControllerAddress: ${contractAddresses[2]}`);
+  global.console.log(`\tJUSDViewERC20Address: ${contractAddresses[3]}`);
+
+  return contractAddresses;
 };
 
 const verifyMigrationNumber3 = async () => {
@@ -104,9 +113,11 @@ const executeMigrationNumber4 = async () => {
 
   global.console.log('  JEUR deployed, configured and unpaused:');
   global.console.log(`\tJEURStorageAddress: ${contractAddresses[0]}`);
-  global.console.log(`\tJEURLicenseRegistryAddress: ${contractAddresses[3]}`);
-  global.console.log(`\tJEURControllerAddress: ${contractAddresses[1]}`);
-  global.console.log(`\tJEURViewERC20Address: ${contractAddresses[2]}`);
+  global.console.log(`\tJEURLicenseRegistryAddress: ${contractAddresses[1]}`);
+  global.console.log(`\tJEURControllerAddress: ${contractAddresses[2]}`);
+  global.console.log(`\tJEURViewERC20Address: ${contractAddresses[3]}`);
+
+  return contractAddresses;
 };
 
 const verifyMigrationNumber4 = async () => {
@@ -133,9 +144,11 @@ const executeMigrationNumber5 = async () => {
 
   global.console.log('  JGBP deployed, configured and unpaused:');
   global.console.log(`\tJGBPStorageAddress: ${contractAddresses[0]}`);
-  global.console.log(`\tJGBPLicenseRegistryAddress: ${contractAddresses[3]}`);
-  global.console.log(`\tJGBPControllerAddress: ${contractAddresses[1]}`);
-  global.console.log(`\tJGBPViewERC20Address: ${contractAddresses[2]}`);
+  global.console.log(`\tJGBPLicenseRegistryAddress: ${contractAddresses[1]}`);
+  global.console.log(`\tJGBPControllerAddress: ${contractAddresses[2]}`);
+  global.console.log(`\tJGBPViewERC20Address: ${contractAddresses[3]}`);
+
+  return contractAddresses;
 };
 
 const verifyMigrationNumber5 = async () => {
@@ -162,9 +175,11 @@ const executeMigrationNumber6 = async () => {
 
   global.console.log('  JKRW deployed, configured and unpaused:');
   global.console.log(`\tJKRWStorageAddress: ${contractAddresses[0]}`);
-  global.console.log(`\tJKRWLicenseRegistryAddress: ${contractAddresses[3]}`);
-  global.console.log(`\tJKRWControllerAddress: ${contractAddresses[1]}`);
-  global.console.log(`\tJKRWViewERC20Address: ${contractAddresses[2]}`);
+  global.console.log(`\tJKRWLicenseRegistryAddress: ${contractAddresses[1]}`);
+  global.console.log(`\tJKRWControllerAddress: ${contractAddresses[2]}`);
+  global.console.log(`\tJKRWViewERC20Address: ${contractAddresses[3]}`);
+
+  return contractAddresses;
 };
 
 const verifyMigrationNumber6 = async () => {
@@ -191,9 +206,11 @@ const executeMigrationNumber7 = async () => {
 
   global.console.log('  JJOD deployed, configured and unpaused:');
   global.console.log(`\tJJODStorageAddress: ${contractAddresses[0]}`);
-  global.console.log(`\tJJODLicenseRegistryAddress: ${contractAddresses[3]}`);
-  global.console.log(`\tJJODControllerAddress: ${contractAddresses[1]}`);
-  global.console.log(`\tJJODViewERC20Address: ${contractAddresses[2]}`);
+  global.console.log(`\tJJODLicenseRegistryAddress: ${contractAddresses[1]}`);
+  global.console.log(`\tJJODControllerAddress: ${contractAddresses[2]}`);
+  global.console.log(`\tJJODViewERC20Address: ${contractAddresses[3]}`);
+
+  return contractAddresses;
 };
 
 const verifyMigrationNumber7 = async () => {
@@ -203,15 +220,74 @@ const verifyMigrationNumber7 = async () => {
 
 /* Migration #8 */
 
-const executeMigrationNumber8 = async () => {
-  const jntControllerInstance = await JNTControllerArtifact.deployed();
-  const jntControllerAddress = jntControllerInstance.address;
+const executeMigrationNumber8 = async (
+  jntControllerAddress = undefined,
+  jusdLicenseRegistryAddress = undefined,
+  jeurLicenseRegistryAddress = undefined,
+  jgbpLicenseRegistryAddress = undefined,
+  jkrwLicenseRegistryAddress = undefined,
+  jjodLicenseRegistryAddress = undefined,
+) => {
+  let jntControllerAddressToUse = jntControllerAddress;
+  if (jntControllerAddressToUse === null || typeof jntControllerAddressToUse === 'undefined') {
+    const jntControllerInstance = await JNTControllerArtifact.deployed();
+    jntControllerAddressToUse = jntControllerInstance.address;
+  }
+
+  let JUSDLicenseRegistryAddressToUse = jusdLicenseRegistryAddress;
+  if (JUSDLicenseRegistryAddressToUse === null || typeof JUSDLicenseRegistryAddressToUse === 'undefined') {
+    const JUSDLicenseRegistryInstance = await JUSDLicenseRegistryArtifact.deployed();
+    JUSDLicenseRegistryAddressToUse = JUSDLicenseRegistryInstance.address;
+  }
+
+  let JEURLicenseRegistryAddressToUse = jeurLicenseRegistryAddress;
+  if (JEURLicenseRegistryAddressToUse === null || typeof JEURLicenseRegistryAddressToUse === 'undefined') {
+    const JEURLicenseRegistryInstance = await JEURLicenseRegistryArtifact.deployed();
+    JEURLicenseRegistryAddressToUse = JEURLicenseRegistryInstance.address;
+  }
+
+  let JGBPLicenseRegistryAddressToUse = jgbpLicenseRegistryAddress;
+  if (JGBPLicenseRegistryAddressToUse === null || typeof JGBPLicenseRegistryAddressToUse === 'undefined') {
+    const JGBPLicenseRegistryInstance = await JGBPLicenseRegistryArtifact.deployed();
+    JGBPLicenseRegistryAddressToUse = JGBPLicenseRegistryInstance.address;
+  }
+
+  let JKRWLicenseRegistryAddressToUse = jkrwLicenseRegistryAddress;
+  if (JKRWLicenseRegistryAddressToUse === null || typeof JKRWLicenseRegistryAddressToUse === 'undefined') {
+    const JKRWLicenseRegistryInstance = await JKRWLicenseRegistryArtifact.deployed();
+    JKRWLicenseRegistryAddressToUse = JKRWLicenseRegistryInstance.address;
+  }
+
+  let JJODLicenseRegistryAddressToUse = jjodLicenseRegistryAddress;
+  if (JJODLicenseRegistryAddressToUse === null || typeof JJODLicenseRegistryAddressToUse === 'undefined') {
+    const JJODLicenseRegistryInstance = await JJODLicenseRegistryArtifact.deployed();
+    JJODLicenseRegistryAddressToUse = JJODLicenseRegistryInstance.address;
+  }
+
 
   const JcashRegistrarAddress = await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, DeployConfig.getEthAccounts());
 
   await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, DeployConfig.getEthAccounts());
-  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddress, DeployConfig.getEthAccounts(), 10 ** 18);
+  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddressToUse, DeployConfig.getEthAccounts(), 10 ** 18);
   await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, DeployConfig.getEthAccounts().managerPause);
+
+  await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
+                                                       JUSDLicenseRegistryAddressToUse,
+                                                       DeployConfig.getEthAccounts());
+  await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
+                                                       JEURLicenseRegistryAddressToUse,
+                                                       DeployConfig.getEthAccounts());
+  await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
+                                                       JGBPLicenseRegistryAddressToUse,
+                                                       DeployConfig.getEthAccounts());
+  await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
+                                                       JKRWLicenseRegistryAddressToUse,
+                                                       DeployConfig.getEthAccounts());
+  await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
+                                                       JJODLicenseRegistryAddressToUse,
+                                                       DeployConfig.getEthAccounts());
+
+  return JcashRegistrarAddress;
 };
 
 const verifyMigrationNumber8 = async () => {
@@ -232,24 +308,26 @@ const verifyMigrationNumber8 = async () => {
 
 /* Migrations */
 
-export const executeMigration = async (migrationNumber) => {
+export const executeMigration = async (migrationNumber, migrationParams = []) => {
+  let result;
   if (migrationNumber === 2) {
-    await executeMigrationNumber2();
+    result = await executeMigrationNumber2(...migrationParams);
   } else if (migrationNumber === 3) {
-    await executeMigrationNumber3();
+    result = await executeMigrationNumber3(...migrationParams);
   } else if (migrationNumber === 4) {
-    await executeMigrationNumber4();
+    result = await executeMigrationNumber4(...migrationParams);
   } else if (migrationNumber === 5) {
-    await executeMigrationNumber5();
+    result = await executeMigrationNumber5(...migrationParams);
   } else if (migrationNumber === 6) {
-    await executeMigrationNumber6();
+    result = await executeMigrationNumber6(...migrationParams);
   } else if (migrationNumber === 7) {
-    await executeMigrationNumber7();
+    result = await executeMigrationNumber7(...migrationParams);
   } else if (migrationNumber === 8) {
-    await executeMigrationNumber8();
+    result = await executeMigrationNumber8(...migrationParams);
   } else {
     throw new Error(`Unknown migration to execute: ${migrationNumber}`);
   }
+  return result;
 };
 
 export const verifyMigration = async (migrationNumber) => {
