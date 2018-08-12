@@ -21,13 +21,13 @@ module.exports = {
       host:       'localhost',
       port:       8550,
       network_id: 3, // official id of the ropsten network
-      gas:        6600000,
+      gas:        5500000,
       gasPrice:   100000000000, // 100 Gwei
     },
     ropsten_hd: {
       provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8550', 0, 50),
       network_id: 3, // official id of the ropsten network
-      gas:        6600000,
+      gas:        5500000,
       gasPrice:   100000000000, // 100 Gwei
     },
     main: {
