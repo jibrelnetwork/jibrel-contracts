@@ -19,6 +19,7 @@ const txSubmitParamsProd = {
   maxTimeoutMillisec: 10 * 60 * 1000,
   maxTimeoutBlocks:   50,
   gasPrice:           100 * 1000000000,
+  gasLimit:           500000,
 };
 
 const txSubmitParamsTestNetwork = {
@@ -27,6 +28,7 @@ const txSubmitParamsTestNetwork = {
   maxTimeoutMillisec: 60 * 1000,
   maxTimeoutBlocks:   5,
   gasPrice:           100 * 1000000000,
+  gasLimit:           500000,
 };
 
 let txSubmitParams = null;

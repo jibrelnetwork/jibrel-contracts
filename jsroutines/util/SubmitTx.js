@@ -10,7 +10,7 @@ function doSleep(sleepTimeMsec) {
   return new Promise((resolve) => setTimeout(resolve, sleepTimeMsec));
 }
 
-export async function waitTxConfirmation(txHash) {
+async function waitTxConfirmation(txHash) {
   // inspired by this: https://gist.github.com/xavierlepretre/88682e871f4ad07be4534ae560692ee6
 
   const txSubmitParams = TxConfig.getTxSubmitParams();
@@ -44,11 +44,16 @@ export async function waitTxConfirmation(txHash) {
 
 export async function submitTxAndWaitConfirmation(txTemplate, methodArgs = [], txArgs = {}) {
   const txSubmitParams = TxConfig.getTxSubmitParams();
-  const txArgsToSubmit = { ...txArgs, gasPrice: txSubmitParams.gasPrice };
+  const txArgsToSubmit = {
+    ...txArgs,
+    gasPrice: txSubmitParams.gasPrice,
+    gasLimit: TxConfig.getTxSubmitParams().gasLimit,
+  };
 
   const txHash = await txTemplate(...methodArgs, txArgsToSubmit);
   global.console.log(`\tTX submitted: ${txHash}`);
   await waitTxConfirmation(txHash);
   return txHash;
+
   // todo fix all methods that use this method - return txhash to the caller
 }
