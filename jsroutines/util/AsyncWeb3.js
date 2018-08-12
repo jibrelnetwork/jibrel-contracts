@@ -45,3 +45,15 @@ export async function getBlock(web3Instance, blockNumber, bVal) {
     });
   });
 }
+
+export async function sendTransaction(web3Instance, transactionObject) {
+  return new Promise((resolve, reject) => {
+    web3Instance.eth.sendTransaction(transactionObject, (e, txHash) => {
+      if (e !== null) {
+        reject(e);
+      } else {
+        resolve(txHash);
+      }
+    });
+  });
+}
