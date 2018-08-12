@@ -4,8 +4,7 @@ import * as PausableJSAPI from '../../../contracts/lifecycle/Pausable/Pausable.j
 import * as JNTPayableServiceInterfaceJSAPI from '../../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
 import * as JNTPayableServiceJSAPI from '../../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
 
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
-
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 const JNTPayableServiceMock = global.artifacts.require('JNTPayableServiceMock.sol');
@@ -17,8 +16,8 @@ global.contract('JNTPayableService', (accounts) => {
   let jntControllerStubInstance01;
   let jntControllerStubInstance02;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   global.beforeEach(async () => {

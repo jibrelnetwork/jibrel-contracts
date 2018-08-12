@@ -8,12 +8,12 @@ import * as CrydrControllerMintableJSAPI from '../../contracts/crydr/controller/
 import * as CrydrControllerForcedTransferJSAPI from '../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.jsapi';
 import * as CrydrControllerLicensedBaseJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.jsapi';
 
-import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as TxConfig from '../jsconfig/TxConfig';
 import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
-export const deployCrydrController = async (crydrControllerContractArtifact, ethAccounts: EthereumAccounts) => {
+export const deployCrydrController = async (crydrControllerContractArtifact, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tDeploying controller of a crydr');
 
   const contractAddress = await DeployUtils.deployContract(crydrControllerContractArtifact, ethAccounts.owner);
@@ -23,7 +23,7 @@ export const deployCrydrController = async (crydrControllerContractArtifact, eth
   return contractAddress;
 };
 
-export const configureCrydrControllerManagers = async (crydrControllerAddress, ethAccounts: EthereumAccounts) => {
+export const configureCrydrControllerManagers = async (crydrControllerAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tConfiguring managers of crydr controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
 
@@ -54,7 +54,7 @@ export const configureCrydrControllerManagers = async (crydrControllerAddress, e
   return null;
 };
 
-export const configureCrydrControllerLicensedManagers = async (crydrControllerAddress, ethAccounts: EthereumAccounts) => {
+export const configureCrydrControllerLicensedManagers = async (crydrControllerAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tConfiguring managers of licensed crydr controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
   global.console.log(`\t\tethAccounts.owner - ${ethAccounts.owner}`);

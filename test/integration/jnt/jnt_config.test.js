@@ -3,16 +3,16 @@ import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC
 import * as CrydrViewERC20MintableInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.jsapi';
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
+
 import * as migrations from '../../../jsroutines/migrations/index';
 
 
 global.contract('JNT Integration tests', (accounts) => {
   TxConfig.setWeb3(global.web3);
-  DeployConfig.setDeployer(undefined);
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setDeployer(undefined);
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let JNTControllerAddress;

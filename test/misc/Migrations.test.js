@@ -1,4 +1,4 @@
-import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
+import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 
 const Migrations = global.artifacts.require('Migrations.sol');
 
@@ -6,8 +6,8 @@ const Migrations = global.artifacts.require('Migrations.sol');
 global.contract('Migrations', (accounts) => {
   let migrationsInstance;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   global.beforeEach(async () => {
     migrationsInstance = await Migrations.new({ from: ethAccounts.owner });

@@ -5,12 +5,12 @@ import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsap
 import * as CrydrViewBaseJSAPI from '../../contracts/crydr/view/CrydrViewBase/CrydrViewBase.jsapi';
 import * as CrydrViewERC20NamedJSAPI from '../../contracts/crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.jsapi';
 
-import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as TxConfig from '../jsconfig/TxConfig';
 import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
-export const deployCrydrView = async (crydrViewContractArtifact, ethAccounts: EthereumAccounts) => {
+export const deployCrydrView = async (crydrViewContractArtifact, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tDeploying view of a crydr.');
 
   const contractAddress = await DeployUtils.deployContract(crydrViewContractArtifact, ethAccounts.owner);
@@ -20,7 +20,7 @@ export const deployCrydrView = async (crydrViewContractArtifact, ethAccounts: Et
   return contractAddress;
 };
 
-export const configureCrydrViewManagers = async (crydrViewAddress, ethAccounts: EthereumAccounts) => {
+export const configureCrydrViewManagers = async (crydrViewAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tConfiguring managers of crydr view...');
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
 

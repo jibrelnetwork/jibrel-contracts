@@ -5,7 +5,7 @@ import * as CrydrControllerBaseInterfaceJSAPI from '../../contracts/crydr/contro
 import * as CrydrControllerLicensedBaseInterfaceJSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.jsapi';
 import * as CrydrViewBaseInterfaceJSAPI from '../../contracts/crydr/view/CrydrViewBase/CrydrViewBaseInterface.jsapi';
 
-import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as TxConfig from '../jsconfig/TxConfig';
 
 import * as CrydrStorageInit from './CrydrStorageInit';
 import * as CrydrLicenseRegistryInit from './CrydrLicenseRegistryInit';
@@ -16,7 +16,7 @@ import * as CrydrViewInit from './CrydrViewInit';
 export const linkCrydrStorage = async (
   crydrStorageAddress,
   crydrControllerAddress,
-  ethAccounts: EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts
 ) => {
   global.console.log('\tLink crydr storage to controller...');
   global.console.log(`\t\tcrydrStorageAddress - ${crydrStorageAddress}`);
@@ -39,7 +39,7 @@ export const linkCrydrView = async (
   crydrControllerAddress,
   crydrViewAddress,
   crydrViewApiStandardName,
-  ethAccounts: EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts
 ) => {
   global.console.log('\tLink crydr view to controller...');
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
@@ -62,7 +62,7 @@ export const linkCrydrView = async (
 export const linkLicenseRegistry = async (
   licenseRegistryAddress,
   crydrControllerAddress,
-  ethAccounts: EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts
 ) => {
   global.console.log('\tLink license registry and controller...');
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
@@ -81,7 +81,7 @@ export const initCrydr = async (
   crydrControllerContractArtifact,
   crydrViewContractArtifact,
   crydrViewApiStandardName,
-  ethAccounts: EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts
 ) => {
   global.console.log('\tDeploy and init JCash crydr...');
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
@@ -122,7 +122,7 @@ export const initLicensedCrydr = async (
   crydrControllerContractArtifact,
   crydrViewContractArtifact,
   crydrViewApiStandardName,
-  ethAccounts: EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts
 ) => {
   global.console.log('\tDeploy and init licensed JCash crydr...');
 

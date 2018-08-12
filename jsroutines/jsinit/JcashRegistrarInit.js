@@ -1,21 +1,21 @@
 // @flow
 
-import * as DeployUtils from '../util/DeployUtils';
-
 import * as OwnableInterfaceJSAPI from '../../contracts/lifecycle/Ownable/OwnableInterface.jsapi';
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
 import * as CrydrControllerLicensedERC20JSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicensedERC20.jsapi';
+import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
 import * as JNTPayableServiceInterfaceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
 import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
-import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
 import * as JcashRegistrarJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrar.jsapi';
 
-import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as DeployUtils from '../util/DeployUtils';
+
+import * as TxConfig from '../jsconfig/TxConfig';
 import * as SubmitTx from '../util/SubmitTx';
 
 
-export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: EthereumAccounts) => {
+export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tDeploying EthRegistrar');
 
   const contractAddress = await DeployUtils.deployContract(jcashRegistrarArtifact, ethAccounts.owner);
@@ -25,7 +25,7 @@ export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: 
   return contractAddress;
 };
 
-export const configureManagers = async (jcashRegistrarAddress, ethAccounts: EthereumAccounts) => {
+export const configureManagers = async (jcashRegistrarAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tConfigure managers of JcashRegistrar contract:');
 
   await Promise.all(
@@ -45,7 +45,7 @@ export const configureManagers = async (jcashRegistrarAddress, ethAccounts: Ethe
   return null;
 };
 
-export const verifyManagers = async (jcashRegistrarAddress, ethAccounts: EthereumAccounts) => {
+export const verifyManagers = async (jcashRegistrarAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   const isVerified1 = await OwnableInterfaceJSAPI.verifyOwner(jcashRegistrarAddress, ethAccounts.owner);
   const isVerified2 = await PausableJSAPI.verifyManagerPermissions(jcashRegistrarAddress, ethAccounts.managerPause);
   const isVerified3 = await JcashRegistrarJSAPI.verifyReplenisherPermissions(jcashRegistrarAddress, ethAccounts.managerJcashReplenisher);
@@ -57,7 +57,7 @@ export const verifyManagers = async (jcashRegistrarAddress, ethAccounts: Ethereu
     && isVerified4 === true);
 };
 
-export const configureJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: EthereumAccounts, transferCost) => {
+export const configureJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: TxConfig.EthereumAccounts, transferCost) => {
   global.console.log('\tConfigure connections JcashRegistrar<->JNTController:');
 
   global.console.log('\tConfigure JNT manager');
@@ -90,7 +90,7 @@ export const configureJNTConnection = async (jcashRegistrarAddress, jntControlle
   return null;
 };
 
-export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: EthereumAccounts, transferCost) => {
+export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: TxConfig.EthereumAccounts, transferCost) => {
   global.console.log('\tVerify JNT manager');
   const isVerified1 = await JNTPayableServiceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, ethAccounts.managerJNT);
 
@@ -134,7 +134,7 @@ export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAd
     && isVerified6 === true);
 };
 
-export const configureJcashTokenLicenses = async (jcashRegistrarAddress, tokenLicenseRegistryAddress, ethAccounts: EthereumAccounts) => {
+export const configureJcashTokenLicenses = async (jcashRegistrarAddress, tokenLicenseRegistryAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tConfigure token licenses for JcashRegistrar and replenisher:');
 
   await Promise.all(

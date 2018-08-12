@@ -2,11 +2,10 @@ import * as PausableInterfaceJSAPI            from '../../../contracts/lifecycle
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
-import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
-
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
 
 const CrydrControllerBaseMock = global.artifacts.require('CrydrControllerBaseMock.sol');
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
@@ -16,8 +15,8 @@ const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 global.contract('CrydrControllerBase', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let crydrControllerBaseInstance;

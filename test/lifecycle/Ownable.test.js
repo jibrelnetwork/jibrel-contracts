@@ -1,7 +1,7 @@
 import * as OwnableInterfaceJSAPI from '../../contracts/lifecycle/Ownable/OwnableInterface.jsapi';
 import * as OwnableJSAPI from '../../contracts/lifecycle/Ownable/Ownable.jsapi';
 
-import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
+import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 import * as CheckExceptions  from '../../jsroutines/util/CheckExceptions';
 
 const Ownable = global.artifacts.require('Ownable.sol');
@@ -10,8 +10,8 @@ const Ownable = global.artifacts.require('Ownable.sol');
 global.contract('Ownable', (accounts) => {
   let ownableInstanceAddress;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   global.beforeEach(async () => {
     const ownableInstance = await Ownable.new({ from: ethAccounts.owner });

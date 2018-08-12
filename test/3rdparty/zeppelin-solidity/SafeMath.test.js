@@ -1,12 +1,12 @@
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 const SafeMathMock = global.artifacts.require('SafeMathMock.sol');
 
 
 global.contract('SafeMath', (accounts) => {
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   let safeMathMockInstance;
 

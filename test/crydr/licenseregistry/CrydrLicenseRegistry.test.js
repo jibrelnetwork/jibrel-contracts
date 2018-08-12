@@ -1,8 +1,8 @@
 import * as CrydrLicenseRegistryManagementInterfaceJSAPI from '../../../contracts/crydr/license/CrydrLicenseRegistryManagementInterface.jsapi';
 
-import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
+
 import * as CrydrLicenseRegistryInit from '../../../jsroutines/jsinit/CrydrLicenseRegistryInit';
 
 const CrydrLicenseRegistryMockArtifact = global.artifacts.require('CrydrLicenseRegistryMock.sol');
@@ -11,9 +11,9 @@ const CrydrLicenseRegistryMockArtifact = global.artifacts.require('CrydrLicenseR
 global.contract('CrydrLicenseRegistry', (accounts) => {
   let licenseRegistryAddress;
 
-  DeployConfig.setDeployer(undefined);
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setDeployer(undefined);
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   global.beforeEach(async () => {

@@ -14,24 +14,15 @@ import * as AsyncWeb3 from './AsyncWeb3';
 // It should be used very careful because we deploy contracts via truffle and perform all other transactions on our own
 // get a new nonce for the TX
 
-let nonceTrackerEnabled = false;
 let nonceTracker = new Map();
 const nonceMutex = new Mutex();
-
-export function enableNonceTracker() {
-  nonceTrackerEnabled = true;
-}
-
-export function disableNonceTracker() {
-  nonceTrackerEnabled = false;
-}
 
 export function resetNonceTracker() {
   nonceTracker = new Map();
 }
 
 export async function getTxNonce(targetAddress) {
-  if (nonceTrackerEnabled === false) {
+  if (TxConfig.isNonceTrackerEnabled() === false) {
     return -1;
   }
 
@@ -54,7 +45,7 @@ export async function getTxNonce(targetAddress) {
 }
 
 export async function syncTxNonceWithBlockchain(targetAddress) {
-  if (nonceTrackerEnabled === false) {
+  if (TxConfig.isNonceTrackerEnabled() === false) {
     return -1;
   }
 
@@ -117,7 +108,7 @@ export async function submitTxAndWaitConfirmation(txTemplate, methodArgs = [], t
     gasPrice: txSubmitParams.gasPrice,
     gas:      txSubmitParams.gasLimit,
   };
-  if (nonceTrackerEnabled === true) {
+  if (TxConfig.isNonceTrackerEnabled() === true) {
     txArgsToSubmit.nonce = await getTxNonce(txArgs.from);
   }
 

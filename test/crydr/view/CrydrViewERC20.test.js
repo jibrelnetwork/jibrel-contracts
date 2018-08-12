@@ -3,14 +3,13 @@ import * as CrydrViewBaseInterfaceJSAPI from '../../../contracts/crydr/view/Cryd
 import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi';
 import * as CrydrViewERC20LoggableInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.jsapi';
 
-import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
-
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 
-import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
 
 const CrydrControllerERC20Stub    = global.artifacts.require('CrydrControllerERC20Stub.sol');
 const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
@@ -19,8 +18,8 @@ const JCashCrydrViewERC20 = global.artifacts.require('JCashCrydrViewERC20.sol');
 global.contract('CrydrViewERC20', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let jcashCrydrViewERC20Instance;

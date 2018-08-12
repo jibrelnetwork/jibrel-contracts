@@ -4,8 +4,8 @@ import * as CrydrControllerLicensedERC20JSAPI from '../../../contracts/crydr/con
 import * as JcashRegistrarInterfaceJSAPI from '../../../contracts/jcash/JcashRegistrar/JcashRegistrarInterface.jsapi';
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
+
 import * as migrations from '../../../jsroutines/migrations/index';
 
 
@@ -17,9 +17,9 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
   let JUSDViewERC20Address;
   let JcashRegistrarAddress;
 
-  DeployConfig.setDeployer(undefined);
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setDeployer(undefined);
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   global.beforeEach(async () => {

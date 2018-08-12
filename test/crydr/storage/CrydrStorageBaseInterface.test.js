@@ -6,10 +6,10 @@ import * as CrydrStorageBlocksInterfaceJSAPI from '../../../contracts/crydr/stor
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
-import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
-
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
+
 import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
 
 const BigNumber = require('bignumber.js');
@@ -21,8 +21,8 @@ const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.
 global.contract('CrydrStorageBaseInterface', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let crydrStorageInstance;
