@@ -5,6 +5,7 @@ import * as DeployUtils from '../util/DeployUtils';
 import * as OwnableInterfaceJSAPI from '../../contracts/lifecycle/Ownable/OwnableInterface.jsapi';
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
+import * as CrydrControllerLicensedERC20JSAPI from '../../contracts/crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicensedERC20.jsapi';
 import * as JNTPayableServiceInterfaceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableServiceInterface.jsapi';
 import * as JNTPayableServiceJSAPI from '../../contracts/crydr/jnt/JNTPayableService/JNTPayableService.jsapi';
 import * as JNTControllerJSAPI from '../../contracts/jnt/JNTController.jsapi';
@@ -129,4 +130,22 @@ export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAd
     && isVerified4 === true
     && isVerified5 === true
     && isVerified6 === true);
+};
+
+export const configureJcashTokenLicenses = async (jcashRegistrarAddress, tokenLicenseRegistryAddress, ethAccounts: EthereumAccounts) => {
+  global.console.log('\tConfigure token licenses for JcashRegistrar and replenisher:');
+
+  await Promise.all(
+    [
+      await CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(tokenLicenseRegistryAddress,
+                                                                        ethAccounts.managerLicense,
+                                                                        jcashRegistrarAddress),
+      await CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(tokenLicenseRegistryAddress,
+                                                                        ethAccounts.managerLicense,
+                                                                        ethAccounts.managerJcashReplenisher),
+    ]
+  );
+
+  global.console.log('\tToken licenses for JcashRegistrar and replenisher successfully configured');
+  return null;
 };
