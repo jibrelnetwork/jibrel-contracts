@@ -139,12 +139,12 @@ export const configureJcashTokenLicenses = async (jcashRegistrarAddress, tokenLi
 
   await Promise.all(
     [
-      await CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(tokenLicenseRegistryAddress,
-                                                                        ethAccounts.managerLicense,
-                                                                        jcashRegistrarAddress),
-      await CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(tokenLicenseRegistryAddress,
-                                                                        ethAccounts.managerLicense,
-                                                                        ethAccounts.managerJcashReplenisher),
+      CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(tokenLicenseRegistryAddress,
+                                                                  ethAccounts.managerLicense,
+                                                                  jcashRegistrarAddress),
+      CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(tokenLicenseRegistryAddress,
+                                                                  ethAccounts.managerLicense,
+                                                                  ethAccounts.managerJcashReplenisher),
     ]
   );
 
