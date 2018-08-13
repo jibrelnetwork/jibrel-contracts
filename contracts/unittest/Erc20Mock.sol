@@ -4,7 +4,7 @@ pragma solidity ^0.4.18;
 
 
 /**
- * @title EthRegistrar
+ * @title Erc20Mock
  * @dev Implementation of a contract that can receives ETH, refunds ETH and logs these operations
  */
 contract Erc20Mock {

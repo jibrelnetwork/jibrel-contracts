@@ -16,12 +16,12 @@ import * as SubmitTx from '../util/SubmitTx';
 
 
 export const deployJcashRegistrar = async (jcashRegistrarArtifact, ethAccounts: TxConfig.EthereumAccounts) => {
-  global.console.log('\tDeploying EthRegistrar');
+  global.console.log('\tDeploying JcashRegistrar');
 
   const contractAddress = await DeployUtils.deployContract(jcashRegistrarArtifact, ethAccounts.owner);
   await SubmitTx.syncTxNonceWithBlockchain(ethAccounts.owner);
 
-  global.console.log(`\tEthRegistrar successfully deployed: ${contractAddress}`);
+  global.console.log(`\tJcashRegistrar successfully deployed: ${contractAddress}`);
   return contractAddress;
 };
 
