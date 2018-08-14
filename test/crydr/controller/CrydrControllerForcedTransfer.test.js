@@ -4,8 +4,9 @@ import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/con
 import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
 import * as CrydrControllerForcedTransferInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransferInterface.jsapi';
 
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
@@ -21,8 +22,8 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
   let crydrStorageInstance;
   let JCashCrydrViewERC20ArtifactInstance;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   const viewStandard = 'erc20';
   const viewName = 'viewName';

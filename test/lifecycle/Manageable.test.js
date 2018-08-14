@@ -2,9 +2,7 @@ import * as ManageableInterfaceJSAPI from '../../contracts/lifecycle/Manageable/
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 
 import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
-import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
 import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
-
 import * as CheckExceptions from '../../jsroutines/util/CheckExceptions';
 
 const ManageableMock = global.artifacts.require('ManageableMock.sol');
@@ -13,8 +11,8 @@ const ManageableMock = global.artifacts.require('ManageableMock.sol');
 global.contract('Manageable', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let manageableInstanceAddress;

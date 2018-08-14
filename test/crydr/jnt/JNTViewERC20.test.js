@@ -1,4 +1,4 @@
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 
 const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
 
@@ -6,8 +6,8 @@ const JNTViewERC20 = global.artifacts.require('JNTViewERC20.sol');
 global.contract('JNTViewERC20', (accounts) => {
   let jntViewERC20Instance;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   global.beforeEach(async () => {
     jntViewERC20Instance = await JNTViewERC20.new({ from: ethAccounts.owner });

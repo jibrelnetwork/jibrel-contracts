@@ -4,12 +4,12 @@ import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageabl
 import * as PausableJSAPI from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
 import * as CrydrLicenseRegistryManagementJSAPI from '../../contracts/crydr/license/CrydrLicenseRegistry.jsapi';
 
-import { EthereumAccounts } from '../jsconfig/DeployConfig';
+import * as TxConfig from '../jsconfig/TxConfig';
 import * as SubmitTx from '../util/SubmitTx';
 import * as DeployUtils from '../util/DeployUtils';
 
 
-export const deployLicenseRegistry = async (licenseRegistryArtifact, ethAccounts: EthereumAccounts) => {
+export const deployLicenseRegistry = async (licenseRegistryArtifact, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tDeploying license registry of a crydr.');
 
   const contractAddress = await DeployUtils.deployContract(licenseRegistryArtifact, ethAccounts.owner);
@@ -19,7 +19,7 @@ export const deployLicenseRegistry = async (licenseRegistryArtifact, ethAccounts
   return contractAddress;
 };
 
-export const configureLicenseRegistryManagers = async (licenseRegistryAddress, ethAccounts: EthereumAccounts) => {
+export const configureLicenseRegistryManagers = async (licenseRegistryAddress, ethAccounts: TxConfig.EthereumAccounts) => {
   global.console.log('\tConfiguring managers of license registry...');
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
 

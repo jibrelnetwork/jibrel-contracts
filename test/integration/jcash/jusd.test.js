@@ -2,8 +2,9 @@ import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC
 import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
 import * as CrydrControllerLicensedERC20JSAPI from '../../../contracts/crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicensedERC20.jsapi';
 
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
 import * as migrations from '../../../jsroutines/migrations/index';
 
 
@@ -12,9 +13,9 @@ global.contract('Integration tests - JUSD', (accounts) => {
   let JUSDControllerAddress;
   let JUSDViewERC20Address;
 
-  DeployConfig.setDeployer(undefined);
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setDeployer(undefined);
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   global.beforeEach(async () => {

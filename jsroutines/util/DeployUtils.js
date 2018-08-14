@@ -1,6 +1,5 @@
 import * as AsyncWeb3 from './AsyncWeb3';
 import * as TxConfig from '../jsconfig/TxConfig';
-import * as DeployConfig from '../jsconfig/DeployConfig';
 
 
 const getUsedTxGas = async (blockNumberStart, blockNumberEnd, txSender, txNonce) => {
@@ -44,7 +43,7 @@ export const deployContractAndPersistArtifact = async (contractArtifact, contrac
   const txCount = await AsyncWeb3.getTransactionCount(TxConfig.getWeb3(), contractOwner);
 
   // delpoy contract
-  const contractInstance = await DeployConfig.getDeployer().deploy(contractArtifact, { from: contractOwner });
+  const contractInstance = await TxConfig.getDeployer().deploy(contractArtifact, { from: contractOwner });
   global.console.log(`\t\tContract successfully deployed: ${contractInstance.address}`);
 
   // record state after the deployment
@@ -77,7 +76,7 @@ export const deployContractSimple = async (contractArtifact, contractOwner) => {
 };
 
 export const deployContract = async (contractArtifact, contractOwner) => {
-  const deployer = DeployConfig.getDeployer();
+  const deployer = TxConfig.getDeployer();
   let contractAddress;
   if (deployer !== null && typeof deployer !== 'undefined') {
     contractAddress = await deployContractAndPersistArtifact(contractArtifact, contractOwner);

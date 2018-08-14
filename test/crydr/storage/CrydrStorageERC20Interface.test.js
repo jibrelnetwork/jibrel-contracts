@@ -7,10 +7,9 @@ import * as CrydrStorageERC20InterfaceJSAPI from '../../../contracts/crydr/stora
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
-import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
-
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
 const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.sol');
@@ -19,8 +18,8 @@ const CrydrStorageERC20Proxy = global.artifacts.require('CrydrStorageERC20Proxy.
 global.contract('CrydrStorageERC20Interface', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let crydrStorageInstance;

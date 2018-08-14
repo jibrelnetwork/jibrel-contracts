@@ -1,22 +1,17 @@
-import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
-
-
 import * as ManageableJSAPI from '../../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableInterfaceJSAPI   from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as PausableJSAPI   from '../../../contracts/lifecycle/Pausable/Pausable.jsapi';
 
 import * as TxConfig from '../../jsconfig/TxConfig';
-import * as DeployConfig from '../../jsconfig/DeployConfig';
-
 import * as AsyncWeb3 from '../../util/AsyncWeb3';
-
 import * as CheckExceptions from '../../util/CheckExceptions';
+import { submitTxAndWaitConfirmation } from '../../util/SubmitTx';
 
 
 export const testContractIsPausable = async (contractArtifact, constructorArgs) => {
   global.console.log('\tTest that contract is pausable and unpausable');
 
-  const ethAccounts = DeployConfig.getEthAccounts();
+  const ethAccounts = TxConfig.getEthAccounts();
 
   const pausableInstance = await contractArtifact.new(...constructorArgs, { from: ethAccounts.owner });
   const pausableInstanceAddress = pausableInstance.address;

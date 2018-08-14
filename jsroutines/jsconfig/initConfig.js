@@ -1,22 +1,20 @@
 import * as TxConfig from './TxConfig';
-import * as DeployConfig from './DeployConfig';
 import * as SubmitTx from '../util/SubmitTx';
 
+module.exports = function initConfig(_web3, _deployer, _network, _accounts) {
+  global.console.log(`  Network:  ${_network}`);
+  global.console.log(`  Accounts: ${_accounts.join('\n            ')}`);
 
-module.exports = function initConfig(web3, deployer, network, accounts) {
-  global.console.log(`  Network:  ${network}`);
-  global.console.log(`  Accounts: ${accounts.join('\n            ')}`);
+  TxConfig.setWeb3(_web3);
+  TxConfig.setNetworkType(_network);
 
-  TxConfig.setWeb3(web3);
-  TxConfig.setNetworkType(network);
-
-  if (network === 'development' || network === 'coverage') {
-    SubmitTx.disableNonceTracker();
+  if (_network === 'development' || _network === 'coverage') {
+    TxConfig.disableNonceTracker();
   } else {
     SubmitTx.resetNonceTracker();
-    SubmitTx.enableNonceTracker();
+    TxConfig.enableNonceTracker();
   }
 
-  DeployConfig.setDeployer(deployer);
-  DeployConfig.setEthAccounts(accounts);
+  TxConfig.setDeployer(_deployer);
+  TxConfig.setEthAccounts(_accounts);
 };

@@ -1,15 +1,13 @@
-import { submitTxAndWaitConfirmation } from '../../jsroutines/util/SubmitTx';
-import { isContractThrows } from '../../jsroutines/util/CheckExceptions';
-
-import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
-import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
-import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
-import * as DeployUtils from '../../jsroutines/util/DeployUtils';
-
 import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as JcashRegistrarInterfaceJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrarInterface.jsapi';
 import * as Erc20MockJSAPI from '../../contracts/unittest/Erc20Mock.jsapi';
 import * as JNTControllerStubJSAPI from '../../contracts/unittest/JNTControllerStub.jsapi';
+
+import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
+import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
+import { submitTxAndWaitConfirmation } from '../../jsroutines/util/SubmitTx';
+import { isContractThrows } from '../../jsroutines/util/CheckExceptions';
+import * as DeployUtils from '../../jsroutines/util/DeployUtils';
 
 import * as JcashRegistrarInit from '../../jsroutines/jsinit/JcashRegistrarInit';
 
@@ -23,8 +21,8 @@ const JNTControllerStubArtifact = global.artifacts.require('JNTControllerStub.so
 global.contract('JcashRegistrar', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   const exchangePrice = (10 ** 18);

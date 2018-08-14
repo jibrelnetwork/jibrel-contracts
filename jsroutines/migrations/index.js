@@ -1,9 +1,11 @@
 /* Migration scripts */
 
-import * as DeployConfig from '../jsconfig/DeployConfig';
+import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
+
+import * as TxConfig from '../jsconfig/TxConfig';
+
 import * as CrydrInit from '../jsinit/CrydrInit';
 import * as JcashRegistrarInit from '../jsinit/JcashRegistrarInit';
-import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 
 const JNTStorageArtifact    = global.artifacts.require('JNTStorage.sol');
 const JNTControllerArtifact = global.artifacts.require('JNTController.sol');
@@ -44,11 +46,11 @@ const executeMigrationNumber2 = async () => {
                                                       JNTControllerArtifact,
                                                       JNTViewERC20Artifact,
                                                       'erc20',
-                                                      DeployConfig.getEthAccounts());
+                                                      TxConfig.getEthAccounts());
 
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
 
   global.console.log('  JNT deployed, configured and unpaused:');
   global.console.log(`\tJNTStorageAddress: ${contractAddresses[0]}`);
@@ -73,12 +75,12 @@ const executeMigrationNumber3 = async () => {
                                                               JUSDControllerArtifact,
                                                               JUSDViewERC20Artifact,
                                                               'erc20',
-                                                              DeployConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts());
 
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
   global.console.log('  JUSD deployed, configured and unpaused:');
   global.console.log(`\tJUSDStorageAddress: ${contractAddresses[0]}`);
@@ -104,12 +106,12 @@ const executeMigrationNumber4 = async () => {
                                                               JEURControllerArtifact,
                                                               JEURViewERC20Artifact,
                                                               'erc20',
-                                                              DeployConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts());
 
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
   global.console.log('  JEUR deployed, configured and unpaused:');
   global.console.log(`\tJEURStorageAddress: ${contractAddresses[0]}`);
@@ -135,12 +137,12 @@ const executeMigrationNumber5 = async () => {
                                                               JGBPControllerArtifact,
                                                               JGBPViewERC20Artifact,
                                                               'erc20',
-                                                              DeployConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts());
 
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
   global.console.log('  JGBP deployed, configured and unpaused:');
   global.console.log(`\tJGBPStorageAddress: ${contractAddresses[0]}`);
@@ -166,12 +168,12 @@ const executeMigrationNumber6 = async () => {
                                                               JKRWControllerArtifact,
                                                               JKRWViewERC20Artifact,
                                                               'erc20',
-                                                              DeployConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts());
 
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
   global.console.log('  JKRW deployed, configured and unpaused:');
   global.console.log(`\tJKRWStorageAddress: ${contractAddresses[0]}`);
@@ -197,12 +199,12 @@ const executeMigrationNumber7 = async () => {
                                                               JJODControllerArtifact,
                                                               JJODViewERC20Artifact,
                                                               'erc20',
-                                                              DeployConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts());
 
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], DeployConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], DeployConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
   global.console.log('  JJOD deployed, configured and unpaused:');
   global.console.log(`\tJJODStorageAddress: ${contractAddresses[0]}`);
@@ -265,27 +267,27 @@ const executeMigrationNumber8 = async (
   }
 
 
-  const JcashRegistrarAddress = await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, DeployConfig.getEthAccounts());
+  const JcashRegistrarAddress = await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, TxConfig.getEthAccounts());
 
-  await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, DeployConfig.getEthAccounts());
-  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddressToUse, DeployConfig.getEthAccounts(), 10 ** 18);
-  await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, DeployConfig.getEthAccounts().managerPause);
+  await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, TxConfig.getEthAccounts());
+  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddressToUse, TxConfig.getEthAccounts(), 10 ** 18);
+  await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, TxConfig.getEthAccounts().managerPause);
 
   await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
                                                        JUSDLicenseRegistryAddressToUse,
-                                                       DeployConfig.getEthAccounts());
+                                                       TxConfig.getEthAccounts());
   await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
                                                        JEURLicenseRegistryAddressToUse,
-                                                       DeployConfig.getEthAccounts());
+                                                       TxConfig.getEthAccounts());
   await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
                                                        JGBPLicenseRegistryAddressToUse,
-                                                       DeployConfig.getEthAccounts());
+                                                       TxConfig.getEthAccounts());
   await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
                                                        JKRWLicenseRegistryAddressToUse,
-                                                       DeployConfig.getEthAccounts());
+                                                       TxConfig.getEthAccounts());
   await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
                                                        JJODLicenseRegistryAddressToUse,
-                                                       DeployConfig.getEthAccounts());
+                                                       TxConfig.getEthAccounts());
 
   return JcashRegistrarAddress;
 };
@@ -297,9 +299,9 @@ const verifyMigrationNumber8 = async () => {
   const jcashRegistrarInstance = await JcashRegistrarArtifact.deployed();
   const jcashRegistrarAddress = jcashRegistrarInstance.address;
 
-  const isVerified1 = await JcashRegistrarInit.verifyManagers(jcashRegistrarAddress, DeployConfig.getEthAccounts());
+  const isVerified1 = await JcashRegistrarInit.verifyManagers(jcashRegistrarAddress, TxConfig.getEthAccounts());
   const isVerified2 = await JcashRegistrarInit.verifyJNTConnection(jcashRegistrarAddress,
-                                                                   jntControllerAddress, DeployConfig.getEthAccounts(), 10 ** 18);
+                                                                   jntControllerAddress, TxConfig.getEthAccounts(), 10 ** 18);
   if (isVerified1 !== true || isVerified2 !== true) {
     throw new Error('Failed to verify deployed JcashRegistrar');
   }

@@ -1,17 +1,17 @@
 import * as ManageableJSAPI from '../../contracts/lifecycle/Manageable/Manageable.jsapi';
 import * as PausableJSAPI   from '../../contracts/lifecycle/Pausable/Pausable.jsapi';
 
-import * as PausableTestSuite from '../../jsroutines/test_suit/lifecycle/Pausable';
+import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 
-import * as DeployConfig from '../../jsroutines/jsconfig/DeployConfig';
+import * as PausableTestSuite from '../../jsroutines/test_suit/lifecycle/Pausable';
 
 const PausableMockV1 = global.artifacts.require('PausableMockV1.sol');
 const PausableMockV2 = global.artifacts.require('PausableMockV2.sol');
 
 
 global.contract('Pausable', (accounts) => {
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   global.it('should test that contract is pausable and unpausable', async () => {
     await PausableTestSuite.testContractIsPausable(PausableMockV1, []);

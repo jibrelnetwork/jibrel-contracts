@@ -3,13 +3,13 @@ import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/sto
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
 
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
+import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
+import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 import * as CrydrInit from '../../../jsroutines/jsinit/CrydrInit';
-
-import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 const CrydrControllerMintableMock = global.artifacts.require('CrydrControllerMintableMock.sol');
 const JCashCrydrStorage = global.artifacts.require('JCashCrydrStorage.sol');
@@ -21,8 +21,8 @@ global.contract('CrydrControllerMintable', (accounts) => {
   let crydrStorageInstance;
   let jcashCrydrViewERC20Instance;
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
   const viewStandard = 'erc20';
   const viewName = 'viewName';

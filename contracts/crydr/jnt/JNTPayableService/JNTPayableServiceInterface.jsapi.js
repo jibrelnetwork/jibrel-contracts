@@ -56,7 +56,7 @@ export const getJntBeneficiary = async (contractAddress) =>
 
 export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
                                      actionName, jntPriceWei) => {
-  global.console.log('\tSet JNT beneficiary of JNT payable service:');
+  global.console.log('\tSet action price of JNT payable service:');
   global.console.log(`\t\tjntPayableServiceAddress - ${jntPayableServiceAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tactionName - ${actionName}`);
@@ -69,7 +69,7 @@ export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
     [actionName, jntPriceWei],
     { from: managerAddress }
   );
-  global.console.log('\tJNT beneficiary of JNT payable service successfully set');
+  global.console.log('\tAction price of JNT payable service successfully set');
   return null;
 };
 

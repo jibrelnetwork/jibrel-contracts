@@ -3,10 +3,9 @@ import * as CrydrViewBaseInterfaceJSAPI from '../../../contracts/crydr/view/Cryd
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
-import * as DeployConfig from '../../../jsroutines/jsconfig/DeployConfig';
-import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
-
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+
+import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
 
 const CrydrViewBaseMock = global.artifacts.require('CrydrViewBaseMock.sol');
 const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20Stub.sol');
@@ -15,8 +14,8 @@ const CrydrControllerERC20Stub = global.artifacts.require('CrydrControllerERC20S
 global.contract('CrydrViewBase', (accounts) => {
   TxConfig.setWeb3(global.web3);
 
-  DeployConfig.setEthAccounts(accounts);
-  const ethAccounts = DeployConfig.getEthAccounts();
+  TxConfig.setEthAccounts(accounts);
+  const ethAccounts = TxConfig.getEthAccounts();
 
 
   let crydrViewBaseInstance;
