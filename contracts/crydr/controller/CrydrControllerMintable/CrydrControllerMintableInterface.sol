@@ -9,6 +9,11 @@ pragma solidity ^0.4.24;
  */
 contract CrydrControllerMintableInterface {
 
+  /* Events */
+
+  event MintEvent(address indexed owner, uint256 value);
+  event BurnEvent(address indexed owner, uint256 value);
+
   /* minting/burning */
 
   function mint(address _account, uint256 _value) public;

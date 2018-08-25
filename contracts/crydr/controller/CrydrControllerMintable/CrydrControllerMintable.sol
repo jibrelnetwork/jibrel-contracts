@@ -37,6 +37,7 @@ contract CrydrControllerMintable is ManageableInterface,
 
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_account, _value);
 
+    emit MintEvent(_account, _value);
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitMintEvent(_account, _value);
       CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(address(0x0), _account, _value);
@@ -54,6 +55,7 @@ contract CrydrControllerMintable is ManageableInterface,
 
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).decreaseBalance(_account, _value);
 
+    emit BurnEvent(_account, _value);
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitBurnEvent(_account, _value);
       CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_account, address(0x0), _value);
