@@ -5,22 +5,22 @@ pragma solidity ^0.4.24;
 
 import '../lifecycle/Ownable/Ownable.sol';
 import '../lifecycle/Manageable/Manageable.sol';
-import '../crydr/jnt/JNTControllerInterface/JNTControllerInterface.sol';
+import '../crydr/jnt/JNTPaymentGateway/JNTPaymentGatewayInterface.sol';
 
 
 /**
- * @title JNTControllerStub
+ * @title JNTPaymentGatewayStub
  */
-contract JNTControllerStub is Ownable,
-                              Manageable,
-                              JNTControllerInterface {
+contract JNTPaymentGatewayStub is Ownable,
+                                  Manageable,
+                                  JNTPaymentGatewayInterface {
 
   /* Storage */
 
   uint256 public counter = 0;
 
 
-  /* JNTControllerInterface */
+  /* JNTPaymentGateway */
 
   function chargeJNT(address _from, address _to, uint256 _value) public {
     counter += 1;

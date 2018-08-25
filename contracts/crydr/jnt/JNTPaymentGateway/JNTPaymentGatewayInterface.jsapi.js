@@ -2,7 +2,7 @@ import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitT
 
 const Promise = require('bluebird');
 
-const JNTControllerInterfaceArtifact = global.artifacts.require('JNTControllerInterface.sol');
+const JNTPaymentGatewayArtifact = global.artifacts.require('JNTPaymentGateway.sol');
 
 
 /**
@@ -18,7 +18,7 @@ export const chargeJNT = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\ttoAccount - ${toAccount}`);
   global.console.log(`\t\tvalueToCharge - ${valueToCharge}`);
   await submitTxAndWaitConfirmation(
-    JNTControllerInterfaceArtifact
+    JNTPaymentGatewayArtifact
       .at(crydrControllerAddress)
       .chargeJNT
       .sendTransaction,
@@ -35,7 +35,7 @@ export const chargeJNT = async (crydrControllerAddress, managerAddress,
  */
 
 export const getJNTChargedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JNTControllerInterfaceArtifact
+  const eventObj = JNTPaymentGatewayArtifact
     .at(contractAddress)
     .JNTChargedEvent(eventDataFilter, commonFilter);
   const eventGet = Promise.promisify(eventObj.get).bind(eventObj);

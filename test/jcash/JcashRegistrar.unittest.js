@@ -1,7 +1,7 @@
 import * as PausableInterfaceJSAPI from '../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as JcashRegistrarInterfaceJSAPI from '../../contracts/jcash/JcashRegistrar/JcashRegistrarInterface.jsapi';
 import * as Erc20MockJSAPI from '../../contracts/unittest/Erc20Mock.jsapi';
-import * as JNTControllerStubJSAPI from '../../contracts/unittest/JNTControllerStub.jsapi';
+import * as JNTPaymentGatewayStubJSAPI from '../../contracts/unittest/JNTPaymentGatewayStub.jsapi';
 
 import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../jsroutines/util/AsyncWeb3';
@@ -15,7 +15,7 @@ const BigNumber = require('bignumber.js');
 
 const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 const Erc20MockArtifact = global.artifacts.require('Erc20Mock.sol');
-const JNTControllerStubArtifact = global.artifacts.require('JNTControllerStub.sol');
+const JNTPaymentGatewayStubArtifact = global.artifacts.require('JNTPaymentGatewayStub.sol');
 
 
 global.contract('JcashRegistrar', (accounts) => {
@@ -32,7 +32,7 @@ global.contract('JcashRegistrar', (accounts) => {
 
 
   global.beforeEach(async () => {
-    jntControllerAddress = await DeployUtils.deployContractSimple(JNTControllerStubArtifact, ethAccounts.owner);
+    jntControllerAddress = await DeployUtils.deployContractSimple(JNTPaymentGatewayStubArtifact, ethAccounts.owner);
 
     await DeployUtils.deployContractSimple(JcashRegistrarArtifact, ethAccounts.owner);
     const jcashRegistrarInstance = await JcashRegistrarArtifact.new({ from: ethAccounts.owner });
@@ -252,8 +252,8 @@ global.contract('JcashRegistrar', (accounts) => {
     global.assert.strictEqual(events[0].args.to, ethAccounts.testInvestor1);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
 
-    events = await JNTControllerStubJSAPI.getJNTChargedEvents(jntControllerAddress,
-                                                              { from: ethAccounts.testInvestor1 }, { fromBlock: blockNumber + 1 });
+    events = await JNTPaymentGatewayStubJSAPI.getJNTChargedEvents(jntControllerAddress,
+                                                                  { from: ethAccounts.testInvestor1 }, { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
     global.assert.strictEqual(events[0].args.payableservice, jcashRegistrarAddress);
     global.assert.strictEqual(events[0].args.from, ethAccounts.testInvestor1);
@@ -305,8 +305,8 @@ global.contract('JcashRegistrar', (accounts) => {
     global.assert.strictEqual(events[0].args.to, ethAccounts.testInvestor1);
     global.assert.strictEqual(events[0].args.value.toNumber(), valueToSend.toNumber());
 
-    events = await JNTControllerStubJSAPI.getJNTChargedEvents(jntControllerAddress,
-                                                              { from: ethAccounts.testInvestor1 }, { fromBlock: blockNumber + 1 });
+    events = await JNTPaymentGatewayStubJSAPI.getJNTChargedEvents(jntControllerAddress,
+                                                                  { from: ethAccounts.testInvestor1 }, { fromBlock: blockNumber + 1 });
     global.assert.strictEqual(events.length, 1, 'We were supposed to get exactly one event.');
     global.assert.strictEqual(events[0].args.payableservice, jcashRegistrarAddress);
     global.assert.strictEqual(events[0].args.from, ethAccounts.testInvestor1);

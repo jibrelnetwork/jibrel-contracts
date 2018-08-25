@@ -10,7 +10,7 @@ import './JNTPayableServiceInterface.sol';
 
 import '../../view/CrydrViewERC20/CrydrViewERC20Interface.sol';
 import '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';
-import '../JNTControllerInterface/JNTControllerInterface.sol';
+import '../JNTPaymentGateway/JNTPaymentGateway.sol';
 
 
 contract JNTPayableService is CommonModifiersInterface,
@@ -20,7 +20,7 @@ contract JNTPayableService is CommonModifiersInterface,
 
   /* Storage */
 
-  JNTControllerInterface jntController;
+  JNTPaymentGateway jntController;
   address jntBeneficiary;
   mapping (string => uint256) actionPrice;
 
@@ -37,7 +37,7 @@ contract JNTPayableService is CommonModifiersInterface,
   {
     require(_jntController != address(jntController));
 
-    jntController = JNTControllerInterface(_jntController);
+    jntController = JNTPaymentGateway(_jntController);
 
     emit JNTControllerChangedEvent(_jntController);
   }
