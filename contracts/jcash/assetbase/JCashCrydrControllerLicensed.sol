@@ -13,6 +13,7 @@ import '../../crydr/controller/CrydrControllerBase/CrydrControllerBase.sol';
 import '../../crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.sol';
 import '../../crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol';
 import '../../crydr/controller/CrydrControllerERC20/CrydrControllerERC20.sol';
+import '../../crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.sol';
 import '../../crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.sol';
 import '../../crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicensedERC20.sol';
 
@@ -31,6 +32,7 @@ contract JCashCrydrControllerLicensed is CommonModifiers,
                                          CrydrControllerBlockable,
                                          CrydrControllerMintable,
                                          CrydrControllerERC20,
+                                         CrydrControllerForcedTransfer,
                                          CrydrControllerLicensedBase,
                                          CrydrControllerLicensedERC20 {
 
