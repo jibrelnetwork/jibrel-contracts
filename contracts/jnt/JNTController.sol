@@ -13,6 +13,7 @@ import '../crydr/controller/CrydrControllerBase/CrydrControllerBase.sol';
 import '../crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.sol';
 import '../crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol';
 import '../crydr/controller/CrydrControllerERC20/CrydrControllerERC20.sol';
+import '../crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.sol';
 import '../crydr/jnt/JNTPaymentGateway/JNTPaymentGateway.sol';
 
 import '../crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
@@ -32,6 +33,7 @@ contract JNTController is CommonModifiers,
                           CrydrControllerBlockable,
                           CrydrControllerMintable,
                           CrydrControllerERC20,
+                          CrydrControllerForcedTransfer,
                           JNTPaymentGateway {
 
   /* Constructor */
