@@ -9,6 +9,7 @@ import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import './CrydrControllerForcedTransferInterface.sol';
 
 import '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
+import '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
 
 
 /**
@@ -35,6 +36,9 @@ contract CrydrControllerForcedTransfer is ManageableInterface,
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_to, _value);
 
     emit ForcedTransferEvent(_from, _to, _value);
+    if (isCrydrViewRegistered('erc20') == true) {
+      CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_from, _to, _value);
+    }
   }
 
   function forcedTransferAll(
@@ -51,5 +55,8 @@ contract CrydrControllerForcedTransfer is ManageableInterface,
     CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_to, value);
 
     emit ForcedTransferEvent(_from, _to, value);
+    if (isCrydrViewRegistered('erc20') == true) {
+      CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_from, _to, value);
+    }
   }
 }
