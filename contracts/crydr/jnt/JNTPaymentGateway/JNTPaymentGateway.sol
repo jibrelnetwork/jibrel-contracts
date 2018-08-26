@@ -7,6 +7,7 @@ import '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import './JNTPaymentGatewayInterface.sol';
 
 import '../../storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
+import '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
 
 
 /**
@@ -26,6 +27,10 @@ contract JNTPaymentGateway is ManageableInterface,
     onlyAllowedManager('jnt_payable_service')
   {
     CrydrStorageERC20Interface(getCrydrStorageAddress()).transfer(_from, _to, _value);
+
     emit JNTChargedEvent(msg.sender, _from, _to, _value);
+    if (isCrydrViewRegistered('erc20') == true) {
+      CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_from, _to, _value);
+    }
   }
 }
