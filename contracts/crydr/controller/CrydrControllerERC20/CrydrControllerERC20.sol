@@ -32,7 +32,7 @@ contract CrydrControllerERC20 is PausableInterface,
     onlyCrydrView
     whenContractNotPaused
   {
-    CrydrStorageERC20Interface(address(getCrydrStorageAddress())).transfer(_msgsender, _to, _value);
+    CrydrStorageERC20Interface(getCrydrStorageAddress()).transfer(_msgsender, _to, _value);
 
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_msgsender, _to, _value);
@@ -40,11 +40,11 @@ contract CrydrControllerERC20 is PausableInterface,
   }
 
   function getTotalSupply() public constant returns (uint256) {
-    return CrydrStorageBalanceInterface(address(getCrydrStorageAddress())).getTotalSupply();
+    return CrydrStorageBalanceInterface(getCrydrStorageAddress()).getTotalSupply();
   }
 
   function getBalance(address _owner) public constant returns (uint256) {
-    return CrydrStorageBalanceInterface(address(getCrydrStorageAddress())).getBalance(_owner);
+    return CrydrStorageBalanceInterface(getCrydrStorageAddress()).getBalance(_owner);
   }
 
   function approve(
@@ -62,7 +62,7 @@ contract CrydrControllerERC20 is PausableInterface,
     uint256 allowance = CrydrStorageAllowanceInterface(getCrydrStorageAddress()).getAllowance(_msgsender, _spender);
     require((allowance > 0 && _value == 0) || (allowance == 0 && _value > 0));
 
-    CrydrStorageERC20Interface(address(getCrydrStorageAddress())).approve(_msgsender, _spender, _value);
+    CrydrStorageERC20Interface(getCrydrStorageAddress()).approve(_msgsender, _spender, _value);
 
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitApprovalEvent(_msgsender, _spender, _value);
@@ -79,7 +79,7 @@ contract CrydrControllerERC20 is PausableInterface,
     onlyCrydrView
     whenContractNotPaused
   {
-    CrydrStorageERC20Interface(address(getCrydrStorageAddress())).transferFrom(_msgsender, _from, _to, _value);
+    CrydrStorageERC20Interface(getCrydrStorageAddress()).transferFrom(_msgsender, _from, _to, _value);
 
     if (isCrydrViewRegistered('erc20') == true) {
       CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_from, _to, _value);
@@ -87,6 +87,6 @@ contract CrydrControllerERC20 is PausableInterface,
   }
 
   function getAllowance(address _owner, address _spender) public constant returns (uint256 ) {
-    return CrydrStorageAllowanceInterface(address(getCrydrStorageAddress())).getAllowance(_owner, _spender);
+    return CrydrStorageAllowanceInterface(getCrydrStorageAddress()).getAllowance(_owner, _spender);
   }
 }

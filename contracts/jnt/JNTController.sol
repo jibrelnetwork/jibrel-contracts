@@ -13,7 +13,8 @@ import '../crydr/controller/CrydrControllerBase/CrydrControllerBase.sol';
 import '../crydr/controller/CrydrControllerBlockable/CrydrControllerBlockable.sol';
 import '../crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol';
 import '../crydr/controller/CrydrControllerERC20/CrydrControllerERC20.sol';
-import '../crydr/jnt/JNTControllerInterface/JNTControllerInterface.sol';
+import '../crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedTransfer.sol';
+import '../crydr/jnt/JNTPaymentGateway/JNTPaymentGateway.sol';
 
 import '../crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
 
@@ -32,24 +33,10 @@ contract JNTController is CommonModifiers,
                           CrydrControllerBlockable,
                           CrydrControllerMintable,
                           CrydrControllerERC20,
-                          JNTControllerInterface {
+                          CrydrControllerForcedTransfer,
+                          JNTPaymentGateway {
 
   /* Constructor */
 
   constructor () AssetID('JNT') public {}
-
-
-  /* JNTControllerInterface */
-
-  function chargeJNT(
-    address _from,
-    address _to,
-    uint256 _value
-  )
-    public
-    onlyAllowedManager('jnt_payable_service')
-  {
-    CrydrStorageERC20Interface(address(crydrStorage)).transfer(_from, _to, _value);
-    emit JNTChargedEvent(msg.sender, _from, _to, _value);
-  }
 }

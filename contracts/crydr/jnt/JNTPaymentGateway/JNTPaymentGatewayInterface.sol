@@ -4,10 +4,10 @@ pragma solidity ^0.4.24;
 
 
 /**
- * @title JNTController interface
- * @dev Contains helper methods of JNT controller that needed by other Jibrel contracts
+ * @title JNTPaymentGatewayInterface
+ * @dev Allows to charge users by JNT
  */
-contract JNTControllerInterface {
+contract JNTPaymentGatewayInterface {
 
   /* Events */
 
