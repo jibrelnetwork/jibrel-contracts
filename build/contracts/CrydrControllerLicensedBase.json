@@ -1,0 +1,1721 @@
+{
+  "contractName": "CrydrControllerLicensedBase",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getPaused",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "unpauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "licenseregistry",
+          "type": "address"
+        }
+      ],
+      "name": "LicenseRegistryChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "PauseEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "UnpauseEvent",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newLicenseRegistry",
+          "type": "address"
+        }
+      ],
+      "name": "setLicenseRegistry",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getLicenseRegistryAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.24;\n\n\nimport '../../../util/CommonModifiers/CommonModifiersInterface.sol';\nimport '../../../lifecycle/Manageable/ManageableInterface.sol';\nimport '../../../lifecycle/Pausable/PausableInterface.sol';\nimport './CrydrControllerLicensedBaseInterface.sol';\n\n\n/**\n * @title CrydrControllerLicensedBase\n * @dev Implementation of a contract that checks user's licenses\n */\ncontract CrydrControllerLicensedBase is CommonModifiersInterface,\n                                        ManageableInterface,\n                                        PausableInterface,\n                                        CrydrControllerLicensedBaseInterface {\n\n  /* Storage */\n\n  address licenseRegistry = address(0x0);\n\n\n  /* CrydrControllerLicensedBaseInterface */\n\n  function setLicenseRegistry(\n    address _newLicenseRegistry\n  )\n    external\n    onlyContractAddress(_newLicenseRegistry)\n    onlyAllowedManager('set_license_registry')\n    whenContractPaused\n  {\n    require(_newLicenseRegistry != address(this));\n    require(_newLicenseRegistry != licenseRegistry);\n\n    licenseRegistry = _newLicenseRegistry;\n\n    emit LicenseRegistryChangedEvent(_newLicenseRegistry);\n  }\n\n  function getLicenseRegistryAddress() public constant returns (address) {\n    return licenseRegistry;\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.sol",
+  "ast": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.sol",
+    "exportedSymbols": {
+      "CrydrControllerLicensedBase": [
+        1036
+      ]
+    },
+    "id": 1037,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 974,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:9"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiersInterface.sol",
+        "file": "../../../util/CommonModifiers/CommonModifiersInterface.sol",
+        "id": 975,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 7560,
+        "src": "75:68:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable/ManageableInterface.sol",
+        "file": "../../../lifecycle/Manageable/ManageableInterface.sol",
+        "id": 976,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 5982,
+        "src": "144:63:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Pausable/PausableInterface.sol",
+        "file": "../../../lifecycle/Pausable/PausableInterface.sol",
+        "id": 977,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 6283,
+        "src": "208:59:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.sol",
+        "file": "./CrydrControllerLicensedBaseInterface.sol",
+        "id": 978,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 1054,
+        "src": "268:52:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 979,
+              "name": "CommonModifiersInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 7559,
+              "src": "474:24:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CommonModifiersInterface_$7559",
+                "typeString": "contract CommonModifiersInterface"
+              }
+            },
+            "id": 980,
+            "nodeType": "InheritanceSpecifier",
+            "src": "474:24:9"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 981,
+              "name": "ManageableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 5981,
+              "src": "540:19:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ManageableInterface_$5981",
+                "typeString": "contract ManageableInterface"
+              }
+            },
+            "id": 982,
+            "nodeType": "InheritanceSpecifier",
+            "src": "540:19:9"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 983,
+              "name": "PausableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 6282,
+              "src": "601:17:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_PausableInterface_$6282",
+                "typeString": "contract PausableInterface"
+              }
+            },
+            "id": 984,
+            "nodeType": "InheritanceSpecifier",
+            "src": "601:17:9"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 985,
+              "name": "CrydrControllerLicensedBaseInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1053,
+              "src": "660:36:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerLicensedBaseInterface_$1053",
+                "typeString": "contract CrydrControllerLicensedBaseInterface"
+              }
+            },
+            "id": 986,
+            "nodeType": "InheritanceSpecifier",
+            "src": "660:36:9"
+          }
+        ],
+        "contractDependencies": [
+          1053,
+          5981,
+          6282,
+          7559
+        ],
+        "contractKind": "contract",
+        "documentation": "@title CrydrControllerLicensedBase\n@dev Implementation of a contract that checks user's licenses",
+        "fullyImplemented": false,
+        "id": 1036,
+        "linearizedBaseContracts": [
+          1036,
+          1053,
+          6282,
+          5981,
+          7559
+        ],
+        "name": "CrydrControllerLicensedBase",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 991,
+            "name": "licenseRegistry",
+            "nodeType": "VariableDeclaration",
+            "scope": 1036,
+            "src": "719:38:9",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 987,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "719:7:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "arguments": [
+                {
+                  "argumentTypes": null,
+                  "hexValue": "307830",
+                  "id": 989,
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "kind": "number",
+                  "lValueRequested": false,
+                  "nodeType": "Literal",
+                  "src": "753:3:9",
+                  "subdenomination": null,
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_rational_0_by_1",
+                    "typeString": "int_const 0"
+                  },
+                  "value": "0x0"
+                }
+              ],
+              "expression": {
+                "argumentTypes": [
+                  {
+                    "typeIdentifier": "t_rational_0_by_1",
+                    "typeString": "int_const 0"
+                  }
+                ],
+                "id": 988,
+                "isConstant": false,
+                "isLValue": false,
+                "isPure": true,
+                "lValueRequested": false,
+                "nodeType": "ElementaryTypeNameExpression",
+                "src": "745:7:9",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_type$_t_address_$",
+                  "typeString": "type(address)"
+                },
+                "typeName": "address"
+              },
+              "id": 990,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "typeConversion",
+              "lValueRequested": false,
+              "names": [],
+              "nodeType": "FunctionCall",
+              "src": "745:12:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1026,
+              "nodeType": "Block",
+              "src": "1004:213:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 1009,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1005,
+                          "name": "_newLicenseRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 993,
+                          "src": "1018:19:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1007,
+                              "name": "this",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 7625,
+                              "src": "1049:4:9",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrControllerLicensedBase_$1036",
+                                "typeString": "contract CrydrControllerLicensedBase"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_contract$_CrydrControllerLicensedBase_$1036",
+                                "typeString": "contract CrydrControllerLicensedBase"
+                              }
+                            ],
+                            "id": 1006,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "1041:7:9",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": "address"
+                          },
+                          "id": 1008,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1041:13:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "1018:36:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 1004,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7577,
+                        7578
+                      ],
+                      "referencedDeclaration": 7577,
+                      "src": "1010:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 1010,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1010:45:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1011,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1010:45:9"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 1015,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1013,
+                          "name": "_newLicenseRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 993,
+                          "src": "1069:19:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "id": 1014,
+                          "name": "licenseRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 991,
+                          "src": "1092:15:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "1069:38:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 1012,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7577,
+                        7578
+                      ],
+                      "referencedDeclaration": 7577,
+                      "src": "1061:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 1016,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1061:47:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1017,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1061:47:9"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1020,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1018,
+                      "name": "licenseRegistry",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 991,
+                      "src": "1115:15:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 1019,
+                      "name": "_newLicenseRegistry",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 993,
+                      "src": "1133:19:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1115:37:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 1021,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1115:37:9"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1023,
+                        "name": "_newLicenseRegistry",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 993,
+                        "src": "1192:19:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1022,
+                      "name": "LicenseRegistryChangedEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1042,
+                      "src": "1164:27:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1024,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1164:48:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1025,
+                  "nodeType": "EmitStatement",
+                  "src": "1159:53:9"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1027,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 996,
+                    "name": "_newLicenseRegistry",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 993,
+                    "src": "911:19:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 997,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 995,
+                  "name": "onlyContractAddress",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 7558,
+                  "src": "891:19:9",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_address_$",
+                    "typeString": "modifier (address)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "891:40:9"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "7365745f6c6963656e73655f7265676973747279",
+                    "id": 999,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "955:22:9",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_81fead48d85afbfff8aa763a86cf69e9616882e48e7e3a617bb9698b72e67451",
+                      "typeString": "literal_string \"set_license_registry\""
+                    },
+                    "value": "set_license_registry"
+                  }
+                ],
+                "id": 1000,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 998,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "936:18:9",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "936:42:9"
+              },
+              {
+                "arguments": null,
+                "id": 1002,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1001,
+                  "name": "whenContractPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6281,
+                  "src": "983:18:9",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "983:18:9"
+              }
+            ],
+            "name": "setLicenseRegistry",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 994,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 993,
+                  "name": "_newLicenseRegistry",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1027,
+                  "src": "842:27:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 992,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "842:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "836:37:9"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1003,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1004:0:9"
+            },
+            "scope": 1036,
+            "src": "809:408:9",
+            "stateMutability": "nonpayable",
+            "superFunction": 1047,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 1034,
+              "nodeType": "Block",
+              "src": "1292:33:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1032,
+                    "name": "licenseRegistry",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 991,
+                    "src": "1305:15:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "functionReturnParameters": 1031,
+                  "id": 1033,
+                  "nodeType": "Return",
+                  "src": "1298:22:9"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1035,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getLicenseRegistryAddress",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1028,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1255:2:9"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1031,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1030,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1035,
+                  "src": "1283:7:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1029,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1283:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1282:9:9"
+            },
+            "scope": 1036,
+            "src": "1221:104:9",
+            "stateMutability": "view",
+            "superFunction": 1052,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1037,
+        "src": "434:893:9"
+      }
+    ],
+    "src": "48:1280:9"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBase.sol",
+    "exportedSymbols": {
+      "CrydrControllerLicensedBase": [
+        1036
+      ]
+    },
+    "id": 1037,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 974,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:9"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/util/CommonModifiers/CommonModifiersInterface.sol",
+        "file": "../../../util/CommonModifiers/CommonModifiersInterface.sol",
+        "id": 975,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 7560,
+        "src": "75:68:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable/ManageableInterface.sol",
+        "file": "../../../lifecycle/Manageable/ManageableInterface.sol",
+        "id": 976,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 5982,
+        "src": "144:63:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Pausable/PausableInterface.sol",
+        "file": "../../../lifecycle/Pausable/PausableInterface.sol",
+        "id": 977,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 6283,
+        "src": "208:59:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.sol",
+        "file": "./CrydrControllerLicensedBaseInterface.sol",
+        "id": 978,
+        "nodeType": "ImportDirective",
+        "scope": 1037,
+        "sourceUnit": 1054,
+        "src": "268:52:9",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 979,
+              "name": "CommonModifiersInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 7559,
+              "src": "474:24:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CommonModifiersInterface_$7559",
+                "typeString": "contract CommonModifiersInterface"
+              }
+            },
+            "id": 980,
+            "nodeType": "InheritanceSpecifier",
+            "src": "474:24:9"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 981,
+              "name": "ManageableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 5981,
+              "src": "540:19:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ManageableInterface_$5981",
+                "typeString": "contract ManageableInterface"
+              }
+            },
+            "id": 982,
+            "nodeType": "InheritanceSpecifier",
+            "src": "540:19:9"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 983,
+              "name": "PausableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 6282,
+              "src": "601:17:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_PausableInterface_$6282",
+                "typeString": "contract PausableInterface"
+              }
+            },
+            "id": 984,
+            "nodeType": "InheritanceSpecifier",
+            "src": "601:17:9"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 985,
+              "name": "CrydrControllerLicensedBaseInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1053,
+              "src": "660:36:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerLicensedBaseInterface_$1053",
+                "typeString": "contract CrydrControllerLicensedBaseInterface"
+              }
+            },
+            "id": 986,
+            "nodeType": "InheritanceSpecifier",
+            "src": "660:36:9"
+          }
+        ],
+        "contractDependencies": [
+          1053,
+          5981,
+          6282,
+          7559
+        ],
+        "contractKind": "contract",
+        "documentation": "@title CrydrControllerLicensedBase\n@dev Implementation of a contract that checks user's licenses",
+        "fullyImplemented": false,
+        "id": 1036,
+        "linearizedBaseContracts": [
+          1036,
+          1053,
+          6282,
+          5981,
+          7559
+        ],
+        "name": "CrydrControllerLicensedBase",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 991,
+            "name": "licenseRegistry",
+            "nodeType": "VariableDeclaration",
+            "scope": 1036,
+            "src": "719:38:9",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 987,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "719:7:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "arguments": [
+                {
+                  "argumentTypes": null,
+                  "hexValue": "307830",
+                  "id": 989,
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "kind": "number",
+                  "lValueRequested": false,
+                  "nodeType": "Literal",
+                  "src": "753:3:9",
+                  "subdenomination": null,
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_rational_0_by_1",
+                    "typeString": "int_const 0"
+                  },
+                  "value": "0x0"
+                }
+              ],
+              "expression": {
+                "argumentTypes": [
+                  {
+                    "typeIdentifier": "t_rational_0_by_1",
+                    "typeString": "int_const 0"
+                  }
+                ],
+                "id": 988,
+                "isConstant": false,
+                "isLValue": false,
+                "isPure": true,
+                "lValueRequested": false,
+                "nodeType": "ElementaryTypeNameExpression",
+                "src": "745:7:9",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_type$_t_address_$",
+                  "typeString": "type(address)"
+                },
+                "typeName": "address"
+              },
+              "id": 990,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "typeConversion",
+              "lValueRequested": false,
+              "names": [],
+              "nodeType": "FunctionCall",
+              "src": "745:12:9",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1026,
+              "nodeType": "Block",
+              "src": "1004:213:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 1009,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1005,
+                          "name": "_newLicenseRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 993,
+                          "src": "1018:19:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1007,
+                              "name": "this",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 7625,
+                              "src": "1049:4:9",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrControllerLicensedBase_$1036",
+                                "typeString": "contract CrydrControllerLicensedBase"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_contract$_CrydrControllerLicensedBase_$1036",
+                                "typeString": "contract CrydrControllerLicensedBase"
+                              }
+                            ],
+                            "id": 1006,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "1041:7:9",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": "address"
+                          },
+                          "id": 1008,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1041:13:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "1018:36:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 1004,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7577,
+                        7578
+                      ],
+                      "referencedDeclaration": 7577,
+                      "src": "1010:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 1010,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1010:45:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1011,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1010:45:9"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 1015,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1013,
+                          "name": "_newLicenseRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 993,
+                          "src": "1069:19:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "id": 1014,
+                          "name": "licenseRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 991,
+                          "src": "1092:15:9",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "1069:38:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 1012,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7577,
+                        7578
+                      ],
+                      "referencedDeclaration": 7577,
+                      "src": "1061:7:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 1016,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1061:47:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1017,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1061:47:9"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1020,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1018,
+                      "name": "licenseRegistry",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 991,
+                      "src": "1115:15:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 1019,
+                      "name": "_newLicenseRegistry",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 993,
+                      "src": "1133:19:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1115:37:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 1021,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1115:37:9"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1023,
+                        "name": "_newLicenseRegistry",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 993,
+                        "src": "1192:19:9",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1022,
+                      "name": "LicenseRegistryChangedEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1042,
+                      "src": "1164:27:9",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1024,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1164:48:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1025,
+                  "nodeType": "EmitStatement",
+                  "src": "1159:53:9"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1027,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 996,
+                    "name": "_newLicenseRegistry",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 993,
+                    "src": "911:19:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 997,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 995,
+                  "name": "onlyContractAddress",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 7558,
+                  "src": "891:19:9",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_address_$",
+                    "typeString": "modifier (address)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "891:40:9"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "7365745f6c6963656e73655f7265676973747279",
+                    "id": 999,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "955:22:9",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_81fead48d85afbfff8aa763a86cf69e9616882e48e7e3a617bb9698b72e67451",
+                      "typeString": "literal_string \"set_license_registry\""
+                    },
+                    "value": "set_license_registry"
+                  }
+                ],
+                "id": 1000,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 998,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "936:18:9",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "936:42:9"
+              },
+              {
+                "arguments": null,
+                "id": 1002,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1001,
+                  "name": "whenContractPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6281,
+                  "src": "983:18:9",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "983:18:9"
+              }
+            ],
+            "name": "setLicenseRegistry",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 994,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 993,
+                  "name": "_newLicenseRegistry",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1027,
+                  "src": "842:27:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 992,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "842:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "836:37:9"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1003,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1004:0:9"
+            },
+            "scope": 1036,
+            "src": "809:408:9",
+            "stateMutability": "nonpayable",
+            "superFunction": 1047,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 1034,
+              "nodeType": "Block",
+              "src": "1292:33:9",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1032,
+                    "name": "licenseRegistry",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 991,
+                    "src": "1305:15:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "functionReturnParameters": 1031,
+                  "id": 1033,
+                  "nodeType": "Return",
+                  "src": "1298:22:9"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1035,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getLicenseRegistryAddress",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1028,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1255:2:9"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1031,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1030,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1035,
+                  "src": "1283:7:9",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1029,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1283:7:9",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1282:9:9"
+            },
+            "scope": 1036,
+            "src": "1221:104:9",
+            "stateMutability": "view",
+            "superFunction": 1052,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1037,
+        "src": "434:893:9"
+      }
+    ],
+    "src": "48:1280:9"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-08-27T22:59:31.947Z"
+}

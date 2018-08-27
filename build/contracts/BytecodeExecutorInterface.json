@@ -1,0 +1,1119 @@
+{
+  "contractName": "BytecodeExecutorInterface",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "ethValue",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "transactionBytecodeHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "CallExecutedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "transactionBytecodeHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "DelegatecallExecutedEvent",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_target",
+          "type": "address"
+        },
+        {
+          "name": "_suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "name": "_ethValue",
+          "type": "uint256"
+        },
+        {
+          "name": "_transactionBytecode",
+          "type": "bytes"
+        }
+      ],
+      "name": "executeCall",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_target",
+          "type": "address"
+        },
+        {
+          "name": "_suppliedGas",
+          "type": "uint256"
+        },
+        {
+          "name": "_transactionBytecode",
+          "type": "bytes"
+        }
+      ],
+      "name": "executeDelegatecall",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.24;\n\n\n/**\n * @title BytecodeExecutorInterface interface\n * @dev Implementation of a contract that execute any bytecode on behalf of the contract\n * @dev Last resort for the immutable and not-replaceable contract :)\n */\ncontract BytecodeExecutorInterface {\n\n  /* Events */\n\n  event CallExecutedEvent(address indexed target,\n                          uint256 suppliedGas,\n                          uint256 ethValue,\n                          bytes32 transactionBytecodeHash);\n  event DelegatecallExecutedEvent(address indexed target,\n                                  uint256 suppliedGas,\n                                  bytes32 transactionBytecodeHash);\n\n\n  /* Functions */\n\n  function executeCall(address _target, uint256 _suppliedGas, uint256 _ethValue, bytes _transactionBytecode) external;\n  function executeDelegatecall(address _target, uint256 _suppliedGas, bytes _transactionBytecode) external;\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/BytecodeExecutor/BytecodeExecutorInterface.sol",
+  "ast": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/BytecodeExecutor/BytecodeExecutorInterface.sol",
+    "exportedSymbols": {
+      "BytecodeExecutorInterface": [
+        4286
+      ]
+    },
+    "id": 4287,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4247,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "60:24:44"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title BytecodeExecutorInterface interface\n@dev Implementation of a contract that execute any bytecode on behalf of the contract\n@dev Last resort for the immutable and not-replaceable contract :)",
+        "fullyImplemented": false,
+        "id": 4286,
+        "linearizedBaseContracts": [
+          4286
+        ],
+        "name": "BytecodeExecutorInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4257,
+            "name": "CallExecutedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4256,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4249,
+                  "indexed": true,
+                  "name": "target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "380:22:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4248,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "380:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4251,
+                  "indexed": false,
+                  "name": "suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "430:19:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4250,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "430:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4253,
+                  "indexed": false,
+                  "name": "ethValue",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "477:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4252,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "477:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4255,
+                  "indexed": false,
+                  "name": "transactionBytecodeHash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "521:31:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 4254,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "521:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "379:174:44"
+            },
+            "src": "356:198:44"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4265,
+            "name": "DelegatecallExecutedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4264,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4259,
+                  "indexed": true,
+                  "name": "target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4265,
+                  "src": "589:22:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4258,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "589:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4261,
+                  "indexed": false,
+                  "name": "suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4265,
+                  "src": "647:19:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4260,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "647:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4263,
+                  "indexed": false,
+                  "name": "transactionBytecodeHash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4265,
+                  "src": "702:31:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 4262,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "702:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "588:146:44"
+            },
+            "src": "557:178:44"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 4276,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "executeCall",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4274,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4267,
+                  "name": "_target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "780:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4266,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "780:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4269,
+                  "name": "_suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "797:20:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4268,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "797:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4271,
+                  "name": "_ethValue",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "819:17:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4270,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "819:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4273,
+                  "name": "_transactionBytecode",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "838:26:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4272,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "838:5:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "779:86:44"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4275,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "874:0:44"
+            },
+            "scope": 4286,
+            "src": "759:116:44",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 4285,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "executeDelegatecall",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4283,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4278,
+                  "name": "_target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4285,
+                  "src": "907:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4277,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "907:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4280,
+                  "name": "_suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4285,
+                  "src": "924:20:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4279,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "924:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4282,
+                  "name": "_transactionBytecode",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4285,
+                  "src": "946:26:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4281,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "946:5:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "906:67:44"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4284,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "982:0:44"
+            },
+            "scope": 4286,
+            "src": "878:105:44",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4287,
+        "src": "300:685:44"
+      }
+    ],
+    "src": "60:926:44"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/feature/BytecodeExecutor/BytecodeExecutorInterface.sol",
+    "exportedSymbols": {
+      "BytecodeExecutorInterface": [
+        4286
+      ]
+    },
+    "id": 4287,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4247,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "60:24:44"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title BytecodeExecutorInterface interface\n@dev Implementation of a contract that execute any bytecode on behalf of the contract\n@dev Last resort for the immutable and not-replaceable contract :)",
+        "fullyImplemented": false,
+        "id": 4286,
+        "linearizedBaseContracts": [
+          4286
+        ],
+        "name": "BytecodeExecutorInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4257,
+            "name": "CallExecutedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4256,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4249,
+                  "indexed": true,
+                  "name": "target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "380:22:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4248,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "380:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4251,
+                  "indexed": false,
+                  "name": "suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "430:19:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4250,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "430:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4253,
+                  "indexed": false,
+                  "name": "ethValue",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "477:16:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4252,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "477:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4255,
+                  "indexed": false,
+                  "name": "transactionBytecodeHash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4257,
+                  "src": "521:31:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 4254,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "521:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "379:174:44"
+            },
+            "src": "356:198:44"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 4265,
+            "name": "DelegatecallExecutedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 4264,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4259,
+                  "indexed": true,
+                  "name": "target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4265,
+                  "src": "589:22:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4258,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "589:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4261,
+                  "indexed": false,
+                  "name": "suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4265,
+                  "src": "647:19:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4260,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "647:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4263,
+                  "indexed": false,
+                  "name": "transactionBytecodeHash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4265,
+                  "src": "702:31:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 4262,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "702:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "588:146:44"
+            },
+            "src": "557:178:44"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 4276,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "executeCall",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4274,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4267,
+                  "name": "_target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "780:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4266,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "780:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4269,
+                  "name": "_suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "797:20:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4268,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "797:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4271,
+                  "name": "_ethValue",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "819:17:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4270,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "819:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4273,
+                  "name": "_transactionBytecode",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4276,
+                  "src": "838:26:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4272,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "838:5:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "779:86:44"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4275,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "874:0:44"
+            },
+            "scope": 4286,
+            "src": "759:116:44",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 4285,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "executeDelegatecall",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4283,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4278,
+                  "name": "_target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4285,
+                  "src": "907:15:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4277,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "907:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4280,
+                  "name": "_suppliedGas",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4285,
+                  "src": "924:20:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4279,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "924:7:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4282,
+                  "name": "_transactionBytecode",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4285,
+                  "src": "946:26:44",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4281,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "946:5:44",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "906:67:44"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4284,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "982:0:44"
+            },
+            "scope": 4286,
+            "src": "878:105:44",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4287,
+        "src": "300:685:44"
+      }
+    ],
+    "src": "60:926:44"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-08-27T22:59:31.961Z"
+}

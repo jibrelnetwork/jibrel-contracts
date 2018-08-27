@@ -1,0 +1,4114 @@
+{
+  "contractName": "CrydrControllerMintable",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newStorage",
+          "type": "address"
+        }
+      ],
+      "name": "setCrydrStorage",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getPaused",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "removeCrydrView",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCrydrStorageAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "unpauseContract",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "getCrydrViewAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_crydrViewAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isCrydrViewAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "isCrydrViewRegistered",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newCrydrView",
+          "type": "address"
+        },
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "setCrydrView",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "MintEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "BurnEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrstorage",
+          "type": "address"
+        }
+      ],
+      "name": "CrydrStorageChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrview",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "standardname",
+          "type": "bytes32"
+        }
+      ],
+      "name": "CrydrViewAddedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrview",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "standardname",
+          "type": "bytes32"
+        }
+      ],
+      "name": "CrydrViewRemovedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "PauseEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "UnpauseEvent",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_account",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "burn",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.24;\n\n\nimport '../../../lifecycle/Manageable/ManageableInterface.sol';\nimport '../../../lifecycle/Pausable/PausableInterface.sol';\nimport '../CrydrControllerBase/CrydrControllerBaseInterface.sol';\nimport './CrydrControllerMintableInterface.sol';\n\nimport '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';\nimport '../../view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.sol';\nimport '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';\n\n\n/**\n * @title CrydrControllerMintable interface\n * @dev Implementation of a contract that allows minting/burning of tokens\n * @dev We do not use events Transfer(0x0, owner, amount) for minting as described in the EIP20\n * @dev because that are not transfers\n */\ncontract CrydrControllerMintable is ManageableInterface,\n                                    PausableInterface,\n                                    CrydrControllerBaseInterface,\n                                    CrydrControllerMintableInterface {\n\n  /* minting/burning */\n\n  function mint(\n    address _account, uint256 _value\n  )\n    public\n    whenContractNotPaused\n    onlyAllowedManager('mint_crydr')\n  {\n    // input parameters checked by the storage\n\n    CrydrStorageBalanceInterface(getCrydrStorageAddress()).increaseBalance(_account, _value);\n\n    emit MintEvent(_account, _value);\n    if (isCrydrViewRegistered('erc20') == true) {\n      CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitMintEvent(_account, _value);\n      CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(address(0x0), _account, _value);\n    }\n  }\n\n  function burn(\n    address _account, uint256 _value\n  )\n    public\n    whenContractNotPaused\n    onlyAllowedManager('burn_crydr')\n  {\n    // input parameters checked by the storage\n\n    CrydrStorageBalanceInterface(getCrydrStorageAddress()).decreaseBalance(_account, _value);\n\n    emit BurnEvent(_account, _value);\n    if (isCrydrViewRegistered('erc20') == true) {\n      CrydrViewERC20MintableInterface(getCrydrViewAddress('erc20')).emitBurnEvent(_account, _value);\n      CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_account, address(0x0), _value);\n    }\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol",
+  "ast": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol",
+    "exportedSymbols": {
+      "CrydrControllerMintable": [
+        1343
+      ]
+    },
+    "id": 1344,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1213,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:12"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable/ManageableInterface.sol",
+        "file": "../../../lifecycle/Manageable/ManageableInterface.sol",
+        "id": 1214,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 5982,
+        "src": "75:63:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Pausable/PausableInterface.sol",
+        "file": "../../../lifecycle/Pausable/PausableInterface.sol",
+        "id": 1215,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 6283,
+        "src": "139:59:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "file": "../CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "id": 1216,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 416,
+        "src": "199:65:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.sol",
+        "file": "./CrydrControllerMintableInterface.sol",
+        "id": 1217,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 1373,
+        "src": "265:48:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol",
+        "file": "../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol",
+        "id": 1218,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 2585,
+        "src": "315:76:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.sol",
+        "file": "../../view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.sol",
+        "id": 1219,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 3878,
+        "src": "392:79:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "file": "../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "id": 1220,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 3795,
+        "src": "472:79:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1221,
+              "name": "ManageableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 5981,
+              "src": "852:19:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ManageableInterface_$5981",
+                "typeString": "contract ManageableInterface"
+              }
+            },
+            "id": 1222,
+            "nodeType": "InheritanceSpecifier",
+            "src": "852:19:12"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1223,
+              "name": "PausableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 6282,
+              "src": "909:17:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_PausableInterface_$6282",
+                "typeString": "contract PausableInterface"
+              }
+            },
+            "id": 1224,
+            "nodeType": "InheritanceSpecifier",
+            "src": "909:17:12"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1225,
+              "name": "CrydrControllerBaseInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 415,
+              "src": "964:28:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerBaseInterface_$415",
+                "typeString": "contract CrydrControllerBaseInterface"
+              }
+            },
+            "id": 1226,
+            "nodeType": "InheritanceSpecifier",
+            "src": "964:28:12"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1227,
+              "name": "CrydrControllerMintableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1372,
+              "src": "1030:32:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerMintableInterface_$1372",
+                "typeString": "contract CrydrControllerMintableInterface"
+              }
+            },
+            "id": 1228,
+            "nodeType": "InheritanceSpecifier",
+            "src": "1030:32:12"
+          }
+        ],
+        "contractDependencies": [
+          415,
+          1372,
+          5981,
+          6282
+        ],
+        "contractKind": "contract",
+        "documentation": "@title CrydrControllerMintable interface\n@dev Implementation of a contract that allows minting/burning of tokens\n@dev We do not use events Transfer(0x0, owner, amount) for minting as described in the EIP20\n@dev because that are not transfers",
+        "fullyImplemented": false,
+        "id": 1343,
+        "linearizedBaseContracts": [
+          1343,
+          1372,
+          415,
+          6282,
+          5981
+        ],
+        "name": "CrydrControllerMintable",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 1284,
+              "nodeType": "Block",
+              "src": "1225:462:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1245,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1230,
+                        "src": "1350:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1246,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1232,
+                        "src": "1360:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 1241,
+                              "name": "getCrydrStorageAddress",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 353,
+                              "src": "1308:22:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                                "typeString": "function () view returns (address)"
+                              }
+                            },
+                            "id": 1242,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "1308:24:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1240,
+                          "name": "CrydrStorageBalanceInterface",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2584,
+                          "src": "1279:28:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_CrydrStorageBalanceInterface_$2584_$",
+                            "typeString": "type(contract CrydrStorageBalanceInterface)"
+                          }
+                        },
+                        "id": 1243,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1279:54:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_CrydrStorageBalanceInterface_$2584",
+                          "typeString": "contract CrydrStorageBalanceInterface"
+                        }
+                      },
+                      "id": 1244,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "increaseBalance",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2564,
+                      "src": "1279:70:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 1247,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1279:88:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1248,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1279:88:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1250,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1230,
+                        "src": "1389:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1251,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1232,
+                        "src": "1399:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1249,
+                      "name": "MintEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1351,
+                      "src": "1379:9:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1252,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1379:27:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1253,
+                  "nodeType": "EmitStatement",
+                  "src": "1374:32:12"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 1258,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "6572633230",
+                          "id": 1255,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1438:7:12",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          },
+                          "value": "erc20"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          }
+                        ],
+                        "id": 1254,
+                        "name": "isCrydrViewRegistered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 386,
+                        "src": "1416:21:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_bool_$",
+                          "typeString": "function (string memory) view returns (bool)"
+                        }
+                      },
+                      "id": 1256,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1416:30:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 1257,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1450:4:12",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "1416:38:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 1283,
+                  "nodeType": "IfStatement",
+                  "src": "1412:271:12",
+                  "trueBody": {
+                    "id": 1282,
+                    "nodeType": "Block",
+                    "src": "1456:227:12",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1265,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1230,
+                              "src": "1540:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1266,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1232,
+                              "src": "1550:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1261,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "1516:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1260,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "1496:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1262,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "1496:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1259,
+                                "name": "CrydrViewERC20MintableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3877,
+                                "src": "1464:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20MintableInterface_$3877_$",
+                                  "typeString": "type(contract CrydrViewERC20MintableInterface)"
+                                }
+                              },
+                              "id": 1263,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1464:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20MintableInterface_$3877",
+                                "typeString": "contract CrydrViewERC20MintableInterface"
+                              }
+                            },
+                            "id": 1264,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitMintEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3869,
+                            "src": "1464:75:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,uint256) external"
+                            }
+                          },
+                          "id": 1267,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1464:93:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1268,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1464:93:12"
+                      },
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "hexValue": "307830",
+                                  "id": 1276,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1653:3:12",
+                                  "subdenomination": null,
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0x0"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  }
+                                ],
+                                "id": 1275,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "nodeType": "ElementaryTypeNameExpression",
+                                "src": "1645:7:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_address_$",
+                                  "typeString": "type(address)"
+                                },
+                                "typeName": "address"
+                              },
+                              "id": 1277,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1645:12:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1278,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1230,
+                              "src": "1659:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1279,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1232,
+                              "src": "1669:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1271,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "1617:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1270,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "1597:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1272,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "1597:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1269,
+                                "name": "CrydrViewERC20LoggableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3794,
+                                "src": "1565:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20LoggableInterface_$3794_$",
+                                  "typeString": "type(contract CrydrViewERC20LoggableInterface)"
+                                }
+                              },
+                              "id": 1273,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1565:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20LoggableInterface_$3794",
+                                "typeString": "contract CrydrViewERC20LoggableInterface"
+                              }
+                            },
+                            "id": 1274,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitTransferEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3784,
+                            "src": "1565:79:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,address,uint256) external"
+                            }
+                          },
+                          "id": 1280,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1565:111:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1281,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1565:111:12"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1285,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 1235,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1234,
+                  "name": "whenContractNotPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6270,
+                  "src": "1164:21:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1164:21:12"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "6d696e745f6372796472",
+                    "id": 1237,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "1209:12:12",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_82b1f5c4452cac21a1a2985c32c564b67c2634950f7ff39713dd822ff9f4fa34",
+                      "typeString": "literal_string \"mint_crydr\""
+                    },
+                    "value": "mint_crydr"
+                  }
+                ],
+                "id": 1238,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1236,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "1190:18:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1190:32:12"
+              }
+            ],
+            "name": "mint",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1233,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1230,
+                  "name": "_account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1285,
+                  "src": "1112:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1229,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1112:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1232,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1285,
+                  "src": "1130:14:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1231,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1130:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1106:42:12"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1239,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1225:0:12"
+            },
+            "scope": 1343,
+            "src": "1093:594:12",
+            "stateMutability": "nonpayable",
+            "superFunction": 1364,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1341,
+              "nodeType": "Block",
+              "src": "1823:462:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1302,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1287,
+                        "src": "1948:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1303,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1289,
+                        "src": "1958:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 1298,
+                              "name": "getCrydrStorageAddress",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 353,
+                              "src": "1906:22:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                                "typeString": "function () view returns (address)"
+                              }
+                            },
+                            "id": 1299,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "1906:24:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1297,
+                          "name": "CrydrStorageBalanceInterface",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2584,
+                          "src": "1877:28:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_CrydrStorageBalanceInterface_$2584_$",
+                            "typeString": "type(contract CrydrStorageBalanceInterface)"
+                          }
+                        },
+                        "id": 1300,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1877:54:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_CrydrStorageBalanceInterface_$2584",
+                          "typeString": "contract CrydrStorageBalanceInterface"
+                        }
+                      },
+                      "id": 1301,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "decreaseBalance",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2571,
+                      "src": "1877:70:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 1304,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1877:88:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1305,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1877:88:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1307,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1287,
+                        "src": "1987:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1308,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1289,
+                        "src": "1997:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1306,
+                      "name": "BurnEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1357,
+                      "src": "1977:9:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1309,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1977:27:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1310,
+                  "nodeType": "EmitStatement",
+                  "src": "1972:32:12"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 1315,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "6572633230",
+                          "id": 1312,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "2036:7:12",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          },
+                          "value": "erc20"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          }
+                        ],
+                        "id": 1311,
+                        "name": "isCrydrViewRegistered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 386,
+                        "src": "2014:21:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_bool_$",
+                          "typeString": "function (string memory) view returns (bool)"
+                        }
+                      },
+                      "id": 1313,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2014:30:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 1314,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2048:4:12",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "2014:38:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 1340,
+                  "nodeType": "IfStatement",
+                  "src": "2010:271:12",
+                  "trueBody": {
+                    "id": 1339,
+                    "nodeType": "Block",
+                    "src": "2054:227:12",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1322,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1287,
+                              "src": "2138:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1323,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1289,
+                              "src": "2148:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1318,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "2114:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1317,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "2094:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1319,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "2094:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1316,
+                                "name": "CrydrViewERC20MintableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3877,
+                                "src": "2062:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20MintableInterface_$3877_$",
+                                  "typeString": "type(contract CrydrViewERC20MintableInterface)"
+                                }
+                              },
+                              "id": 1320,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "2062:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20MintableInterface_$3877",
+                                "typeString": "contract CrydrViewERC20MintableInterface"
+                              }
+                            },
+                            "id": 1321,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitBurnEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3876,
+                            "src": "2062:75:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,uint256) external"
+                            }
+                          },
+                          "id": 1324,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "2062:93:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1325,
+                        "nodeType": "ExpressionStatement",
+                        "src": "2062:93:12"
+                      },
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1332,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1287,
+                              "src": "2243:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "hexValue": "307830",
+                                  "id": 1334,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "2261:3:12",
+                                  "subdenomination": null,
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0x0"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  }
+                                ],
+                                "id": 1333,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "nodeType": "ElementaryTypeNameExpression",
+                                "src": "2253:7:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_address_$",
+                                  "typeString": "type(address)"
+                                },
+                                "typeName": "address"
+                              },
+                              "id": 1335,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "2253:12:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1336,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1289,
+                              "src": "2267:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1328,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "2215:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1327,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "2195:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1329,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "2195:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1326,
+                                "name": "CrydrViewERC20LoggableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3794,
+                                "src": "2163:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20LoggableInterface_$3794_$",
+                                  "typeString": "type(contract CrydrViewERC20LoggableInterface)"
+                                }
+                              },
+                              "id": 1330,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "2163:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20LoggableInterface_$3794",
+                                "typeString": "contract CrydrViewERC20LoggableInterface"
+                              }
+                            },
+                            "id": 1331,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitTransferEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3784,
+                            "src": "2163:79:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,address,uint256) external"
+                            }
+                          },
+                          "id": 1337,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "2163:111:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1338,
+                        "nodeType": "ExpressionStatement",
+                        "src": "2163:111:12"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1342,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 1292,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1291,
+                  "name": "whenContractNotPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6270,
+                  "src": "1762:21:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1762:21:12"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "6275726e5f6372796472",
+                    "id": 1294,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "1807:12:12",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_b656814bfce5220c10752285b99e2e51208345c06f2a387e1a26c0d9e741ebcc",
+                      "typeString": "literal_string \"burn_crydr\""
+                    },
+                    "value": "burn_crydr"
+                  }
+                ],
+                "id": 1295,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1293,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "1788:18:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1788:32:12"
+              }
+            ],
+            "name": "burn",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1290,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1287,
+                  "name": "_account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1342,
+                  "src": "1710:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1286,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1710:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1289,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1342,
+                  "src": "1728:14:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1288,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1728:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1704:42:12"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1296,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1823:0:12"
+            },
+            "scope": 1343,
+            "src": "1691:594:12",
+            "stateMutability": "nonpayable",
+            "superFunction": 1371,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1344,
+        "src": "816:1471:12"
+      }
+    ],
+    "src": "48:2240:12"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol",
+    "exportedSymbols": {
+      "CrydrControllerMintable": [
+        1343
+      ]
+    },
+    "id": 1344,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1213,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:12"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable/ManageableInterface.sol",
+        "file": "../../../lifecycle/Manageable/ManageableInterface.sol",
+        "id": 1214,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 5982,
+        "src": "75:63:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Pausable/PausableInterface.sol",
+        "file": "../../../lifecycle/Pausable/PausableInterface.sol",
+        "id": 1215,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 6283,
+        "src": "139:59:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "file": "../CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "id": 1216,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 416,
+        "src": "199:65:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.sol",
+        "file": "./CrydrControllerMintableInterface.sol",
+        "id": 1217,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 1373,
+        "src": "265:48:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol",
+        "file": "../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol",
+        "id": 1218,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 2585,
+        "src": "315:76:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.sol",
+        "file": "../../view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.sol",
+        "id": 1219,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 3878,
+        "src": "392:79:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "file": "../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "id": 1220,
+        "nodeType": "ImportDirective",
+        "scope": 1344,
+        "sourceUnit": 3795,
+        "src": "472:79:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1221,
+              "name": "ManageableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 5981,
+              "src": "852:19:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ManageableInterface_$5981",
+                "typeString": "contract ManageableInterface"
+              }
+            },
+            "id": 1222,
+            "nodeType": "InheritanceSpecifier",
+            "src": "852:19:12"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1223,
+              "name": "PausableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 6282,
+              "src": "909:17:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_PausableInterface_$6282",
+                "typeString": "contract PausableInterface"
+              }
+            },
+            "id": 1224,
+            "nodeType": "InheritanceSpecifier",
+            "src": "909:17:12"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1225,
+              "name": "CrydrControllerBaseInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 415,
+              "src": "964:28:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerBaseInterface_$415",
+                "typeString": "contract CrydrControllerBaseInterface"
+              }
+            },
+            "id": 1226,
+            "nodeType": "InheritanceSpecifier",
+            "src": "964:28:12"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1227,
+              "name": "CrydrControllerMintableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1372,
+              "src": "1030:32:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerMintableInterface_$1372",
+                "typeString": "contract CrydrControllerMintableInterface"
+              }
+            },
+            "id": 1228,
+            "nodeType": "InheritanceSpecifier",
+            "src": "1030:32:12"
+          }
+        ],
+        "contractDependencies": [
+          415,
+          1372,
+          5981,
+          6282
+        ],
+        "contractKind": "contract",
+        "documentation": "@title CrydrControllerMintable interface\n@dev Implementation of a contract that allows minting/burning of tokens\n@dev We do not use events Transfer(0x0, owner, amount) for minting as described in the EIP20\n@dev because that are not transfers",
+        "fullyImplemented": false,
+        "id": 1343,
+        "linearizedBaseContracts": [
+          1343,
+          1372,
+          415,
+          6282,
+          5981
+        ],
+        "name": "CrydrControllerMintable",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 1284,
+              "nodeType": "Block",
+              "src": "1225:462:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1245,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1230,
+                        "src": "1350:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1246,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1232,
+                        "src": "1360:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 1241,
+                              "name": "getCrydrStorageAddress",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 353,
+                              "src": "1308:22:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                                "typeString": "function () view returns (address)"
+                              }
+                            },
+                            "id": 1242,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "1308:24:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1240,
+                          "name": "CrydrStorageBalanceInterface",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2584,
+                          "src": "1279:28:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_CrydrStorageBalanceInterface_$2584_$",
+                            "typeString": "type(contract CrydrStorageBalanceInterface)"
+                          }
+                        },
+                        "id": 1243,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1279:54:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_CrydrStorageBalanceInterface_$2584",
+                          "typeString": "contract CrydrStorageBalanceInterface"
+                        }
+                      },
+                      "id": 1244,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "increaseBalance",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2564,
+                      "src": "1279:70:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 1247,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1279:88:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1248,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1279:88:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1250,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1230,
+                        "src": "1389:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1251,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1232,
+                        "src": "1399:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1249,
+                      "name": "MintEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1351,
+                      "src": "1379:9:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1252,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1379:27:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1253,
+                  "nodeType": "EmitStatement",
+                  "src": "1374:32:12"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 1258,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "6572633230",
+                          "id": 1255,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1438:7:12",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          },
+                          "value": "erc20"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          }
+                        ],
+                        "id": 1254,
+                        "name": "isCrydrViewRegistered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 386,
+                        "src": "1416:21:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_bool_$",
+                          "typeString": "function (string memory) view returns (bool)"
+                        }
+                      },
+                      "id": 1256,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1416:30:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 1257,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1450:4:12",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "1416:38:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 1283,
+                  "nodeType": "IfStatement",
+                  "src": "1412:271:12",
+                  "trueBody": {
+                    "id": 1282,
+                    "nodeType": "Block",
+                    "src": "1456:227:12",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1265,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1230,
+                              "src": "1540:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1266,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1232,
+                              "src": "1550:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1261,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "1516:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1260,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "1496:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1262,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "1496:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1259,
+                                "name": "CrydrViewERC20MintableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3877,
+                                "src": "1464:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20MintableInterface_$3877_$",
+                                  "typeString": "type(contract CrydrViewERC20MintableInterface)"
+                                }
+                              },
+                              "id": 1263,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1464:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20MintableInterface_$3877",
+                                "typeString": "contract CrydrViewERC20MintableInterface"
+                              }
+                            },
+                            "id": 1264,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitMintEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3869,
+                            "src": "1464:75:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,uint256) external"
+                            }
+                          },
+                          "id": 1267,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1464:93:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1268,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1464:93:12"
+                      },
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "hexValue": "307830",
+                                  "id": 1276,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1653:3:12",
+                                  "subdenomination": null,
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0x0"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  }
+                                ],
+                                "id": 1275,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "nodeType": "ElementaryTypeNameExpression",
+                                "src": "1645:7:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_address_$",
+                                  "typeString": "type(address)"
+                                },
+                                "typeName": "address"
+                              },
+                              "id": 1277,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1645:12:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1278,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1230,
+                              "src": "1659:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1279,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1232,
+                              "src": "1669:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1271,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "1617:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1270,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "1597:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1272,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "1597:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1269,
+                                "name": "CrydrViewERC20LoggableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3794,
+                                "src": "1565:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20LoggableInterface_$3794_$",
+                                  "typeString": "type(contract CrydrViewERC20LoggableInterface)"
+                                }
+                              },
+                              "id": 1273,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1565:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20LoggableInterface_$3794",
+                                "typeString": "contract CrydrViewERC20LoggableInterface"
+                              }
+                            },
+                            "id": 1274,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitTransferEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3784,
+                            "src": "1565:79:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,address,uint256) external"
+                            }
+                          },
+                          "id": 1280,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1565:111:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1281,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1565:111:12"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1285,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 1235,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1234,
+                  "name": "whenContractNotPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6270,
+                  "src": "1164:21:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1164:21:12"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "6d696e745f6372796472",
+                    "id": 1237,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "1209:12:12",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_82b1f5c4452cac21a1a2985c32c564b67c2634950f7ff39713dd822ff9f4fa34",
+                      "typeString": "literal_string \"mint_crydr\""
+                    },
+                    "value": "mint_crydr"
+                  }
+                ],
+                "id": 1238,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1236,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "1190:18:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1190:32:12"
+              }
+            ],
+            "name": "mint",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1233,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1230,
+                  "name": "_account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1285,
+                  "src": "1112:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1229,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1112:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1232,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1285,
+                  "src": "1130:14:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1231,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1130:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1106:42:12"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1239,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1225:0:12"
+            },
+            "scope": 1343,
+            "src": "1093:594:12",
+            "stateMutability": "nonpayable",
+            "superFunction": 1364,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1341,
+              "nodeType": "Block",
+              "src": "1823:462:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1302,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1287,
+                        "src": "1948:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1303,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1289,
+                        "src": "1958:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 1298,
+                              "name": "getCrydrStorageAddress",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 353,
+                              "src": "1906:22:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                                "typeString": "function () view returns (address)"
+                              }
+                            },
+                            "id": 1299,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "1906:24:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1297,
+                          "name": "CrydrStorageBalanceInterface",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2584,
+                          "src": "1877:28:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_CrydrStorageBalanceInterface_$2584_$",
+                            "typeString": "type(contract CrydrStorageBalanceInterface)"
+                          }
+                        },
+                        "id": 1300,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1877:54:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_CrydrStorageBalanceInterface_$2584",
+                          "typeString": "contract CrydrStorageBalanceInterface"
+                        }
+                      },
+                      "id": 1301,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "decreaseBalance",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2571,
+                      "src": "1877:70:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256) external"
+                      }
+                    },
+                    "id": 1304,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1877:88:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1305,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1877:88:12"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1307,
+                        "name": "_account",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1287,
+                        "src": "1987:8:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1308,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1289,
+                        "src": "1997:6:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1306,
+                      "name": "BurnEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1357,
+                      "src": "1977:9:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1309,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1977:27:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1310,
+                  "nodeType": "EmitStatement",
+                  "src": "1972:32:12"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 1315,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "6572633230",
+                          "id": 1312,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "2036:7:12",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          },
+                          "value": "erc20"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          }
+                        ],
+                        "id": 1311,
+                        "name": "isCrydrViewRegistered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 386,
+                        "src": "2014:21:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_bool_$",
+                          "typeString": "function (string memory) view returns (bool)"
+                        }
+                      },
+                      "id": 1313,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2014:30:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 1314,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2048:4:12",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "2014:38:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 1340,
+                  "nodeType": "IfStatement",
+                  "src": "2010:271:12",
+                  "trueBody": {
+                    "id": 1339,
+                    "nodeType": "Block",
+                    "src": "2054:227:12",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1322,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1287,
+                              "src": "2138:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1323,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1289,
+                              "src": "2148:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1318,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "2114:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1317,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "2094:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1319,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "2094:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1316,
+                                "name": "CrydrViewERC20MintableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3877,
+                                "src": "2062:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20MintableInterface_$3877_$",
+                                  "typeString": "type(contract CrydrViewERC20MintableInterface)"
+                                }
+                              },
+                              "id": 1320,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "2062:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20MintableInterface_$3877",
+                                "typeString": "contract CrydrViewERC20MintableInterface"
+                              }
+                            },
+                            "id": 1321,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitBurnEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3876,
+                            "src": "2062:75:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,uint256) external"
+                            }
+                          },
+                          "id": 1324,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "2062:93:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1325,
+                        "nodeType": "ExpressionStatement",
+                        "src": "2062:93:12"
+                      },
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1332,
+                              "name": "_account",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1287,
+                              "src": "2243:8:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "hexValue": "307830",
+                                  "id": 1334,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "2261:3:12",
+                                  "subdenomination": null,
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0x0"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  }
+                                ],
+                                "id": 1333,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "nodeType": "ElementaryTypeNameExpression",
+                                "src": "2253:7:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_address_$",
+                                  "typeString": "type(address)"
+                                },
+                                "typeName": "address"
+                              },
+                              "id": 1335,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "2253:12:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1336,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1289,
+                              "src": "2267:6:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1328,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "2215:7:12",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1327,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "2195:19:12",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1329,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "2195:28:12",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1326,
+                                "name": "CrydrViewERC20LoggableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3794,
+                                "src": "2163:31:12",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20LoggableInterface_$3794_$",
+                                  "typeString": "type(contract CrydrViewERC20LoggableInterface)"
+                                }
+                              },
+                              "id": 1330,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "2163:61:12",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20LoggableInterface_$3794",
+                                "typeString": "contract CrydrViewERC20LoggableInterface"
+                              }
+                            },
+                            "id": 1331,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitTransferEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3784,
+                            "src": "2163:79:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,address,uint256) external"
+                            }
+                          },
+                          "id": 1337,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "2163:111:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1338,
+                        "nodeType": "ExpressionStatement",
+                        "src": "2163:111:12"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1342,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 1292,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1291,
+                  "name": "whenContractNotPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 6270,
+                  "src": "1762:21:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1762:21:12"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "6275726e5f6372796472",
+                    "id": 1294,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "1807:12:12",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_b656814bfce5220c10752285b99e2e51208345c06f2a387e1a26c0d9e741ebcc",
+                      "typeString": "literal_string \"burn_crydr\""
+                    },
+                    "value": "burn_crydr"
+                  }
+                ],
+                "id": 1295,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1293,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "1788:18:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1788:32:12"
+              }
+            ],
+            "name": "burn",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1290,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1287,
+                  "name": "_account",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1342,
+                  "src": "1710:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1286,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1710:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1289,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1342,
+                  "src": "1728:14:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1288,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1728:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1704:42:12"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1296,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1823:0:12"
+            },
+            "scope": 1343,
+            "src": "1691:594:12",
+            "stateMutability": "nonpayable",
+            "superFunction": 1371,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1344,
+        "src": "816:1471:12"
+      }
+    ],
+    "src": "48:2240:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-08-27T22:59:31.948Z"
+}

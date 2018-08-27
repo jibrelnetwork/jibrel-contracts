@@ -1,0 +1,2001 @@
+{
+  "contractName": "JNTPaymentGateway",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_manager",
+          "type": "address"
+        },
+        {
+          "name": "_permissionName",
+          "type": "string"
+        }
+      ],
+      "name": "isManagerAllowed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newStorage",
+          "type": "address"
+        }
+      ],
+      "name": "setCrydrStorage",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "removeCrydrView",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCrydrStorageAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "getCrydrViewAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_crydrViewAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isCrydrViewAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "isCrydrViewRegistered",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newCrydrView",
+          "type": "address"
+        },
+        {
+          "name": "_viewApiStandardName",
+          "type": "string"
+        }
+      ],
+      "name": "setCrydrView",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "payableservice",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "JNTChargedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrstorage",
+          "type": "address"
+        }
+      ],
+      "name": "CrydrStorageChangedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrview",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "standardname",
+          "type": "bytes32"
+        }
+      ],
+      "name": "CrydrViewAddedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "crydrview",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "standardname",
+          "type": "bytes32"
+        }
+      ],
+      "name": "CrydrViewRemovedEvent",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "chargeJNT",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.24;\n\nimport '../../../lifecycle/Manageable/ManageableInterface.sol';\nimport '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';\nimport './JNTPaymentGatewayInterface.sol';\n\nimport '../../storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';\nimport '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';\n\n\n/**\n * @title JNTPaymentGateway\n * @dev Allows to charge users by JNT\n */\ncontract JNTPaymentGateway is ManageableInterface,\n                              CrydrControllerBaseInterface,\n                              JNTPaymentGatewayInterface {\n\n  function chargeJNT(\n    address _from,\n    address _to,\n    uint256 _value\n  )\n    public\n    onlyAllowedManager('jnt_payable_service')\n  {\n    CrydrStorageERC20Interface(getCrydrStorageAddress()).transfer(_from, _to, _value);\n\n    emit JNTChargedEvent(msg.sender, _from, _to, _value);\n    if (isCrydrViewRegistered('erc20') == true) {\n      CrydrViewERC20LoggableInterface(getCrydrViewAddress('erc20')).emitTransferEvent(_from, _to, _value);\n    }\n  }\n}\n",
+  "sourcePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPaymentGateway/JNTPaymentGateway.sol",
+  "ast": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPaymentGateway/JNTPaymentGateway.sol",
+    "exportedSymbols": {
+      "JNTPaymentGateway": [
+        1752
+      ]
+    },
+    "id": 1753,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1691,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:16"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable/ManageableInterface.sol",
+        "file": "../../../lifecycle/Manageable/ManageableInterface.sol",
+        "id": 1692,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 5982,
+        "src": "74:63:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "file": "../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "id": 1693,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 416,
+        "src": "138:79:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPaymentGateway/JNTPaymentGatewayInterface.sol",
+        "file": "./JNTPaymentGatewayInterface.sol",
+        "id": 1694,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 1775,
+        "src": "218:42:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol",
+        "file": "../../storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol",
+        "id": 1695,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 3307,
+        "src": "262:72:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "file": "../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "id": 1696,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 3795,
+        "src": "335:79:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1697,
+              "name": "ManageableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 5981,
+              "src": "521:19:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ManageableInterface_$5981",
+                "typeString": "contract ManageableInterface"
+              }
+            },
+            "id": 1698,
+            "nodeType": "InheritanceSpecifier",
+            "src": "521:19:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1699,
+              "name": "CrydrControllerBaseInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 415,
+              "src": "572:28:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerBaseInterface_$415",
+                "typeString": "contract CrydrControllerBaseInterface"
+              }
+            },
+            "id": 1700,
+            "nodeType": "InheritanceSpecifier",
+            "src": "572:28:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1701,
+              "name": "JNTPaymentGatewayInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1774,
+              "src": "632:26:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_JNTPaymentGatewayInterface_$1774",
+                "typeString": "contract JNTPaymentGatewayInterface"
+              }
+            },
+            "id": 1702,
+            "nodeType": "InheritanceSpecifier",
+            "src": "632:26:16"
+          }
+        ],
+        "contractDependencies": [
+          415,
+          1774,
+          5981
+        ],
+        "contractKind": "contract",
+        "documentation": "@title JNTPaymentGateway\n@dev Allows to charge users by JNT",
+        "fullyImplemented": false,
+        "id": 1752,
+        "linearizedBaseContracts": [
+          1752,
+          1774,
+          415,
+          5981
+        ],
+        "name": "JNTPaymentGateway",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 1750,
+              "nodeType": "Block",
+              "src": "802:314:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1719,
+                        "name": "_from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1704,
+                        "src": "870:5:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1720,
+                        "name": "_to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1706,
+                        "src": "877:3:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1721,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1708,
+                        "src": "882:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 1715,
+                              "name": "getCrydrStorageAddress",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 353,
+                              "src": "835:22:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                                "typeString": "function () view returns (address)"
+                              }
+                            },
+                            "id": 1716,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "835:24:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1714,
+                          "name": "CrydrStorageERC20Interface",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3306,
+                          "src": "808:26:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_CrydrStorageERC20Interface_$3306_$",
+                            "typeString": "type(contract CrydrStorageERC20Interface)"
+                          }
+                        },
+                        "id": 1717,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "808:52:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_CrydrStorageERC20Interface_$3306",
+                          "typeString": "contract CrydrStorageERC20Interface"
+                        }
+                      },
+                      "id": 1718,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "transfer",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3285,
+                      "src": "808:61:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,address,uint256) external"
+                      }
+                    },
+                    "id": 1722,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "808:81:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1723,
+                  "nodeType": "ExpressionStatement",
+                  "src": "808:81:16"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 1725,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7574,
+                          "src": "917:3:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 1726,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "917:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1727,
+                        "name": "_from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1704,
+                        "src": "929:5:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1728,
+                        "name": "_to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1706,
+                        "src": "936:3:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1729,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1708,
+                        "src": "941:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1724,
+                      "name": "JNTChargedEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1764,
+                      "src": "901:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,address,address,uint256)"
+                      }
+                    },
+                    "id": 1730,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "901:47:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1731,
+                  "nodeType": "EmitStatement",
+                  "src": "896:52:16"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 1736,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "6572633230",
+                          "id": 1733,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "980:7:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          },
+                          "value": "erc20"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          }
+                        ],
+                        "id": 1732,
+                        "name": "isCrydrViewRegistered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 386,
+                        "src": "958:21:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_bool_$",
+                          "typeString": "function (string memory) view returns (bool)"
+                        }
+                      },
+                      "id": 1734,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "958:30:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 1735,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "992:4:16",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "958:38:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 1749,
+                  "nodeType": "IfStatement",
+                  "src": "954:158:16",
+                  "trueBody": {
+                    "id": 1748,
+                    "nodeType": "Block",
+                    "src": "998:114:16",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1743,
+                              "name": "_from",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1704,
+                              "src": "1086:5:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1744,
+                              "name": "_to",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1706,
+                              "src": "1093:3:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1745,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1708,
+                              "src": "1098:6:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1739,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "1058:7:16",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1738,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "1038:19:16",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1740,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "1038:28:16",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1737,
+                                "name": "CrydrViewERC20LoggableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3794,
+                                "src": "1006:31:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20LoggableInterface_$3794_$",
+                                  "typeString": "type(contract CrydrViewERC20LoggableInterface)"
+                                }
+                              },
+                              "id": 1741,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1006:61:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20LoggableInterface_$3794",
+                                "typeString": "contract CrydrViewERC20LoggableInterface"
+                              }
+                            },
+                            "id": 1742,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitTransferEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3784,
+                            "src": "1006:79:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,address,uint256) external"
+                            }
+                          },
+                          "id": 1746,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1006:99:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1747,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1006:99:16"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1751,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "6a6e745f70617961626c655f73657276696365",
+                    "id": 1711,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "777:21:16",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_724cb4c9ffbc04ce4638e32abb66d219c02b83a1824936ad5bffbc4cd7b9e9d3",
+                      "typeString": "literal_string \"jnt_payable_service\""
+                    },
+                    "value": "jnt_payable_service"
+                  }
+                ],
+                "id": 1712,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1710,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "758:18:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "758:41:16"
+              }
+            ],
+            "name": "chargeJNT",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1709,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1704,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1751,
+                  "src": "688:13:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1703,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "688:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1706,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1751,
+                  "src": "707:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1705,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "707:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1708,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1751,
+                  "src": "724:14:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1707,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "724:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "682:60:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1713,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "802:0:16"
+            },
+            "scope": 1752,
+            "src": "664:452:16",
+            "stateMutability": "nonpayable",
+            "superFunction": 1773,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1753,
+        "src": "491:627:16"
+      }
+    ],
+    "src": "48:1071:16"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPaymentGateway/JNTPaymentGateway.sol",
+    "exportedSymbols": {
+      "JNTPaymentGateway": [
+        1752
+      ]
+    },
+    "id": 1753,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1691,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:16"
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/lifecycle/Manageable/ManageableInterface.sol",
+        "file": "../../../lifecycle/Manageable/ManageableInterface.sol",
+        "id": 1692,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 5982,
+        "src": "74:63:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "file": "../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol",
+        "id": 1693,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 416,
+        "src": "138:79:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/jnt/JNTPaymentGateway/JNTPaymentGatewayInterface.sol",
+        "file": "./JNTPaymentGatewayInterface.sol",
+        "id": 1694,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 1775,
+        "src": "218:42:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol",
+        "file": "../../storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol",
+        "id": 1695,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 3307,
+        "src": "262:72:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/user/dev/project/jibrel/jibrel-contracts/contracts/crydr/view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "file": "../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol",
+        "id": 1696,
+        "nodeType": "ImportDirective",
+        "scope": 1753,
+        "sourceUnit": 3795,
+        "src": "335:79:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1697,
+              "name": "ManageableInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 5981,
+              "src": "521:19:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_ManageableInterface_$5981",
+                "typeString": "contract ManageableInterface"
+              }
+            },
+            "id": 1698,
+            "nodeType": "InheritanceSpecifier",
+            "src": "521:19:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1699,
+              "name": "CrydrControllerBaseInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 415,
+              "src": "572:28:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CrydrControllerBaseInterface_$415",
+                "typeString": "contract CrydrControllerBaseInterface"
+              }
+            },
+            "id": 1700,
+            "nodeType": "InheritanceSpecifier",
+            "src": "572:28:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1701,
+              "name": "JNTPaymentGatewayInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1774,
+              "src": "632:26:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_JNTPaymentGatewayInterface_$1774",
+                "typeString": "contract JNTPaymentGatewayInterface"
+              }
+            },
+            "id": 1702,
+            "nodeType": "InheritanceSpecifier",
+            "src": "632:26:16"
+          }
+        ],
+        "contractDependencies": [
+          415,
+          1774,
+          5981
+        ],
+        "contractKind": "contract",
+        "documentation": "@title JNTPaymentGateway\n@dev Allows to charge users by JNT",
+        "fullyImplemented": false,
+        "id": 1752,
+        "linearizedBaseContracts": [
+          1752,
+          1774,
+          415,
+          5981
+        ],
+        "name": "JNTPaymentGateway",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 1750,
+              "nodeType": "Block",
+              "src": "802:314:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1719,
+                        "name": "_from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1704,
+                        "src": "870:5:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1720,
+                        "name": "_to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1706,
+                        "src": "877:3:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1721,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1708,
+                        "src": "882:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "arguments": [],
+                            "expression": {
+                              "argumentTypes": [],
+                              "id": 1715,
+                              "name": "getCrydrStorageAddress",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 353,
+                              "src": "835:22:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
+                                "typeString": "function () view returns (address)"
+                              }
+                            },
+                            "id": 1716,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "835:24:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1714,
+                          "name": "CrydrStorageERC20Interface",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3306,
+                          "src": "808:26:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_contract$_CrydrStorageERC20Interface_$3306_$",
+                            "typeString": "type(contract CrydrStorageERC20Interface)"
+                          }
+                        },
+                        "id": 1717,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "808:52:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_CrydrStorageERC20Interface_$3306",
+                          "typeString": "contract CrydrStorageERC20Interface"
+                        }
+                      },
+                      "id": 1718,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "transfer",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 3285,
+                      "src": "808:61:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,address,uint256) external"
+                      }
+                    },
+                    "id": 1722,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "808:81:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1723,
+                  "nodeType": "ExpressionStatement",
+                  "src": "808:81:16"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 1725,
+                          "name": "msg",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 7574,
+                          "src": "917:3:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_magic_message",
+                            "typeString": "msg"
+                          }
+                        },
+                        "id": 1726,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "sender",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": null,
+                        "src": "917:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1727,
+                        "name": "_from",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1704,
+                        "src": "929:5:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1728,
+                        "name": "_to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1706,
+                        "src": "936:3:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1729,
+                        "name": "_value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1708,
+                        "src": "941:6:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1724,
+                      "name": "JNTChargedEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1764,
+                      "src": "901:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,address,address,uint256)"
+                      }
+                    },
+                    "id": 1730,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "901:47:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1731,
+                  "nodeType": "EmitStatement",
+                  "src": "896:52:16"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 1736,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "6572633230",
+                          "id": 1733,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "string",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "980:7:16",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          },
+                          "value": "erc20"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                            "typeString": "literal_string \"erc20\""
+                          }
+                        ],
+                        "id": 1732,
+                        "name": "isCrydrViewRegistered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 386,
+                        "src": "958:21:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_bool_$",
+                          "typeString": "function (string memory) view returns (bool)"
+                        }
+                      },
+                      "id": 1734,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "958:30:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "74727565",
+                      "id": 1735,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "992:4:16",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "958:38:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 1749,
+                  "nodeType": "IfStatement",
+                  "src": "954:158:16",
+                  "trueBody": {
+                    "id": 1748,
+                    "nodeType": "Block",
+                    "src": "998:114:16",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1743,
+                              "name": "_from",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1704,
+                              "src": "1086:5:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1744,
+                              "name": "_to",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1706,
+                              "src": "1093:3:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "id": 1745,
+                              "name": "_value",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1708,
+                              "src": "1098:6:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "hexValue": "6572633230",
+                                      "id": 1739,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "kind": "string",
+                                      "lValueRequested": false,
+                                      "nodeType": "Literal",
+                                      "src": "1058:7:16",
+                                      "subdenomination": null,
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      },
+                                      "value": "erc20"
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_stringliteral_5a28e9363bb942b639270062aa6bb295f434bcdfc42c97267bf003f272060dc9",
+                                        "typeString": "literal_string \"erc20\""
+                                      }
+                                    ],
+                                    "id": 1738,
+                                    "name": "getCrydrViewAddress",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 372,
+                                    "src": "1038:19:16",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_function_internal_view$_t_string_memory_ptr_$returns$_t_address_$",
+                                      "typeString": "function (string memory) view returns (address)"
+                                    }
+                                  },
+                                  "id": 1740,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "functionCall",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "1038:28:16",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                ],
+                                "id": 1737,
+                                "name": "CrydrViewERC20LoggableInterface",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3794,
+                                "src": "1006:31:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_contract$_CrydrViewERC20LoggableInterface_$3794_$",
+                                  "typeString": "type(contract CrydrViewERC20LoggableInterface)"
+                                }
+                              },
+                              "id": 1741,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "1006:61:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_CrydrViewERC20LoggableInterface_$3794",
+                                "typeString": "contract CrydrViewERC20LoggableInterface"
+                              }
+                            },
+                            "id": 1742,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "emitTransferEvent",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 3784,
+                            "src": "1006:79:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
+                              "typeString": "function (address,address,uint256) external"
+                            }
+                          },
+                          "id": 1746,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "1006:99:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$__$",
+                            "typeString": "tuple()"
+                          }
+                        },
+                        "id": 1747,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1006:99:16"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1751,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "hexValue": "6a6e745f70617961626c655f73657276696365",
+                    "id": 1711,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "string",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "777:21:16",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_stringliteral_724cb4c9ffbc04ce4638e32abb66d219c02b83a1824936ad5bffbc4cd7b9e9d3",
+                      "typeString": "literal_string \"jnt_payable_service\""
+                    },
+                    "value": "jnt_payable_service"
+                  }
+                ],
+                "id": 1712,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1710,
+                  "name": "onlyAllowedManager",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 5980,
+                  "src": "758:18:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_string_memory_ptr_$",
+                    "typeString": "modifier (string memory)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "758:41:16"
+              }
+            ],
+            "name": "chargeJNT",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1709,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1704,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1751,
+                  "src": "688:13:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1703,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "688:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1706,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1751,
+                  "src": "707:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1705,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "707:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1708,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1751,
+                  "src": "724:14:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1707,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "724:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "682:60:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1713,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "802:0:16"
+            },
+            "scope": 1752,
+            "src": "664:452:16",
+            "stateMutability": "nonpayable",
+            "superFunction": 1773,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1753,
+        "src": "491:627:16"
+      }
+    ],
+    "src": "48:1071:16"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-08-27T22:59:31.950Z"
+}
