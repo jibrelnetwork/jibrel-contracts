@@ -42,22 +42,23 @@ const JcashRegistrarArtifact = global.artifacts.require('JcashRegistrar.sol');
 /* Migration #2 */
 
 const executeMigrationNumber2 = async () => {
-  const contractAddresses = await CrydrInit.initCrydr(JNTStorageArtifact,
-                                                      JNTControllerArtifact,
-                                                      JNTViewERC20Artifact,
-                                                      'erc20',
-                                                      TxConfig.getEthAccounts());
-
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
-
-  global.console.log('  JNT deployed, configured and unpaused:');
-  global.console.log(`\tJNTStorageAddress: ${contractAddresses[0]}`);
-  global.console.log(`\tJNTControllerAddress: ${contractAddresses[1]}`);
-  global.console.log(`\tJNTViewERC20Address: ${contractAddresses[2]}`);
-
-  return contractAddresses;
+  // const contractAddresses = await CrydrInit.initCrydr(JNTStorageArtifact,
+  //                                                     JNTControllerArtifact,
+  //                                                     JNTViewERC20Artifact,
+  //                                                     'erc20',
+  //                                                     TxConfig.getEthAccounts());
+  //
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
+  //
+  // global.console.log('  JNT deployed, configured and unpaused:');
+  // global.console.log(`\tJNTStorageAddress: ${contractAddresses[0]}`);
+  // global.console.log(`\tJNTControllerAddress: ${contractAddresses[1]}`);
+  // global.console.log(`\tJNTViewERC20Address: ${contractAddresses[2]}`);
+  //
+  // return contractAddresses;
+  return [];
 };
 
 const verifyMigrationNumber2 = async () => {
@@ -70,15 +71,23 @@ const verifyMigrationNumber2 = async () => {
 const executeMigrationNumber3 = async () => {
   /* JUSD */
 
+  const storage = '0x0c53a3be5e0413f8fa47b8663dd20176b7201f84';
+  const licenseRegistry = '0xeAf9A68cc9012c095C07cAA81C5F931272d9f1D6';
+  const view = '0x3c7626e41f85150c138a684c7de14bbd636b4596';
+
+  await PausableInterfaceJSAPI.pauseContract(storage, TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.pauseContract(view, TxConfig.getEthAccounts().managerPause);
+
   const contractAddresses = await CrydrInit.initLicensedCrydr(JUSDStorageArtifact,
                                                               JUSDLicenseRegistryArtifact,
                                                               JUSDControllerArtifact,
                                                               JUSDViewERC20Artifact,
                                                               'erc20',
-                                                              TxConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts(),
+                                                              storage, licenseRegistry, view);
 
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
@@ -101,15 +110,23 @@ const verifyMigrationNumber3 = async () => {
 const executeMigrationNumber4 = async () => {
   /* JEUR */
 
+  const storage = '0x32918da5302105de1c329e4f50298fce6833429d';
+  const licenseRegistry = '0x58644d3c6b10b09989749033b3fe80521669f40d';
+  const view = '0x814bac0cdaf98ad7442a5725a52ebac638267e96';
+
+  await PausableInterfaceJSAPI.pauseContract(storage, TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.pauseContract(view, TxConfig.getEthAccounts().managerPause);
+
   const contractAddresses = await CrydrInit.initLicensedCrydr(JEURStorageArtifact,
                                                               JEURLicenseRegistryArtifact,
                                                               JEURControllerArtifact,
                                                               JEURViewERC20Artifact,
                                                               'erc20',
-                                                              TxConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts(),
+                                                              storage, licenseRegistry, view);
 
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
@@ -132,15 +149,23 @@ const verifyMigrationNumber4 = async () => {
 const executeMigrationNumber5 = async () => {
   /* JGBP */
 
+  const storage = '0x3525f554cdbdba75973aa341cbfcb1d5e3d13812';
+  const licenseRegistry = '0xf33b5d9cefff246f24f5a17dc3a34fb2f1f87612';
+  const view = '0xada5dcb3ca6406b24ce170c95e3d10545adae202';
+
+  await PausableInterfaceJSAPI.pauseContract(storage, TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.pauseContract(view, TxConfig.getEthAccounts().managerPause);
+
   const contractAddresses = await CrydrInit.initLicensedCrydr(JGBPStorageArtifact,
                                                               JGBPLicenseRegistryArtifact,
                                                               JGBPControllerArtifact,
                                                               JGBPViewERC20Artifact,
                                                               'erc20',
-                                                              TxConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts(),
+                                                              storage, licenseRegistry, view);
 
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
@@ -163,15 +188,23 @@ const verifyMigrationNumber5 = async () => {
 const executeMigrationNumber6 = async () => {
   /* JKRW */
 
+  const storage = '0xdfb4847ff4d7580ede4ddb2b946686b4eb9eab14';
+  const licenseRegistry = '0xf9bb522147013475a4842043aa214bb577a77839';
+  const view = '0x3aee4eea2cbb7769a1dcbc4f7287c85c45e2a70f';
+
+  await PausableInterfaceJSAPI.pauseContract(storage, TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.pauseContract(view, TxConfig.getEthAccounts().managerPause);
+
   const contractAddresses = await CrydrInit.initLicensedCrydr(JKRWStorageArtifact,
                                                               JKRWLicenseRegistryArtifact,
                                                               JKRWControllerArtifact,
                                                               JKRWViewERC20Artifact,
                                                               'erc20',
-                                                              TxConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts(),
+                                                              storage, licenseRegistry, view);
 
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 
@@ -194,15 +227,23 @@ const verifyMigrationNumber6 = async () => {
 const executeMigrationNumber7 = async () => {
   /* JJOD */
 
+  const storage = '0xe127da95fe506913c39d8a23e8d2e858c1f15d98';
+  const licenseRegistry = '0xe2831143a275c7e05ada4af87a85c38531cdffc7';
+  const view = '0xa125fef3f84df7996babc5f67d1929f5329af6ce';
+
+  await PausableInterfaceJSAPI.pauseContract(storage, TxConfig.getEthAccounts().managerPause);
+  await PausableInterfaceJSAPI.pauseContract(view, TxConfig.getEthAccounts().managerPause);
+
   const contractAddresses = await CrydrInit.initLicensedCrydr(JJODStorageArtifact,
                                                               JJODLicenseRegistryArtifact,
                                                               JJODControllerArtifact,
                                                               JJODViewERC20Artifact,
                                                               'erc20',
-                                                              TxConfig.getEthAccounts());
+                                                              TxConfig.getEthAccounts(),
+                                                              storage, licenseRegistry, view);
 
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[0], TxConfig.getEthAccounts().managerPause);
-  await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
+  // await PausableInterfaceJSAPI.unpauseContract(contractAddresses[1], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[2], TxConfig.getEthAccounts().managerPause);
   await PausableInterfaceJSAPI.unpauseContract(contractAddresses[3], TxConfig.getEthAccounts().managerPause);
 

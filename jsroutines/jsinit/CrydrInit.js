@@ -81,14 +81,16 @@ export const initCrydr = async (
   crydrControllerContractArtifact,
   crydrViewContractArtifact,
   crydrViewApiStandardName,
-  ethAccounts: TxConfig.EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts,
+  crydrStorageAddress,
+  crydrViewAddress
 ) => {
   global.console.log('\tDeploy and init JCash crydr...');
   global.console.log(`\t\tcrydrViewApiStandardName - ${crydrViewApiStandardName}`);
 
   global.console.log('\tDeploying and configure crydr storage');
-  const crydrStorageAddress = await CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts);
-  await CrydrStorageInit.configureCrydrStorageManagers(crydrStorageAddress, ethAccounts);
+  // const crydrStorageAddress = await CrydrStorageInit.deployCrydrStorage(crydrStorageContractArtifact, ethAccounts);
+  // await CrydrStorageInit.configureCrydrStorageManagers(crydrStorageAddress, ethAccounts);
   global.console.log('\tCrydr storage successfully deployed and configured');
 
   global.console.log('\tDeploying and configure crydr controller');
@@ -97,8 +99,8 @@ export const initCrydr = async (
   global.console.log('\tCrydr storage successfully deployed and configured');
 
   global.console.log('\tDeploying and configure crydr view');
-  const crydrViewAddress = await CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts);
-  await CrydrViewInit.configureCrydrViewManagers(crydrViewAddress, ethAccounts);
+  // const crydrViewAddress = await CrydrViewInit.deployCrydrView(crydrViewContractArtifact, ethAccounts);
+  // await CrydrViewInit.configureCrydrViewManagers(crydrViewAddress, ethAccounts);
   global.console.log('\tCrydr view successfully deployed and configured');
 
 
@@ -122,7 +124,10 @@ export const initLicensedCrydr = async (
   crydrControllerContractArtifact,
   crydrViewContractArtifact,
   crydrViewApiStandardName,
-  ethAccounts: TxConfig.EthereumAccounts
+  ethAccounts: TxConfig.EthereumAccounts,
+  crydrStorageAddress,
+  licenseRegistryAddress,
+  crydrViewAddress
 ) => {
   global.console.log('\tDeploy and init licensed JCash crydr...');
 
@@ -130,15 +135,17 @@ export const initLicensedCrydr = async (
                                             crydrControllerContractArtifact,
                                             crydrViewContractArtifact,
                                             crydrViewApiStandardName,
-                                            ethAccounts);
+                                            ethAccounts,
+                                            crydrStorageAddress,
+                                            crydrViewAddress);
   const crydrControllerAddress = contractAddresses[1];
 
   global.console.log('\tDeploying license registry contract');
-  const licenseRegistryAddress = await CrydrLicenseRegistryInit.deployLicenseRegistry(licenseRegistryArtifact, ethAccounts);
+  // const licenseRegistryAddress = await CrydrLicenseRegistryInit.deployLicenseRegistry(licenseRegistryArtifact, ethAccounts);
   global.console.log('\tLicense registry successfully deployed');
 
   global.console.log('\tConfiguring license managers');
-  await CrydrLicenseRegistryInit.configureLicenseRegistryManagers(licenseRegistryAddress, ethAccounts);
+  // await CrydrLicenseRegistryInit.configureLicenseRegistryManagers(licenseRegistryAddress, ethAccounts);
   await CrydrControllerInit.configureCrydrControllerLicensedManagers(crydrControllerAddress, ethAccounts);
   global.console.log('\tLicense managers successfully configured');
 
