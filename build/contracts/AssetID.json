@@ -1,0 +1,1165 @@
+{
+  "contractName": "AssetID",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "name": "_assetID",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAssetID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAssetIDHash",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50604051610366380380610366833981018060405281019080805182019291905050506000815111151561004357600080fd5b8060009080519060200190610059929190610060565b5050610105565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106100a157805160ff19168380011785556100cf565b828001600101855582156100cf579182015b828111156100ce5782518255916020019190600101906100b3565b5b5090506100dc91906100e0565b5090565b61010291905b808211156100fe5760008160009055506001016100e6565b5090565b90565b610252806101146000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063696b5fb714610051578063a773d98a146100e1575b600080fd5b34801561005d57600080fd5b50610066610114565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156100a657808201518184015260208101905061008b565b50505050905090810190601f1680156100d35780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156100ed57600080fd5b506100f66101b6565b60405180826000191660001916815260200191505060405180910390f35b606060008054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156101ac5780601f10610181576101008083540402835291602001916101ac565b820191906000526020600020905b81548152906001019060200180831161018f57829003601f168201915b5050505050905090565b60008060405180828054600181600116156101000203166002900480156102145780601f106101f2576101008083540402835291820191610214565b820191906000526020600020905b815481529060010190602001808311610200575b505091505060405180910390209050905600a165627a7a723058205a8c9bbfbb6ed800928b3bfb8d6bf83417efeda26d041578aee481b2308dbf530029",
+  "deployedBytecode": "0x60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063696b5fb714610051578063a773d98a146100e1575b600080fd5b34801561005d57600080fd5b50610066610114565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156100a657808201518184015260208101905061008b565b50505050905090810190601f1680156100d35780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156100ed57600080fd5b506100f66101b6565b60405180826000191660001916815260200191505060405180910390f35b606060008054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156101ac5780601f10610181576101008083540402835291602001916101ac565b820191906000526020600020905b81548152906001019060200180831161018f57829003601f168201915b5050505050905090565b60008060405180828054600181600116156101000203166002900480156102145780601f106101f2576101008083540402835291820191610214565b820191906000526020600020905b815481529060010190602001808311610200575b505091505060405180910390209050905600a165627a7a723058205a8c9bbfbb6ed800928b3bfb8d6bf83417efeda26d041578aee481b2308dbf530029",
+  "sourceMap": "200:412:41:-;;;300:108;8:9:-1;5:2;;;30:1;27;20:12;5:2;300:108:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;376:1;357:8;351:22;:26;343:35;;;;;;;;395:8;385:7;:18;;;;;;;;;;;;:::i;:::-;;300:108;200:412;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "200:412:41:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;430:80;;8:9:-1;5:2;;;30:1;27;20:12;5:2;430:80:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;430:80:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;514:96;;8:9:-1;5:2;;;30:1;27;20:12;5:2;514:96:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;430:80;477:6;498:7;491:14;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;430:80;:::o;514:96::-;565:7;597;587:18;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;580:25;;514:96;:::o",
+  "source": "/* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */\n\npragma solidity ^0.4.24;\n\n\nimport './AssetIDInterface.sol';\n\n\n/**\n * @title AssetID\n * @dev Base contract implementing AssetIDInterface\n */\ncontract AssetID is AssetIDInterface {\n\n  /* Storage */\n\n  string assetID;\n\n\n  /* Constructor */\n\n  constructor (string _assetID) public {\n    require(bytes(_assetID).length > 0);\n\n    assetID = _assetID;\n  }\n\n\n  /* Getters */\n\n  function getAssetID() public constant returns (string) {\n    return assetID;\n  }\n\n  function getAssetIDHash() public constant returns (bytes32) {\n    return keccak256(assetID);\n  }\n}\n",
+  "sourcePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/feature/AssetID/AssetID.sol",
+  "ast": {
+    "absolutePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/feature/AssetID/AssetID.sol",
+    "exportedSymbols": {
+      "AssetID": [
+        4124
+      ]
+    },
+    "id": 4125,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4081,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "60:24:41"
+      },
+      {
+        "absolutePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/feature/AssetID/AssetIDInterface.sol",
+        "file": "./AssetIDInterface.sol",
+        "id": 4082,
+        "nodeType": "ImportDirective",
+        "scope": 4125,
+        "sourceUnit": 4138,
+        "src": "87:32:41",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 4083,
+              "name": "AssetIDInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4137,
+              "src": "220:16:41",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_AssetIDInterface_$4137",
+                "typeString": "contract AssetIDInterface"
+              }
+            },
+            "id": 4084,
+            "nodeType": "InheritanceSpecifier",
+            "src": "220:16:41"
+          }
+        ],
+        "contractDependencies": [
+          4137
+        ],
+        "contractKind": "contract",
+        "documentation": "@title AssetID\n@dev Base contract implementing AssetIDInterface",
+        "fullyImplemented": true,
+        "id": 4124,
+        "linearizedBaseContracts": [
+          4124,
+          4137
+        ],
+        "name": "AssetID",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 4086,
+            "name": "assetID",
+            "nodeType": "VariableDeclaration",
+            "scope": 4124,
+            "src": "259:14:41",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 4085,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "259:6:41",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4104,
+              "nodeType": "Block",
+              "src": "337:71:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 4097,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 4093,
+                                "name": "_assetID",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 4088,
+                                "src": "357:8:41",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 4092,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "nodeType": "ElementaryTypeNameExpression",
+                              "src": "351:5:41",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_type$_t_bytes_storage_ptr_$",
+                                "typeString": "type(bytes storage pointer)"
+                              },
+                              "typeName": "bytes"
+                            },
+                            "id": 4094,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "typeConversion",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "351:15:41",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          "id": 4095,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "length",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "351:22:41",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "30",
+                          "id": 4096,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "376:1:41",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "351:26:41",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 4091,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7632,
+                        7633
+                      ],
+                      "referencedDeclaration": 7632,
+                      "src": "343:7:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 4098,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "343:35:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4099,
+                  "nodeType": "ExpressionStatement",
+                  "src": "343:35:41"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 4102,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 4100,
+                      "name": "assetID",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4086,
+                      "src": "385:7:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 4101,
+                      "name": "_assetID",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4088,
+                      "src": "395:8:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "385:18:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 4103,
+                  "nodeType": "ExpressionStatement",
+                  "src": "385:18:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4105,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4089,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4088,
+                  "name": "_assetID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4105,
+                  "src": "313:15:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 4087,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "313:6:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "312:17:41"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4090,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "337:0:41"
+            },
+            "scope": 4124,
+            "src": "300:108:41",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4112,
+              "nodeType": "Block",
+              "src": "485:25:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 4110,
+                    "name": "assetID",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 4086,
+                    "src": "498:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "functionReturnParameters": 4109,
+                  "id": 4111,
+                  "nodeType": "Return",
+                  "src": "491:14:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4113,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getAssetID",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4106,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "449:2:41"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4109,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4108,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4113,
+                  "src": "477:6:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 4107,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "477:6:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "476:8:41"
+            },
+            "scope": 4124,
+            "src": "430:80:41",
+            "stateMutability": "view",
+            "superFunction": 4131,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4122,
+              "nodeType": "Block",
+              "src": "574:36:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4119,
+                        "name": "assetID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4086,
+                        "src": "597:7:41",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      ],
+                      "id": 4118,
+                      "name": "keccak256",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7623,
+                      "src": "587:9:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_sha3_pure$__$returns$_t_bytes32_$",
+                        "typeString": "function () pure returns (bytes32)"
+                      }
+                    },
+                    "id": 4120,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "587:18:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "functionReturnParameters": 4117,
+                  "id": 4121,
+                  "nodeType": "Return",
+                  "src": "580:25:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4123,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getAssetIDHash",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4114,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "537:2:41"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4117,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4116,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4123,
+                  "src": "565:7:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 4115,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "565:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "564:9:41"
+            },
+            "scope": 4124,
+            "src": "514:96:41",
+            "stateMutability": "view",
+            "superFunction": 4136,
+            "visibility": "public"
+          }
+        ],
+        "scope": 4125,
+        "src": "200:412:41"
+      }
+    ],
+    "src": "60:553:41"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/feature/AssetID/AssetID.sol",
+    "exportedSymbols": {
+      "AssetID": [
+        4124
+      ]
+    },
+    "id": 4125,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4081,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "60:24:41"
+      },
+      {
+        "absolutePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/feature/AssetID/AssetIDInterface.sol",
+        "file": "./AssetIDInterface.sol",
+        "id": 4082,
+        "nodeType": "ImportDirective",
+        "scope": 4125,
+        "sourceUnit": 4138,
+        "src": "87:32:41",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 4083,
+              "name": "AssetIDInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4137,
+              "src": "220:16:41",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_AssetIDInterface_$4137",
+                "typeString": "contract AssetIDInterface"
+              }
+            },
+            "id": 4084,
+            "nodeType": "InheritanceSpecifier",
+            "src": "220:16:41"
+          }
+        ],
+        "contractDependencies": [
+          4137
+        ],
+        "contractKind": "contract",
+        "documentation": "@title AssetID\n@dev Base contract implementing AssetIDInterface",
+        "fullyImplemented": true,
+        "id": 4124,
+        "linearizedBaseContracts": [
+          4124,
+          4137
+        ],
+        "name": "AssetID",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 4086,
+            "name": "assetID",
+            "nodeType": "VariableDeclaration",
+            "scope": 4124,
+            "src": "259:14:41",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 4085,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "259:6:41",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 4104,
+              "nodeType": "Block",
+              "src": "337:71:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 4097,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 4093,
+                                "name": "_assetID",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 4088,
+                                "src": "357:8:41",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "id": 4092,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "nodeType": "ElementaryTypeNameExpression",
+                              "src": "351:5:41",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_type$_t_bytes_storage_ptr_$",
+                                "typeString": "type(bytes storage pointer)"
+                              },
+                              "typeName": "bytes"
+                            },
+                            "id": 4094,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "typeConversion",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "351:15:41",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          "id": 4095,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "length",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "351:22:41",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "30",
+                          "id": 4096,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "376:1:41",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "351:26:41",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 4091,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        7632,
+                        7633
+                      ],
+                      "referencedDeclaration": 7632,
+                      "src": "343:7:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 4098,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "343:35:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4099,
+                  "nodeType": "ExpressionStatement",
+                  "src": "343:35:41"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 4102,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 4100,
+                      "name": "assetID",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4086,
+                      "src": "385:7:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 4101,
+                      "name": "_assetID",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4088,
+                      "src": "395:8:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "385:18:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 4103,
+                  "nodeType": "ExpressionStatement",
+                  "src": "385:18:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4105,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4089,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4088,
+                  "name": "_assetID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4105,
+                  "src": "313:15:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 4087,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "313:6:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "312:17:41"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4090,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "337:0:41"
+            },
+            "scope": 4124,
+            "src": "300:108:41",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4112,
+              "nodeType": "Block",
+              "src": "485:25:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 4110,
+                    "name": "assetID",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 4086,
+                    "src": "498:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "functionReturnParameters": 4109,
+                  "id": 4111,
+                  "nodeType": "Return",
+                  "src": "491:14:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4113,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getAssetID",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4106,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "449:2:41"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4109,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4108,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4113,
+                  "src": "477:6:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 4107,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "477:6:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "476:8:41"
+            },
+            "scope": 4124,
+            "src": "430:80:41",
+            "stateMutability": "view",
+            "superFunction": 4131,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 4122,
+              "nodeType": "Block",
+              "src": "574:36:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 4119,
+                        "name": "assetID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4086,
+                        "src": "597:7:41",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      ],
+                      "id": 4118,
+                      "name": "keccak256",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7623,
+                      "src": "587:9:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_sha3_pure$__$returns$_t_bytes32_$",
+                        "typeString": "function () pure returns (bytes32)"
+                      }
+                    },
+                    "id": 4120,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "587:18:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "functionReturnParameters": 4117,
+                  "id": 4121,
+                  "nodeType": "Return",
+                  "src": "580:25:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 4123,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getAssetIDHash",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4114,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "537:2:41"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4117,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4116,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4123,
+                  "src": "565:7:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 4115,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "565:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "564:9:41"
+            },
+            "scope": 4124,
+            "src": "514:96:41",
+            "stateMutability": "view",
+            "superFunction": 4136,
+            "visibility": "public"
+          }
+        ],
+        "scope": 4125,
+        "src": "200:412:41"
+      }
+    ],
+    "src": "60:553:41"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-12-10T21:02:12.421Z"
+}

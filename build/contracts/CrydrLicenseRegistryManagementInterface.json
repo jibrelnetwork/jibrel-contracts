@@ -1,0 +1,1799 @@
+{
+  "contractName": "CrydrLicenseRegistryManagementInterface",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "UserAdmittedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "UserDeniedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "useraddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "licensename",
+          "type": "bytes32"
+        }
+      ],
+      "name": "UserLicenseGrantedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "useraddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "licensename",
+          "type": "bytes32"
+        }
+      ],
+      "name": "UserLicenseRenewedEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "useraddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "licensename",
+          "type": "bytes32"
+        }
+      ],
+      "name": "UserLicenseRevokedEvent",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_userAddress",
+          "type": "address"
+        }
+      ],
+      "name": "admitUser",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_userAddress",
+          "type": "address"
+        }
+      ],
+      "name": "denyUser",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_userAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isUserAdmitted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_userAddress",
+          "type": "address"
+        },
+        {
+          "name": "_licenseName",
+          "type": "string"
+        }
+      ],
+      "name": "grantUserLicense",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_userAddress",
+          "type": "address"
+        },
+        {
+          "name": "_licenseName",
+          "type": "string"
+        }
+      ],
+      "name": "revokeUserLicense",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_userAddress",
+          "type": "address"
+        },
+        {
+          "name": "_licenseName",
+          "type": "string"
+        }
+      ],
+      "name": "isUserGranted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "/* Author: Victor Mezrin  victor@mezrin.com */\n\npragma solidity ^0.4.24;\n\n\n/**\n * @title CrydrLicenseRegistryManagementInterface\n * @dev Interface of the contract that stores licenses\n */\ncontract CrydrLicenseRegistryManagementInterface {\n\n  /* Events */\n\n  event UserAdmittedEvent(address indexed useraddress);\n  event UserDeniedEvent(address indexed useraddress);\n  event UserLicenseGrantedEvent(address indexed useraddress, bytes32 licensename);\n  event UserLicenseRenewedEvent(address indexed useraddress, bytes32 licensename);\n  event UserLicenseRevokedEvent(address indexed useraddress, bytes32 licensename);\n\n\n  /* Configuration */\n\n  /**\n   * @dev Function to admit user\n   * @param _userAddress address User`s address\n   */\n  function admitUser(address _userAddress) external;\n\n  /**\n   * @dev Function to deny user\n   * @param _userAddress address User`s address\n   */\n  function denyUser(address _userAddress) external;\n\n  /**\n   * @dev Function to check admittance of an user\n   * @param _userAddress address User`s address\n   * @return True if investor is in the registry and admitted\n   */\n  function isUserAdmitted(address _userAddress) public constant returns (bool);\n\n\n  /**\n   * @dev Function to grant license to an user\n   * @param _userAddress         address User`s address\n   * @param _licenseName         string  name of the license\n   */\n  function grantUserLicense(address _userAddress, string _licenseName) external;\n\n  /**\n   * @dev Function to revoke license from the user\n   * @param _userAddress address User`s address\n   * @param _licenseName string  name of the license\n   */\n  function revokeUserLicense(address _userAddress, string _licenseName) external;\n\n  /**\n   * @dev Function to check license of an investor\n   * @param _userAddress address User`s address\n   * @param _licenseName string  License name\n   * @return True if investor has been granted needed license\n   */\n  function isUserGranted(address _userAddress, string _licenseName) public constant returns (bool);\n}\n",
+  "sourcePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/crydr/license/CrydrLicenseRegistryManagementInterface.sol",
+  "ast": {
+    "absolutePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/crydr/license/CrydrLicenseRegistryManagementInterface.sol",
+    "exportedSymbols": {
+      "CrydrLicenseRegistryManagementInterface": [
+        2135
+      ]
+    },
+    "id": 2136,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2068,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:20"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title CrydrLicenseRegistryManagementInterface\n@dev Interface of the contract that stores licenses",
+        "fullyImplemented": false,
+        "id": 2135,
+        "linearizedBaseContracts": [
+          2135
+        ],
+        "name": "CrydrLicenseRegistryManagementInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2072,
+            "name": "UserAdmittedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2071,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2070,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2072,
+                  "src": "282:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2069,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "282:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "281:29:20"
+            },
+            "src": "258:53:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2076,
+            "name": "UserDeniedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2075,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2074,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2076,
+                  "src": "336:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2073,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "336:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "335:29:20"
+            },
+            "src": "314:51:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2082,
+            "name": "UserLicenseGrantedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2081,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2078,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2082,
+                  "src": "398:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2077,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "398:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2080,
+                  "indexed": false,
+                  "name": "licensename",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2082,
+                  "src": "427:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2079,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "427:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "397:50:20"
+            },
+            "src": "368:80:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2088,
+            "name": "UserLicenseRenewedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2087,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2084,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2088,
+                  "src": "481:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2083,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "481:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2086,
+                  "indexed": false,
+                  "name": "licensename",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2088,
+                  "src": "510:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2085,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "510:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "480:50:20"
+            },
+            "src": "451:80:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2094,
+            "name": "UserLicenseRevokedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2093,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2090,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2094,
+                  "src": "564:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2089,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "564:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2092,
+                  "indexed": false,
+                  "name": "licensename",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2094,
+                  "src": "593:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2091,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "593:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "563:50:20"
+            },
+            "src": "534:80:20"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to admit user\n@param _userAddress address User`s address",
+            "id": 2099,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "admitUser",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2097,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2096,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2099,
+                  "src": "754:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2095,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "754:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "753:22:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2098,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "784:0:20"
+            },
+            "scope": 2135,
+            "src": "735:50:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to deny user\n@param _userAddress address User`s address",
+            "id": 2104,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "denyUser",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2102,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2101,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2104,
+                  "src": "899:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2100,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "899:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "898:22:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2103,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "929:0:20"
+            },
+            "scope": 2135,
+            "src": "881:49:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to check admittance of an user\n@param _userAddress address User`s address\n@return True if investor is in the registry and admitted",
+            "id": 2111,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isUserAdmitted",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2107,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2106,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "1130:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2105,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1130:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1129:22:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2110,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2109,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "1177:4:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2108,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1177:4:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1176:6:20"
+            },
+            "scope": 2135,
+            "src": "1106:77:20",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to grant license to an user\n@param _userAddress         address User`s address\n@param _licenseName         string  name of the license",
+            "id": 2118,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "grantUserLicense",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2116,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2113,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2118,
+                  "src": "1390:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2112,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1390:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2115,
+                  "name": "_licenseName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2118,
+                  "src": "1412:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2114,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1412:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1389:43:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2117,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1441:0:20"
+            },
+            "scope": 2135,
+            "src": "1364:78:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to revoke license from the user\n@param _userAddress address User`s address\n@param _licenseName string  name of the license",
+            "id": 2125,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "revokeUserLicense",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2120,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2125,
+                  "src": "1637:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2119,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1637:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2122,
+                  "name": "_licenseName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2125,
+                  "src": "1659:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2121,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1659:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1636:43:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2124,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1688:0:20"
+            },
+            "scope": 2135,
+            "src": "1610:79:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to check license of an investor\n@param _userAddress address User`s address\n@param _licenseName string  License name\n@return True if investor has been granted needed license",
+            "id": 2134,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isUserGranted",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2130,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2127,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2134,
+                  "src": "1935:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2126,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1935:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2129,
+                  "name": "_licenseName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2134,
+                  "src": "1957:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2128,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1957:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1934:43:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2133,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2132,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2134,
+                  "src": "2003:4:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2131,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2003:4:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2002:6:20"
+            },
+            "scope": 2135,
+            "src": "1912:97:20",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2136,
+        "src": "188:1823:20"
+      }
+    ],
+    "src": "48:1964:20"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/user/develop/jcontracts/jibrel-contracts/contracts/crydr/license/CrydrLicenseRegistryManagementInterface.sol",
+    "exportedSymbols": {
+      "CrydrLicenseRegistryManagementInterface": [
+        2135
+      ]
+    },
+    "id": 2136,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2068,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "48:24:20"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title CrydrLicenseRegistryManagementInterface\n@dev Interface of the contract that stores licenses",
+        "fullyImplemented": false,
+        "id": 2135,
+        "linearizedBaseContracts": [
+          2135
+        ],
+        "name": "CrydrLicenseRegistryManagementInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2072,
+            "name": "UserAdmittedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2071,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2070,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2072,
+                  "src": "282:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2069,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "282:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "281:29:20"
+            },
+            "src": "258:53:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2076,
+            "name": "UserDeniedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2075,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2074,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2076,
+                  "src": "336:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2073,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "336:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "335:29:20"
+            },
+            "src": "314:51:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2082,
+            "name": "UserLicenseGrantedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2081,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2078,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2082,
+                  "src": "398:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2077,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "398:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2080,
+                  "indexed": false,
+                  "name": "licensename",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2082,
+                  "src": "427:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2079,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "427:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "397:50:20"
+            },
+            "src": "368:80:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2088,
+            "name": "UserLicenseRenewedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2087,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2084,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2088,
+                  "src": "481:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2083,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "481:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2086,
+                  "indexed": false,
+                  "name": "licensename",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2088,
+                  "src": "510:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2085,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "510:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "480:50:20"
+            },
+            "src": "451:80:20"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2094,
+            "name": "UserLicenseRevokedEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2093,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2090,
+                  "indexed": true,
+                  "name": "useraddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2094,
+                  "src": "564:27:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2089,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "564:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2092,
+                  "indexed": false,
+                  "name": "licensename",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2094,
+                  "src": "593:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2091,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "593:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "563:50:20"
+            },
+            "src": "534:80:20"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to admit user\n@param _userAddress address User`s address",
+            "id": 2099,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "admitUser",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2097,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2096,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2099,
+                  "src": "754:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2095,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "754:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "753:22:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2098,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "784:0:20"
+            },
+            "scope": 2135,
+            "src": "735:50:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to deny user\n@param _userAddress address User`s address",
+            "id": 2104,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "denyUser",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2102,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2101,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2104,
+                  "src": "899:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2100,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "899:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "898:22:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2103,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "929:0:20"
+            },
+            "scope": 2135,
+            "src": "881:49:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to check admittance of an user\n@param _userAddress address User`s address\n@return True if investor is in the registry and admitted",
+            "id": 2111,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isUserAdmitted",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2107,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2106,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "1130:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2105,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1130:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1129:22:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2110,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2109,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "1177:4:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2108,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1177:4:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1176:6:20"
+            },
+            "scope": 2135,
+            "src": "1106:77:20",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to grant license to an user\n@param _userAddress         address User`s address\n@param _licenseName         string  name of the license",
+            "id": 2118,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "grantUserLicense",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2116,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2113,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2118,
+                  "src": "1390:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2112,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1390:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2115,
+                  "name": "_licenseName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2118,
+                  "src": "1412:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2114,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1412:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1389:43:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2117,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1441:0:20"
+            },
+            "scope": 2135,
+            "src": "1364:78:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to revoke license from the user\n@param _userAddress address User`s address\n@param _licenseName string  name of the license",
+            "id": 2125,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "revokeUserLicense",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2120,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2125,
+                  "src": "1637:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2119,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1637:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2122,
+                  "name": "_licenseName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2125,
+                  "src": "1659:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2121,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1659:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1636:43:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2124,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1688:0:20"
+            },
+            "scope": 2135,
+            "src": "1610:79:20",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to check license of an investor\n@param _userAddress address User`s address\n@param _licenseName string  License name\n@return True if investor has been granted needed license",
+            "id": 2134,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isUserGranted",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2130,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2127,
+                  "name": "_userAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2134,
+                  "src": "1935:20:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2126,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1935:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2129,
+                  "name": "_licenseName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2134,
+                  "src": "1957:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2128,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1957:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1934:43:20"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2133,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2132,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2134,
+                  "src": "2003:4:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2131,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2003:4:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2002:6:20"
+            },
+            "scope": 2135,
+            "src": "1912:97:20",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2136,
+        "src": "188:1823:20"
+      }
+    ],
+    "src": "48:1964:20"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-12-10T21:02:12.413Z"
+}
