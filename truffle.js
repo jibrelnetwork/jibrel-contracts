@@ -10,7 +10,8 @@ module.exports = {
       host:       'localhost',
       port:       8560,
       network_id: '*', // Match any network id
-      gas:        6450000,
+      gas:        16450000,
+      gasPrice:   100000000000,
     },
     development_hd: {
       provider:   new HDWalletProvider(Settings.mnemonic, 'http://localhost:8560', 0, 50),
@@ -59,4 +60,19 @@ module.exports = {
   //     runs: 200,
   //   },
   // },
+  compilers: {
+    solc: {
+      version: '^0.5.12', // A version or constraint - Ex. "^0.5.0"
+      // Can also be set to "native" to use a native solc
+      // docker: <boolean>, // Use a version obtained through docker
+      // parser: "solcjs",  // Leverages solc-js purely for speedy parsing
+      // settings: {
+      //   optimizer: {
+      //     enabled: <boolean>,
+      //     runs: <number>   // Optimize for how many times you intend to run the code
+      //   },
+      //   evmVersion: <string> // Default: "petersburg"
+      // }
+    },
+  },
 };

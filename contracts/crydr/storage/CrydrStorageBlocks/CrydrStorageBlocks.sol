@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../third-party/zeppelin-solidity/SafeMathInterface.sol';
@@ -28,7 +28,7 @@ contract CrydrStorageBlocks is SafeMathInterface,
   /* Constructor */
 
   constructor () public {
-    accountBlocks[0x0] = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
+    accountBlocks[address(0x0)] = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
   }
 
 
@@ -66,7 +66,7 @@ contract CrydrStorageBlocks is SafeMathInterface,
     address _account
   )
     public
-    constant
+    view
     returns (uint256)
   {
     require(_account != address(0x0));
@@ -110,7 +110,7 @@ contract CrydrStorageBlocks is SafeMathInterface,
     address _account
   )
     public
-    constant
+    view
     returns (uint256)
   {
     require(_account != address(0x0));

@@ -20,14 +20,16 @@ export const withdrawEth = async (contractAddress, replenisherAddress, value) =>
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\treplenisherAddress - ${replenisherAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .withdrawEth
-      .sendTransaction,
-    [value],
-    { from: replenisherAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .withdrawEth
+  //     .sendTransaction,
+  //   [value],
+  //   { from: replenisherAddress }
+  // );
+  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  await instance.withdrawEth(value, {from: replenisherAddress});
   global.console.log('\tSuccessfully withdraw');
   return txHash;
 };
@@ -38,14 +40,16 @@ export const withdrawToken = async (contractAddress, replenisherAddress, tokenAd
   global.console.log(`\t\treplenisherAddress - ${replenisherAddress}`);
   global.console.log(`\t\ttokenAddress - ${tokenAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .withdrawToken
-      .sendTransaction,
-    [tokenAddress, value],
-    { from: replenisherAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .withdrawToken
+  //     .sendTransaction,
+  //   [tokenAddress, value],
+  //   { from: replenisherAddress }
+  // );
+  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  await instance.withdrawToken(tokenAddress, value, {from: replenisherAddress});
   global.console.log('\tSuccessfully withdraw');
   return txHash;
 };
@@ -62,14 +66,16 @@ export const refundEth = async (contractAddress, managerAddress, refundedTxHash,
   global.console.log(`\t\trefundedTxHash - ${refundedTxHash}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .refundEth
-      .sendTransaction,
-    [refundedTxHash, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .refundEth
+  //     .sendTransaction,
+  //   [refundedTxHash, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  await instance.refundEth(refundedTxHash, destinationAddress, value, {from: managerAddress});
   global.console.log('\tSuccessfully refund');
   return txHash;
 };
@@ -82,14 +88,16 @@ export const refundToken = async (contractAddress, managerAddress, refundedTxHas
   global.console.log(`\t\ttokenAddress - ${tokenAddress}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .refundToken
-      .sendTransaction,
-    [refundedTxHash, tokenAddress, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .refundToken
+  //     .sendTransaction,
+  //   [refundedTxHash, tokenAddress, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  await instance.refundToken(refundedTxHash, tokenAddress, destinationAddress, value, {from: managerAddress});
   global.console.log('\tSuccessfully refund');
   return txHash;
 };
@@ -100,14 +108,16 @@ export const transferEth = async (contractAddress, managerAddress, processedTxHa
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .transferEth
-      .sendTransaction,
-    [processedTxHash, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .transferEth
+  //     .sendTransaction,
+  //   [processedTxHash, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  await instance.transferEth(processedTxHash, destinationAddress, value, { from: managerAddress });
   global.console.log('\tSuccessfully transfer');
   return txHash;
 };
@@ -119,14 +129,16 @@ export const transferToken = async (contractAddress, managerAddress, processedTx
   global.console.log(`\t\ttokenAddress - ${tokenAddress}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .transferToken
-      .sendTransaction,
-    [processedTxHash, tokenAddress, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .transferToken
+  //     .sendTransaction,
+  //   [processedTxHash, tokenAddress, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  await instance.transferToken(processedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress });
   global.console.log('\tSuccessfully transfer');
   return txHash;
 };

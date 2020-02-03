@@ -91,9 +91,8 @@ export const configureJNTConnection = async (jcashRegistrarAddress, jntControlle
 };
 
 export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: TxConfig.EthereumAccounts, transferCost) => {
-  global.console.log('\tVerify JNT manager');
+  global.console.log('\tVerify JNT manager', jcashRegistrarAddress, jntControllerAddress, ethAccounts: TxConfig.EthereumAccounts, transferCost);
   const isVerified1 = await JNTPayableServiceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, ethAccounts.managerJNT);
-
 
   global.console.log('\tVerify contract params');
 

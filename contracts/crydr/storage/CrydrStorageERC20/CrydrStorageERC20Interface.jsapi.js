@@ -17,14 +17,16 @@ export const transfer = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\tmsgsenderAddress - ${msgsenderAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageERC20InterfaceArtifact
-      .at(crydrStorageAddress)
-      .transfer
-      .sendTransaction,
-    [msgsenderAddress, toAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageERC20InterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .transfer
+  //     .sendTransaction,
+  //   [msgsenderAddress, toAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageERC20InterfaceArtifact.at(crydrStorageAddress);
+  await instance.transfer(msgsenderAddress, toAddress, valueWei,  {from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
 
@@ -37,14 +39,16 @@ export const transferFrom = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageERC20InterfaceArtifact
-      .at(crydrStorageAddress)
-      .transferFrom
-      .sendTransaction,
-    [msgsenderAddress, fromAddress, toAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageERC20InterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .transferFrom
+  //     .sendTransaction,
+  //   [msgsenderAddress, fromAddress, toAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageERC20InterfaceArtifact.at(crydrStorageAddress);
+  await instance.transferFrom(msgsenderAddress, toAddress, valueWei,  {from: crydrControllerAddress });
   global.console.log('\tBalance successfully decreased');
 };
 
@@ -56,14 +60,17 @@ export const approve = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\tmsgsenderAddress - ${msgsenderAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageERC20InterfaceArtifact
-      .at(crydrStorageAddress)
-      .approve
-      .sendTransaction,
-    [msgsenderAddress, spenderAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageERC20InterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .approve
+  //     .sendTransaction,
+  //   [msgsenderAddress, spenderAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageERC20InterfaceArtifact.at(crydrStorageAddress);
+  await instance.approve(msgsenderAddress, spenderAddress, valueWei, {from: crydrControllerAddress});
+
   global.console.log('\tBalance successfully increased');
 };
 

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -19,16 +19,16 @@ contract JNTPayableServiceInterface {
   /* Configuration */
 
   function setJntController(address _jntController) external;
-  function getJntController() public constant returns (address);
+  function getJntController() public view returns (address);
 
   function setJntBeneficiary(address _jntBeneficiary) external;
-  function getJntBeneficiary() public constant returns (address);
+  function getJntBeneficiary() public view returns (address);
 
-  function setActionPrice(string _actionName, uint256 _jntPriceWei) external;
-  function getActionPrice(string _actionName) public constant returns (uint256);
+  function setActionPrice(string calldata _actionName, uint256 _jntPriceWei) external;
+  function getActionPrice(string memory _actionName) public view returns (uint256);
 
 
   /* Actions */
 
-  function initChargeJNT(address _payer, string _actionName) internal;
+  function initChargeJNT(address _payer, string memory _actionName) internal;
 }

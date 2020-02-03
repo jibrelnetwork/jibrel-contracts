@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -9,14 +9,14 @@ pragma solidity ^0.4.24;
  */
 contract CrydrViewERC20NamedInterface {
 
-  function name() external constant returns (string);
-  function symbol() external constant returns (string);
-  function decimals() external constant returns (uint8);
+  function name() external view returns (string memory);
+  function symbol() external view returns (string memory);
+  function decimals() external view returns (uint8);
 
-  function getNameHash() external constant returns (bytes32);
-  function getSymbolHash() external constant returns (bytes32);
+  function getNameHash() external view returns (bytes32);
+  function getSymbolHash() external view returns (bytes32);
 
-  function setName(string _name) external;
-  function setSymbol(string _symbol) external;
+  function setName(string calldata _name) external;
+  function setSymbol(string calldata _symbol) external;
   function setDecimals(uint8 _decimals) external;
 }

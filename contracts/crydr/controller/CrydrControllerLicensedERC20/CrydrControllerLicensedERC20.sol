@@ -1,9 +1,10 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../CrydrControllerERC20/CrydrControllerERC20Interface.sol';
+import '../CrydrControllerERC20/CrydrControllerERC20.sol';
 import '../CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.sol';
 
 import '../../license/CrydrLicenseRegistryInterface.sol';
@@ -30,7 +31,7 @@ contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
     require(CrydrLicenseRegistryInterface(getLicenseRegistryAddress())
                 .isUserAllowed(_to, 'receive_funds') == true);
 
-    super.transfer(_msgsender, _to, _value);
+    CrydrControllerERC20Interface.transfer(_msgsender, _to, _value);
   }
 
   function approve(
@@ -45,7 +46,7 @@ contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
     require(CrydrLicenseRegistryInterface(getLicenseRegistryAddress())
               .isUserAllowed(_spender, 'get_approval') == true);
 
-    super.approve(_msgsender, _spender, _value);
+    CrydrControllerERC20Interface.approve(_msgsender, _spender, _value);
   }
 
   function transferFrom(
@@ -63,6 +64,6 @@ contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
     require(CrydrLicenseRegistryInterface(getLicenseRegistryAddress())
               .isUserAllowed(_to, 'receive_funds') == true);
 
-    super.transferFrom(_msgsender, _from, _to, _value);
+    CrydrControllerERC20Interface.transferFrom(_msgsender, _from, _to, _value);
   }
 }

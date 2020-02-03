@@ -45,6 +45,7 @@ start_ganache() {
   # We define 20 accounts with balance 1M ether, needed for high-value tests.
   for i in {0..40}
   do
+    # TODO: need export LC_ALL=C if "tr: Illegal byte sequence" error appears
     keys[i]=$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 64 | head -n 1)
   done
 

@@ -15,15 +15,20 @@ export const enableManager = async (contractAddress, ownerAddress,
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  await submitTxAndWaitConfirmation(
-    ManageableArtifact
-      .at(contractAddress)
-      .enableManager
-      .sendTransaction,
-    [managerAddress],
-    { from: ownerAddress }
-  );
-  global.console.log('\tManager successfully enabled');
+
+  global.console.log(`\t\tXXX - ${managerAddress}`);
+  // await submitTxAndWaitConfirmation(
+  //   ManageableArtifact
+  //     .at(contractAddress)
+  //     .enableManager
+  //     .sendTransaction,
+  //   [managerAddress],
+  //   { from: ownerAddress }
+  // );
+  // let instance = await ManageableArtifact.deployed();
+  let instance = await ManageableArtifact.at(contractAddress);
+  await instance.enableManager(managerAddress,  {from: ownerAddress });
+  global.console.log('\tManager successfully enabled, DI ${instance}');
 };
 
 export const disableManager = async (contractAddress, ownerAddress,
@@ -32,14 +37,16 @@ export const disableManager = async (contractAddress, ownerAddress,
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  await submitTxAndWaitConfirmation(
-    ManageableArtifact
-      .at(contractAddress)
-      .disableManager
-      .sendTransaction,
-    [managerAddress],
-    { from: ownerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   ManageableArtifact
+  //     .at(contractAddress)
+  //     .disableManager
+  //     .sendTransaction,
+  //   [managerAddress],
+  //   { from: ownerAddress }
+  // );
+  let instance = await ManageableArtifact.at(contractAddress);
+  await instance.disableManager(managerAddress,  {from: ownerAddress });
   global.console.log('\tManager successfully disabled');
 };
 
@@ -50,16 +57,22 @@ export const grantManagerPermissions = async (contractAddress, ownerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tpermissions - ${JSON.stringify(permissionsList)}`);
-  await Promise.all(
-    permissionsList.map((permissionName) =>
-                          submitTxAndWaitConfirmation(
-                            ManageableArtifact
-                              .at(contractAddress)
-                              .grantManagerPermission
-                              .sendTransaction,
-                            [managerAddress, permissionName],
-                            { from: ownerAddress }
-                          )));
+  // await Promise.all(
+    // permissionsList.map((permissionName) =>
+    //                       submitTxAndWaitConfirmation(
+    //                         ManageableArtifact
+    //                           .at(contractAddress)
+    //                           .grantManagerPermission
+    //                           .sendTransaction,
+    //                         [managerAddress, permissionName],
+    //                         { from: ownerAddress }
+    //                       )));
+  // let instance = await ManageableArtifact.deployed();
+  let instance = await ManageableArtifact.at(contractAddress);
+  for(let i = 0; i < permissionsList.length; i++){
+    const permissionName = permissionsList[i];
+    await instance.grantManagerPermission(managerAddress, permissionName,  {from: ownerAddress});
+  }
   global.console.log('\tPermissions to the manager successfully granted');
 };
 
@@ -70,17 +83,23 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tpermissions - ${JSON.stringify(permissionsList)}`);
-  await Promise.all(
-    permissionsList.map((permissionName) =>
-                          submitTxAndWaitConfirmation(
-                            ManageableArtifact
-                              .at(contractAddress)
-                              .revokeManagerPermission
-                              .sendTransaction,
-                            [managerAddress, permissionName],
-                            { from: ownerAddress }
-                          ))
-  );
+  // await Promise.all(
+  //   permissionsList.map((permissionName) =>
+  //                         submitTxAndWaitConfirmation(
+  //                           ManageableArtifact
+  //                             .at(contractAddress)
+  //                             .revokeManagerPermission
+  //                             .sendTransaction,
+  //                           [managerAddress, permissionName],
+  //                           { from: ownerAddress }
+  //                         ))
+  // );
+
+  let instance = await ManageableArtifact.at(contractAddress);
+  for(let i = 0; i < permissionsList.length; i++){
+    const permissionName = permissionsList[i];
+    await instance.revokeManagerPermission(managerAddress, permissionName,  {from: ownerAddress});
+  }
   global.console.log('\tPermissions to the manager successfully revoked');
 };
 
@@ -89,11 +108,16 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
  * Getters
  */
 
-export const isManagerEnabled = (contractAddress, manager) =>
-  ManageableArtifact.at(contractAddress).isManagerEnabled.call(manager);
+export const isManagerEnabled = async (contractAddress, manager) => {
+  const instance = await ManageableArtifact.at(contractAddress);
+  await instance.isManagerEnabled(manager);
+}
 
-export const isPermissionGranted = (contractAddress, manager, permissionName) =>
-  ManageableArtifact.at(contractAddress).isPermissionGranted.call(manager, permissionName);
+
+export const isPermissionGranted = async (contractAddress, manager, permissionName) => {
+  const instance = await ManageableArtifact.at(contractAddress);
+  await instance.isPermissionGranted(manager, permissionName);
+}
 
 
 /**

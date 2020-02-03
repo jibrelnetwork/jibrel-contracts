@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../lifecycle/Pausable/PausableInterface.sol';
@@ -29,11 +29,11 @@ contract CrydrViewERC20 is PausableInterface,
     return true;
   }
 
-  function totalSupply() external constant returns (uint256) {
+  function totalSupply() external view returns (uint256) {
     return CrydrControllerERC20Interface(getCrydrController()).getTotalSupply();
   }
 
-  function balanceOf(address _owner) external constant onlyPayloadSize(1 * 32) returns (uint256) {
+  function balanceOf(address _owner) external view onlyPayloadSize(1 * 32) returns (uint256) {
     return CrydrControllerERC20Interface(getCrydrController()).getBalance(_owner);
   }
 
@@ -70,7 +70,7 @@ contract CrydrViewERC20 is PausableInterface,
     address _spender
   )
     external
-    constant
+    view
     onlyPayloadSize(2 * 32)
     returns (uint256)
   {

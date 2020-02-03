@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../lifecycle/Manageable/ManageableInterface.sol';
@@ -26,7 +26,7 @@ contract BytecodeExecutor is ManageableInterface,
     address _target,
     uint256 _suppliedGas,
     uint256 _ethValue,
-    bytes _transactionBytecode
+    bytes calldata _transactionBytecode
   )
     external
     onlyAllowedManager('execute_call')
@@ -43,7 +43,7 @@ contract BytecodeExecutor is ManageableInterface,
   function executeDelegatecall(
     address _target,
     uint256 _suppliedGas,
-    bytes _transactionBytecode
+    bytes calldata _transactionBytecode
   )
     external
     onlyAllowedManager('execute_delegatecall')

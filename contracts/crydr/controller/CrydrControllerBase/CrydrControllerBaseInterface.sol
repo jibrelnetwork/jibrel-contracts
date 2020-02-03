@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -19,19 +19,19 @@ contract CrydrControllerBaseInterface {
   /* Configuration */
 
   function setCrydrStorage(address _newStorage) external;
-  function getCrydrStorageAddress() public constant returns (address);
+  function getCrydrStorageAddress() public view returns (address);
 
-  function setCrydrView(address _newCrydrView, string _viewApiStandardName) external;
-  function removeCrydrView(string _viewApiStandardName) external;
-  function getCrydrViewAddress(string _viewApiStandardName) public constant returns (address);
+  function setCrydrView(address _newCrydrView, string  calldata _viewApiStandardName) external;
+  function removeCrydrView(string calldata _viewApiStandardName) external;
+  function getCrydrViewAddress(string memory _viewApiStandardName) public view returns (address);
 
-  function isCrydrViewAddress(address _crydrViewAddress) public constant returns (bool);
-  function isCrydrViewRegistered(string _viewApiStandardName) public constant returns (bool);
+  function isCrydrViewAddress(address _crydrViewAddress) public view returns (bool);
+  function isCrydrViewRegistered(string memory _viewApiStandardName) public view returns (bool);
 
 
   /* Helpers */
 
-  modifier onlyValidCrydrViewStandardName(string _viewApiStandard) {
+  modifier onlyValidCrydrViewStandardName(string memory _viewApiStandard) {
     require(bytes(_viewApiStandard).length > 0);
     _;
   }

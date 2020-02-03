@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -13,7 +13,7 @@ contract OwnableInterface {
   /**
    * @dev The getter for "owner" contract variable
    */
-  function getOwner() public constant returns (address);
+  function getOwner() public view returns (address);
 
   /**
    * @dev Throws if called by any account other than the current owner.

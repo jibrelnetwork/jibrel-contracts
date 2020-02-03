@@ -15,14 +15,16 @@ export const setCrydrController = async (crydrStorageAddress, managerAddress,
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBaseInterfaceArtifact
-      .at(crydrStorageAddress)
-      .setCrydrController
-      .sendTransaction,
-    [crydrControllerAddress],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBaseInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .setCrydrController
+  //     .sendTransaction,
+  //   [crydrControllerAddress],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrStorageBaseInterfaceArtifact.at(crydrStorageAddress);
+  await instance.setCrydrController(managerAddress, { from: managerAddress });
   global.console.log('\tController of CryDR storage successfully set');
 };
 

@@ -13,14 +13,16 @@ export const setCrydrStorage = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrControllerBaseInterfaceArtifact
-      .at(crydrControllerAddress)
-      .setCrydrStorage
-      .sendTransaction,
-    [crydrStorageAddress],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrControllerBaseInterfaceArtifact
+  //     .at(crydrControllerAddress)
+  //     .setCrydrStorage
+  //     .sendTransaction,
+  //   [crydrStorageAddress],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
+  await instance.setCrydrStorage(crydrStorageAddress, { from: managerAddress });
   global.console.log('\tStorage of CryDR controller successfully set');
   return null;
 };
@@ -41,14 +43,16 @@ export const setCrydrView = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tcrydrViewStandardName - ${crydrViewStandardName}`);
 
-  await submitTxAndWaitConfirmation(
-    CrydrControllerBaseInterfaceArtifact
-      .at(crydrControllerAddress)
-      .setCrydrView
-      .sendTransaction,
-    [crydrViewAddress, crydrViewStandardName],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrControllerBaseInterfaceArtifact
+  //     .at(crydrControllerAddress)
+  //     .setCrydrView
+  //     .sendTransaction,
+  //   [crydrViewAddress, crydrViewStandardName],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
+  await instance.setCrydrView(crydrViewAddress, crydrViewStandardName, { from: managerAddress });
   global.console.log('\tView of CryDR controller successfully set');
   return null;
 };
@@ -59,14 +63,16 @@ export const removeCrydrView = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tviewApiStandardName - ${viewApiStandardName}`);
-  await submitTxAndWaitConfirmation(
-    CrydrControllerBaseInterfaceArtifact
-      .at(crydrControllerAddress)
-      .removeCrydrView
-      .sendTransaction,
-    [viewApiStandardName],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrControllerBaseInterfaceArtifact
+  //     .at(crydrControllerAddress)
+  //     .removeCrydrView
+  //     .sendTransaction,
+  //   [viewApiStandardName],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
+  await instance.removeCrydrView(viewApiStandardName, { from: managerAddress });
   global.console.log('\tView of CryDR controller successfully removed');
   return null;
 };

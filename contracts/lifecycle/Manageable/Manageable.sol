@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../Ownable/OwnableInterface.sol';
@@ -56,7 +56,7 @@ contract Manageable is OwnableInterface,
    * @param _permissionName string  Granted permission name
    */
   function grantManagerPermission(
-    address _manager, string _permissionName
+    address _manager, string calldata _permissionName
   )
     external
     onlyOwner
@@ -67,7 +67,7 @@ contract Manageable is OwnableInterface,
 
     managerPermissions[_manager][_permissionName] = true;
 
-    emit ManagerPermissionGrantedEvent(_manager, keccak256(_permissionName));
+    emit ManagerPermissionGrantedEvent(_manager, keccak256(abi.encodePacked(_permissionName)));
   }
 
   /**
@@ -76,7 +76,7 @@ contract Manageable is OwnableInterface,
    * @param _permissionName string  Revoked permission name
    */
   function revokeManagerPermission(
-    address _manager, string _permissionName
+    address _manager, string calldata _permissionName
   )
     external
     onlyOwner
@@ -87,7 +87,7 @@ contract Manageable is OwnableInterface,
 
     managerPermissions[_manager][_permissionName] = false;
 
-    emit ManagerPermissionRevokedEvent(_manager, keccak256(_permissionName));
+    emit ManagerPermissionRevokedEvent(_manager, keccak256(abi.encodePacked(_permissionName)));
   }
 
 
@@ -102,7 +102,7 @@ contract Manageable is OwnableInterface,
     address _manager
   )
     public
-    constant
+    view
     onlyValidManagerAddress(_manager)
     returns (bool)
   {
@@ -116,10 +116,10 @@ contract Manageable is OwnableInterface,
    * @return True if manager has been granted needed permission
    */
   function isPermissionGranted(
-    address _manager, string _permissionName
+    address _manager, string memory _permissionName
   )
     public
-    constant
+    view
     onlyValidManagerAddress(_manager)
     onlyValidPermissionName(_permissionName)
     returns (bool)
@@ -134,10 +134,10 @@ contract Manageable is OwnableInterface,
    * @return True if manager is enabled and has been granted needed permission
    */
   function isManagerAllowed(
-    address _manager, string _permissionName
+    address _manager, string memory _permissionName
   )
     public
-    constant
+    view
     onlyValidManagerAddress(_manager)
     onlyValidPermissionName(_permissionName)
     returns (bool)
@@ -159,7 +159,7 @@ contract Manageable is OwnableInterface,
   /**
    * @dev Modifier to check name of manager permission
    */
-  modifier onlyValidPermissionName(string _permissionName) {
+  modifier onlyValidPermissionName(string memory _permissionName) {
     require(bytes(_permissionName).length != 0);
     _;
   }

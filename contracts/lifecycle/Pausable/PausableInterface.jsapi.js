@@ -13,14 +13,16 @@ export const unpauseContract = async (contractAddress, managerAddress) => {
   global.console.log('\tUnpause contract:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  await submitTxAndWaitConfirmation(
-    PausableInterfaceArtifact
-      .at(contractAddress)
-      .unpauseContract
-      .sendTransaction,
-    [],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   PausableInterfaceArtifact
+  //     .at(contractAddress)
+  //     .unpauseContract
+  //     .sendTransaction,
+  //   [],
+  //   { from: managerAddress }
+  // );
+  let instance = await PausableInterfaceArtifact.at(contractAddress);
+  await instance.unpauseContract({ from: managerAddress });
   global.console.log('\t\tContract successfully unpaused');
 };
 
@@ -28,14 +30,16 @@ export const pauseContract = async (contractAddress, managerAddress) => {
   global.console.log('\tPause contract:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
-  await submitTxAndWaitConfirmation(
-    PausableInterfaceArtifact
-      .at(contractAddress)
-      .pauseContract
-      .sendTransaction,
-    [],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   PausableInterfaceArtifact
+  //     .at(contractAddress)
+  //     .pauseContract
+  //     .sendTransaction,
+  //   [],
+  //   { from: managerAddress }
+  // );
+  let instance = await PausableInterfaceArtifact.at(contractAddress);
+  instance.pauseContract({ from: managerAddress });
   global.console.log('\t\tContract successfully paused');
 };
 

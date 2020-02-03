@@ -15,14 +15,16 @@ export const increaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageAllowanceInterfaceArtifact
-      .at(crydrStorageAddress)
-      .increaseAllowance
-      .sendTransaction,
-    [ownerAddress, spenderAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageAllowanceInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .increaseAllowance
+  //     .sendTransaction,
+  //   [ownerAddress, spenderAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
+  await instance.increaseAllowance(ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
 
@@ -34,14 +36,16 @@ export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageAllowanceInterfaceArtifact
-      .at(crydrStorageAddress)
-      .decreaseAllowance
-      .sendTransaction,
-    [ownerAddress, spenderAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageAllowanceInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .decreaseAllowance
+  //     .sendTransaction,
+  //   [ownerAddress, spenderAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
+  await instance.decreaseAllowance(ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
 

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
@@ -44,7 +44,7 @@ contract CrydrStorageBase is CommonModifiersInterface,
     emit CrydrControllerChangedEvent(_crydrController);
   }
 
-  function getCrydrController() public constant returns (address) {
+  function getCrydrController() public view returns (address) {
     return address(crydrController);
   }
 
@@ -58,6 +58,6 @@ contract CrydrStorageBase is CommonModifiersInterface,
     require(isContract(crydrController) == true);
     require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
-    super.unpauseContract();
+    PausableInterface.unpauseContract();
   }
 }

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -19,5 +19,5 @@ contract CrydrStorageAllowanceInterface {
 
   function increaseAllowance(address _owner, address _spender, uint256 _value) public;
   function decreaseAllowance(address _owner, address _spender, uint256 _value) public;
-  function getAllowance(address _owner, address _spender) public constant returns (uint256);
+  function getAllowance(address _owner, address _spender) public view returns (uint256);
 }

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import "../../lifecycle/Manageable/ManageableInterface.sol";
@@ -25,10 +25,10 @@ contract CrydrLicenseRegistry is ManageableInterface,
   /* CrydrLicenseRegistryInterface */
 
   function isUserAllowed(
-    address _userAddress, string _licenseName
+    address _userAddress, string memory _licenseName
   )
     public
-    constant
+    view
     onlyValidAddress(_userAddress)
     onlyValidLicenseName(_licenseName)
     returns (bool)
@@ -72,7 +72,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     address _userAddress
   )
     public
-    constant
+    view
     onlyValidAddress(_userAddress)
     returns (bool)
   {
@@ -81,7 +81,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
 
   function grantUserLicense(
-    address _userAddress, string _licenseName
+    address _userAddress, string calldata _licenseName
   )
     external
     onlyValidAddress(_userAddress)
@@ -92,11 +92,11 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
     userLicenses[_userAddress][_licenseName] = true;
 
-    emit UserLicenseGrantedEvent(_userAddress, keccak256(_licenseName));
+    emit UserLicenseGrantedEvent(_userAddress, keccak256(abi.encodePacked(_licenseName)));
   }
 
   function revokeUserLicense(
-    address _userAddress, string _licenseName
+    address _userAddress, string calldata _licenseName
   )
     external
     onlyValidAddress(_userAddress)
@@ -107,14 +107,14 @@ contract CrydrLicenseRegistry is ManageableInterface,
 
     userLicenses[_userAddress][_licenseName] = false;
 
-    emit UserLicenseRevokedEvent(_userAddress, keccak256(_licenseName));
+    emit UserLicenseRevokedEvent(_userAddress, keccak256(abi.encodePacked(_licenseName)));
   }
 
   function isUserGranted(
-    address _userAddress, string _licenseName
+    address _userAddress, string memory _licenseName
   )
     public
-    constant
+    view
     onlyValidAddress(_userAddress)
     onlyValidLicenseName(_licenseName)
     returns (bool)
@@ -123,10 +123,10 @@ contract CrydrLicenseRegistry is ManageableInterface,
   }
 
   function isUserLicenseValid(
-    address _userAddress, string _licenseName
+    address _userAddress, string memory _licenseName
   )
     public
-    constant
+    view
     onlyValidAddress(_userAddress)
     onlyValidLicenseName(_licenseName)
     returns (bool)
@@ -142,7 +142,7 @@ contract CrydrLicenseRegistry is ManageableInterface,
     _;
   }
 
-  modifier onlyValidLicenseName(string _licenseName) {
+  modifier onlyValidLicenseName(string memory _licenseName) {
     require(bytes(_licenseName).length > 0);
     _;
   }

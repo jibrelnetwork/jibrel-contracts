@@ -17,14 +17,16 @@ export const executeCall = async (contractAddress, managerAddress,
   global.console.log(`\t\ttargetAddress - ${targetAddress}`);
   global.console.log(`\t\tsuppliedGas - ${suppliedGas}`);
   global.console.log(`\t\tethValue - ${ethValue}`);
-  await submitTxAndWaitConfirmation(
-    BytecodeExecutorInterfaceArtifact
-      .at(contractAddress)
-      .executeCall
-      .sendTransaction,
-    [targetAddress, suppliedGas, ethValue, transactionBytecode],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   BytecodeExecutorInterfaceArtifact
+  //     .at(contractAddress)
+  //     .executeCall
+  //     .sendTransaction,
+  //   [targetAddress, suppliedGas, ethValue, transactionBytecode],
+  //   { from: managerAddress }
+  // );
+  let instance = await BytecodeExecutorInterfaceArtifact.at(contractAddress);
+  await instance.executeCall(targetAddress, suppliedGas, ethValue, transactionBytecode, { from: managerAddress });
   global.console.log('\t\t"call" opcode successfully executed');
 };
 
@@ -35,14 +37,16 @@ export const executeDelegatecall = async (contractAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\ttargetAddress - ${targetAddress}`);
   global.console.log(`\t\tsuppliedGas - ${suppliedGas}`);
-  await submitTxAndWaitConfirmation(
-    BytecodeExecutorInterfaceArtifact
-      .at(contractAddress)
-      .executeDelegatecall
-      .sendTransaction,
-    [targetAddress, suppliedGas, transactionBytecode],
-    { from: managerAddress },
-  );
+  // await submitTxAndWaitConfirmation(
+  //   BytecodeExecutorInterfaceArtifact
+  //     .at(contractAddress)
+  //     .executeDelegatecall
+  //     .sendTransaction,
+  //   [targetAddress, suppliedGas, transactionBytecode],
+  //   { from: managerAddress },
+  // );
+  let instance = await BytecodeExecutorInterfaceArtifact.at(contractAddress);
+  await instance.executeDelegatecall(targetAddress, suppliedGas, transactionBytecode, { from: managerAddress });
   global.console.log('\t\t"delegatecall" opcode successfully executed');
 };
 

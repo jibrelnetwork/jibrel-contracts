@@ -1,7 +1,10 @@
 const OwnableInterfaceArtifact = global.artifacts.require('OwnableInterface.sol');
 
 
-export const getOwner = async (contractAddress) => OwnableInterfaceArtifact.at(contractAddress).getOwner.call();
+export const getOwner = async (contractAddress) => {
+  let instance = awaitOwnableInterfaceArtifact.at(contractAddress);
+  return await instance.getOwner();
+}
 
 export const verifyOwner = async (contractAddress, contractOwner) => {
   const receivedContractOwner = await getOwner(contractAddress);

@@ -26,14 +26,16 @@ export const transfer = async (crydrViewAddress, spenderAddress,
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    ERC20InterfaceArtifact
-      .at(crydrViewAddress)
-      .transfer
-      .sendTransaction,
-    [toAddress, valueTransferred],
-    { from: spenderAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   ERC20InterfaceArtifact
+  //     .at(crydrViewAddress)
+  //     .transfer
+  //     .sendTransaction,
+  //   [toAddress, valueTransferred],
+  //   { from: spenderAddress }
+  // );
+  let instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
+  await instance.transfer(toAddress, valueTransferred, { from: spenderAddress });
   global.console.log(`\tTokens successfully transferred: ${txHash}`);
   return txHash;
 };
@@ -52,14 +54,16 @@ export const approve = async (crydrViewAddress, approverAddress,
   global.console.log(`\t\tapproverAddress - ${approverAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueApproved - ${valueApproved}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    ERC20InterfaceArtifact
-      .at(crydrViewAddress)
-      .approve
-      .sendTransaction,
-    [spenderAddress, valueApproved],
-    { from: approverAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   ERC20InterfaceArtifact
+  //     .at(crydrViewAddress)
+  //     .approve
+  //     .sendTransaction,
+  //   [spenderAddress, valueApproved],
+  //   { from: approverAddress }
+  // );
+  let instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
+  await instance.approve(spenderAddress, valueApproved, { from: approverAddress });
   global.console.log(`\tSpending of tokens successfully approved: ${txHash}`);
   return txHash;
 };
@@ -72,14 +76,16 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    ERC20InterfaceArtifact
-      .at(crydrViewAddress)
-      .transferFrom
-      .sendTransaction,
-    [fromAddress, toAddress, valueTransferred],
-    { from: spenderAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   ERC20InterfaceArtifact
+  //     .at(crydrViewAddress)
+  //     .transferFrom
+  //     .sendTransaction,
+  //   [fromAddress, toAddress, valueTransferred],
+  //   { from: spenderAddress }
+  // );
+  let instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
+  await instance.transferFrom(fromAddress, toAddress, valueTransferred, { from: spenderAddress });
   global.console.log(`\tTokens successfully transferred From: ${txHash}`);
   return txHash;
 };

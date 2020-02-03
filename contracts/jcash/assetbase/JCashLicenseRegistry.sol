@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../feature/AssetID/AssetID.sol';
@@ -18,11 +18,12 @@ import '../../crydr/license/CrydrLicenseRegistry.sol';
 contract JCashLicenseRegistry is AssetID,
                                  Ownable,
                                  Manageable,
-                                 Pausable,
                                  BytecodeExecutor,
-                                 CrydrLicenseRegistry {
+                                 CrydrLicenseRegistry,
+                                  Pausable
+                                 {
 
   /* Constructor */
 
-  constructor (string _assetID) AssetID(_assetID) public { }
+  constructor (string memory _assetID) AssetID(_assetID) public { }
 }

@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../util/CommonModifiers/CommonModifiers.sol';
@@ -20,8 +20,8 @@ import '../../crydr/view/CrydrViewERC20/CrydrViewERC20Interface.sol';
 contract JcashRegistrar is CommonModifiers,
                            Ownable,
                            Manageable,
-                           Pausable,
                            JNTPayableService,
+                           Pausable,
                            JcashRegistrarInterface {
 
   /* Storage */
@@ -114,7 +114,7 @@ contract JcashRegistrar is CommonModifiers,
    */
   function refundEth(
     bytes32 _txHash,
-    address _to,
+    address payable _to,
     uint256 _weivalue
   )
     external
@@ -168,7 +168,7 @@ contract JcashRegistrar is CommonModifiers,
    */
   function transferEth(
     bytes32 _txHash,
-    address _to,
+    address payable _to,
     uint256 _weivalue
   )
     external

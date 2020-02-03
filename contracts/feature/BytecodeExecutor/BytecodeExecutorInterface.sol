@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -23,6 +23,6 @@ contract BytecodeExecutorInterface {
 
   /* Functions */
 
-  function executeCall(address _target, uint256 _suppliedGas, uint256 _ethValue, bytes _transactionBytecode) external;
-  function executeDelegatecall(address _target, uint256 _suppliedGas, bytes _transactionBytecode) external;
+  function executeCall(address _target, uint256 _suppliedGas, uint256 _ethValue, bytes calldata _transactionBytecode) external;
+  function executeDelegatecall(address _target, uint256 _suppliedGas, bytes calldata _transactionBytecode) external;
 }

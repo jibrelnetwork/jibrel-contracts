@@ -17,14 +17,16 @@ export const forcedTransfer = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueToTransfer - ${valueToTransfer}`);
-  await submitTxAndWaitConfirmation(
-    CrydrControllerForcedTransferInterfaceArtifact
-      .at(crydrControllerAddress)
-      .forcedTransfer
-      .sendTransaction,
-    [fromAddress, toAddress, valueToTransfer],
-    { from: callerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrControllerForcedTransferInterfaceArtifact
+  //     .at(crydrControllerAddress)
+  //     .forcedTransfer
+  //     .sendTransaction,
+  //   [fromAddress, toAddress, valueToTransfer],
+  //   { from: callerAddress }
+  // );
+  let instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
+  instance.forcedTransfer(fromAddress, toAddress, valueToTransfer, { from: callerAddress });
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
 };
@@ -37,14 +39,16 @@ export const forcedTransferAll = async (crydrControllerAddress, callerAddress,
   global.console.log(`\t\tcallerAddress - ${callerAddress}`);
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrControllerForcedTransferInterfaceArtifact
-      .at(crydrControllerAddress)
-      .forcedTransferAll
-      .sendTransaction,
-    [fromAddress, toAddress],
-    { from: callerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrControllerForcedTransferInterfaceArtifact
+  //     .at(crydrControllerAddress)
+  //     .forcedTransferAll
+  //     .sendTransaction,
+  //   [fromAddress, toAddress],
+  //   { from: callerAddress }
+  // );
+  let instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
+  instance.forcedTransferAll(fromAddress, toAddress, { from: callerAddress });
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
 };

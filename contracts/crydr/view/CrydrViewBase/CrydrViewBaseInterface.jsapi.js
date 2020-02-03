@@ -15,14 +15,16 @@ export const setCrydrController = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tcrydrViewAddress - ${crydrViewAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tcrydrControllerAddress - ${crydrControllerAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrViewBaseInterfaceArtifact
-      .at(crydrViewAddress)
-      .setCrydrController
-      .sendTransaction,
-    [crydrControllerAddress],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrViewBaseInterfaceArtifact
+  //     .at(crydrViewAddress)
+  //     .setCrydrController
+  //     .sendTransaction,
+  //   [crydrControllerAddress],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrViewBaseInterfaceArtifact.at(crydrViewAddress);
+  await instance.setCrydrController(crydrControllerAddress, { from: managerAddress });
   global.console.log('\tController of crydr view successfully set');
   return null;
 };

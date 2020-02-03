@@ -16,14 +16,16 @@ export const increaseBalance = async (crydrStorageAddress, crydrControllerAddres
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBalanceInterfaceArtifact
-      .at(crydrStorageAddress)
-      .increaseBalance
-      .sendTransaction,
-    [accountAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBalanceInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .increaseBalance
+  //     .sendTransaction,
+  //   [accountAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageBalanceInterfaceArtifact.at(crydrStorageAddress);
+  await instance.increaseBalance(accountAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
 
@@ -34,14 +36,16 @@ export const decreaseBalance = async (crydrStorageAddress, crydrControllerAddres
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBalanceInterfaceArtifact
-      .at(crydrStorageAddress)
-      .decreaseBalance
-      .sendTransaction,
-    [accountAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBalanceInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .decreaseBalance
+  //     .sendTransaction,
+  //   [accountAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  let instance = await CrydrStorageBalanceInterfaceArtifact.at(crydrStorageAddress);
+  await instance.decreaseBalance(accountAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tBalance successfully decreased');
 };
 

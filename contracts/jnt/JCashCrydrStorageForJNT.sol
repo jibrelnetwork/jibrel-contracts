@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../third-party/zeppelin-solidity/SafeMath.sol';
@@ -26,9 +26,9 @@ contract JCashCrydrStorageForJNT is SafeMath,
                                     AssetID,
                                     Ownable,
                                     Manageable,
-                                    Pausable,
                                     BytecodeExecutor,
                                     CrydrStorageBase,
+                                    Pausable,
                                     CrydrStorageBalance,
                                     CrydrStorageAllowance,
                                     CrydrStorageBlocks,
@@ -36,5 +36,5 @@ contract JCashCrydrStorageForJNT is SafeMath,
 
   /* Constructor */
 
-  constructor (string _assetID) AssetID(_assetID) public { }
+  constructor (string memory _assetID) AssetID(_assetID) public { }
 }

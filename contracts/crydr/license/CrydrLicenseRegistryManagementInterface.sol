@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -37,7 +37,7 @@ contract CrydrLicenseRegistryManagementInterface {
    * @param _userAddress address User`s address
    * @return True if investor is in the registry and admitted
    */
-  function isUserAdmitted(address _userAddress) public constant returns (bool);
+  function isUserAdmitted(address _userAddress) public view returns (bool);
 
 
   /**
@@ -45,14 +45,14 @@ contract CrydrLicenseRegistryManagementInterface {
    * @param _userAddress         address User`s address
    * @param _licenseName         string  name of the license
    */
-  function grantUserLicense(address _userAddress, string _licenseName) external;
+  function grantUserLicense(address _userAddress, string calldata _licenseName) external;
 
   /**
    * @dev Function to revoke license from the user
    * @param _userAddress address User`s address
    * @param _licenseName string  name of the license
    */
-  function revokeUserLicense(address _userAddress, string _licenseName) external;
+  function revokeUserLicense(address _userAddress, string calldata _licenseName) external;
 
   /**
    * @dev Function to check license of an investor
@@ -60,5 +60,5 @@ contract CrydrLicenseRegistryManagementInterface {
    * @param _licenseName string  License name
    * @return True if investor has been granted needed license
    */
-  function isUserGranted(address _userAddress, string _licenseName) public constant returns (bool);
+  function isUserGranted(address _userAddress, string memory _licenseName) public view returns (bool);
 }

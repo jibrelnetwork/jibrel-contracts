@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../third-party/zeppelin-solidity/SafeMathInterface.sol';
@@ -64,13 +64,13 @@ contract CrydrStorageBalance is SafeMathInterface,
     emit AccountBalanceDecreasedEvent(_account, _value);
   }
 
-  function getBalance(address _account) public constant returns (uint256) {
+  function getBalance(address _account) public view returns (uint256) {
     require(_account != address(0x0));
 
     return balances[_account];
   }
 
-  function getTotalSupply() public constant returns (uint256) {
+  function getTotalSupply() public view returns (uint256) {
     return totalSupply;
   }
 }

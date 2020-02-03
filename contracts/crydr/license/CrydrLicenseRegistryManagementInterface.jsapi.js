@@ -15,14 +15,16 @@ export const admitUser = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterfaceArtifact
-      .at(licenseRegistryAddress)
-      .admitUser
-      .sendTransaction,
-    [userAddress],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrLicenseRegistryManagementInterfaceArtifact
+  //     .at(licenseRegistryAddress)
+  //     .admitUser
+  //     .sendTransaction,
+  //   [userAddress],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  await instance.admitUser(userAddress,  {from: managerAddress });
   global.console.log('\tUser successfully admitted');
 };
 
@@ -32,14 +34,16 @@ export const denyUser = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tlicenseRegistryAddress - ${licenseRegistryAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterfaceArtifact
-      .at(licenseRegistryAddress)
-      .denyUser
-      .sendTransaction,
-    [userAddress],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrLicenseRegistryManagementInterfaceArtifact
+  //     .at(licenseRegistryAddress)
+  //     .denyUser
+  //     .sendTransaction,
+  //   [userAddress],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  await instance.admitUser(userAddress,  {from: managerAddress });
   global.console.log('\tUser successfully denied');
 };
 
@@ -58,14 +62,16 @@ export const grantUserLicense = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
   global.console.log(`\t\tlicenseName - ${licenseName}`);
-  await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterfaceArtifact
-      .at(licenseRegistryAddress)
-      .grantUserLicense
-      .sendTransaction,
-    [userAddress, licenseName],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrLicenseRegistryManagementInterfaceArtifact
+  //     .at(licenseRegistryAddress)
+  //     .grantUserLicense
+  //     .sendTransaction,
+  //   [userAddress, licenseName],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  await instance.grantUserLicense(userAddress, licenseName, {from: managerAddress });
   global.console.log('\tUser license successfully granted');
 };
 
@@ -76,14 +82,16 @@ export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tuserAddress - ${userAddress}`);
   global.console.log(`\t\tlicenseName - ${licenseName}`);
-  await submitTxAndWaitConfirmation(
-    CrydrLicenseRegistryManagementInterfaceArtifact
-      .at(licenseRegistryAddress)
-      .revokeUserLicense
-      .sendTransaction,
-    [userAddress, licenseName],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrLicenseRegistryManagementInterfaceArtifact
+  //     .at(licenseRegistryAddress)
+  //     .revokeUserLicense
+  //     .sendTransaction,
+  //   [userAddress, licenseName],
+  //   { from: managerAddress }
+  // );
+  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  await instance.revokeUserLicense(userAddress, licenseName, {from: managerAddress });
   global.console.log('\tUser license successfully revoked');
 };
 

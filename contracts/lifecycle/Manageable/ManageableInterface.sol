@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -19,12 +19,12 @@ contract ManageableInterface {
    * @param _permissionName string  Permission name
    * @return True if manager is enabled and has been granted needed permission
    */
-  function isManagerAllowed(address _manager, string _permissionName) public constant returns (bool);
+  function isManagerAllowed(address _manager, string memory _permissionName) public view returns (bool);
 
   /**
    * @dev Modifier to use in derived contracts
    */
-  modifier onlyAllowedManager(string _permissionName) {
+  modifier onlyAllowedManager(string memory _permissionName) {
     require(isManagerAllowed(msg.sender, _permissionName) == true);
     _;
   }

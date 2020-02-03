@@ -15,14 +15,16 @@ export const createOwnershipOffer = async (contractAddress, ownerAddress,
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tproposedOwner - ${proposedOwner}`);
-  await submitTxAndWaitConfirmation(
-    OwnableArtifact
-      .at(contractAddress)
-      .createOwnershipOffer
-      .sendTransaction,
-    [proposedOwner],
-    { from: ownerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   OwnableArtifact
+  //     .at(contractAddress)
+  //     .createOwnershipOffer
+  //     .sendTransaction,
+  //   [proposedOwner],
+  //   { from: ownerAddress }
+  // );
+  let instance = await OwnableArtifact.at(contractAddress);
+  await instance.createOwnershipOffer(proposedOwner, { from: ownerAddress });
   global.console.log('\t\tOwnership offer successfully created');
 };
 
@@ -30,14 +32,16 @@ export const acceptOwnershipOffer = async (contractAddress, proposedOwner) => {
   global.console.log('\tAccept ownership offer:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\tproposedOwner - ${proposedOwner}`);
-  await submitTxAndWaitConfirmation(
-    OwnableArtifact
-      .at(contractAddress)
-      .acceptOwnershipOffer
-      .sendTransaction,
-    [],
-    { from: proposedOwner }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   OwnableArtifact
+  //     .at(contractAddress)
+  //     .acceptOwnershipOffer
+  //     .sendTransaction,
+  //   [],
+  //   { from: proposedOwner }
+  // );
+  let instance = await OwnableArtifact.at(contractAddress);
+  await instance.acceptOwnershipOffer({ from: proposedOwner });
   global.console.log('\t\tOwnership offer successfully accepted');
 };
 
@@ -45,14 +49,16 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
   global.console.log('\tAccept ownership offer:');
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\towner/proposedOwner - ${ownerAddress}`);
-  await submitTxAndWaitConfirmation(
-    OwnableArtifact
-      .at(contractAddress)
-      .cancelOwnershipOffer
-      .sendTransaction,
-    [],
-    { from: ownerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   OwnableArtifact
+  //     .at(contractAddress)
+  //     .cancelOwnershipOffer
+  //     .sendTransaction,
+  //   [],
+  //   { from: ownerAddress }
+  // );
+  let instance = await OwnableArtifact.at(contractAddress);
+  await instance.cancelOwnershipOffer({ from: ownerAddress });
   global.console.log('\t\tOwnership offer successfully canceled');
 };
 
