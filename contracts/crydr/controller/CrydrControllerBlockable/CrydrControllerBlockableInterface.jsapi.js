@@ -19,7 +19,7 @@ export const blockAccount = async (crydrControllerAddress, managerAddress,
   //   [accountAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
   await instance.blockAccount(accountAddress, { from: managerAddress });
   global.console.log('\tAccount successfully blocked via CryDR controller');
   return null;
@@ -39,7 +39,7 @@ export const unblockAccount = async (crydrControllerAddress, managerAddress,
   //   [accountAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
   await instance.unblockAccount(accountAddress, { from: managerAddress });
   global.console.log('\tAccount successfully unblocked via CryDR controller');
   return null;
@@ -61,7 +61,7 @@ export const blockAccountFunds = async (crydrControllerAddress, managerAddress,
   //   [accountAddress, blockedValue],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
   await instance.blockAccountFunds(accountAddress, blockedValue, { from: managerAddress });
   global.console.log('\tAccount funds successfully blocked via CryDR controller');
   return null;
@@ -82,7 +82,7 @@ export const unblockAccountFunds = async (crydrControllerAddress, managerAddress
   //   [accountAddress, blockedValue],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
   await instance.unblockAccountFunds(accountAddress, blockedValue, { from: managerAddress });
   global.console.log('\tAccount funds successfully unblocked via CryDR controller');
   return null;

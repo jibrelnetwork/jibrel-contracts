@@ -34,7 +34,7 @@ export const transfer = async (crydrViewAddress, spenderAddress,
   //   [toAddress, valueTransferred],
   //   { from: spenderAddress }
   // );
-  let instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
+  const instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
   await instance.transfer(toAddress, valueTransferred, { from: spenderAddress });
   global.console.log(`\tTokens successfully transferred: ${txHash}`);
   return txHash;
@@ -62,7 +62,7 @@ export const approve = async (crydrViewAddress, approverAddress,
   //   [spenderAddress, valueApproved],
   //   { from: approverAddress }
   // );
-  let instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
+  const instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
   await instance.approve(spenderAddress, valueApproved, { from: approverAddress });
   global.console.log(`\tSpending of tokens successfully approved: ${txHash}`);
   return txHash;
@@ -84,7 +84,7 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
   //   [fromAddress, toAddress, valueTransferred],
   //   { from: spenderAddress }
   // );
-  let instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
+  const instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
   await instance.transferFrom(fromAddress, toAddress, valueTransferred, { from: spenderAddress });
   global.console.log(`\tTokens successfully transferred From: ${txHash}`);
   return txHash;

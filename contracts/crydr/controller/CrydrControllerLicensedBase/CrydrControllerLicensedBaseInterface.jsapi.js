@@ -23,7 +23,7 @@ export const setLicenseRegistry = async (crydrControllerAddress, managerAddress,
   //   [licenseRegistryAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerLicensedBaseInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerLicensedBaseInterfaceArtifact.at(crydrControllerAddress);
   await instance.setLicenseRegistry(licenseRegistryAddress,  {from: managerAddress });
   global.console.log('\tLicense registry of CryDR controller successfully set');
 };

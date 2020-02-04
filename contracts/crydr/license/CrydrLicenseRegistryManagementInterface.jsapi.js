@@ -23,7 +23,7 @@ export const admitUser = async (licenseRegistryAddress, managerAddress,
   //   [userAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  const instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
   await instance.admitUser(userAddress,  {from: managerAddress });
   global.console.log('\tUser successfully admitted');
 };
@@ -42,7 +42,7 @@ export const denyUser = async (licenseRegistryAddress, managerAddress,
   //   [userAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  const instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
   await instance.admitUser(userAddress,  {from: managerAddress });
   global.console.log('\tUser successfully denied');
 };
@@ -70,7 +70,7 @@ export const grantUserLicense = async (licenseRegistryAddress, managerAddress,
   //   [userAddress, licenseName],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  const instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
   await instance.grantUserLicense(userAddress, licenseName, {from: managerAddress });
   global.console.log('\tUser license successfully granted');
 };
@@ -90,7 +90,7 @@ export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,
   //   [userAddress, licenseName],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
+  const instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
   await instance.revokeUserLicense(userAddress, licenseName, {from: managerAddress });
   global.console.log('\tUser license successfully revoked');
 };

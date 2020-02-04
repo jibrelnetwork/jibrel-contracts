@@ -21,7 +21,7 @@ export const unpauseContract = async (contractAddress, managerAddress) => {
   //   [],
   //   { from: managerAddress }
   // );
-  let instance = await PausableInterfaceArtifact.at(contractAddress);
+  const instance = await PausableInterfaceArtifact.at(contractAddress);
   await instance.unpauseContract({ from: managerAddress });
   global.console.log('\t\tContract successfully unpaused');
 };
@@ -38,7 +38,7 @@ export const pauseContract = async (contractAddress, managerAddress) => {
   //   [],
   //   { from: managerAddress }
   // );
-  let instance = await PausableInterfaceArtifact.at(contractAddress);
+  const instance = await PausableInterfaceArtifact.at(contractAddress);
   instance.pauseContract({ from: managerAddress });
   global.console.log('\t\tContract successfully paused');
 };

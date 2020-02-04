@@ -24,7 +24,7 @@ export const setJntController = async (jntPayableServiceAddress, managerAddress,
   //   { from: managerAddress }
   // );
 
-  let instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
+  const instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
   try{
     let res = await instance.setJntController(jntControllerAddress,  {from: managerAddress });
     global.console.log('\tJNT controller of JNT payable service successfully set', res);
@@ -36,7 +36,7 @@ export const setJntController = async (jntPayableServiceAddress, managerAddress,
 };
 
 export const getJntController = async (contractAddress) => {
-  let instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  const instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
   return await instance.getJntController();
 }
 
@@ -55,7 +55,7 @@ export const setJntBeneficiary = async (jntPayableServiceAddress, managerAddress
   //   [jntBeneficiaryAddress],
   //   { from: managerAddress }
   // );
-  let instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
+  const instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
   try {
     await instance.setJntBeneficiary(jntBeneficiaryAddress, {from: managerAddress});
     global.console.log('\tJNT beneficiary of JNT payable service successfully set');
@@ -67,7 +67,7 @@ export const setJntBeneficiary = async (jntPayableServiceAddress, managerAddress
 };
 
 export const getJntBeneficiary = async (contractAddress) => {
-  let instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  const instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
   return await instance.getJntBeneficiary();
 }
 
@@ -87,7 +87,7 @@ export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
   //   [actionName, jntPriceWei],
   //   { from: managerAddress }
   // );
-  let instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
+  const instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
   try{
     await instance.setActionPrice(actionName, jntPriceWei,  {from: managerAddress });
     global.console.log('\tAction price of JNT payable service successfully set');
@@ -99,7 +99,7 @@ export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
 
 
 export const getActionPrice = async (contractAddress, actionName) => {
-  let instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  const instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
   return await instance.getActionPrice(actionName);
 }
 

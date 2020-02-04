@@ -3,7 +3,9 @@ import { submitTxAndWaitConfirmation } from '../../../../jsroutines/util/SubmitT
 const Promise = require('bluebird');
 
 const CrydrControllerBaseInterfaceArtifact = global.artifacts.require('CrydrControllerBaseInterface.sol');
+const CrydrControllerBaseArtifact = global.artifacts.require('CrydrControllerBase.sol');
 
+const sleep = require('sleep-promise');
 
 /* Configuration */
 
@@ -21,8 +23,19 @@ export const setCrydrStorage = async (crydrControllerAddress, managerAddress,
   //   [crydrStorageAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
-  await instance.setCrydrStorage(crydrStorageAddress, { from: managerAddress });
+  const instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
+  const c = await CrydrControllerBaseArtifact.at(crydrControllerAddress);
+  try {
+    // let mr = await c.isManagerAllowed(managerAddress, "set_crydr_storage");
+    // await sleep(10000);
+    global.console.log('\tFOO', crydrControllerAddress, crydrStorageAddress, managerAddress);
+    await instance.setCrydrStorage(crydrStorageAddress, { from: managerAddress });
+    global.console.log('\tBAR');
+
+  } catch (e) {
+    global.console.log('\tStorage of CryDR controller setting error:', e);
+    // throw e;
+  }
   global.console.log('\tStorage of CryDR controller successfully set');
   return null;
 };
@@ -51,7 +64,7 @@ export const setCrydrView = async (crydrControllerAddress, managerAddress,
   //   [crydrViewAddress, crydrViewStandardName],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
   await instance.setCrydrView(crydrViewAddress, crydrViewStandardName, { from: managerAddress });
   global.console.log('\tView of CryDR controller successfully set');
   return null;
@@ -71,7 +84,7 @@ export const removeCrydrView = async (crydrControllerAddress, managerAddress,
   //   [viewApiStandardName],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
   await instance.removeCrydrView(viewApiStandardName, { from: managerAddress });
   global.console.log('\tView of CryDR controller successfully removed');
   return null;

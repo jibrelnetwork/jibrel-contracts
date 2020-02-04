@@ -23,7 +23,7 @@ export const setCrydrController = async (crydrViewAddress, managerAddress,
   //   [crydrControllerAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewBaseInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewBaseInterfaceArtifact.at(crydrViewAddress);
   await instance.setCrydrController(crydrControllerAddress, { from: managerAddress });
   global.console.log('\tController of crydr view successfully set');
   return null;

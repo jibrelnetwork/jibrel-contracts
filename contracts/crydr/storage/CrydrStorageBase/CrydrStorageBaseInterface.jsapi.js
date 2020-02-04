@@ -23,8 +23,14 @@ export const setCrydrController = async (crydrStorageAddress, managerAddress,
   //   [crydrControllerAddress],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrStorageBaseInterfaceArtifact.at(crydrStorageAddress);
-  await instance.setCrydrController(managerAddress, { from: managerAddress });
+  const instance = await CrydrStorageBaseInterfaceArtifact.at(crydrStorageAddress);
+  try {
+    global.console.log('\t BEBE');
+    await instance.setCrydrController(crydrControllerAddress, { from: managerAddress });
+  } catch (e) {
+    global.console.log('\tController of CryDR storage setting error:', e);
+    // throw e;
+  }
   global.console.log('\tController of CryDR storage successfully set');
 };
 

@@ -2,7 +2,7 @@ const ManageableInterfaceArtifact = global.artifacts.require('ManageableInterfac
 
 
 export const isManagerAllowed = async (contractAddress, manager, permissionName) => {
-  let instance = await ManageableInterfaceArtifact.at(contractAddress);
+  const instance = await ManageableInterfaceArtifact.at(contractAddress);
   return await instance.isManagerAllowed(manager, permissionName);
 }
 

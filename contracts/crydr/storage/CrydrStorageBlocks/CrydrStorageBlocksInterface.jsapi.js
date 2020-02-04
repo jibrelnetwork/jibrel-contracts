@@ -21,7 +21,7 @@ export const blockAccount = async (crydrStorageAddress, crydrControllerAddress,
   //   [accountAddress],
   //   { from: crydrControllerAddress }
   // );
-  let instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
   await instance.blockAccount(accountAddress, { from: crydrControllerAddress });
   global.console.log('\tAccount successfully blocked');
 };
@@ -40,7 +40,7 @@ export const unblockAccount = async (crydrStorageAddress, crydrControllerAddress
   //   [accountAddress],
   //   { from: crydrControllerAddress }
   // );
-  let instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
   await instance.unblockAccount(accountAddress, { from: crydrControllerAddress });
   global.console.log('\tAccount successfully unlocked');
 };
@@ -64,7 +64,7 @@ export const blockAccountFunds = async (crydrStorageAddress, crydrControllerAddr
   //   [accountAddress, valueWei],
   //   { from: crydrControllerAddress }
   // );
-  let instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
   await instance.blockAccountFunds(accountAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tFunds successfully blocked');
 };
@@ -84,7 +84,7 @@ export const unblockAccountFunds = async (crydrStorageAddress, crydrControllerAd
   //   [accountAddress, valueWei],
   //   { from: crydrControllerAddress }
   // );
-  let instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
   await instance.unblockAccountFunds(accountAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tFunds successfully unlocked');
 };

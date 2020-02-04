@@ -17,7 +17,7 @@ export const setName = async (crydrViewAddress, managerAddress,
   //   [newName],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20NamedInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20NamedInterfaceArtifact.at(crydrViewAddress);
   await instance.setName(newName, { from: managerAddress });
   global.console.log('\tName of crydr view configured');
   return null;
@@ -37,7 +37,7 @@ export const setSymbol = async (crydrViewAddress, managerAddress,
   //   [newSymbol],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20NamedInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20NamedInterfaceArtifact.at(crydrViewAddress);
   await instance.setSymbol(newSymbol, { from: managerAddress });
   global.console.log('\tSymbol of crydr view configured');
   return null;
@@ -57,7 +57,7 @@ export const setDecimals = async (crydrViewAddress, managerAddress,
   //   [newDecimals],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20NamedInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20NamedInterfaceArtifact.at(crydrViewAddress);
   await instance.setDecimals(newDecimals, { from: managerAddress });
   global.console.log('\tDecimals of crydr view configured');
   return null;

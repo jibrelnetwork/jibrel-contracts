@@ -19,7 +19,7 @@ export const emitTransferEvent = async (crydrViewAddress, managerAddress,
   //   [fromAddress, toAddress, valueTransferred],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20LoggableInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20LoggableInterfaceArtifact.at(crydrViewAddress);
   await instance.emitTransferEvent(fromAddress, toAddress, valueTransferred, { from: managerAddress });
   global.console.log('\tEvent Transfer successfully emitted');
   return null;
@@ -41,7 +41,7 @@ export const emitApprovalEvent = async (crydrViewAddress, managerAddress,
   //   [ownerAddress, spenderAddress, valueTransferred],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20LoggableInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20LoggableInterfaceArtifact.at(crydrViewAddress);
   await instance.emitApprovalEvent(fromAddress, toAddress, valueTransferred, { from: managerAddress });
   global.console.log('\tEvent Approval successfully emitted');
   return null;

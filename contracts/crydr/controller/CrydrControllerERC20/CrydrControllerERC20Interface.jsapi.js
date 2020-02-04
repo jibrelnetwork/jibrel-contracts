@@ -21,7 +21,7 @@ export const transfer = async (crydrControllerAddress, callerAddress,
   //   [msgsenderAddress, toAddress, valueToTransfer],
   //   { from: callerAddress }
   // );
-  let instance = await CrydrControllerERC20InterfaceArtifact.at(crydrControllerAddress)
+  const instance = await CrydrControllerERC20InterfaceArtifact.at(crydrControllerAddress)
   await instance.transfer(msgsenderAddress, toAddress, valueToTransfer,  {from: callerAddress });
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
@@ -50,7 +50,7 @@ export const approve = async (crydrControllerAddress, callerAddress,
   //   [msgsenderAddress, spenderAddress, valueToApprove],
   //   { from: callerAddress }
   // );
-  let instance = await CrydrControllerERC20InterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerERC20InterfaceArtifact.at(crydrControllerAddress);
   await instance.approve(msgsenderAddress, spenderAddress, valueToApprove,  {from: callerAddress });
   global.console.log('\tSpending successfully approved via CryDR Controller');
   return null;
@@ -73,7 +73,7 @@ export const transferFrom = async (crydrControllerAddress, callerAddress,
   //   [msgsenderAddress, fromAddress, toAddress, valueToTransfer],
   //   { from: callerAddress }
   // );
-  let instance = await CrydrControllerERC20InterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerERC20InterfaceArtifact.at(crydrControllerAddress);
   await instance.transferFrom(msgsenderAddress, fromAddress, toAddress, valueToTransfer,  {from: callerAddress });
   global.console.log('\tTransfer From successfully executed via CryDR Controller');
   return null;

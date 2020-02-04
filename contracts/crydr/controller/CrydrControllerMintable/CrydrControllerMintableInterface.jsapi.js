@@ -18,7 +18,7 @@ export const mint = async (crydrControllerAddress, managerAddress,
   //   [receiverAddress, amount],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerMintableInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerMintableInterfaceArtifact.at(crydrControllerAddress);
   await instance.mint(receiverAddress, amount, { from: managerAddress });
   global.console.log('\tTokens successfully minted');
   return null;
@@ -39,7 +39,7 @@ export const burn = async (crydrControllerAddress, managerAddress,
   //   [loserAddress, amount],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrControllerMintableInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerMintableInterfaceArtifact.at(crydrControllerAddress);
   await instance.burn(loserAddress, amount, { from: managerAddress });
   global.console.log('\tTokens successfully burned');
   return null;

@@ -16,7 +16,6 @@ export const enableManager = async (contractAddress, ownerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
 
-  global.console.log(`\t\tXXX - ${managerAddress}`);
   // await submitTxAndWaitConfirmation(
   //   ManageableArtifact
   //     .at(contractAddress)
@@ -25,8 +24,8 @@ export const enableManager = async (contractAddress, ownerAddress,
   //   [managerAddress],
   //   { from: ownerAddress }
   // );
-  // let instance = await ManageableArtifact.deployed();
-  let instance = await ManageableArtifact.at(contractAddress);
+  // const instance = await ManageableArtifact.deployed();
+  const instance = await ManageableArtifact.at(contractAddress);
   await instance.enableManager(managerAddress,  {from: ownerAddress });
   global.console.log('\tManager successfully enabled, DI ${instance}');
 };
@@ -45,7 +44,7 @@ export const disableManager = async (contractAddress, ownerAddress,
   //   [managerAddress],
   //   { from: ownerAddress }
   // );
-  let instance = await ManageableArtifact.at(contractAddress);
+  const instance = await ManageableArtifact.at(contractAddress);
   await instance.disableManager(managerAddress,  {from: ownerAddress });
   global.console.log('\tManager successfully disabled');
 };
@@ -67,8 +66,8 @@ export const grantManagerPermissions = async (contractAddress, ownerAddress,
     //                         [managerAddress, permissionName],
     //                         { from: ownerAddress }
     //                       )));
-  // let instance = await ManageableArtifact.deployed();
-  let instance = await ManageableArtifact.at(contractAddress);
+  // const instance = await ManageableArtifact.deployed();
+  const instance = await ManageableArtifact.at(contractAddress);
   for(let i = 0; i < permissionsList.length; i++){
     const permissionName = permissionsList[i];
     await instance.grantManagerPermission(managerAddress, permissionName,  {from: ownerAddress});
@@ -95,7 +94,7 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
   //                         ))
   // );
 
-  let instance = await ManageableArtifact.at(contractAddress);
+  const instance = await ManageableArtifact.at(contractAddress);
   for(let i = 0; i < permissionsList.length; i++){
     const permissionName = permissionsList[i];
     await instance.revokeManagerPermission(managerAddress, permissionName,  {from: ownerAddress});

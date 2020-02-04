@@ -20,7 +20,7 @@ export const emitMintEvent = async (crydrViewAddress, managerAddress,
   //   [_owner, _value],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20MintableInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20MintableInterfaceArtifact.at(crydrViewAddress);
   await instance.emitMintEvent(_owner, _value, {from: managerAddress });
   global.console.log('\tMintEvent successfully emitted');
   return null;
@@ -41,7 +41,7 @@ export const emitBurnEvent = async (crydrViewAddress, managerAddress,
   //   [_owner, _value],
   //   { from: managerAddress }
   // );
-  let instance = await CrydrViewERC20MintableInterfaceArtifact.at(crydrViewAddress);
+  const instance = await CrydrViewERC20MintableInterfaceArtifact.at(crydrViewAddress);
   await instance.emitBurnEvent(_owner, _value, {from: managerAddress });
   global.console.log('\tBurnEvent successfully emitted');
   return null;

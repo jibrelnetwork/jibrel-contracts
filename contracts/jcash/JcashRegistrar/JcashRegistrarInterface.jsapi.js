@@ -28,7 +28,7 @@ export const withdrawEth = async (contractAddress, replenisherAddress, value) =>
   //   [value],
   //   { from: replenisherAddress }
   // );
-  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
   await instance.withdrawEth(value, {from: replenisherAddress});
   global.console.log('\tSuccessfully withdraw');
   return txHash;
@@ -48,7 +48,7 @@ export const withdrawToken = async (contractAddress, replenisherAddress, tokenAd
   //   [tokenAddress, value],
   //   { from: replenisherAddress }
   // );
-  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
   await instance.withdrawToken(tokenAddress, value, {from: replenisherAddress});
   global.console.log('\tSuccessfully withdraw');
   return txHash;
@@ -74,7 +74,7 @@ export const refundEth = async (contractAddress, managerAddress, refundedTxHash,
   //   [refundedTxHash, destinationAddress, value],
   //   { from: managerAddress }
   // );
-  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
   await instance.refundEth(refundedTxHash, destinationAddress, value, {from: managerAddress});
   global.console.log('\tSuccessfully refund');
   return txHash;
@@ -96,7 +96,7 @@ export const refundToken = async (contractAddress, managerAddress, refundedTxHas
   //   [refundedTxHash, tokenAddress, destinationAddress, value],
   //   { from: managerAddress }
   // );
-  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
   await instance.refundToken(refundedTxHash, tokenAddress, destinationAddress, value, {from: managerAddress});
   global.console.log('\tSuccessfully refund');
   return txHash;
@@ -116,7 +116,7 @@ export const transferEth = async (contractAddress, managerAddress, processedTxHa
   //   [processedTxHash, destinationAddress, value],
   //   { from: managerAddress }
   // );
-  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
   await instance.transferEth(processedTxHash, destinationAddress, value, { from: managerAddress });
   global.console.log('\tSuccessfully transfer');
   return txHash;
@@ -137,7 +137,7 @@ export const transferToken = async (contractAddress, managerAddress, processedTx
   //   [processedTxHash, tokenAddress, destinationAddress, value],
   //   { from: managerAddress }
   // );
-  let instance = await JcashRegistrarArtifact.at(contractAddress);
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
   await instance.transferToken(processedTxHash, tokenAddress, destinationAddress, value, { from: managerAddress });
   global.console.log('\tSuccessfully transfer');
   return txHash;

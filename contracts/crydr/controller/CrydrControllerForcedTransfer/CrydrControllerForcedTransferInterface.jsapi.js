@@ -25,7 +25,7 @@ export const forcedTransfer = async (crydrControllerAddress, callerAddress,
   //   [fromAddress, toAddress, valueToTransfer],
   //   { from: callerAddress }
   // );
-  let instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
   instance.forcedTransfer(fromAddress, toAddress, valueToTransfer, { from: callerAddress });
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
@@ -47,7 +47,7 @@ export const forcedTransferAll = async (crydrControllerAddress, callerAddress,
   //   [fromAddress, toAddress],
   //   { from: callerAddress }
   // );
-  let instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
+  const instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
   instance.forcedTransferAll(fromAddress, toAddress, { from: callerAddress });
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;

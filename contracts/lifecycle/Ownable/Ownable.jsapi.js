@@ -23,7 +23,7 @@ export const createOwnershipOffer = async (contractAddress, ownerAddress,
   //   [proposedOwner],
   //   { from: ownerAddress }
   // );
-  let instance = await OwnableArtifact.at(contractAddress);
+  const instance = await OwnableArtifact.at(contractAddress);
   await instance.createOwnershipOffer(proposedOwner, { from: ownerAddress });
   global.console.log('\t\tOwnership offer successfully created');
 };
@@ -40,7 +40,7 @@ export const acceptOwnershipOffer = async (contractAddress, proposedOwner) => {
   //   [],
   //   { from: proposedOwner }
   // );
-  let instance = await OwnableArtifact.at(contractAddress);
+  const instance = await OwnableArtifact.at(contractAddress);
   await instance.acceptOwnershipOffer({ from: proposedOwner });
   global.console.log('\t\tOwnership offer successfully accepted');
 };
@@ -57,7 +57,7 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
   //   [],
   //   { from: ownerAddress }
   // );
-  let instance = await OwnableArtifact.at(contractAddress);
+  const instance = await OwnableArtifact.at(contractAddress);
   await instance.cancelOwnershipOffer({ from: ownerAddress });
   global.console.log('\t\tOwnership offer successfully canceled');
 };

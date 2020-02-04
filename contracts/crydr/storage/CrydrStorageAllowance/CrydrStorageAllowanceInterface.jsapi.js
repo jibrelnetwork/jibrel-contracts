@@ -23,7 +23,7 @@ export const increaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   //   [ownerAddress, spenderAddress, valueWei],
   //   { from: crydrControllerAddress }
   // );
-  let instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
+  const instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
   await instance.increaseAllowance(ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
@@ -44,7 +44,7 @@ export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   //   [ownerAddress, spenderAddress, valueWei],
   //   { from: crydrControllerAddress }
   // );
-  let instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
+  const instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
   await instance.decreaseAllowance(ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };

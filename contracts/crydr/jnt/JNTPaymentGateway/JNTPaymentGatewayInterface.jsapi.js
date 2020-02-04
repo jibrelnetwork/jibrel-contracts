@@ -25,7 +25,7 @@ export const chargeJNT = async (crydrControllerAddress, managerAddress,
   //   [fromAccount, toAccount, valueToCharge],
   //   { from: managerAddress }
   // );
-  let instance = await JNTPaymentGatewayArtifact.at(crydrControllerAddress);
+  const instance = await JNTPaymentGatewayArtifact.at(crydrControllerAddress);
   await instance.chargeJNT(fromAccount, toAccount, valueToCharge, { from: managerAddress });
   global.console.log('\tJNT successfully charged');
   return null;
