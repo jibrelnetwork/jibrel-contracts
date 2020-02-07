@@ -22,19 +22,7 @@ import '../../crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicen
  * @title JCashCrydrControllerLicensed
  * @dev Mediates views and storage of an licensed CryDR
  */
-contract JCashCrydrControllerLicensed is CommonModifiers,
-                                         AssetID,
-                                         Ownable,
-                                         Manageable,
-                                         BytecodeExecutor,
-                                         CrydrControllerBase,
-                                         Pausable,
-                                         CrydrControllerBlockable,
-                                         CrydrControllerMintable,
-                                         CrydrControllerForcedTransfer,
-                                         CrydrControllerLicensedBase,
-                                         CrydrControllerLicensedERC20,
-                                         CrydrControllerERC20{
+contract JCashCrydrControllerLicensed is CrydrControllerLicensedERC20{
 
   /* Constructor */
 

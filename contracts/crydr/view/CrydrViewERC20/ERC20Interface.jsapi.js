@@ -10,13 +10,13 @@ const ERC20InterfaceArtifact = global.artifacts.require('CrydrViewERC20Interface
  */
 
 export const name = async (contractAddress) =>
-  ERC20InterfaceArtifact.at(contractAddress).name.call();
+  await ERC20InterfaceArtifact.at(contractAddress).name();
 
 export const symbol = async (contractAddress) =>
-  ERC20InterfaceArtifact.at(contractAddress).symbol.call();
+  await ERC20InterfaceArtifact.at(contractAddress).symbol();
 
 export const decimals = async (contractAddress) =>
-  ERC20InterfaceArtifact.at(contractAddress).decimals.call();
+  await ERC20InterfaceArtifact.at(contractAddress).decimals();
 
 
 export const transfer = async (crydrViewAddress, spenderAddress,
@@ -35,16 +35,19 @@ export const transfer = async (crydrViewAddress, spenderAddress,
   //   { from: spenderAddress }
   // );
   const instance = await ERC20InterfaceArtifact.at(crydrViewAddress);
-  await instance.transfer(toAddress, valueTransferred, { from: spenderAddress });
+  const txHash = await instance.transfer(toAddress, '0x' + valueTransferred.toString(16), { from: spenderAddress });
   global.console.log(`\tTokens successfully transferred: ${txHash}`);
   return txHash;
 };
 
 export const totalSupply = async (contractAddress) =>
-  ERC20InterfaceArtifact.at(contractAddress).totalSupply.call();
+  await ERC20InterfaceArtifact.at(contractAddress).totalSupply();
 
-export const balanceOf = async (contractAddress, ownerAddress) =>
-  ERC20InterfaceArtifact.at(contractAddress).balanceOf.call(ownerAddress);
+
+export const balanceOf = async (contractAddress, ownerAddress) => {
+  const inst = await ERC20InterfaceArtifact.at(contractAddress);
+  return inst.balanceOf(ownerAddress);
+}
 
 
 export const approve = async (crydrViewAddress, approverAddress,
@@ -91,7 +94,7 @@ export const transferFrom = async (crydrViewAddress, spenderAddress,
 };
 
 export const allowance = async (contractAddress, ownerAddress, spenderAddress) =>
-  ERC20InterfaceArtifact.at(contractAddress).allowance.call(ownerAddress, spenderAddress);
+  await ERC20InterfaceArtifact.at(contractAddress).allowance(ownerAddress, spenderAddress);
 
 
 /**
