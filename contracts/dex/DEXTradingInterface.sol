@@ -81,4 +81,11 @@ contract DEXTradingInterface {
   function executeSellOrder(uint256 _orderID, uint256 _amountToBuy) external returns (uint256);
   function executeBuyOrder(uint256 _orderID, uint256 _amountToSell) external returns (uint256);
   function cancelTrade(uint256 _tradeID) external;
+
+
+
+  /* Blocking of tokens */
+
+  event TokensBlockedEvent(address indexed userAddress, address indexed assetAddress, uint256 assetAmount);
+  event TokensUnblockedEvent(address indexed userAddress, address indexed assetAddress, uint256 assetAmount);
 }
