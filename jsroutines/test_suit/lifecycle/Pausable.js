@@ -102,7 +102,7 @@ export const assertWhenContractPaused = async (
 
 
   global.console.log('\tTest that function works when contract is paused');
-  await submitTxAndWaitConfirmation(testedContractFunction, functionArgs, txArgs);
+  await testedContractFunction(...functionArgs);
 
 
   // restore state
@@ -134,7 +134,7 @@ export const assertWhenContractNotPaused = async (
 
 
   global.console.log('\tTest that function works when contract is unpaused');
-  await submitTxAndWaitConfirmation(testedContractFunction, functionArgs, txArgs);
+  await testedContractFunction(...functionArgs);
 
 
   // restore state

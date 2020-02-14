@@ -91,9 +91,8 @@ export const configureJNTConnection = async (jcashRegistrarAddress, jntControlle
 };
 
 export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAddress, ethAccounts: TxConfig.EthereumAccounts, transferCost) => {
-  global.console.log('\tVerify JNT manager');
+  global.console.log('\tVerify JNT manager', jcashRegistrarAddress, jntControllerAddress, ethAccounts: TxConfig.EthereumAccounts, transferCost);
   const isVerified1 = await JNTPayableServiceJSAPI.verifyManagerPermissions(jcashRegistrarAddress, ethAccounts.managerJNT);
-
 
   global.console.log('\tVerify contract params');
 
@@ -110,13 +109,13 @@ export const verifyJNTConnection = async (jcashRegistrarAddress, jntControllerAd
   }
 
   const receivedTransferEthPrice = await JNTPayableServiceInterfaceJSAPI.getActionPrice(jcashRegistrarAddress, 'transfer_eth');
-  const isVerified4 = (receivedTransferEthPrice.toNumber() === transferCost);
+  const isVerified4 = (receivedTransferEthPrice.toString(16) === transferCost.toString(16));
   if (isVerified4 !== true) {
     global.console.log(`\t\tERROR: Cost of ETH transfer "${receivedTransferEthPrice}" configured for the contract "${jcashRegistrarAddress}" does not match expected value "${transferCost}"`);
   }
 
   const receivedTransferTokenPrice = await JNTPayableServiceInterfaceJSAPI.getActionPrice(jcashRegistrarAddress, 'transfer_token');
-  const isVerified5 = (receivedTransferTokenPrice.toNumber() === transferCost);
+  const isVerified5 = (receivedTransferTokenPrice.toString(16) === transferCost.toString(16));
   if (isVerified5 !== true) {
     global.console.log(`\t\tERROR: Cost of token transfer "${receivedTransferEthPrice}" configured for the contract "${jcashRegistrarAddress}" does not match expected value "${transferCost}"`);
   }

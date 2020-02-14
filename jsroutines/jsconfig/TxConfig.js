@@ -106,7 +106,7 @@ export class EthereumAccounts {
   }
 }
 
-export function setEthAccounts(accountsList) {
+  export function setEthAccounts(accountsList) {
   accounts = new EthereumAccounts(accountsList);
 }
 
