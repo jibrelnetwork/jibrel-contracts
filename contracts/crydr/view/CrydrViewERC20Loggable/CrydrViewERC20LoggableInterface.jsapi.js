@@ -11,14 +11,16 @@ export const emitTransferEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
-  await submitTxAndWaitConfirmation(
-    CrydrViewERC20LoggableInterfaceArtifact
-      .at(crydrViewAddress)
-      .emitTransferEvent
-      .sendTransaction,
-    [fromAddress, toAddress, valueTransferred],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrViewERC20LoggableInterfaceArtifact
+  //     .at(crydrViewAddress)
+  //     .emitTransferEvent
+  //     .sendTransaction,
+  //   [fromAddress, toAddress, valueTransferred],
+  //   { from: managerAddress }
+  // );
+  const instance = await CrydrViewERC20LoggableInterfaceArtifact.at(crydrViewAddress);
+  await instance.emitTransferEvent(fromAddress, toAddress, '0x'+ valueTransferred.toString(16), { from: managerAddress });
   global.console.log('\tEvent Transfer successfully emitted');
   return null;
 };
@@ -31,14 +33,16 @@ export const emitApprovalEvent = async (crydrViewAddress, managerAddress,
   global.console.log(`\t\townerAddress - ${ownerAddress}`);
   global.console.log(`\t\tspenderAddress - ${spenderAddress}`);
   global.console.log(`\t\tvalueTransferred - ${valueTransferred}`);
-  await submitTxAndWaitConfirmation(
-    CrydrViewERC20LoggableInterfaceArtifact
-      .at(crydrViewAddress)
-      .emitApprovalEvent
-      .sendTransaction,
-    [ownerAddress, spenderAddress, valueTransferred],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrViewERC20LoggableInterfaceArtifact
+  //     .at(crydrViewAddress)
+  //     .emitApprovalEvent
+  //     .sendTransaction,
+  //   [ownerAddress, spenderAddress, valueTransferred],
+  //   { from: managerAddress }
+  // );
+  const instance = await CrydrViewERC20LoggableInterfaceArtifact.at(crydrViewAddress);
+  await instance.emitApprovalEvent(ownerAddress, spenderAddress, '0x'+ valueTransferred.toString(16), { from: managerAddress });
   global.console.log('\tEvent Approval successfully emitted');
   return null;
 };

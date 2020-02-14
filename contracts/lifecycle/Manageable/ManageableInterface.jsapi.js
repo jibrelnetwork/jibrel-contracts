@@ -1,8 +1,11 @@
 const ManageableInterfaceArtifact = global.artifacts.require('ManageableInterface.sol');
 
 
-export const isManagerAllowed = (contractAddress, manager, permissionName) =>
-  ManageableInterfaceArtifact.at(contractAddress).isManagerAllowed.call(manager, permissionName);
+export const isManagerAllowed = async (contractAddress, manager, permissionName) => {
+  const instance = await ManageableInterfaceArtifact.at(contractAddress);
+  return await instance.isManagerAllowed(manager, permissionName);
+}
+
 
 export const verifyManagerAllowed = async (contractAddress, contractManager, permissionName) => {
   const isAllowed = await isManagerAllowed(contractAddress, contractManager, permissionName);

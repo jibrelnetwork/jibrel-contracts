@@ -7,7 +7,8 @@ const CrydrLicenseRegistryInterfaceArtifact = global.artifacts.require('CrydrLic
 
 export const isUserAllowed = async (contractAddress, userAddress, licenseName) => {
   global.console.log('\tFetch whether a user is allowed for a given action to a crydr contracts or not');
-  const result = await CrydrLicenseRegistryInterfaceArtifact.at(contractAddress).isUserAllowed.call(userAddress, licenseName);
+  const i = await CrydrLicenseRegistryInterfaceArtifact.at(contractAddress);
+  const result = await i.isUserAllowed(userAddress, licenseName);
   global.console.log(`\t\tResult: ${result}`);
   return result;
 };

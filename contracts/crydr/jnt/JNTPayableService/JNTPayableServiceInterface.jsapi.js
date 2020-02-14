@@ -15,20 +15,25 @@ export const setJntController = async (jntPayableServiceAddress, managerAddress,
   global.console.log(`\t\tjntPayableServiceAddress - ${jntPayableServiceAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tjntControllerAddress - ${jntControllerAddress}`);
-  await submitTxAndWaitConfirmation(
-    JNTPayableServiceInterfaceArtifact
-      .at(jntPayableServiceAddress)
-      .setJntController
-      .sendTransaction,
-    [jntControllerAddress],
-    { from: managerAddress }
-  );
-  global.console.log('\tJNT controller of JNT payable service successfully set');
+  // await submitTxAndWaitConfirmation(
+  //   JNTPayableServiceInterfaceArtifact
+  //     .at(jntPayableServiceAddress)
+  //     .setJntController
+  //     .sendTransaction,
+  //   [jntControllerAddress],
+  //   { from: managerAddress }
+  // );
+
+  const instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
+  let res = await instance.setJntController(jntControllerAddress,  {from: managerAddress });
+  global.console.log('\tJNT controller of JNT payable service successfully set', res.tx);
   return null;
 };
 
-export const getJntController = async (contractAddress) =>
-  JNTPayableServiceInterfaceArtifact.at(contractAddress).getJntController.call();
+export const getJntController = async (contractAddress) => {
+  const instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  return await instance.getJntController();
+}
 
 
 export const setJntBeneficiary = async (jntPayableServiceAddress, managerAddress,
@@ -37,21 +42,24 @@ export const setJntBeneficiary = async (jntPayableServiceAddress, managerAddress
   global.console.log(`\t\tjntPayableServiceAddress - ${jntPayableServiceAddress}`);
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tjntBeneficiaryAddress - ${jntBeneficiaryAddress}`);
-  await submitTxAndWaitConfirmation(
-    JNTPayableServiceInterfaceArtifact
-      .at(jntPayableServiceAddress)
-      .setJntBeneficiary
-      .sendTransaction,
-    [jntBeneficiaryAddress],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   JNTPayableServiceInterfaceArtifact
+  //     .at(jntPayableServiceAddress)
+  //     .setJntBeneficiary
+  //     .sendTransaction,
+  //   [jntBeneficiaryAddress],
+  //   { from: managerAddress }
+  // );
+  const instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
+  await instance.setJntBeneficiary(jntBeneficiaryAddress, {from: managerAddress});
   global.console.log('\tJNT beneficiary of JNT payable service successfully set');
   return null;
 };
 
-export const getJntBeneficiary = async (contractAddress) =>
-  JNTPayableServiceInterfaceArtifact.at(contractAddress).getJntBeneficiary.call();
-
+export const getJntBeneficiary = async (contractAddress) => {
+  const instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  return await instance.getJntBeneficiary();
+}
 
 
 export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
@@ -61,46 +69,66 @@ export const setActionPrice = async (jntPayableServiceAddress, managerAddress,
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tactionName - ${actionName}`);
   global.console.log(`\t\tjntPriceWei - ${jntPriceWei}`);
-  await submitTxAndWaitConfirmation(
-    JNTPayableServiceInterfaceArtifact
-      .at(jntPayableServiceAddress)
-      .setActionPrice
-      .sendTransaction,
-    [actionName, jntPriceWei],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   JNTPayableServiceInterfaceArtifact
+  //     .at(jntPayableServiceAddress)
+  //     .setActionPrice
+  //     .sendTransaction,
+  //   [actionName, jntPriceWei],
+  //   { from: managerAddress }
+  // );
+  const instance = await JNTPayableServiceInterfaceArtifact.at(jntPayableServiceAddress);
+  await instance.setActionPrice(actionName, '0x' + jntPriceWei.toString(16),  {from: managerAddress });
   global.console.log('\tAction price of JNT payable service successfully set');
   return null;
 };
 
-export const getActionPrice = async (contractAddress, actionName) =>
-  JNTPayableServiceInterfaceArtifact.at(contractAddress).getActionPrice.call(actionName);
+
+export const getActionPrice = async (contractAddress, actionName) => {
+  const instance = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  return await instance.getActionPrice(actionName);
+}
 
 
 /**
  * Events
  */
 
-export const getJNTControllerChangedEvents = (contractAddress, eventDataFilter, commonFilter) => {
-  const eventObj = JNTPayableServiceInterfaceArtifact
-    .at(contractAddress)
-    .JNTControllerChangedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getJNTControllerChangedEvents = async (contractAddress, eventDataFilter, commonFilter) => {
+  // const eventObj = JNTPayableServiceInterfaceArtifact
+  //   .at(contractAddress)
+  //   .JNTControllerChangedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('JNTControllerChangedEvent', filter);
+  return events;
 };
 
-export const getJNTBeneficiaryChangedEvents = (contractAddress, eventDataFilter, commonFilter) => {
-  const eventObj = JNTPayableServiceInterfaceArtifact
-    .at(contractAddress)
-    .JNTBeneficiaryChangedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getJNTBeneficiaryChangedEvents = async (contractAddress, eventDataFilter, commonFilter) => {
+  // const eventObj = JNTPayableServiceInterfaceArtifact
+  //   .at(contractAddress)
+  //   .JNTBeneficiaryChangedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('JNTBeneficiaryChangedEvent', filter);
+  return events;
 };
 
-export const getJNTChargedEvents = (contractAddress, eventDataFilter, commonFilter) => {
-  const eventObj = JNTPayableServiceInterfaceArtifact
-    .at(contractAddress)
-    .JNTChargedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getJNTChargedEvents = async (contractAddress, eventDataFilter, commonFilter) => {
+  // const eventObj = JNTPayableServiceInterfaceArtifact
+  //   .at(contractAddress)
+  //   .JNTChargedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JNTPayableServiceInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('JNTChargedEvent', filter);
+  return events;
 };
