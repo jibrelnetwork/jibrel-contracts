@@ -67,7 +67,10 @@ export const cancelOwnershipOffer = async (contractAddress, ownerAddress) => {
  * Getters
  */
 
-export const getProposedOwner = async (contractAddress) => OwnableArtifact.at(contractAddress).getProposedOwner.call();
+export const getProposedOwner = async (contractAddress) => {
+  const i = await OwnableArtifact.at(contractAddress)
+  return await i.getProposedOwner();
+}
 
 
 /**

@@ -39,7 +39,7 @@ export const pauseContract = async (contractAddress, managerAddress) => {
   //   { from: managerAddress }
   // );
   const instance = await PausableInterfaceArtifact.at(contractAddress);
-  instance.pauseContract({ from: managerAddress });
+  await instance.pauseContract({ from: managerAddress });
   global.console.log('\t\tContract successfully paused');
 };
 
@@ -50,7 +50,8 @@ export const pauseContract = async (contractAddress, managerAddress) => {
 
 export const getPaused = async (contractAddress) => {
   global.console.log('\tFetch whether contract is paused or not');
-  const isPaused = await PausableInterfaceArtifact.at(contractAddress).getPaused.call();
+  const i = await PausableInterfaceArtifact.at(contractAddress);
+  const isPaused = await i.getPaused();
   global.console.log(`\t\tContracts is paused: ${isPaused}`);
   return isPaused;
 };
@@ -60,14 +61,24 @@ export const getPaused = async (contractAddress) => {
  * Events
  */
 
-export const getPauseEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = PausableInterfaceArtifact.at(contractAddress).PauseEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getPauseEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = PausableInterfaceArtifact.at(contractAddress).PauseEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await PausableInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('PauseEvent', filter);
+  return events;
 };
 
-export const getUnpauseEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = PausableInterfaceArtifact.at(contractAddress).UnpauseEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getUnpauseEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = PausableInterfaceArtifact.at(contractAddress).UnpauseEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await PausableInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('UnpauseEvent', filter);
+  return events;
 };

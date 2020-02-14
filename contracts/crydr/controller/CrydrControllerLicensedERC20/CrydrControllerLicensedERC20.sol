@@ -3,10 +3,10 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../CrydrControllerERC20/CrydrControllerERC20Interface.sol';
 import '../CrydrControllerERC20/CrydrControllerERC20.sol';
-import '../CrydrControllerLicensedBase/CrydrControllerLicensedBaseInterface.sol';
+import '../CrydrControllerLicensedBase/CrydrControllerLicensedBase.sol';
 
+import '../../license/CrydrLicenseRegistry.sol';
 import '../../license/CrydrLicenseRegistryInterface.sol';
 
 
@@ -14,8 +14,8 @@ import '../../license/CrydrLicenseRegistryInterface.sol';
  * @title CrydrControllerLicensedERC20 interface
  * @dev Interface of a contract that checks user`s license before performing ERC20 transfers
  */
-contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
-                                         CrydrControllerLicensedBaseInterface {
+contract CrydrControllerLicensedERC20 is CrydrControllerERC20,
+                                         CrydrControllerLicensedBase {
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
@@ -31,7 +31,7 @@ contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
     require(CrydrLicenseRegistryInterface(getLicenseRegistryAddress())
                 .isUserAllowed(_to, 'receive_funds') == true);
 
-    CrydrControllerERC20Interface.transfer(_msgsender, _to, _value);
+    super.transfer(_msgsender, _to, _value);
   }
 
   function approve(
@@ -46,7 +46,7 @@ contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
     require(CrydrLicenseRegistryInterface(getLicenseRegistryAddress())
               .isUserAllowed(_spender, 'get_approval') == true);
 
-    CrydrControllerERC20Interface.approve(_msgsender, _spender, _value);
+    approve(_msgsender, _spender, _value);
   }
 
   function transferFrom(
@@ -64,6 +64,6 @@ contract CrydrControllerLicensedERC20 is CrydrControllerERC20Interface,
     require(CrydrLicenseRegistryInterface(getLicenseRegistryAddress())
               .isUserAllowed(_to, 'receive_funds') == true);
 
-    CrydrControllerERC20Interface.transferFrom(_msgsender, _from, _to, _value);
+    transferFrom(_msgsender, _from, _to, _value);
   }
 }

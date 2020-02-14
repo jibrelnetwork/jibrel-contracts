@@ -11,12 +11,7 @@ import '../lifecycle/Pausable/Pausable.sol';
 import '../crydr/view/CrydrViewBase/CrydrViewBase.sol';
 
 
-contract CrydrViewBaseMock is CommonModifiers,
-                              AssetID,
-                              Ownable,
-                              Manageable,
-                              CrydrViewBase,
-                              Pausable{
+contract CrydrViewBaseMock is CrydrViewBase{
 
   constructor (string memory _assetID, string memory _crydrViewStandardName)
     public

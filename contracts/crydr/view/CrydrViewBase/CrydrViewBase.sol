@@ -3,23 +3,26 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
-import '../../../feature/AssetID/AssetIDInterface.sol';
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
-import './../CrydrViewBase/CrydrViewBaseInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiers.sol';
+import '../../../feature/AssetID/AssetID.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
+import './../CrydrViewBase/CrydrViewBase.sol';
 
 
-contract CrydrViewBase is CommonModifiersInterface,
-                          AssetIDInterface,
-                          ManageableInterface,
-                          PausableInterface,
-                          CrydrViewBaseInterface {
+contract CrydrViewBase is CommonModifiers,
+                          AssetID,
+                          Manageable,
+                          Pausable {
 
   /* Storage */
 
   address crydrController = address(0x0);
   string crydrViewStandardName = '';
+
+    /* Events */
+
+  event CrydrControllerChangedEvent(address indexed crydrcontroller);
 
 
   /* Constructor */
@@ -71,6 +74,6 @@ contract CrydrViewBase is CommonModifiersInterface,
     require(isContract(crydrController) == true);
     require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
-    PausableInterface.unpauseContract();
+    super.unpauseContract();
   }
 }

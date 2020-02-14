@@ -3,9 +3,9 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
-import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
+import '../CrydrControllerBase/CrydrControllerBase.sol';
 import './CrydrControllerMintableInterface.sol';
 
 import '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
@@ -19,9 +19,9 @@ import '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
  * @dev We do not use events Transfer(0x0, owner, amount) for minting as described in the EIP20
  * @dev because that are not transfers
  */
-contract CrydrControllerMintable is ManageableInterface,
-                                    PausableInterface,
-                                    CrydrControllerBaseInterface,
+contract CrydrControllerMintable is Manageable,
+                                    Pausable,
+                                    CrydrControllerBase,
                                     CrydrControllerMintableInterface {
 
   /* minting/burning */

@@ -25,24 +25,16 @@ export const setCrydrStorage = async (crydrControllerAddress, managerAddress,
   // );
   const instance = await CrydrControllerBaseInterfaceArtifact.at(crydrControllerAddress);
   const c = await CrydrControllerBaseArtifact.at(crydrControllerAddress);
-  try {
-    // let mr = await c.isManagerAllowed(managerAddress, "set_crydr_storage");
-    // await sleep(10000);
-    global.console.log('\tFOO', crydrControllerAddress, crydrStorageAddress, managerAddress);
-    await instance.setCrydrStorage(crydrStorageAddress, { from: managerAddress });
-    global.console.log('\tBAR');
 
-  } catch (e) {
-    global.console.log('\tStorage of CryDR controller setting error:', e);
-    // throw e;
-  }
+  await instance.setCrydrStorage(crydrStorageAddress, { from: managerAddress });
   global.console.log('\tStorage of CryDR controller successfully set');
   return null;
 };
 
 export const getCrydrStorageAddress = async (contractAddress) => {
   global.console.log('\tFetch address of CrydrStorage configure in crydr controller');
-  const result = await CrydrControllerBaseInterfaceArtifact.at(contractAddress).getCrydrStorageAddress.call();
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const result = await i.getCrydrStorageAddress();
   global.console.log(`\t\tFetched address: ${result}`);
   return result;
 };
@@ -92,7 +84,8 @@ export const removeCrydrView = async (crydrControllerAddress, managerAddress,
 
 export const getCrydrViewAddress = async (contractAddress, standardName) => {
   global.console.log('\tFetch address of CrydrView configure in crydr controller');
-  const result = await CrydrControllerBaseInterfaceArtifact.at(contractAddress).getCrydrViewAddress.call(standardName);
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const result = i.getCrydrViewAddress(standardName);
   global.console.log(`\t\tFetched address: ${result}`);
   return result;
 };
@@ -100,14 +93,16 @@ export const getCrydrViewAddress = async (contractAddress, standardName) => {
 
 export const isCrydrViewAddress = async (contractAddress, crydrViewAddress) => {
   global.console.log('\tFetch whether address is an crydr view contract');
-  const result = await CrydrControllerBaseInterfaceArtifact.at(contractAddress).isCrydrViewAddress.call(crydrViewAddress);
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const result = i.isCrydrViewAddress.call(crydrViewAddress);
   global.console.log(`\t\tFetched result: ${result}`);
   return result;
 };
 
 export const isCrydrViewRegistered = async (contractAddress, viewApiStandardName) => {
   global.console.log('\tFetch whether view with given standard name exists');
-  const result = await CrydrControllerBaseInterfaceArtifact.at(contractAddress).isCrydrViewRegistered.call(viewApiStandardName);
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const result = i.isCrydrViewRegistered.call(viewApiStandardName);
   global.console.log(`\t\tFetched result: ${result}`);
   return result;
 };
@@ -117,26 +112,41 @@ export const isCrydrViewRegistered = async (contractAddress, viewApiStandardName
  * Events
  */
 
-export const getCrydrStorageChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrControllerBaseInterfaceArtifact
-    .at(contractAddress)
-    .CrydrStorageChangedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getCrydrStorageChangedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrControllerBaseInterfaceArtifact
+  //   .at(contractAddress)
+  //   .CrydrStorageChangedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('CrydrStorageChangedEvent', filter);
+  return events;
 };
 
-export const getCrydrViewAddedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrControllerBaseInterfaceArtifact
-    .at(contractAddress)
-    .CrydrViewAddedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getCrydrViewAddedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrControllerBaseInterfaceArtifact
+  //   .at(contractAddress)
+  //   .CrydrViewAddedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('CrydrViewAddedEvent', filter);
+  return events;
 };
 
-export const getCrydrViewRemovedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrControllerBaseInterfaceArtifact
-    .at(contractAddress)
-    .CrydrViewRemovedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getCrydrViewRemovedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrControllerBaseInterfaceArtifact
+  //   .at(contractAddress)
+  //   .CrydrViewRemovedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrControllerBaseInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('CrydrViewRemovedEvent', filter);
+  return events;
 };

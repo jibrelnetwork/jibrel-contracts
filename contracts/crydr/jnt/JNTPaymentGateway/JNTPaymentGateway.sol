@@ -2,8 +2,8 @@
 
 pragma solidity >=0.4.0 <0.6.0;
 
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../controller/CrydrControllerBase/CrydrControllerBase.sol';
 import './JNTPaymentGatewayInterface.sol';
 
 import '../../storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
@@ -14,8 +14,8 @@ import '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
  * @title JNTPaymentGateway
  * @dev Allows to charge users by JNT
  */
-contract JNTPaymentGateway is ManageableInterface,
-                              CrydrControllerBaseInterface,
+contract JNTPaymentGateway is Manageable,
+                              CrydrControllerBase,
                               JNTPaymentGatewayInterface {
 
   function chargeJNT(

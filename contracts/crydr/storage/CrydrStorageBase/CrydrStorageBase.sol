@@ -3,20 +3,19 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
-import '../../../feature/AssetID/AssetIDInterface.sol';
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiers.sol';
+import '../../../feature/AssetID/AssetID.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
 import './CrydrStorageBaseInterface.sol';
 
 
 /**
  * @title CrydrStorageBase
  */
-contract CrydrStorageBase is CommonModifiersInterface,
-                             AssetIDInterface,
-                             ManageableInterface,
-                             PausableInterface,
+contract CrydrStorageBase is CommonModifiers,
+                             AssetID,
+                             Pausable,
                              CrydrStorageBaseInterface {
 
   /* Storage */
@@ -58,6 +57,6 @@ contract CrydrStorageBase is CommonModifiersInterface,
     require(isContract(crydrController) == true);
     require(getAssetIDHash() == AssetIDInterface(crydrController).getAssetIDHash());
 
-    PausableInterface.unpauseContract();
+    super.unpauseContract();
   }
 }

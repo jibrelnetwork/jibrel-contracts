@@ -3,12 +3,11 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../Ownable/OwnableInterface.sol';
+import '../Ownable/Ownable.sol';
 import './ManageableInterface.sol';
 
 
-contract Manageable is OwnableInterface,
-                       ManageableInterface {
+contract Manageable is Ownable {
 
   /* Storage */
 
@@ -161,6 +160,14 @@ contract Manageable is OwnableInterface,
    */
   modifier onlyValidPermissionName(string memory _permissionName) {
     require(bytes(_permissionName).length != 0);
+    _;
+  }
+
+    /**
+   * @dev Modifier to use in derived contracts
+   */
+  modifier onlyAllowedManager(string memory _permissionName) {
+    require(isManagerAllowed(msg.sender, _permissionName) == true);
     _;
   }
 }

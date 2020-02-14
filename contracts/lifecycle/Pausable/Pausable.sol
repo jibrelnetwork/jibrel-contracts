@@ -3,7 +3,7 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../Manageable/ManageableInterface.sol';
+import '../Manageable/Manageable.sol';
 import './PausableInterface.sol';
 
 
@@ -13,14 +13,17 @@ import './PausableInterface.sol';
  * @dev Based on zeppelin's Pausable, but integrated with Manageable
  * @dev Contract is in paused state by default and should be explicitly unlocked
  */
-contract Pausable is ManageableInterface,
-                     PausableInterface {
+contract Pausable is Manageable {
 
   /**
    * Storage
    */
 
   bool paused = true;
+
+
+  event PauseEvent();
+  event UnpauseEvent();
 
   /**
    * @dev called by the manager to pause, triggers stopped state
@@ -43,5 +46,21 @@ contract Pausable is ManageableInterface,
    */
   function getPaused() public view returns (bool) {
     return paused;
+  }
+
+  /**
+   * @dev modifier to allow actions only when the contract IS paused
+   */
+  modifier whenContractNotPaused() {
+    require(getPaused() == false);
+    _;
+  }
+
+  /**
+   * @dev modifier to allow actions only when the contract IS NOT paused
+   */
+  modifier whenContractPaused {
+    require(getPaused() == true);
+    _;
   }
 }

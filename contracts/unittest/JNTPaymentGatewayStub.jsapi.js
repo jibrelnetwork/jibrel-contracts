@@ -27,7 +27,7 @@ export const chargeJNT = async (contractAddress, senderAddress, fromAddress, toA
   const instance = await JNTPaymentGatewayStubArtifact.at(contractAddress);
   const txHash = await instance.mint(fromAddress, toAddress, valueWei, { from: senderAddress });
   global.console.log('\tJNT successfully charged');
-  return txHash;
+  return txHash.tx;
 };
 
 
@@ -42,8 +42,13 @@ export const counter = async (contractAddress) => JNTPaymentGatewayStubArtifact.
  * Events
  */
 
-export const getJNTChargedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JNTPaymentGatewayStubArtifact.at(contractAddress).JNTChargedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getJNTChargedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JNTPaymentGatewayStubArtifact.at(contractAddress).JNTChargedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JNTPaymentGatewayStubArtifact.at(contractAddress);
+  const events = await i.getPastEvents('JNTChargedEvent', filter);
+  return events;
 };

@@ -21,14 +21,8 @@ import '../../crydr/storage/CrydrStorageERC20/CrydrStorageERC20.sol';
  * @title JCashCrydrStorage
  * @dev Implementation of a contract that manages data of an CryDR
  */
-contract JCashCrydrStorage is SafeMath,
-                              CommonModifiers,
-                              AssetID,
-                              Ownable,
-                              Manageable,
-                              BytecodeExecutor,
+contract JCashCrydrStorage is BytecodeExecutor,
                               CrydrStorageBase,
-                              Pausable,
                               CrydrStorageBalance,
                               CrydrStorageAllowance,
                               CrydrStorageBlocks,

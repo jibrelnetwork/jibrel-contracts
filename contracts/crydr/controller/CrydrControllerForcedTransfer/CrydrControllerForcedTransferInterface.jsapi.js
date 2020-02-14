@@ -26,7 +26,7 @@ export const forcedTransfer = async (crydrControllerAddress, callerAddress,
   //   { from: callerAddress }
   // );
   const instance = await CrydrControllerForcedTransferInterfaceArtifact.at(crydrControllerAddress);
-  instance.forcedTransfer(fromAddress, toAddress, valueToTransfer, { from: callerAddress });
+  instance.forcedTransfer(fromAddress, toAddress, '0x' + valueToTransfer.toString('16'), { from: callerAddress });
   global.console.log('\tFunds successfully transferred via CryDR Controller');
   return null;
 };
@@ -58,10 +58,15 @@ export const forcedTransferAll = async (crydrControllerAddress, callerAddress,
  * Events
  */
 
-export const getCrydrStorageChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrControllerForcedTransferInterfaceArtifact
-    .at(contractAddress)
-    .ForcedTransferEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getCrydrStorageChangedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrControllerForcedTransferInterfaceArtifact
+  //   .at(contractAddress)
+  //   .ForcedTransferEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrControllerForcedTransferInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ForcedTransferEvent', filter);
+  return events;
 };

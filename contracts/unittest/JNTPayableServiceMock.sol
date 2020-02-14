@@ -10,8 +10,5 @@ import '../lifecycle/Pausable/Pausable.sol';
 import '../crydr/jnt/JNTPayableService/JNTPayableService.sol';
 
 
-contract JNTPayableServiceMock is CommonModifiers,
-                                  Ownable,
-                                  Manageable,
-                                  JNTPayableService,
-                                  Pausable{ }
+contract JNTPayableServiceMock is JNTPayableService
+                                  { }

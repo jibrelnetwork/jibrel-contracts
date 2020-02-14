@@ -3,9 +3,9 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
-import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
+import '../CrydrControllerBase/CrydrControllerBase.sol';
 import './CrydrControllerForcedTransferInterface.sol';
 
 import '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
@@ -16,9 +16,9 @@ import '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
  * @title CrydrControllerForcedTransfer
  * @dev Implementation of a contract that allows manager to transfer funds from one account to another
  */
-contract CrydrControllerForcedTransfer is ManageableInterface,
-                                          PausableInterface,
-                                          CrydrControllerBaseInterface,
+contract CrydrControllerForcedTransfer is Manageable,
+                                          Pausable,
+                                          CrydrControllerBase,
                                           CrydrControllerForcedTransferInterface {
 
   /* minting/burning */

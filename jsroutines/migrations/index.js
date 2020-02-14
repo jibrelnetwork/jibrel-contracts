@@ -270,7 +270,7 @@ const executeMigrationNumber8 = async (
   const JcashRegistrarAddress = await JcashRegistrarInit.deployJcashRegistrar(JcashRegistrarArtifact, TxConfig.getEthAccounts());
 
   await JcashRegistrarInit.configureManagers(JcashRegistrarAddress, TxConfig.getEthAccounts());
-  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddressToUse, TxConfig.getEthAccounts(), '0x'+(10 ** 18).toString(16));
+  await JcashRegistrarInit.configureJNTConnection(JcashRegistrarAddress, jntControllerAddressToUse, TxConfig.getEthAccounts(), 10 ** 18);
   await PausableInterfaceJSAPI.unpauseContract(JcashRegistrarAddress, TxConfig.getEthAccounts().managerPause);
 
   await JcashRegistrarInit.configureJcashTokenLicenses(JcashRegistrarAddress,
@@ -301,7 +301,7 @@ const verifyMigrationNumber8 = async () => {
 
   const isVerified1 = await JcashRegistrarInit.verifyManagers(jcashRegistrarAddress, TxConfig.getEthAccounts());
   const isVerified2 = await JcashRegistrarInit.verifyJNTConnection(jcashRegistrarAddress,
-                                                                   jntControllerAddress, TxConfig.getEthAccounts(), '0x'+(10 ** 18).toString(16));
+                                                                   jntControllerAddress, TxConfig.getEthAccounts(), 10 ** 18);
   if (isVerified1 !== true || isVerified2 !== true) {
     throw new Error('Failed to verify deployed JcashRegistrar');
   }

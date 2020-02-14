@@ -109,13 +109,13 @@ export const revokeManagerPermissions = async (contractAddress, ownerAddress,
 
 export const isManagerEnabled = async (contractAddress, manager) => {
   const instance = await ManageableArtifact.at(contractAddress);
-  await instance.isManagerEnabled(manager);
+  return await instance.isManagerEnabled(manager);
 }
 
 
 export const isPermissionGranted = async (contractAddress, manager, permissionName) => {
   const instance = await ManageableArtifact.at(contractAddress);
-  await instance.isPermissionGranted(manager, permissionName);
+  return await instance.isPermissionGranted(manager, permissionName);
 }
 
 
@@ -123,26 +123,47 @@ export const isPermissionGranted = async (contractAddress, manager, permissionNa
  * Events
  */
 
-export const getManagerEnabledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = ManageableArtifact.at(contractAddress).ManagerEnabledEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getManagerEnabledEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = ManageableArtifact.at(contractAddress).ManagerEnabledEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  //
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await ManageableArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ManagerEnabledEvent', filter);
+  return events;
 };
 
-export const getManagerDisabledEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = ManageableArtifact.at(contractAddress).ManagerDisabledEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getManagerDisabledEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = ManageableArtifact.at(contractAddress).ManagerDisabledEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await ManageableArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ManagerDisabledEvent', filter);
+  return events;
 };
 
-export const getManagerPermissionGrantedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = ManageableArtifact.at(contractAddress).ManagerPermissionGrantedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getManagerPermissionGrantedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = ManageableArtifact.at(contractAddress).ManagerPermissionGrantedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await ManageableArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ManagerPermissionGrantedEvent', filter);
+  return events;
 };
 
-export const getManagerPermissionRevokedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = ManageableArtifact.at(contractAddress).ManagerPermissionRevokedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getManagerPermissionRevokedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = ManageableArtifact.at(contractAddress).ManagerPermissionRevokedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await ManageableArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ManagerPermissionRevokedEvent', filter);
+  return events;
 };

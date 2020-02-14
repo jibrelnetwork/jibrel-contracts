@@ -9,7 +9,7 @@ import './CommonModifiersInterface.sol';
  * @title CommonModifiers
  * @dev Base contract which contains common checks.
  */
-contract CommonModifiers is CommonModifiersInterface {
+contract CommonModifiers {
 
   /**
    * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.
@@ -23,5 +23,10 @@ contract CommonModifiers is CommonModifiersInterface {
       length := extcodesize(_targetAddress)
     }
     return (length > 0);
+  }
+
+  modifier onlyContractAddress(address _targetAddress) {
+    require(isContract(_targetAddress) == true);
+    _;
   }
 }

@@ -15,12 +15,11 @@ import '../crydr/controller/CrydrControllerMintable/CrydrControllerMintable.sol'
  * @title CrydrControllerMintableMock
  * @dev Contract for unit tests
  */
-contract CrydrControllerMintableMock is CommonModifiers,
+contract CrydrControllerMintableMock is
                                         AssetID,
-                                        Ownable,
-                                        Manageable,
+
                                         CrydrControllerBase,
-                                        Pausable,
+
                                         CrydrControllerMintable {
 
   constructor (string memory _assetID) public AssetID(_assetID) {}

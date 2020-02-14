@@ -29,24 +29,35 @@ export const setCrydrController = async (crydrViewAddress, managerAddress,
   return null;
 };
 
-export const getCrydrController = async (contractAddress) =>
-  CrydrViewBaseInterfaceArtifact.at(contractAddress).getCrydrController.call();
+export const getCrydrController = async (contractAddress) => {
+  const i = await CrydrViewBaseInterfaceArtifact.at(contractAddress);
+  return await i.getCrydrController();
+}
 
-export const getCrydrViewStandardName = async (contractAddress) =>
-  CrydrViewBaseInterfaceArtifact.at(contractAddress).getCrydrViewStandardName.call();
+export const getCrydrViewStandardName = async (contractAddress) => {
+  const i = await CrydrViewBaseInterfaceArtifact.at(contractAddress);
+  return await i.getCrydrViewStandardName();
+}
 
-export const getCrydrViewStandardNameHash = async (contractAddress) =>
-  CrydrViewBaseInterfaceArtifact.at(contractAddress).getCrydrViewStandardNameHash.call();
+export const getCrydrViewStandardNameHash = async (contractAddress) => {
+  const i = await CrydrViewBaseInterfaceArtifact.at(contractAddress);
+  return await i.getCrydrViewStandardNameHash();
+}
 
 
 /**
  * Events
  */
 
-export const getCrydrControllerChangedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrViewBaseInterfaceArtifact
-    .at(contractAddress)
-    .CrydrControllerChangedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getCrydrControllerChangedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrViewBaseInterfaceArtifact
+  //   .at(contractAddress)
+  //   .CrydrControllerChangedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrViewBaseInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('CrydrControllerChangedEvent', filter);
+  return events;
 };

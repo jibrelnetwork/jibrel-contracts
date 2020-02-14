@@ -24,7 +24,7 @@ export const increaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   //   { from: crydrControllerAddress }
   // );
   const instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
-  await instance.increaseAllowance(ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress });
+  await instance.increaseAllowance(ownerAddress, spenderAddress, '0x' + valueWei.toString(16), { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
 
@@ -45,7 +45,7 @@ export const decreaseAllowance = async (crydrStorageAddress, crydrControllerAddr
   //   { from: crydrControllerAddress }
   // );
   const instance = await CrydrStorageAllowanceInterfaceArtifact.at(crydrStorageAddress);
-  await instance.decreaseAllowance(ownerAddress, spenderAddress, valueWei, { from: crydrControllerAddress });
+  await instance.decreaseAllowance(ownerAddress, spenderAddress, '0x' + valueWei.toString(16), { from: crydrControllerAddress });
   global.console.log('\tBalance successfully increased');
 };
 
@@ -57,18 +57,28 @@ export const getAllowance = async (crydrStorageAddress, ownerAddress, spenderAdd
  * Events
  */
 
-export const getAccountAllowanceIncreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageAllowanceInterfaceArtifact
-    .at(contractAddress)
-    .AccountAllowanceIncreasedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getAccountAllowanceIncreasedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrStorageAllowanceInterfaceArtifact
+  //   .at(contractAddress)
+  //   .AccountAllowanceIncreasedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrStorageAllowanceInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('AccountAllowanceIncreasedEvent', filter);
+  return events;
 };
 
-export const getAccountAllowanceDecreasedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageAllowanceInterfaceArtifact
-    .at(contractAddress)
-    .AccountAllowanceDecreasedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getAccountAllowanceDecreasedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrStorageAllowanceInterfaceArtifact
+  //   .at(contractAddress)
+  //   .AccountAllowanceDecreasedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrStorageAllowanceInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('AccountAllowanceDecreasedEvent', filter);
+  return events;
 };

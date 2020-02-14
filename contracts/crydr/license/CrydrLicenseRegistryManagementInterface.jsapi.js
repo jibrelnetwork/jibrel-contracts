@@ -43,13 +43,14 @@ export const denyUser = async (licenseRegistryAddress, managerAddress,
   //   { from: managerAddress }
   // );
   const instance = await CrydrLicenseRegistryManagementInterfaceArtifact.at(licenseRegistryAddress);
-  await instance.admitUser(userAddress,  {from: managerAddress });
+  await instance.denyUser(userAddress,  {from: managerAddress });
   global.console.log('\tUser successfully denied');
 };
 
 export const isUserAdmitted = async (contractAddress, userAddress) => {
   global.console.log('\tFetch whether user is admitted to a crydr contracts or not');
-  const result = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress).isUserAdmitted.call(userAddress);
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const result = await i.isUserAdmitted(userAddress);
   global.console.log(`\t\tResult: ${result}`);
   return result;
 };
@@ -97,7 +98,8 @@ export const revokeUserLicense = async (licenseRegistryAddress, managerAddress,
 
 export const isUserGranted = async (contractAddress, userAddress, licenseName) => {
   global.console.log('\tFetch whether user is granted permission for a given action to a crydr contracts or not');
-  const result = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress).isUserGranted.call(userAddress, licenseName);
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const result = await i.isUserGranted(userAddress, licenseName);
   global.console.log(`\t\tResult: ${result}`);
   return result;
 };
@@ -107,42 +109,67 @@ export const isUserGranted = async (contractAddress, userAddress, licenseName) =
  * Events
  */
 
-export const getUserAdmittedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
-    .at(contractAddress)
-    .UserAdmittedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getUserAdmittedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
+  //   .at(contractAddress)
+  //   .UserAdmittedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('UserAdmittedEvent', filter);
+  return events;
 };
 
-export const getUserDeniedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
-    .at(contractAddress)
-    .UserDeniedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getUserDeniedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
+  //   .at(contractAddress)
+  //   .UserDeniedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('UserDeniedEvent', filter);
+  return events;
 };
 
-export const getUserLicenseGrantedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
-    .at(contractAddress)
-    .UserLicenseGrantedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getUserLicenseGrantedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
+  //   .at(contractAddress)
+  //   .UserLicenseGrantedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('UserLicenseGrantedEvent', filter);
+  return events;
 };
 
-export const getUserLicenseRenewedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
-    .at(contractAddress)
-    .UserLicenseRenewedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getUserLicenseRenewedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
+  //   .at(contractAddress)
+  //   .UserLicenseRenewedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('UserLicenseRenewedEvent', filter);
+  return events;
 };
 
-export const getUserLicenseRevokedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
-    .at(contractAddress)
-    .UserLicenseRevokedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getUserLicenseRevokedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrLicenseRegistryManagementInterfaceArtifact
+  //   .at(contractAddress)
+  //   .UserLicenseRevokedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrLicenseRegistryManagementInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('UserLicenseRevokedEvent', filter);
+  return events;
 };

@@ -16,12 +16,11 @@ import '../crydr/controller/CrydrControllerForcedTransfer/CrydrControllerForcedT
  * @title CrydrControllerForcedTransfer
  * @dev Contract for unit tests
  */
-contract CrydrControllerForcedTransferMock is CommonModifiers,
+contract CrydrControllerForcedTransferMock is
                                               AssetID,
-                                              Ownable,
-                                              Manageable,
+
                                               CrydrControllerBase,
-                                              Pausable,
+
                                               CrydrControllerMintable,
                                               CrydrControllerForcedTransfer {
 

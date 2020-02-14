@@ -11,7 +11,7 @@ import './OwnableInterface.sol';
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
  */
-contract Ownable is OwnableInterface {
+contract Ownable {
 
   /* Storage */
 
@@ -95,5 +95,10 @@ contract Ownable is OwnableInterface {
    */
   function getProposedOwner() public view returns (address) {
     return proposedOwner;
+  }
+
+  modifier onlyOwner() {
+    require (msg.sender == getOwner());
+    _;
   }
 }

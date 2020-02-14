@@ -3,9 +3,9 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiers.sol';
 import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
 import './JNTPayableServiceInterface.sol';
 
 import '../../view/CrydrViewERC20/CrydrViewERC20Interface.sol';
@@ -13,9 +13,8 @@ import '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import '../JNTPaymentGateway/JNTPaymentGateway.sol';
 
 
-contract JNTPayableService is CommonModifiersInterface,
-                              ManageableInterface,
-                              PausableInterface,
+contract JNTPayableService is CommonModifiers,
+                              Pausable,
                               JNTPayableServiceInterface {
 
   /* Storage */
@@ -126,7 +125,7 @@ contract JNTPayableService is CommonModifiersInterface,
     onlyContractAddress(address(jntController))
     onlyValidJntBeneficiary(jntBeneficiary)
   {
-    PausableInterface.unpauseContract();
+    super.unpauseContract();
   }
 
 

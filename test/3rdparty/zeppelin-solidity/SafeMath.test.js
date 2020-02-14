@@ -44,24 +44,24 @@ global.contract('SafeMath', (accounts) => {
   global.it('should throw an error if subtraction result would be negative', async () => {
     const a = 1234;
     const b = 5678;
-    global.assert.throws(() => {safeMathMockInstance.subtract(a, b)})
-    // const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.subtract.call, [a, b]);
-    // global.assert.strictEqual(isThrows, true, 'It should not be possible');
+    // global.assert.throws(() => {safeMathMockInstance.subtract(a, b)})
+    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.subtract, [a, b]);
+    global.assert.strictEqual(isThrows, true, 'It should not be possible');
   });
 
   global.it('should throw an error on addition overflow', async () => {
-    const a = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
+    const a = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
     const b = 1;
 
-    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.add.call, [a, b]);
+    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.add, [a, b]);
     global.assert.strictEqual(isThrows, true, 'It should not be possible');
   });
 
   global.it('should throw an error on multiplication overflow', async () => {
-    const a = 115792089237316195423570985008687907853269984665640564039457584007913129639933;
+    const a = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
     const b = 2;
 
-    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.multiply.call, [a, b]);
+    const isThrows = await CheckExceptions.isContractThrows(safeMathMockInstance.multiply, [a, b]);
     global.assert.strictEqual(isThrows, true, 'It should not be possible');
   });
 });

@@ -8,6 +8,7 @@ import * as CrydrStorageERC20InterfaceJSAPI from '../../../contracts/crydr/stora
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+import * as BnUtil from '../../../jsroutines/util/BnUtil';
 
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 
@@ -48,22 +49,22 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
 
     // set non-zero balances
 
-    let testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 0);
-    let testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 0);
-    let testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
-    global.assert.strictEqual(testInvestor3Balance.toNumber(), 0);
-    let testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 0);
-    let crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 0);
+    let testInvestor1Balance = await crydrStorageInstance.getBalance(ethAccounts.testInvestor1);
+    global.assert.strictEqual(testInvestor1Balance.toString(), '0');
+    let testInvestor2Balance = await crydrStorageInstance.getBalance(ethAccounts.testInvestor2);
+    global.assert.strictEqual(testInvestor2Balance.toString(), '0');
+    let testInvestor3Balance = await crydrStorageInstance.getBalance(ethAccounts.testInvestor3);
+    global.assert.strictEqual(testInvestor3Balance.toString(), '0');
+    let testInvestor1to02Allowance = await crydrStorageInstance.getAllowance(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
+    global.assert.strictEqual(testInvestor1to02Allowance.toString(), '0');
+    let crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply();
+    global.assert.strictEqual(crydrStorageTotalSupply.toString(), '0');
 
     await CrydrStorageBalanceInterfaceJSAPI.increaseBalance(storageProxyInstance01.address, ethAccounts.owner,
                                                             ethAccounts.testInvestor1, 10 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(10)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
     global.assert.strictEqual(testInvestor2Balance.toNumber(), 0);
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
@@ -71,7 +72,7 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
     global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 0);
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
 
     // transfer
@@ -80,29 +81,29 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
                                                    ethAccounts.testInvestor1, ethAccounts.testInvestor2, 2 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 8 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(8)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 2 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(2)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
     global.assert.strictEqual(testInvestor3Balance.toNumber(), 0);
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
     global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 0);
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
     await CrydrStorageERC20InterfaceJSAPI.transfer(storageProxyInstance01.address, ethAccounts.owner,
                                                    ethAccounts.testInvestor1, ethAccounts.testInvestor2, 1 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 7 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(7)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(3)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
     global.assert.strictEqual(testInvestor3Balance.toNumber(), 0);
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
     global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 0);
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
 
     // approve
@@ -111,29 +112,29 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
                                                   ethAccounts.testInvestor1, ethAccounts.testInvestor2, 3 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 7 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(7)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(3)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
     global.assert.strictEqual(testInvestor3Balance.toNumber(), 0);
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor1to02Allowance.eq(BnUtil.ether(3)));
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
     await CrydrStorageERC20InterfaceJSAPI.approve(storageProxyInstance01.address, ethAccounts.owner,
                                                   ethAccounts.testInvestor1, ethAccounts.testInvestor2, 5 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 7 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(7)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(3)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
     global.assert.strictEqual(testInvestor3Balance.toNumber(), 0);
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 5 * (10 ** 18));
+    global.assert.isTrue(testInvestor1to02Allowance.eq(BnUtil.ether(5)));
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
 
     // transferFrom
@@ -142,43 +143,43 @@ global.contract('CrydrStorageERC20Interface', (accounts) => {
                                                        ethAccounts.testInvestor2, ethAccounts.testInvestor1, ethAccounts.testInvestor3, 1 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 6 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(6)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(3)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
-    global.assert.strictEqual(testInvestor3Balance.toNumber(), 1 * (10 ** 18));
+    global.assert.isTrue(testInvestor3Balance.eq(BnUtil.ether(1)));
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 4 * (10 ** 18));
+    global.assert.isTrue(testInvestor1to02Allowance.eq(BnUtil.ether(4)));
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
     await CrydrStorageERC20InterfaceJSAPI.transferFrom(storageProxyInstance01.address, ethAccounts.owner,
                                                        ethAccounts.testInvestor2, ethAccounts.testInvestor1, ethAccounts.testInvestor3, 2 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 4 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(4)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(3)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
-    global.assert.strictEqual(testInvestor3Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor3Balance.eq(BnUtil.ether(3)));
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 2 * (10 ** 18));
+    global.assert.isTrue(testInvestor1to02Allowance.eq(BnUtil.ether(2)));
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
 
     await CrydrStorageERC20InterfaceJSAPI.transferFrom(storageProxyInstance01.address, ethAccounts.owner,
                                                        ethAccounts.testInvestor2, ethAccounts.testInvestor1, ethAccounts.testInvestor2, 1 * (10 ** 18));
 
     testInvestor1Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(testInvestor1Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor1Balance.eq(BnUtil.ether(3)));
     testInvestor2Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor2Balance.toNumber(), 4 * (10 ** 18));
+    global.assert.isTrue(testInvestor2Balance.eq(BnUtil.ether(4)));
     testInvestor3Balance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor3);
-    global.assert.strictEqual(testInvestor3Balance.toNumber(), 3 * (10 ** 18));
+    global.assert.isTrue(testInvestor3Balance.eq(BnUtil.ether(3)));
     testInvestor1to02Allowance = await crydrStorageInstance.getAllowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(testInvestor1to02Allowance.toNumber(), 1 * (10 ** 18));
+    global.assert.isTrue(testInvestor1to02Allowance.eq(BnUtil.ether(1)));
     crydrStorageTotalSupply = await crydrStorageInstance.getTotalSupply.call();
-    global.assert.strictEqual(crydrStorageTotalSupply.toNumber(), 10 * (10 ** 18));
+    global.assert.isTrue(crydrStorageTotalSupply.eq(BnUtil.ether(10)));
   });
 
   global.it('should test that ERC20 setters fire events', async () => {

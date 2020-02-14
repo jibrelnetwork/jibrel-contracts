@@ -62,7 +62,7 @@ export const blockAccountFunds = async (crydrControllerAddress, managerAddress,
   //   { from: managerAddress }
   // );
   const instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
-  await instance.blockAccountFunds(accountAddress, blockedValue, { from: managerAddress });
+  await instance.blockAccountFunds(accountAddress, '0x' + blockedValue.toString(16), { from: managerAddress });
   global.console.log('\tAccount funds successfully blocked via CryDR controller');
   return null;
 };
@@ -83,7 +83,7 @@ export const unblockAccountFunds = async (crydrControllerAddress, managerAddress
   //   { from: managerAddress }
   // );
   const instance = await CrydrControllerBlockableInterfaceArtifact.at(crydrControllerAddress);
-  await instance.unblockAccountFunds(accountAddress, blockedValue, { from: managerAddress });
+  await instance.unblockAccountFunds(accountAddress, '0x' + blockedValue.toString(16), { from: managerAddress });
   global.console.log('\tAccount funds successfully unblocked via CryDR controller');
   return null;
 };

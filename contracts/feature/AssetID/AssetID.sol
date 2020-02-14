@@ -10,7 +10,7 @@ import './AssetIDInterface.sol';
  * @title AssetID
  * @dev Base contract implementing AssetIDInterface
  */
-contract AssetID is AssetIDInterface {
+contract AssetID {
 
   /* Storage */
 

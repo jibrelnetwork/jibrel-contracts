@@ -15,13 +15,7 @@ import '../crydr/view/CrydrViewERC20Mintable/CrydrViewERC20Mintable.sol';
 import '../crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.sol';
 
 
-contract JCashCrydrViewERC20ForJNT is CommonModifiers,
-                                      AssetID,
-                                      Ownable,
-                                      Manageable,
-                                      BytecodeExecutor,
-                                      CrydrViewBase,
-                                      Pausable,
+contract JCashCrydrViewERC20ForJNT is BytecodeExecutor,
                                       CrydrViewERC20,
                                       CrydrViewERC20Loggable,
                                       CrydrViewERC20Mintable,

@@ -8,6 +8,7 @@ import * as AsyncWeb3 from '../../../jsroutines/util/AsyncWeb3';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
 
 import * as CrydrViewInit from '../../../jsroutines/jsinit/CrydrViewInit';
+import * as BnUtil from '../../../jsroutines/util/BnUtil';
 
 import * as PausableTestSuite from '../../../jsroutines/test_suit/lifecycle/Pausable';
 
@@ -99,13 +100,13 @@ global.contract('CrydrViewERC20', (accounts) => {
     global.assert.strictEqual(transferFromCounter.toNumber(), 1);
 
     const totalSupply = await jcashCrydrViewERC20Instance.totalSupply.call();
-    global.assert.strictEqual(totalSupply.toNumber(), 60 * (10 ** 18));
+    global.assert.isTrue(totalSupply.eq(BnUtil.ether(60)));
 
     const balanceOf = await jcashCrydrViewERC20Instance.balanceOf.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(balanceOf.toNumber(), 40 * (10 ** 18));
+    global.assert.isTrue(balanceOf.eq(BnUtil.ether(40)));
 
     const allowance = await jcashCrydrViewERC20Instance.allowance.call(ethAccounts.testInvestor1, ethAccounts.testInvestor2);
-    global.assert.strictEqual(allowance.toNumber(), 20 * (10 ** 18));
+    global.assert.isTrue(allowance.eq(BnUtil.ether(20)));
   });
 
   global.it('should test that functions covered by pause modifiers', async () => {

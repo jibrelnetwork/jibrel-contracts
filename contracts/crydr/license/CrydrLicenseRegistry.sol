@@ -3,7 +3,7 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import "../../lifecycle/Manageable/ManageableInterface.sol";
+import "../../lifecycle/Manageable/Manageable.sol";
 import "./CrydrLicenseRegistryInterface.sol";
 import "./CrydrLicenseRegistryManagementInterface.sol";
 
@@ -12,7 +12,7 @@ import "./CrydrLicenseRegistryManagementInterface.sol";
  * @title CrydrLicenseRegistry
  * @dev Contract that stores licenses
  */
-contract CrydrLicenseRegistry is ManageableInterface,
+contract CrydrLicenseRegistry is Manageable,
                                  CrydrLicenseRegistryInterface,
                                  CrydrLicenseRegistryManagementInterface {
 

@@ -17,11 +17,7 @@ import '../../crydr/view/CrydrViewERC20/CrydrViewERC20Interface.sol';
  * @title JcashRegistrar
  * @dev Implementation of a contract that can receives ETH&ERC20, refunds ETH&ERC20 and logs these operations
  */
-contract JcashRegistrar is CommonModifiers,
-                           Ownable,
-                           Manageable,
-                           JNTPayableService,
-                           Pausable,
+contract JcashRegistrar is JNTPayableService,
                            JcashRegistrarInterface {
 
   /* Storage */

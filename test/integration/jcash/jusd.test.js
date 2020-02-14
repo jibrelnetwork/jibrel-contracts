@@ -30,16 +30,19 @@ global.contract('Integration tests - JUSD', (accounts) => {
 
   global.it('should test minting of the tokens', async () => {
     // check initial state
+    global.console.log('UUUUUU START@!!!!!!');
     let accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.testInvestor1);
+    global.console.log('UUUUUU 2@!!!!!!', accountBalance);
     global.assert.strictEqual(accountBalance.toString(), '0', 'expected that a new user has zero balance');
-
+    global.console.log('UUUUUU 3@!!!!!!');
     // mint tokens
     await CrydrControllerMintableInterfaceJSAPI.mint(JUSDControllerAddress,
                                                      ethAccounts.managerMint,
                                                      ethAccounts.testInvestor1,
                                                      10 ** 18);
+    global.console.log('UUUUUU 4@!!!!!!');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.testInvestor1);
-    global.console.log('AAAAAAAA@!!!!!!', accountBalance, accountBalance.toString());
+    global.console.log('UUUUUU 5@!!!!!!', accountBalance, accountBalance.toString());
     global.assert.strictEqual(accountBalance.toString(), (10 ** 18).toString(), 'expected that user has 1 JUSD');
 
     // burn tokens
@@ -71,7 +74,7 @@ global.contract('Integration tests - JUSD', (accounts) => {
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.testInvestor1);
     global.console.log('2 AAAAAAAA@!!!!!!', accountBalance, accountBalance.toString());
     global.assert.strictEqual(accountBalance.toString(), (10 ** 18).toString(), 'expected that user has 1 JUSD');
-
+    global.console.log('3 AAAAAAAA@!!!!!!');
 
     // check that by default contract throws
     const isThrows = await CheckExceptions.isContractThrows(ERC20InterfaceJSAPI.transfer,
@@ -79,13 +82,13 @@ global.contract('Integration tests - JUSD', (accounts) => {
                                                              ethAccounts.testInvestor1,
                                                              ethAccounts.testInvestor2,
                                                              10 ** 10]);
-
+    global.console.log('4 AAAAAAAA@!!!!!!');
     // global.console.log(isThrows, 'BBBB', await ERC20InterfaceJSAPI.transfer(JUSDViewERC20Address,
     //                                                          ethAccounts.testInvestor1,
     //                                                          ethAccounts.testInvestor2,
     //                                                          10 ** 10));
-    const c = await JUSDViewERC20.at(JUSDViewERC20Address);
-    await debug(c.transfer(ethAccounts.testInvestor2, 10, { from: ethAccounts.testInvestor1 }));
+    // const c = await JUSDViewERC20.at(JUSDViewERC20Address);
+    // await debug(c.transfer(ethAccounts.testInvestor2, 10, { from: ethAccounts.testInvestor1 }));
 
     global.assert.strictEqual(isThrows, true, 'Should throw without licences');
     // global.assert.throws( async () => await ERC20InterfaceJSAPI.transfer(JUSDViewERC20Address,
@@ -93,7 +96,7 @@ global.contract('Integration tests - JUSD', (accounts) => {
     //                                                                      ethAccounts.testInvestor2,
     //                                                       10 ** 18), 'Should throw without licences');
 
-
+    global.console.log('5 AAAAAAAA@!!!!!!');
     // grant licenses
     await CrydrControllerLicensedERC20JSAPI.grantUserLicensesAndAdmit(JUSDLicenseRegistryAddress,
                                                                       ethAccounts.managerLicense,
@@ -103,14 +106,14 @@ global.contract('Integration tests - JUSD', (accounts) => {
                                                                       ethAccounts.managerLicense,
                                                                       ethAccounts.testInvestor2);
 
-
     // check transfer
     await ERC20InterfaceJSAPI.transfer(JUSDViewERC20Address,
                                        ethAccounts.testInvestor1,
                                        ethAccounts.testInvestor2,
                                        10 ** 18);
+    global.console.log('7 AAAAAAAA@!!!!!!');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(accountBalance.toString(), 0, 'expected that user has 0 JUSD');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that user has 0 JUSD');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.testInvestor2);
     global.assert.strictEqual(accountBalance.toString(), (10 ** 18).toString(), 'expected that user has 1 JUSD');
 

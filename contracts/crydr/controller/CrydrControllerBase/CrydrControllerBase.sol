@@ -3,9 +3,9 @@
 pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiers.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
 import './CrydrControllerBaseInterface.sol';
 
 import '../../view/CrydrViewBase/CrydrViewBaseInterface.sol';
@@ -15,16 +15,21 @@ import '../../view/CrydrViewBase/CrydrViewBaseInterface.sol';
  * @title CrydrControllerBase
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBase is CommonModifiersInterface,
-                                ManageableInterface,
-                                PausableInterface,
-                                CrydrControllerBaseInterface {
+contract CrydrControllerBase is CommonModifiers,
+                                Pausable
+                                 {
+
+
 
   /* Storage */
 
   address crydrStorage = address(0x0);
   mapping (string => address) crydrViewsAddresses;
   mapping (address => bool) isRegisteredView;
+
+  event CrydrStorageChangedEvent(address indexed crydrstorage);
+  event CrydrViewAddedEvent(address indexed crydrview, bytes32 standardname);
+  event CrydrViewRemovedEvent(address indexed crydrview, bytes32 standardname);
 
 
   /* CrydrControllerBaseInterface */
@@ -125,5 +130,17 @@ contract CrydrControllerBase is CommonModifiersInterface,
     returns (bool)
   {
     return (crydrViewsAddresses[_viewApiStandardName] != address(0x0));
+  }
+
+    /* Helpers */
+
+  modifier onlyValidCrydrViewStandardName(string memory _viewApiStandard) {
+    require(bytes(_viewApiStandard).length > 0);
+    _;
+  }
+
+  modifier onlyCrydrView() {
+    require(isCrydrViewAddress(msg.sender) == true);
+    _;
   }
 }
