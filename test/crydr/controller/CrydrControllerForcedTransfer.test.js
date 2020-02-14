@@ -1,3 +1,5 @@
+import { BN } from 'bn.js';
+
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
@@ -87,7 +89,7 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
                               'Expected that crydrView is set');
 
     const initialBalance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(initialBalance.toNumber(), 0,
+    global.assert.isTrue(initialBalance.eq(new BN(0)),
                               'Expected that initial balance is 0');
   });
 
@@ -100,17 +102,17 @@ global.contract('CrydrControllerForcedTransfer', (accounts) => {
     await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerInstance.address, ethAccounts.managerMint,
                                                      ethAccounts.testInvestor1, 10 * (10 ** 18));
     let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
+    global.assert.isTrue(balance.eq(new BN((10 * (10 ** 18)).toString(16), 16)),
                               'Expected that balance has increased');
 
     await CrydrControllerForcedTransferInterfaceJSAPI.forcedTransfer(crydrControllerInstance.address, ethAccounts.managerForcedTransfer,
                                                                      ethAccounts.testInvestor1, ethAccounts.testInvestor2, 1 * (10 ** 18));
 
     balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balance.toNumber(), 9 * (10 ** 18),
+    global.assert.isTrue(balance.eq(new BN((9 * (10 ** 18)).toString(16), 16)),
                               'Expected that balance has reduced due to forced transfer');
     balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor2);
-    global.assert.strictEqual(balance.toNumber(), 1 * (10 ** 18),
+    global.assert.isTrue(balance.eq(new BN((1 * (10 ** 18)).toString(16), 16)),
                               'Expected that balance has increased due to forced transfer');
   });
 

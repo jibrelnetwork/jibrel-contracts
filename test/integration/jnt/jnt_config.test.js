@@ -1,3 +1,5 @@
+import { BN } from 'bn.js';
+
 import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerMintable/CrydrControllerMintableInterface.jsapi';
 import * as ERC20InterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20/ERC20Interface.jsapi';
 import * as CrydrViewERC20MintableInterfaceJSAPI from '../../../contracts/crydr/view/CrydrViewERC20Mintable/CrydrViewERC20MintableInterface.jsapi';
@@ -26,7 +28,7 @@ global.contract('JNT Integration tests', (accounts) => {
   });
 
   global.it('should test minting of JNT', async () => {
-    const mintedValue = 15 * (10 ** 18);
+    const mintedValue = new BN((15 * (10 ** 18)).toString(16), 16);
 
     const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
@@ -34,7 +36,8 @@ global.contract('JNT Integration tests', (accounts) => {
     await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
     const balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + mintedValue);
+    global.console.log('ZZZ', balanceChanged, balanceInitial, mintedValue);
+    global.assert.isTrue(balanceChanged.eq(balanceInitial.add(mintedValue)));
 
     const pastEvents = await CrydrViewERC20MintableInterfaceJSAPI.getMintEvents(
       JNTViewERC20Address,
@@ -52,21 +55,23 @@ global.contract('JNT Integration tests', (accounts) => {
   });
 
   global.it('should test burning of JNT', async () => {
-    const mintedValue = 15 * (10 ** 18);
+    const mintedValue = new BN((15 * (10 ** 18)).toString(16), 16);
 
     const balanceInitial = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
 
     await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
     let balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + mintedValue);
+    // global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber() + mintedValue);
+    global.assert.isTrue(balanceChanged.eq(balanceInitial.add(mintedValue)));
 
     const blockNumber = await AsyncWeb3.getBlockNumber(TxConfig.getWeb3());
 
     await CrydrControllerMintableInterfaceJSAPI.burn(JNTControllerAddress, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
     balanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber());
+    // global.assert.strictEqual(balanceChanged.toNumber(), balanceInitial.toNumber());
+    global.assert.isTrue(balanceChanged.eq(balanceInitial));
 
     const pastEvents = await CrydrViewERC20MintableInterfaceJSAPI.getBurnEvents(
       JNTViewERC20Address,
@@ -84,8 +89,8 @@ global.contract('JNT Integration tests', (accounts) => {
   });
 
   global.it('should test transfers of JNT', async () => {
-    const mintedValue = 50 * (10 ** 18);
-    const transferredValue = 15 * (10 ** 18);
+    const mintedValue = new BN((50 * (10 ** 18)).toString(16), 16);
+    const transferredValue = new BN((15 * (10 ** 18)).toString(16), 16);
 
     await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
@@ -100,10 +105,12 @@ global.contract('JNT Integration tests', (accounts) => {
                                                                         ethAccounts.testInvestor1);
     const investor2BalanceChanged = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address,
                                                                         ethAccounts.testInvestor2);
-    global.assert.strictEqual(investor1BalanceChanged.toNumber(),
-                              investor1BalanceInitial.toNumber() - transferredValue);
-    global.assert.strictEqual(investor2BalanceChanged.toNumber(),
-                              investor2BalanceInitial.toNumber() + transferredValue);
+    // global.assert.strictEqual(investor1BalanceChanged.toNumber(),
+    //                           investor1BalanceInitial.toNumber() - transferredValue);
+    // global.assert.strictEqual(investor2BalanceChanged.toNumber(),
+    //                           investor2BalanceInitial.toNumber() + transferredValue);
+    global.assert.isTrue(investor1BalanceChanged.eq(investor1BalanceInitial.sub(transferredValue)));
+    global.assert.isTrue(investor2BalanceChanged.eq(investor2BalanceInitial.add(transferredValue)));
 
     const pastEvents = await ERC20InterfaceJSAPI.getTransferEvents(
       JNTViewERC20Address,
@@ -122,7 +129,7 @@ global.contract('JNT Integration tests', (accounts) => {
   });
 
   global.it('should test approvals for spendings of JNT', async () => {
-    const approvedValue = 15 * (10 ** 18);
+    const approvedValue = new BN((15 * (10 ** 18)).toString(16), 16);
 
     let approvedSpendingInitial = await ERC20InterfaceJSAPI.allowance(JNTViewERC20Address,
                                                                       ethAccounts.testInvestor1, ethAccounts.testInvestor3);
@@ -140,8 +147,7 @@ global.contract('JNT Integration tests', (accounts) => {
 
     const approvedSpendingChanged = await ERC20InterfaceJSAPI.allowance(JNTViewERC20Address,
                                                                         ethAccounts.testInvestor1, ethAccounts.testInvestor3);
-    global.assert.strictEqual(approvedSpendingChanged.toNumber(),
-                              approvedSpendingInitial.toNumber() + approvedValue);
+    global.assert.isTrue(approvedSpendingChanged.eq(approvedSpendingInitial.add(approvedValue)));
 
     const pastEvents = await ERC20InterfaceJSAPI.getApprovalEvents(
       JNTViewERC20Address,
@@ -160,9 +166,9 @@ global.contract('JNT Integration tests', (accounts) => {
   });
 
   global.it('should test approved transfers of JNT', async () => {
-    const mintedValue = 50 * (10 ** 18);
-    const approvedValue = 25 * (10 ** 18);
-    const transferredValue = 10 * (10 ** 18);
+    const mintedValue = new BN((50 * (10 ** 18)).toString(16), 16);
+    const approvedValue = new BN((25 * (10 ** 18)).toString(16), 16);
+    const transferredValue = new BN((10 * (10 ** 18)).toString(16), 16);
 
     await CrydrControllerMintableInterfaceJSAPI.mint(JNTControllerAddress, ethAccounts.managerMint, ethAccounts.testInvestor1, mintedValue);
 
@@ -190,12 +196,9 @@ global.contract('JNT Integration tests', (accounts) => {
     const approvedSpendingChanged = await ERC20InterfaceJSAPI.allowance(JNTViewERC20Address,
                                                                         ethAccounts.testInvestor1, ethAccounts.testInvestor3);
 
-    global.assert.strictEqual(investor1BalanceChanged.toNumber(),
-                              investor1BalanceInitial.toNumber() - transferredValue);
-    global.assert.strictEqual(investor2BalanceChanged.toNumber(),
-                              investor2BalanceInitial.toNumber() + transferredValue);
-    global.assert.strictEqual(approvedSpendingChanged.toNumber(),
-                              approvedSpendingInitial.toNumber() - transferredValue);
+    global.assert.isTrue(investor1BalanceChanged.eq(investor1BalanceInitial.sub(transferredValue)));
+    global.assert.isTrue(investor2BalanceChanged.eq(investor2BalanceInitial.add(transferredValue)));
+    global.assert.isTrue(approvedSpendingChanged.eq(approvedSpendingInitial.sub(transferredValue)));
 
     const pastEvents = await ERC20InterfaceJSAPI.getTransferEvents(
       JNTViewERC20Address,

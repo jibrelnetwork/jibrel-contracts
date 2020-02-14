@@ -1,3 +1,4 @@
+
 import * as PausableInterfaceJSAPI from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrStorageBalanceInterfaceJSAPI from '../../../contracts/crydr/storage/CrydrStorageBalance/CrydrStorageBalanceInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
@@ -5,6 +6,7 @@ import * as CrydrControllerMintableInterfaceJSAPI from '../../../contracts/crydr
 
 import * as TxConfig from '../../../jsroutines/jsconfig/TxConfig';
 import * as CheckExceptions from '../../../jsroutines/util/CheckExceptions';
+import * as BnUtil from '../../../jsroutines/util/BnUtil';
 
 import * as CrydrStorageInit from '../../../jsroutines/jsinit/CrydrStorageInit';
 import * as CrydrControllerInit from '../../../jsroutines/jsinit/CrydrControllerInit';
@@ -85,7 +87,7 @@ global.contract('CrydrControllerMintable', (accounts) => {
                               'Expected that crydrView is set');
 
     const initialBalance = await crydrStorageInstance.getBalance.call(ethAccounts.testInvestor1);
-    global.assert.strictEqual(initialBalance.toNumber(), 0,
+    global.assert.isTrue(initialBalance.eq(BnUtil.fromNumber(0)),
                               'Expected that initial balance is 0');
 
 
@@ -97,13 +99,13 @@ global.contract('CrydrControllerMintable', (accounts) => {
     await CrydrControllerMintableInterfaceJSAPI.mint(crydrControllerMintableInstance.address, ethAccounts.managerMint,
                                                      ethAccounts.testInvestor1, 10 * (10 ** 18));
     let balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balance.toNumber(), 10 * (10 ** 18),
+    global.assert.isTrue(balance.eq(BnUtil.ether(10)),
                               'Expected that balance has increased');
 
     await CrydrControllerMintableInterfaceJSAPI.burn(crydrControllerMintableInstance.address, ethAccounts.managerMint,
                                                      ethAccounts.testInvestor1, 5 * (10 ** 18));
     balance = await CrydrStorageBalanceInterfaceJSAPI.getBalance(crydrStorageInstance.address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(balance.toNumber(), 5 * (10 ** 18),
+    global.assert.isTrue(balance.eq(BnUtil.ether(5)),
                               'Expected that balance has decreased');
   });
 
