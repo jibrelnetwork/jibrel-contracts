@@ -5,7 +5,6 @@ const Promise = require('bluebird');
 const CrydrControllerBaseInterfaceArtifact = global.artifacts.require('CrydrControllerBaseInterface.sol');
 const CrydrControllerBaseArtifact = global.artifacts.require('CrydrControllerBase.sol');
 
-const sleep = require('sleep-promise');
 
 /* Configuration */
 
