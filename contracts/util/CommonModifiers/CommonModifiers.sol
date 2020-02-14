@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 import './CommonModifiersInterface.sol';
 
@@ -9,12 +9,12 @@ import './CommonModifiersInterface.sol';
  * @title CommonModifiers
  * @dev Base contract which contains common checks.
  */
-contract CommonModifiers is CommonModifiersInterface {
+contract CommonModifiers {
 
   /**
    * @dev Assemble the given address bytecode. If bytecode exists then the _addr is a contract.
    */
-  function isContract(address _targetAddress) internal constant returns (bool) {
+  function isContract(address _targetAddress) internal view returns (bool) {
     require (_targetAddress != address(0x0));
 
     uint256 length;
@@ -23,5 +23,10 @@ contract CommonModifiers is CommonModifiersInterface {
       length := extcodesize(_targetAddress)
     }
     return (length > 0);
+  }
+
+  modifier onlyContractAddress(address _targetAddress) {
+    require(isContract(_targetAddress) == true);
+    _;
   }
 }

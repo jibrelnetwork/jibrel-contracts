@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -32,7 +32,7 @@ contract PausableInterface {
   /**
    * @dev The getter for "paused" contract variable
    */
-  function getPaused() public constant returns (bool);
+  function getPaused() public view returns (bool);
 
 
   /**

@@ -1,10 +1,10 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../CrydrControllerBase/CrydrControllerBase.sol';
 import './CrydrControllerBlockableInterface.sol';
 
 import '../../storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.sol';
@@ -14,8 +14,8 @@ import '../../storage/CrydrStorageBlocks/CrydrStorageBlocksInterface.sol';
  * @title CrydrControllerBlockable interface
  * @dev Implementation of a contract that allows blocking/unlocking accounts
  */
-contract CrydrControllerBlockable is ManageableInterface,
-                                     CrydrControllerBaseInterface,
+contract CrydrControllerBlockable is Manageable,
+                                     CrydrControllerBase,
                                      CrydrControllerBlockableInterface {
 
 

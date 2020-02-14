@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../feature/AssetID/AssetID.sol';
@@ -31,7 +31,7 @@ contract CrydrControllerERC20Stub is AssetID,
 
   /* Constructor */
 
-  constructor (string _assetID, address _crydrView) public AssetID(_assetID) {
+  constructor (string memory _assetID, address _crydrView) public AssetID(_assetID) {
     crydrView = _crydrView;
   }
 
@@ -47,12 +47,12 @@ contract CrydrControllerERC20Stub is AssetID,
     transferCounter += 1;
   }
 
-  function getTotalSupply() public constant returns (uint256)
+  function getTotalSupply() public view returns (uint256)
   {
     return 60 * (10 ** 18);
   }
 
-  function getBalance(address _owner) public constant returns (uint256)
+  function getBalance(address _owner) public view returns (uint256)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
 
@@ -78,7 +78,7 @@ contract CrydrControllerERC20Stub is AssetID,
     transferFromCounter += 1;
   }
 
-  function getAllowance(address _owner, address _spender) public constant returns (uint256)
+  function getAllowance(address _owner, address _spender) public view returns (uint256)
   {
     require(_owner == _owner); // always true, to avoid annoying compilation warnings
     require(_spender == _spender); // always true, to avoid annoying compilation warnings

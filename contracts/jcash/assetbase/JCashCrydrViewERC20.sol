@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 import '../../util/CommonModifiers/CommonModifiers.sol';
 import '../../feature/AssetID/AssetID.sol';
@@ -15,19 +15,13 @@ import '../../crydr/view/CrydrViewERC20Mintable/CrydrViewERC20Mintable.sol';
 import '../../crydr/view/CrydrViewERC20Named/CrydrViewERC20Named.sol';
 
 
-contract JCashCrydrViewERC20 is CommonModifiers,
-                                AssetID,
-                                Ownable,
-                                Manageable,
-                                Pausable,
-                                BytecodeExecutor,
-                                CrydrViewBase,
+contract JCashCrydrViewERC20 is BytecodeExecutor,
                                 CrydrViewERC20,
                                 CrydrViewERC20Loggable,
                                 CrydrViewERC20Mintable,
                                 CrydrViewERC20Named {
 
-  constructor (string _assetID, string _name, string _symbol, uint8 _decimals)
+  constructor (string memory _assetID, string memory _name, string memory _symbol, uint8 _decimals)
     public
     AssetID(_assetID)
     CrydrViewBase('erc20')

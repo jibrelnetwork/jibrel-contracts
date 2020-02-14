@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -44,7 +44,7 @@ contract JcashRegistrarInterface {
   /**
    * @dev Allows to perform refund ETH.
    */
-  function refundEth(bytes32 _txHash, address _to, uint256 _weivalue) external;
+  function refundEth(bytes32 _txHash, address payable _to, uint256 _weivalue) external;
 
   /**
    * @dev Allows to perform refund ERC20 tokens.
@@ -55,7 +55,7 @@ contract JcashRegistrarInterface {
    * @dev Allows to perform transfer ETH.
    *
    */
-  function transferEth(bytes32 _txHash, address _to, uint256 _weivalue) external;
+  function transferEth(bytes32 _txHash, address payable _to, uint256 _weivalue) external;
 
   /**
    * @dev Allows to perform transfer ERC20 tokens.

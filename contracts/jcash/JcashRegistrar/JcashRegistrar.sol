@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../util/CommonModifiers/CommonModifiers.sol';
@@ -17,11 +17,7 @@ import '../../crydr/view/CrydrViewERC20/CrydrViewERC20Interface.sol';
  * @title JcashRegistrar
  * @dev Implementation of a contract that can receives ETH&ERC20, refunds ETH&ERC20 and logs these operations
  */
-contract JcashRegistrar is CommonModifiers,
-                           Ownable,
-                           Manageable,
-                           Pausable,
-                           JNTPayableService,
+contract JcashRegistrar is JNTPayableService,
                            JcashRegistrarInterface {
 
   /* Storage */
@@ -114,7 +110,7 @@ contract JcashRegistrar is CommonModifiers,
    */
   function refundEth(
     bytes32 _txHash,
-    address _to,
+    address payable _to,
     uint256 _weivalue
   )
     external
@@ -168,7 +164,7 @@ contract JcashRegistrar is CommonModifiers,
    */
   function transferEth(
     bytes32 _txHash,
-    address _to,
+    address payable _to,
     uint256 _weivalue
   )
     external

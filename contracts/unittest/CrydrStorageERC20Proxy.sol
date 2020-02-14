@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@mgmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../feature/AssetID/AssetID.sol';
@@ -32,7 +32,7 @@ contract CrydrStorageERC20Proxy is AssetID,
   /* Constructor */
 
   constructor (
-    string _assetID,
+    string memory _assetID,
     address _crydrStorage
   )
     public
@@ -44,7 +44,7 @@ contract CrydrStorageERC20Proxy is AssetID,
   }
 
   function setCrydrController(address _newController) public { crydrStorage = _newController; }
-  function getCrydrController() public constant returns (address) { return crydrStorage; }
+  function getCrydrController() public view returns (address) { return crydrStorage; }
 
 
   /* Low-level change of balance. Implied that totalSupply kept in sync. */
@@ -59,12 +59,12 @@ contract CrydrStorageERC20Proxy is AssetID,
     CrydrStorageBalanceInterface(crydrStorage).decreaseBalance(_account, _value);
   }
 
-  function getBalance(address _account) public constant returns (uint256)
+  function getBalance(address _account) public view returns (uint256)
   {
     return CrydrStorageBalanceInterface(crydrStorage).getBalance(_account);
   }
 
-  function getTotalSupply() public constant returns (uint256)
+  function getTotalSupply() public view returns (uint256)
   {
     return CrydrStorageBalanceInterface(crydrStorage).getTotalSupply();
   }
@@ -82,7 +82,7 @@ contract CrydrStorageERC20Proxy is AssetID,
     CrydrStorageAllowanceInterface(crydrStorage).decreaseAllowance(_owner, _spender, _value);
   }
 
-  function getAllowance(address _owner, address _spender) public constant returns (uint256)
+  function getAllowance(address _owner, address _spender) public view returns (uint256)
   {
     return CrydrStorageAllowanceInterface(crydrStorage).getAllowance(_owner, _spender);
   }
@@ -100,7 +100,7 @@ contract CrydrStorageERC20Proxy is AssetID,
     CrydrStorageBlocksInterface(crydrStorage).unblockAccount(_account);
   }
 
-  function getAccountBlocks(address _account) public constant returns (uint256)
+  function getAccountBlocks(address _account) public view returns (uint256)
   {
     return CrydrStorageBlocksInterface(crydrStorage).getAccountBlocks(_account);
   }
@@ -116,7 +116,7 @@ contract CrydrStorageERC20Proxy is AssetID,
     CrydrStorageBlocksInterface(crydrStorage).unblockAccountFunds(_account, _value);
   }
 
-  function getAccountBlockedFunds(address _account) public constant returns (uint256)
+  function getAccountBlockedFunds(address _account) public view returns (uint256)
   {
     return CrydrStorageBlocksInterface(crydrStorage).getAccountBlockedFunds(_account);
   }

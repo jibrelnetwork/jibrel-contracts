@@ -1,10 +1,10 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../lifecycle/Pausable/PausableInterface.sol';
-import '../CrydrControllerBase/CrydrControllerBaseInterface.sol';
+import '../CrydrControllerBase/CrydrControllerBase.sol';
 import './CrydrControllerERC20Interface.sol';
 
 import '../../storage/CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
@@ -17,9 +17,7 @@ import '../../view/CrydrViewERC20Loggable/CrydrViewERC20LoggableInterface.sol';
  * @title CrydrControllerERC20Interface interface
  * @dev Interface of a contract that implement business-logic of an ERC20 CryDR
  */
-contract CrydrControllerERC20 is PausableInterface,
-                                 CrydrControllerBaseInterface,
-                                 CrydrControllerERC20Interface {
+contract CrydrControllerERC20 is CrydrControllerBase {
 
   /* ERC20 support. _msgsender - account that invoked CrydrView */
 
@@ -39,11 +37,11 @@ contract CrydrControllerERC20 is PausableInterface,
     }
   }
 
-  function getTotalSupply() public constant returns (uint256) {
+  function getTotalSupply() public view returns (uint256) {
     return CrydrStorageBalanceInterface(getCrydrStorageAddress()).getTotalSupply();
   }
 
-  function getBalance(address _owner) public constant returns (uint256) {
+  function getBalance(address _owner) public view returns (uint256) {
     return CrydrStorageBalanceInterface(getCrydrStorageAddress()).getBalance(_owner);
   }
 
@@ -86,7 +84,7 @@ contract CrydrControllerERC20 is PausableInterface,
     }
   }
 
-  function getAllowance(address _owner, address _spender) public constant returns (uint256 ) {
+  function getAllowance(address _owner, address _spender) public view returns (uint256 ) {
     return CrydrStorageAllowanceInterface(getCrydrStorageAddress()).getAllowance(_owner, _spender);
   }
 }

@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -10,6 +10,6 @@ pragma solidity ^0.4.24;
  * @dev This will help to avoid misconfiguration of contracts
  */
 contract AssetIDInterface {
-  function getAssetID() public constant returns (string);
-  function getAssetIDHash() public constant returns (bytes32);
+  function getAssetID() public view returns (string memory);
+  function getAssetIDHash() public view returns (bytes32);
 }

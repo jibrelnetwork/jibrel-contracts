@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.18;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -43,11 +43,11 @@ contract Erc20Mock {
     emit Transfer(msg.sender, _to, _value);
   }
 
-  function totalSupply() external constant returns (uint256) {
+  function totalSupply() external view returns (uint256) {
     return tokenTotalSupply;
   }
 
-  function balanceOf(address _owner) external constant returns (uint256) {
+  function balanceOf(address _owner) external view returns (uint256) {
     return balances[_owner];
   }
 

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -17,5 +17,5 @@ contract CrydrStorageBaseInterface {
   /* Configuration */
 
   function setCrydrController(address _newController) public;
-  function getCrydrController() public constant returns (address);
+  function getCrydrController() public view returns (address);
 }

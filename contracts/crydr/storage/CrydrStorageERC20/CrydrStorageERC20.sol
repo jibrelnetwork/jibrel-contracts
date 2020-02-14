@@ -1,26 +1,24 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../third-party/zeppelin-solidity/SafeMathInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
-import '../CrydrStorageBase/CrydrStorageBaseInterface.sol';
-import '../CrydrStorageBalance/CrydrStorageBalanceInterface.sol';
-import '../CrydrStorageAllowance/CrydrStorageAllowanceInterface.sol';
-import '../CrydrStorageBlocks/CrydrStorageBlocksInterface.sol';
+import '../../../third-party/zeppelin-solidity/SafeMath.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
+import '../CrydrStorageBase/CrydrStorageBase.sol';
+import '../CrydrStorageBalance/CrydrStorageBalance.sol';
+import '../CrydrStorageAllowance/CrydrStorageAllowance.sol';
+import '../CrydrStorageBlocks/CrydrStorageBlocks.sol';
 import './CrydrStorageERC20Interface.sol';
 
 
 /**
  * @title CrydrStorageERC20
  */
-contract CrydrStorageERC20 is SafeMathInterface,
-                              PausableInterface,
-                              CrydrStorageBaseInterface,
-                              CrydrStorageBalanceInterface,
-                              CrydrStorageAllowanceInterface,
-                              CrydrStorageBlocksInterface,
+contract CrydrStorageERC20 is CrydrStorageBase,
+                              CrydrStorageBalance,
+                              CrydrStorageAllowance,
+                              CrydrStorageBlocks,
                               CrydrStorageERC20Interface {
 
   function transfer(

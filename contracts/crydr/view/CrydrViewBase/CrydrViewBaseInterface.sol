@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 contract CrydrViewBaseInterface {
@@ -13,8 +13,8 @@ contract CrydrViewBaseInterface {
   /* Configuration */
 
   function setCrydrController(address _crydrController) external;
-  function getCrydrController() public constant returns (address);
+  function getCrydrController() public view returns (address);
 
-  function getCrydrViewStandardName() public constant returns (string);
-  function getCrydrViewStandardNameHash() public constant returns (bytes32);
+  function getCrydrViewStandardName() public view returns (string memory);
+  function getCrydrViewStandardNameHash() public view returns (bytes32);
 }

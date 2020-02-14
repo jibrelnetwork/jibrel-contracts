@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -19,6 +19,6 @@ contract CrydrStorageBalanceInterface {
 
   function increaseBalance(address _account, uint256 _value) public;
   function decreaseBalance(address _account, uint256 _value) public;
-  function getBalance(address _account) public constant returns (uint256);
-  function getTotalSupply() public constant returns (uint256);
+  function getBalance(address _account) public view returns (uint256);
+  function getTotalSupply() public view returns (uint256);
 }
