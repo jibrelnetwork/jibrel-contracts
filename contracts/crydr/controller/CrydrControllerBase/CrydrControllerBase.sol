@@ -1,11 +1,11 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
-import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiers.sol';
+import '../../../lifecycle/Manageable/Manageable.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
 import './CrydrControllerBaseInterface.sol';
 
 import '../../view/CrydrViewBase/CrydrViewBaseInterface.sol';
@@ -15,16 +15,21 @@ import '../../view/CrydrViewBase/CrydrViewBaseInterface.sol';
  * @title CrydrControllerBase
  * @dev Implementation of a contract with business-logic of an CryDR, mediates CryDR views and storage
  */
-contract CrydrControllerBase is CommonModifiersInterface,
-                                ManageableInterface,
-                                PausableInterface,
-                                CrydrControllerBaseInterface {
+contract CrydrControllerBase is CommonModifiers,
+                                Pausable
+                                 {
+
+
 
   /* Storage */
 
   address crydrStorage = address(0x0);
   mapping (string => address) crydrViewsAddresses;
   mapping (address => bool) isRegisteredView;
+
+  event CrydrStorageChangedEvent(address indexed crydrstorage);
+  event CrydrViewAddedEvent(address indexed crydrview, bytes32 standardname);
+  event CrydrViewRemovedEvent(address indexed crydrview, bytes32 standardname);
 
 
   /* CrydrControllerBaseInterface */
@@ -45,13 +50,13 @@ contract CrydrControllerBase is CommonModifiersInterface,
     emit CrydrStorageChangedEvent(_crydrStorage);
   }
 
-  function getCrydrStorageAddress() public constant returns (address) {
+  function getCrydrStorageAddress() public view returns (address) {
     return address(crydrStorage);
   }
 
 
   function setCrydrView(
-    address _newCrydrView, string _viewApiStandardName
+    address _newCrydrView, string calldata _viewApiStandardName
   )
     external
     onlyContractAddress(_newCrydrView)
@@ -64,16 +69,16 @@ contract CrydrControllerBase is CommonModifiersInterface,
 
     CrydrViewBaseInterface crydrViewInstance = CrydrViewBaseInterface(_newCrydrView);
     bytes32 standardNameHash = crydrViewInstance.getCrydrViewStandardNameHash();
-    require(standardNameHash == keccak256(_viewApiStandardName));
+    require(standardNameHash == keccak256(abi.encodePacked(_viewApiStandardName)));
 
     crydrViewsAddresses[_viewApiStandardName] = _newCrydrView;
     isRegisteredView[_newCrydrView] = true;
 
-    emit CrydrViewAddedEvent(_newCrydrView, keccak256(_viewApiStandardName));
+    emit CrydrViewAddedEvent(_newCrydrView, keccak256(abi.encodePacked(_viewApiStandardName)));
   }
 
   function removeCrydrView(
-    string _viewApiStandardName
+    string calldata _viewApiStandardName
   )
     external
     onlyValidCrydrViewStandardName(_viewApiStandardName)
@@ -88,14 +93,14 @@ contract CrydrControllerBase is CommonModifiersInterface,
     crydrViewsAddresses[_viewApiStandardName] == address(0x0);
     isRegisteredView[removedView] = false;
 
-    emit CrydrViewRemovedEvent(removedView, keccak256(_viewApiStandardName));
+    emit CrydrViewRemovedEvent(removedView, keccak256(abi.encodePacked(_viewApiStandardName)));
   }
 
   function getCrydrViewAddress(
-    string _viewApiStandardName
+    string memory _viewApiStandardName
   )
     public
-    constant
+    view
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     returns (address)
   {
@@ -108,7 +113,7 @@ contract CrydrControllerBase is CommonModifiersInterface,
     address _crydrViewAddress
   )
     public
-    constant
+    view
     returns (bool)
   {
     require(_crydrViewAddress != address(0x0));
@@ -117,13 +122,25 @@ contract CrydrControllerBase is CommonModifiersInterface,
   }
 
   function isCrydrViewRegistered(
-    string _viewApiStandardName
+    string memory _viewApiStandardName
   )
     public
-    constant
+    view
     onlyValidCrydrViewStandardName(_viewApiStandardName)
     returns (bool)
   {
     return (crydrViewsAddresses[_viewApiStandardName] != address(0x0));
+  }
+
+    /* Helpers */
+
+  modifier onlyValidCrydrViewStandardName(string memory _viewApiStandard) {
+    require(bytes(_viewApiStandard).length > 0);
+    _;
+  }
+
+  modifier onlyCrydrView() {
+    require(isCrydrViewAddress(msg.sender) == true);
+    _;
   }
 }

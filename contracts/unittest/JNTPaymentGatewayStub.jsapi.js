@@ -16,16 +16,18 @@ export const chargeJNT = async (contractAddress, senderAddress, fromAddress, toA
   global.console.log(`\t\tfromAddress - ${fromAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JNTPaymentGatewayStubArtifact
-      .at(contractAddress)
-      .chargeJNT
-      .sendTransaction,
-    [fromAddress, toAddress, valueWei],
-    { from: senderAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JNTPaymentGatewayStubArtifact
+  //     .at(contractAddress)
+  //     .chargeJNT
+  //     .sendTransaction,
+  //   [fromAddress, toAddress, valueWei],
+  //   { from: senderAddress }
+  // );
+  const instance = await JNTPaymentGatewayStubArtifact.at(contractAddress);
+  const txHash = await instance.mint(fromAddress, toAddress, valueWei, { from: senderAddress });
   global.console.log('\tJNT successfully charged');
-  return txHash;
+  return txHash.tx;
 };
 
 
@@ -33,15 +35,20 @@ export const chargeJNT = async (contractAddress, senderAddress, fromAddress, toA
  * Getters
  */
 
-export const counter = async (contractAddress) => JNTPaymentGatewayStubArtifact.at(contractAddress).counter.call();
+export const counter = async (contractAddress) => JNTPaymentGatewayStubArtifact.at(contractAddress).counter();
 
 
 /**
  * Events
  */
 
-export const getJNTChargedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JNTPaymentGatewayStubArtifact.at(contractAddress).JNTChargedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getJNTChargedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JNTPaymentGatewayStubArtifact.at(contractAddress).JNTChargedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JNTPaymentGatewayStubArtifact.at(contractAddress);
+  const events = await i.getPastEvents('JNTChargedEvent', filter);
+  return events;
 };

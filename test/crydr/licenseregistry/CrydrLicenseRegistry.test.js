@@ -32,9 +32,6 @@ global.contract('CrydrLicenseRegistry', (accounts) => {
     isAdmitted = await CrydrLicenseRegistryManagementInterfaceJSAPI.isUserAdmitted(licenseRegistryAddress, ethAccounts.testInvestor1);
     global.assert.strictEqual(isAdmitted, true, 'expected user is admitted after a request');
 
-    await CrydrLicenseRegistryManagementInterfaceJSAPI.getUserAdmittedEvents(licenseRegistryAddress,
-                                                                             ethAccounts.owner,
-                                                                             ethAccounts.testInvestor1, 10 * (10 ** 18));
     let pastEvents = await CrydrLicenseRegistryManagementInterfaceJSAPI.getUserAdmittedEvents(
       licenseRegistryAddress,
       {
@@ -55,9 +52,6 @@ global.contract('CrydrLicenseRegistry', (accounts) => {
     isAdmitted = await CrydrLicenseRegistryManagementInterfaceJSAPI.isUserAdmitted(licenseRegistryAddress, ethAccounts.testInvestor1);
     global.assert.strictEqual(isAdmitted, false, 'expected user is denied after a request');
 
-    await CrydrLicenseRegistryManagementInterfaceJSAPI.getUserDeniedEvents(licenseRegistryAddress,
-                                                                           ethAccounts.owner,
-                                                                           ethAccounts.testInvestor1, 10 * (10 ** 18));
     pastEvents = await CrydrLicenseRegistryManagementInterfaceJSAPI.getUserDeniedEvents(
       licenseRegistryAddress,
       {

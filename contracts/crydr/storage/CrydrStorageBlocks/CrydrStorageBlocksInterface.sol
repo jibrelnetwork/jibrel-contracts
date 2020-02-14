@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -21,9 +21,9 @@ contract CrydrStorageBlocksInterface {
 
   function blockAccount(address _account) public;
   function unblockAccount(address _account) public;
-  function getAccountBlocks(address _account) public constant returns (uint256);
+  function getAccountBlocks(address _account) public view returns (uint256);
 
   function blockAccountFunds(address _account, uint256 _value) public;
   function unblockAccountFunds(address _account, uint256 _value) public;
-  function getAccountBlockedFunds(address _account) public constant returns (uint256);
+  function getAccountBlockedFunds(address _account) public view returns (uint256);
 }

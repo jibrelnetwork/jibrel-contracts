@@ -1,6 +1,6 @@
 /* Author: Aleksey Selikhov  aleksey.selikhov@gmail.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import './AssetIDInterface.sol';
@@ -10,7 +10,7 @@ import './AssetIDInterface.sol';
  * @title AssetID
  * @dev Base contract implementing AssetIDInterface
  */
-contract AssetID is AssetIDInterface {
+contract AssetID {
 
   /* Storage */
 
@@ -19,7 +19,7 @@ contract AssetID is AssetIDInterface {
 
   /* Constructor */
 
-  constructor (string _assetID) public {
+  constructor (string memory _assetID) public {
     require(bytes(_assetID).length > 0);
 
     assetID = _assetID;
@@ -28,11 +28,11 @@ contract AssetID is AssetIDInterface {
 
   /* Getters */
 
-  function getAssetID() public constant returns (string) {
+  function getAssetID() public view returns (string memory) {
     return assetID;
   }
 
-  function getAssetIDHash() public constant returns (bytes32) {
-    return keccak256(assetID);
+  function getAssetIDHash() public view returns (bytes32) {
+    return keccak256(abi.encodePacked(assetID));
   }
 }

@@ -1,11 +1,11 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
-import '../../../util/CommonModifiers/CommonModifiersInterface.sol';
+import '../../../util/CommonModifiers/CommonModifiers.sol';
 import '../../../lifecycle/Manageable/ManageableInterface.sol';
-import '../../../lifecycle/Pausable/PausableInterface.sol';
+import '../../../lifecycle/Pausable/Pausable.sol';
 import './JNTPayableServiceInterface.sol';
 
 import '../../view/CrydrViewERC20/CrydrViewERC20Interface.sol';
@@ -13,9 +13,8 @@ import '../../controller/CrydrControllerBase/CrydrControllerBaseInterface.sol';
 import '../JNTPaymentGateway/JNTPaymentGateway.sol';
 
 
-contract JNTPayableService is CommonModifiersInterface,
-                              ManageableInterface,
-                              PausableInterface,
+contract JNTPayableService is CommonModifiers,
+                              Pausable,
                               JNTPayableServiceInterface {
 
   /* Storage */
@@ -42,7 +41,7 @@ contract JNTPayableService is CommonModifiersInterface,
     emit JNTControllerChangedEvent(_jntController);
   }
 
-  function getJntController() public constant returns (address) {
+  function getJntController() public view returns (address) {
     return address(jntController);
   }
 
@@ -63,13 +62,13 @@ contract JNTPayableService is CommonModifiersInterface,
     emit JNTBeneficiaryChangedEvent(jntBeneficiary);
   }
 
-  function getJntBeneficiary() public constant returns (address) {
+  function getJntBeneficiary() public view returns (address) {
     return jntBeneficiary;
   }
 
 
   function setActionPrice(
-    string _actionName,
+    string calldata _actionName,
     uint256 _jntPriceWei
   )
     external
@@ -83,10 +82,10 @@ contract JNTPayableService is CommonModifiersInterface,
   }
 
   function getActionPrice(
-    string _actionName
+    string memory _actionName
   )
     public
-    constant
+    view
     onlyValidActionName(_actionName)
     returns (uint256)
   {
@@ -98,7 +97,7 @@ contract JNTPayableService is CommonModifiersInterface,
 
   function initChargeJNT(
     address _from,
-    string _actionName
+    string memory _actionName
   )
     internal
     onlyValidActionName(_actionName)
@@ -112,7 +111,7 @@ contract JNTPayableService is CommonModifiersInterface,
 
     jntController.chargeJNT(_from, jntBeneficiary, _actionPrice);
 
-    emit JNTChargedEvent(_from, jntBeneficiary, _actionPrice, keccak256(_actionName));
+    emit JNTChargedEvent(_from, jntBeneficiary, _actionPrice, keccak256(abi.encodePacked(_actionName)));
   }
 
 
@@ -123,7 +122,7 @@ contract JNTPayableService is CommonModifiersInterface,
    */
   function unpauseContract()
     public
-    onlyContractAddress(jntController)
+    onlyContractAddress(address(jntController))
     onlyValidJntBeneficiary(jntBeneficiary)
   {
     super.unpauseContract();
@@ -140,7 +139,7 @@ contract JNTPayableService is CommonModifiersInterface,
   /**
    * @dev Modifier to check name of manager permission
    */
-  modifier onlyValidActionName(string _actionName) {
+  modifier onlyValidActionName(string memory _actionName) {
     require(bytes(_actionName).length != 0);
     _;
   }

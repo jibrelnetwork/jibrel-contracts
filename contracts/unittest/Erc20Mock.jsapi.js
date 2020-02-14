@@ -15,16 +15,18 @@ export const transfer = async (contractAddress, senderAddress, toAddress, valueW
   global.console.log(`\t\tsenderAddress - ${senderAddress}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    Erc20MockArtifact
-      .at(contractAddress)
-      .transfer
-      .sendTransaction,
-    [toAddress, valueWei],
-    { from: senderAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   Erc20MockArtifact
+  //     .at(contractAddress)
+  //     .transfer
+  //     .sendTransaction,
+  //   [toAddress, valueWei],
+  //   { from: senderAddress }
+  // );
+  const instance = await Erc20MockArtifact.at(contractAddress);
+  const txHash = await instance.transfer(toAddress, valueWei, { from: senderAddress });
   global.console.log('\tTokens successfully transferred');
-  return txHash;
+  return txHash.tx;
 };
 
 export const mint = async (contractAddress, contractOwner, toAddress, valueWei) => {
@@ -33,16 +35,18 @@ export const mint = async (contractAddress, contractOwner, toAddress, valueWei) 
   global.console.log(`\t\tcontractOwner - ${contractOwner}`);
   global.console.log(`\t\ttoAddress - ${toAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    Erc20MockArtifact
-      .at(contractAddress)
-      .mint
-      .sendTransaction,
-    [toAddress, valueWei],
-    { from: contractOwner }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   Erc20MockArtifact
+  //     .at(contractAddress)
+  //     .mint
+  //     .sendTransaction,
+  //   [toAddress, valueWei],
+  //   { from: contractOwner }
+  // );
+  const instance = await Erc20MockArtifact.at(contractAddress);
+  const txHash = await instance.mint(toAddress, valueWei, { from: contractOwner });
   global.console.log('\tTokens successfully minted');
-  return txHash;
+  return txHash.tx;
 };
 
 
@@ -50,25 +54,41 @@ export const mint = async (contractAddress, contractOwner, toAddress, valueWei) 
  * Getters
  */
 
-export const totalSupply = async (contractAddress) =>
-  Erc20MockArtifact.at(contractAddress).totalSupply.call();
+export const totalSupply = async (contractAddress) => {
+  const i = await Erc20MockArtifact.at(contractAddress);
+  return await i.totalSupply(userAddress);
+}
 
-export const balanceOf = async (contractAddress, userAddress) =>
-  Erc20MockArtifact.at(contractAddress).balanceOf.call(userAddress);
+
+export const balanceOf = async (contractAddress, userAddress) =>{
+  const i = await Erc20MockArtifact.at(contractAddress);
+  return await i.balanceOf(userAddress);
+}
+
 
 
 /**
  * Events
  */
 
-export const getTransferEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Erc20MockArtifact.at(contractAddress).Transfer(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getTransferEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = Erc20MockArtifact.at(contractAddress).Transfer(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await Erc20MockArtifact.at(contractAddress);
+  const events = await i.getPastEvents('Transfer', filter);
+  return events;
 };
 
-export const getMintEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = Erc20MockArtifact.at(contractAddress).MintEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getMintEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = Erc20MockArtifact.at(contractAddress).MintEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await Erc20MockArtifact.at(contractAddress);
+  const events = await i.getPastEvents('MintEvent', filter);
+  return events;
 };

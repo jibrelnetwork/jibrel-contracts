@@ -1,3 +1,5 @@
+import { BN } from 'bn.js';
+
 import * as PausableInterfaceJSAPI            from '../../../contracts/lifecycle/Pausable/PausableInterface.jsapi';
 import * as CrydrControllerBaseInterfaceJSAPI from '../../../contracts/crydr/controller/CrydrControllerBase/CrydrControllerBaseInterface.jsapi';
 
@@ -35,10 +37,10 @@ global.contract('CrydrControllerBase', (accounts) => {
   global.beforeEach(async () => {
     crydrControllerBaseInstance = await CrydrControllerBaseMock.new(assetID, { from: ethAccounts.owner });
     crydrStorageInstance = await JCashCrydrStorage.new(assetID, { from: ethAccounts.owner });
-    crydrViewBaseInstance = await CrydrViewBaseMock.new(assetID, viewStandard, { form: ethAccounts.owner });
+    crydrViewBaseInstance = await CrydrViewBaseMock.new(assetID, viewStandard, { from: ethAccounts.owner });
 
     crydrStorageInstanceStub01 = await JCashCrydrStorage.new(assetID, { from: ethAccounts.owner });
-    crydrViewBaseInstanceStub01 = await CrydrViewBaseMock.new(assetID, viewStandardStub01, { form: ethAccounts.owner });
+    crydrViewBaseInstanceStub01 = await CrydrViewBaseMock.new(assetID, viewStandardStub01, { from: ethAccounts.owner });
 
     global.console.log('\tContracts deployed for tests CrydrControllerBase:');
     global.console.log(`\t\tcrydrControllerBaseInstance: ${crydrControllerBaseInstance.address}`);

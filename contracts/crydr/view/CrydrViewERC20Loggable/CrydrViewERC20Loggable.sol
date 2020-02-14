@@ -1,17 +1,16 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../lifecycle/Pausable/PausableInterface.sol';
 import '../CrydrViewBase/CrydrViewBaseInterface.sol';
-import '../CrydrViewERC20/CrydrViewERC20Interface.sol';
+import '../CrydrViewERC20/CrydrViewERC20.sol';
 import './CrydrViewERC20LoggableInterface.sol';
 
 
-contract CrydrViewERC20Loggable is PausableInterface,
-                                   CrydrViewBaseInterface,
-                                   CrydrViewERC20Interface,
+contract CrydrViewERC20Loggable is
+                                   CrydrViewERC20,
                                    CrydrViewERC20LoggableInterface {
 
   function emitTransferEvent(

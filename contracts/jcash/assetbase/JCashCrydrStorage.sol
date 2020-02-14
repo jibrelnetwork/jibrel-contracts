@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../third-party/zeppelin-solidity/SafeMath.sol';
@@ -21,13 +21,7 @@ import '../../crydr/storage/CrydrStorageERC20/CrydrStorageERC20.sol';
  * @title JCashCrydrStorage
  * @dev Implementation of a contract that manages data of an CryDR
  */
-contract JCashCrydrStorage is SafeMath,
-                              CommonModifiers,
-                              AssetID,
-                              Ownable,
-                              Manageable,
-                              Pausable,
-                              BytecodeExecutor,
+contract JCashCrydrStorage is BytecodeExecutor,
                               CrydrStorageBase,
                               CrydrStorageBalance,
                               CrydrStorageAllowance,
@@ -36,5 +30,5 @@ contract JCashCrydrStorage is SafeMath,
 
   /* Constructor */
 
-  constructor (string _assetID) AssetID(_assetID) public { }
+  constructor (string memory _assetID) AssetID(_assetID) public { }
 }

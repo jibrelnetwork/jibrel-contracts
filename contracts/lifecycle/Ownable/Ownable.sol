@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import './OwnableInterface.sol';
@@ -11,7 +11,7 @@ import './OwnableInterface.sol';
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
  */
-contract Ownable is OwnableInterface {
+contract Ownable {
 
   /* Storage */
 
@@ -86,14 +86,19 @@ contract Ownable is OwnableInterface {
   /**
    * @dev The getter for "owner" contract variable
    */
-  function getOwner() public constant returns (address) {
+  function getOwner() public view returns (address) {
     return owner;
   }
 
   /**
    * @dev The getter for "proposedOwner" contract variable
    */
-  function getProposedOwner() public constant returns (address) {
+  function getProposedOwner() public view returns (address) {
     return proposedOwner;
+  }
+
+  modifier onlyOwner() {
+    require (msg.sender == getOwner());
+    _;
   }
 }

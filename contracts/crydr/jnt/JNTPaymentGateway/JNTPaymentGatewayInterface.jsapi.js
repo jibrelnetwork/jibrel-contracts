@@ -17,14 +17,16 @@ export const chargeJNT = async (crydrControllerAddress, managerAddress,
   global.console.log(`\t\tfromAccount - ${fromAccount}`);
   global.console.log(`\t\ttoAccount - ${toAccount}`);
   global.console.log(`\t\tvalueToCharge - ${valueToCharge}`);
-  await submitTxAndWaitConfirmation(
-    JNTPaymentGatewayArtifact
-      .at(crydrControllerAddress)
-      .chargeJNT
-      .sendTransaction,
-    [fromAccount, toAccount, valueToCharge],
-    { from: managerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   JNTPaymentGatewayArtifact
+  //     .at(crydrControllerAddress)
+  //     .chargeJNT
+  //     .sendTransaction,
+  //   [fromAccount, toAccount, valueToCharge],
+  //   { from: managerAddress }
+  // );
+  const instance = await JNTPaymentGatewayArtifact.at(crydrControllerAddress);
+  await instance.chargeJNT(fromAccount, toAccount, '0x' + valueToCharge.toString(16), { from: managerAddress });
   global.console.log('\tJNT successfully charged');
   return null;
 };

@@ -13,14 +13,16 @@ export const blockAccount = async (crydrStorageAddress, crydrControllerAddress,
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBlocksInterfaceArtifact
-      .at(crydrStorageAddress)
-      .blockAccount
-      .sendTransaction,
-    [accountAddress],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBlocksInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .blockAccount
+  //     .sendTransaction,
+  //   [accountAddress],
+  //   { from: crydrControllerAddress }
+  // );
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  await instance.blockAccount(accountAddress, { from: crydrControllerAddress });
   global.console.log('\tAccount successfully blocked');
 };
 
@@ -30,14 +32,16 @@ export const unblockAccount = async (crydrStorageAddress, crydrControllerAddress
   global.console.log(`\t\tstorage - ${crydrStorageAddress}`);
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBlocksInterfaceArtifact
-      .at(crydrStorageAddress)
-      .unblockAccount
-      .sendTransaction,
-    [accountAddress],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBlocksInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .unblockAccount
+  //     .sendTransaction,
+  //   [accountAddress],
+  //   { from: crydrControllerAddress }
+  // );
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  await instance.unblockAccount(accountAddress, { from: crydrControllerAddress });
   global.console.log('\tAccount successfully unlocked');
 };
 
@@ -52,14 +56,16 @@ export const blockAccountFunds = async (crydrStorageAddress, crydrControllerAddr
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBlocksInterfaceArtifact
-      .at(crydrStorageAddress)
-      .blockAccountFunds
-      .sendTransaction,
-    [accountAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBlocksInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .blockAccountFunds
+  //     .sendTransaction,
+  //   [accountAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  await instance.blockAccountFunds(accountAddress, '0x'+ valueWei.toString(16), { from: crydrControllerAddress });
   global.console.log('\tFunds successfully blocked');
 };
 
@@ -70,53 +76,78 @@ export const unblockAccountFunds = async (crydrStorageAddress, crydrControllerAd
   global.console.log(`\t\tcontroller - ${crydrControllerAddress}`);
   global.console.log(`\t\taccountAddress - ${accountAddress}`);
   global.console.log(`\t\tvalueWei - ${valueWei}`);
-  await submitTxAndWaitConfirmation(
-    CrydrStorageBlocksInterfaceArtifact
-      .at(crydrStorageAddress)
-      .unblockAccountFunds
-      .sendTransaction,
-    [accountAddress, valueWei],
-    { from: crydrControllerAddress }
-  );
+  // await submitTxAndWaitConfirmation(
+  //   CrydrStorageBlocksInterfaceArtifact
+  //     .at(crydrStorageAddress)
+  //     .unblockAccountFunds
+  //     .sendTransaction,
+  //   [accountAddress, valueWei],
+  //   { from: crydrControllerAddress }
+  // );
+  const instance = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  await instance.unblockAccountFunds(accountAddress, '0x'+ valueWei.toString(16), { from: crydrControllerAddress });
   global.console.log('\tFunds successfully unlocked');
 };
 
-export const getAccountBlockedFunds = async (crydrStorageAddress, accountAddress) =>
-  CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress).getAccountBlockedFunds.call(accountAddress);
+export const getAccountBlockedFunds = async (crydrStorageAddress, accountAddress) => {
+  const i = await CrydrStorageBlocksInterfaceArtifact.at(crydrStorageAddress);
+  return await i.getAccountBlockedFunds(accountAddress);
+}
+
 
 
 /**
  * Events
  */
 
-export const getAccountBlockedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageBlocksInterfaceArtifact
-    .at(contractAddress)
-    .AccountBlockedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getAccountBlockedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrStorageBlocksInterfaceArtifact
+  //   .at(contractAddress)
+  //   .AccountBlockedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrStorageBlocksInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('AccountBlockedEvent', filter);
+  return events;
 };
 
-export const getAccountUnblockedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageBlocksInterfaceArtifact
-    .at(contractAddress)
-    .AccountUnblockedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getAccountUnblockedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrStorageBlocksInterfaceArtifact
+  //   .at(contractAddress)
+  //   .AccountUnblockedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrStorageBlocksInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('AccountUnblockedEvent', filter);
+  return events;
 };
 
-export const getAccountFundsBlockedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageBlocksInterfaceArtifact
-    .at(contractAddress)
-    .AccountFundsBlockedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getAccountFundsBlockedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrStorageBlocksInterfaceArtifact
+  //   .at(contractAddress)
+  //   .AccountFundsBlockedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrStorageBlocksInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('AccountFundsBlockedEvent', filter);
+  return events;
 };
 
-export const getAccountFundsUnblockedEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = CrydrStorageBlocksInterfaceArtifact
-    .at(contractAddress)
-    .AccountFundsUnblockedEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getAccountFundsUnblockedEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = CrydrStorageBlocksInterfaceArtifact
+  //   .at(contractAddress)
+  //   .AccountFundsUnblockedEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await CrydrStorageBlocksInterfaceArtifact.at(contractAddress);
+  const events = await i.getPastEvents('AccountFundsUnblockedEvent', filter);
+  return events;
 };

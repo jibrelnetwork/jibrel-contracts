@@ -41,9 +41,9 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
   global.it('should test replenishment of JcashRegistrar contract with Jcash tokens', async () => {
     global.console.log('\tcheck initial state');
     let accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.managerJcashReplenisher);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that managerJcashReplenisher has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that managerJcashReplenisher has zero balance');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, JcashRegistrarAddress);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that JcashRegistrar has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that JcashRegistrar has zero balance');
 
     global.console.log('\tmint tokens');
     await CrydrControllerMintableInterfaceJSAPI.mint(JUSDControllerAddress,
@@ -51,7 +51,7 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
                                                      ethAccounts.managerJcashReplenisher,
                                                      10 ** 18);
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.managerJcashReplenisher);
-    global.assert.strictEqual(accountBalance.toNumber(), 10 ** 18, 'expected that replenisher has 1 JUSD');
+    global.assert.strictEqual(accountBalance.toString(), (10 ** 18).toString(), 'expected that replenisher has 1 JUSD');
 
     global.console.log('\ttransfer tokens');
     await ERC20InterfaceJSAPI.transfer(JUSDViewERC20Address,
@@ -65,9 +65,9 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
                                                      JcashRegistrarAddress,
                                                      10 ** 18);
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.managerJcashReplenisher);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that managerJcashReplenisher has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that managerJcashReplenisher has zero balance');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, JcashRegistrarAddress);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that JcashRegistrar has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that JcashRegistrar has zero balance');
   });
 
   global.it('should test Jcash exchange operation', async () => {
@@ -77,9 +77,9 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
 
     global.console.log('\tcheck initial state');
     let accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.managerJcashReplenisher);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that managerJcashReplenisher has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that managerJcashReplenisher has zero balance');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, JcashRegistrarAddress);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that JcashRegistrar has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that JcashRegistrar has zero balance');
 
     global.console.log('\tmint tokens');
     await CrydrControllerMintableInterfaceJSAPI.mint(JUSDControllerAddress,
@@ -87,7 +87,7 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
                                                      ethAccounts.managerJcashReplenisher,
                                                      tokenValue);
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.managerJcashReplenisher);
-    global.assert.strictEqual(accountBalance.toNumber(), tokenValue, 'expected that replenisher has 1 JUSD');
+    global.assert.strictEqual(accountBalance.toString(), tokenValue.toString(), 'expected that replenisher has 1 JUSD');
 
     global.console.log('\ttransfer tokens to the JcashRegistrar contract');
     await ERC20InterfaceJSAPI.transfer(JUSDViewERC20Address,
@@ -102,7 +102,7 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
                                                      ethAccounts.testInvestor1,
                                                      2 * jntExchangePrice);
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(accountBalance.toNumber(), jntExchangePrice * 2,
+    global.assert.strictEqual(accountBalance.toString(), (jntExchangePrice * 2).toString(),
                               'expected that a new user has JNT after minting');
 
     global.console.log('\tgrant token licenses to a new user');
@@ -142,9 +142,9 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
 
     global.console.log('\tcheck JNT charges for exchange operations');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.testInvestor1);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that user has no JNT after 2 exchange operations');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that user has no JNT after 2 exchange operations');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JNTViewERC20Address, ethAccounts.jntBeneficiary);
-    global.assert.strictEqual(accountBalance.toNumber(), jntExchangePrice * 2,
+    global.assert.strictEqual(accountBalance.toString(), (jntExchangePrice * 2).toString(),
                               'expected that jnt beneficiary has all JNT after exchange operations finished');
 
 
@@ -154,9 +154,9 @@ global.contract('Integration tests - JcashRegistrar', (accounts) => {
                                                      JcashRegistrarAddress,
                                                      tokenValue);
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, ethAccounts.managerJcashReplenisher);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that managerJcashReplenisher has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that managerJcashReplenisher has zero balance');
     accountBalance = await ERC20InterfaceJSAPI.balanceOf(JUSDViewERC20Address, JcashRegistrarAddress);
-    global.assert.strictEqual(accountBalance.toNumber(), 0, 'expected that JcashRegistrar has zero balance');
+    global.assert.strictEqual(accountBalance.toString(), '0', 'expected that JcashRegistrar has zero balance');
 
     await CrydrControllerMintableInterfaceJSAPI.burn(JNTControllerAddress,
                                                      ethAccounts.managerMint,

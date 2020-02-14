@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -15,5 +15,5 @@ contract CrydrLicenseRegistryInterface {
    * @param _licenseName string  License name
    * @return True if investor is admitted and has required license
    */
-  function isUserAllowed(address _userAddress, string _licenseName) public constant returns (bool);
+  function isUserAllowed(address _userAddress, string memory _licenseName) public view returns (bool);
 }

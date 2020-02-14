@@ -20,16 +20,18 @@ export const withdrawEth = async (contractAddress, replenisherAddress, value) =>
   global.console.log(`\t\tcontractAddress - ${contractAddress}`);
   global.console.log(`\t\treplenisherAddress - ${replenisherAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .withdrawEth
-      .sendTransaction,
-    [value],
-    { from: replenisherAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .withdrawEth
+  //     .sendTransaction,
+  //   [value],
+  //   { from: replenisherAddress }
+  // );
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
+  const txHash = await instance.withdrawEth('0x' + value.toString(16), {from: replenisherAddress});
   global.console.log('\tSuccessfully withdraw');
-  return txHash;
+  return txHash.tx;
 };
 
 export const withdrawToken = async (contractAddress, replenisherAddress, tokenAddress, value) => {
@@ -38,16 +40,18 @@ export const withdrawToken = async (contractAddress, replenisherAddress, tokenAd
   global.console.log(`\t\treplenisherAddress - ${replenisherAddress}`);
   global.console.log(`\t\ttokenAddress - ${tokenAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .withdrawToken
-      .sendTransaction,
-    [tokenAddress, value],
-    { from: replenisherAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .withdrawToken
+  //     .sendTransaction,
+  //   [tokenAddress, value],
+  //   { from: replenisherAddress }
+  // );
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
+  const txHash = await instance.withdrawToken(tokenAddress, '0x' + value.toString(16), {from: replenisherAddress});
   global.console.log('\tSuccessfully withdraw');
-  return txHash;
+  return txHash.tx;
 };
 
 
@@ -62,16 +66,18 @@ export const refundEth = async (contractAddress, managerAddress, refundedTxHash,
   global.console.log(`\t\trefundedTxHash - ${refundedTxHash}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .refundEth
-      .sendTransaction,
-    [refundedTxHash, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .refundEth
+  //     .sendTransaction,
+  //   [refundedTxHash, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
+  const txHash = await instance.refundEth(refundedTxHash, destinationAddress, '0x' + value.toString(16), {from: managerAddress});
   global.console.log('\tSuccessfully refund');
-  return txHash;
+  return txHash.tx;
 };
 
 export const refundToken = async (contractAddress, managerAddress, refundedTxHash, tokenAddress, destinationAddress, value) => {
@@ -82,16 +88,18 @@ export const refundToken = async (contractAddress, managerAddress, refundedTxHas
   global.console.log(`\t\ttokenAddress - ${tokenAddress}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .refundToken
-      .sendTransaction,
-    [refundedTxHash, tokenAddress, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .refundToken
+  //     .sendTransaction,
+  //   [refundedTxHash, tokenAddress, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
+  const txHash = await instance.refundToken(refundedTxHash, tokenAddress, destinationAddress, '0x' + value.toString(16), {from: managerAddress});
   global.console.log('\tSuccessfully refund');
-  return txHash;
+  return txHash.tx;
 };
 
 export const transferEth = async (contractAddress, managerAddress, processedTxHash, destinationAddress, value) => {
@@ -100,16 +108,18 @@ export const transferEth = async (contractAddress, managerAddress, processedTxHa
   global.console.log(`\t\tmanagerAddress - ${managerAddress}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .transferEth
-      .sendTransaction,
-    [processedTxHash, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .transferEth
+  //     .sendTransaction,
+  //   [processedTxHash, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
+  const txHash = await instance.transferEth(processedTxHash, destinationAddress, '0x' + value.toString(16), { from: managerAddress });
   global.console.log('\tSuccessfully transfer');
-  return txHash;
+  return txHash.tx;
 };
 
 export const transferToken = async (contractAddress, managerAddress, processedTxHash, tokenAddress, destinationAddress, value) => {
@@ -119,16 +129,18 @@ export const transferToken = async (contractAddress, managerAddress, processedTx
   global.console.log(`\t\ttokenAddress - ${tokenAddress}`);
   global.console.log(`\t\tdestinationAddress - ${destinationAddress}`);
   global.console.log(`\t\tvalue - ${value}`);
-  const txHash = await submitTxAndWaitConfirmation(
-    JcashRegistrarArtifact
-      .at(contractAddress)
-      .transferToken
-      .sendTransaction,
-    [processedTxHash, tokenAddress, destinationAddress, value],
-    { from: managerAddress }
-  );
+  // const txHash = await submitTxAndWaitConfirmation(
+  //   JcashRegistrarArtifact
+  //     .at(contractAddress)
+  //     .transferToken
+  //     .sendTransaction,
+  //   [processedTxHash, tokenAddress, destinationAddress, value],
+  //   { from: managerAddress }
+  // );
+  const instance = await JcashRegistrarArtifact.at(contractAddress);
+  const txHash = await instance.transferToken(processedTxHash, tokenAddress, destinationAddress, '0x' + value.toString(16), { from: managerAddress });
   global.console.log('\tSuccessfully transfer');
-  return txHash;
+  return txHash.tx;
 };
 
 
@@ -136,50 +148,90 @@ export const transferToken = async (contractAddress, managerAddress, processedTx
  * Events
  */
 
-export const getReceiveEthEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).ReceiveEthEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getReceiveEthEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).ReceiveEthEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ReceiveEthEvent', filter);
+  return events;
 };
 
-export const getRefundEthEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).RefundEthEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getRefundEthEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).RefundEthEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('RefundEthEvent', filter);
+  return events;
 };
 
-export const getTransferEthEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).TransferEthEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getTransferEthEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).TransferEthEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('TransferEthEvent', filter);
+  return events;
 };
 
-export const getRefundTokenEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).RefundTokenEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getRefundTokenEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).RefundTokenEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('RefundTokenEvent', filter);
+  return events;
 };
 
-export const getTransferTokenEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).TransferTokenEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getTransferTokenEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).TransferTokenEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('TransferTokenEvent', filter);
+  return events;
 };
 
-export const getReplenishEthEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).ReplenishEthEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getReplenishEthEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).ReplenishEthEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('ReplenishEthEvent', filter);
+  return events;
 };
 
-export const getWithdrawEthEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).WithdrawEthEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getWithdrawEthEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).WithdrawEthEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('WithdrawEthEvent', filter);
+  return events;
 };
 
-export const getWithdrawTokenEvents = (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
-  const eventObj = JcashRegistrarArtifact.at(contractAddress).WithdrawTokenEvent(eventDataFilter, commonFilter);
-  const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
-  return eventGet();
+export const getWithdrawTokenEvents = async (contractAddress, eventDataFilter = {}, commonFilter = {}) => {
+  // const eventObj = JcashRegistrarArtifact.at(contractAddress).WithdrawTokenEvent(eventDataFilter, commonFilter);
+  // const eventGet = Promise.promisify(eventObj.get).bind(eventObj);
+  // return eventGet();
+  const filter = commonFilter;
+  filter.filter = eventDataFilter;
+  const i = await JcashRegistrarArtifact.at(contractAddress);
+  const events = await i.getPastEvents('WithdrawTokenEvent', filter);
+  return events;
 };

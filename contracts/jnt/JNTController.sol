@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../util/CommonModifiers/CommonModifiers.sol';
@@ -23,12 +23,7 @@ import '../crydr/storage/CrydrStorageERC20/CrydrStorageERC20Interface.sol';
  * @title JNTController
  * @dev Mediates views and storage of JNT, provides additional methods for Jibrel contracts
  */
-contract JNTController is CommonModifiers,
-                          AssetID,
-                          Ownable,
-                          Manageable,
-                          Pausable,
-                          BytecodeExecutor,
+contract JNTController is AssetID,
                           CrydrControllerBase,
                           CrydrControllerBlockable,
                           CrydrControllerMintable,

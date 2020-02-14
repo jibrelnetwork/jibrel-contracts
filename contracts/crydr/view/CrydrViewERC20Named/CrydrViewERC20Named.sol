@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../../lifecycle/Manageable/ManageableInterface.sol';
@@ -19,7 +19,7 @@ contract CrydrViewERC20Named is ManageableInterface,
 
   /* Constructor */
 
-  constructor (string _name, string _symbol, uint8 _decimals) public {
+  constructor (string memory _name, string memory _symbol, uint8 _decimals) public {
     require(bytes(_name).length > 0);
     require(bytes(_symbol).length > 0);
 
@@ -31,30 +31,30 @@ contract CrydrViewERC20Named is ManageableInterface,
 
   /* CrydrViewERC20NamedInterface */
 
-  function name() external constant returns (string) {
+  function name() external view returns (string memory) {
     return tokenName;
   }
 
-  function symbol() external constant returns (string) {
+  function symbol() external view returns (string memory) {
     return tokenSymbol;
   }
 
-  function decimals() external constant returns (uint8) {
+  function decimals() external view returns (uint8) {
     return tokenDecimals;
   }
 
 
-  function getNameHash() external constant returns (bytes32){
-    return keccak256(tokenName);
+  function getNameHash() external view returns (bytes32){
+    return keccak256(abi.encodePacked(tokenName));
   }
 
-  function getSymbolHash() external constant returns (bytes32){
-    return keccak256(tokenSymbol);
+  function getSymbolHash() external view returns (bytes32){
+    return keccak256(abi.encodePacked(tokenSymbol));
   }
 
 
   function setName(
-    string _name
+    string calldata _name
   )
     external
     onlyAllowedManager('set_crydr_name')
@@ -65,7 +65,7 @@ contract CrydrViewERC20Named is ManageableInterface,
   }
 
   function setSymbol(
-    string _symbol
+    string calldata _symbol
   )
     external
     onlyAllowedManager('set_crydr_symbol')

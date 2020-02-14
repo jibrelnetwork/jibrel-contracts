@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 /**
@@ -17,5 +17,5 @@ contract CrydrControllerLicensedBaseInterface {
   /* Configuration */
 
   function setLicenseRegistry(address _newLicenseRegistry) external;
-  function getLicenseRegistryAddress() public constant returns (address);
+  function getLicenseRegistryAddress() public view returns (address);
 }

@@ -1,6 +1,6 @@
 /* Author: Victor Mezrin  victor@mezrin.com */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 
 import '../../util/CommonModifiers/CommonModifiers.sol';
@@ -22,23 +22,11 @@ import '../../crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicen
  * @title JCashCrydrControllerLicensed
  * @dev Mediates views and storage of an licensed CryDR
  */
-contract JCashCrydrControllerLicensed is CommonModifiers,
-                                         AssetID,
-                                         Ownable,
-                                         Manageable,
-                                         Pausable,
-                                         BytecodeExecutor,
-                                         CrydrControllerBase,
-                                         CrydrControllerBlockable,
-                                         CrydrControllerMintable,
-                                         CrydrControllerERC20,
-                                         CrydrControllerForcedTransfer,
-                                         CrydrControllerLicensedBase,
-                                         CrydrControllerLicensedERC20 {
+contract JCashCrydrControllerLicensed is AssetID, CrydrControllerLicensedERC20, CrydrControllerMintable{
 
   /* Constructor */
 
-  constructor (string _assetID)
+  constructor (string memory _assetID)
     public
     AssetID(_assetID)
   {}
