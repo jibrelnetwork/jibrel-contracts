@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 pragma experimental ABIEncoderV2;
 
 
@@ -12,7 +12,15 @@ contract DEXTradingInterface {
 
   enum OrderType { Buy, Sell }
 
-  event OrderPlacedEvent(address indexed orderCreator, string indexed orderID, OrderType orderType, address indexed tradedAsset, uint256 tradedAmount, address fiatAsset, uint256 assetPrice, uint256 expirationTimestamp);
+  event OrderPlacedEvent(address indexed orderCreator,
+                         string indexed orderID,
+                         OrderType orderType,
+                         address indexed tradedAsset,
+                         uint256 tradedAmount,
+                         address fiatAsset,
+                         uint256 assetPrice,
+                         uint256 expirationTimestamp);
+
   event OrderActivatedEvent(string indexed orderID);
   event OrderCompletedEvent(string indexed orderID);
   event OrderCancelledEvent(string indexed orderID);
@@ -43,13 +51,13 @@ contract DEXTradingInterface {
     uint256 remainingTradedAssetAmount;
   }
 
-  function getOrderData(uint256 _orderID) view returns (OrderData);
+  function getOrderData(uint256 _orderID) public view returns (OrderData memory);
   function placeSellOrder(address _tradedAsset, uint256 _amountToSell, address _fiatAsset, uint256 _assetPrice, uint256 _expirationTimestamp) external returns (uint256);
   function placeBuyOrder(address _tradedAsset, uint256 _amountToBuy, address _fiatAsset, uint256 _assetPrice, uint256 _expirationTimestamp) external returns (uint256);
   function cancelOrder(uint256 _orderID) external;
 
   /* calculate how much fiat will be used to buy a particular amount of asset */
-  function calculateAssetBuyAmount(uint256 _orderID, uint256 _tradedAssetAmount) view returns (uint256);
+  function calculateAssetBuyAmount(uint256 _orderID, uint256 _tradedAssetAmount) public view returns (uint256);
 
 
 
@@ -77,7 +85,7 @@ contract DEXTradingInterface {
     TradeStatus tradeStatus;
   }
 
-  function getOrderTrades(uint _orderID) view returns (OrderTrade[]);
+  function getOrderTrades(uint _orderID) public view returns (OrderTrade[] memory);
   function executeSellOrder(uint256 _orderID, uint256 _amountToBuy) external returns (uint256);
   function executeBuyOrder(uint256 _orderID, uint256 _amountToSell) external returns (uint256);
   function cancelTrade(uint256 _tradeID) external;
