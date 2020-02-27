@@ -312,7 +312,7 @@ const verifyMigrationNumber8 = async () => {
 
 export const executeMigration = async (migrationNumber, migrationParams = []) => {
   let result;
-  // return null;
+  return null;
   if (migrationNumber === 2) {
     result = await executeMigrationNumber2(...migrationParams);
   } else if (migrationNumber === 3) {
@@ -334,7 +334,7 @@ export const executeMigration = async (migrationNumber, migrationParams = []) =>
 };
 
 export const verifyMigration = async (migrationNumber) => {
-  // return null;
+  return null;
   if (migrationNumber === 2) {
     await verifyMigrationNumber2();
   } else if (migrationNumber === 3) {

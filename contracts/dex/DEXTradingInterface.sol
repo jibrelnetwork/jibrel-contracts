@@ -13,7 +13,7 @@ contract DEXTradingInterface {
   enum OrderType { Buy, Sell }
 
   event OrderPlacedEvent(address indexed orderCreator,
-                         string indexed orderID,
+                         uint256 indexed orderID, // FIXME string or uint??
                          OrderType orderType,
                          address indexed tradedAsset,
                          uint256 tradedAmount,
@@ -21,10 +21,10 @@ contract DEXTradingInterface {
                          uint256 assetPrice,
                          uint256 expirationTimestamp);
 
-  event OrderActivatedEvent(string indexed orderID);
-  event OrderCompletedEvent(string indexed orderID);
-  event OrderCancelledEvent(string indexed orderID);
-  event OrderExpiredEvent(string indexed orderID);
+  event OrderActivatedEvent(uint256 indexed orderID);
+  event OrderCompletedEvent(uint256 indexed orderID);
+  event OrderCancelledEvent(uint256 indexed orderID);
+  event OrderExpiredEvent(uint256 indexed orderID);
 
   /**
    * Placed - a new order that requires an approval to be activated (if settings of an asset set a requirement for new orders to be approved)
@@ -63,7 +63,7 @@ contract DEXTradingInterface {
 
   /* Trades */
 
-  event TradePlacedEvent(address indexed tradeCreator, uint256 indexed tradeID, string indexed orderID, uint256 tradedAmount);
+  event TradePlacedEvent(address indexed tradeCreator, uint256 indexed tradeID, uint256 indexed orderID, uint256 tradedAmount);
   event TradeCompletedEvent(uint256 indexed tradeID);
   event TradeCancelledEvent(uint256 indexed tradeID);
 
@@ -80,7 +80,7 @@ contract DEXTradingInterface {
 
     uint256 tradeID;
     uint256 orderID;
-    address tradeAmount;
+    uint256 tradeAmount;
 
     TradeStatus tradeStatus;
   }
