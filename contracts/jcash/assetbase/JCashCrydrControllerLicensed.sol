@@ -22,7 +22,7 @@ import '../../crydr/controller/CrydrControllerLicensedERC20/CrydrControllerLicen
  * @title JCashCrydrControllerLicensed
  * @dev Mediates views and storage of an licensed CryDR
  */
-contract JCashCrydrControllerLicensed is AssetID, CrydrControllerLicensedERC20, CrydrControllerMintable{
+contract JCashCrydrControllerLicensed is AssetID, CrydrControllerLicensedERC20, CrydrControllerMintable, CrydrControllerForcedTransfer, CrydrControllerBlockable{
 
   /* Constructor */
 

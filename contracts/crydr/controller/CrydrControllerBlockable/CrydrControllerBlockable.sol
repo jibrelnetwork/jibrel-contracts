@@ -44,9 +44,9 @@ contract CrydrControllerBlockable is Manageable,
     uint256 _value
   )
     public
-//    onlyAllowedManager('block_account_funds')
+    onlyAllowedManager('block_account_funds')
   {
-//    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);
+    CrydrStorageBlocksInterface(getCrydrStorageAddress()).blockAccountFunds(_account, _value);
   }
 
   function unblockAccountFunds(

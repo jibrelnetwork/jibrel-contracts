@@ -1,21 +1,25 @@
+import * as BN from 'bn.js';
+
 import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 import * as CrydrInit from '../../jsroutines/jsinit/CrydrInit';
 
-const JibrelDEX = artifacts.require("JibrelDEX");
-const DEXSampleView = artifacts.require("DEXTradableSampleView");
-const DEXSampleController = artifacts.require("DEXTradableSampleController");
-const DEXSampleStorage = artifacts.require("DEXTradableSampleStorage");
+const JibrelDEX = artifacts.require('JibrelDEX');
+const DEXSampleView = artifacts.require('DEXTradableSampleView');
+const DEXSampleController = artifacts.require('DEXTradableSampleController');
+const DEXSampleStorage = artifacts.require('DEXTradableSampleStorage');
 
-const JUSDController = artifacts.require("JUSDController");
-const JUSDStorage = artifacts.require("JUSDStorage");
-const JUSDView = artifacts.require("JUSDViewERC20");
+const JUSDController = artifacts.require('JUSDController');
+const JUSDStorage = artifacts.require('JUSDStorage');
+const JUSDView = artifacts.require('JUSDViewERC20');
 
-contract("JibrelDEX", accounts => {
+contract('JibrelDEX', accounts => {
   let JibrelDEXinstance;
   let DEXSampleViewInstance;
   let DEXSampleControllerInstance;
   let DEXSampleStorageInstance;
-  let jusdc, jusdv, jusds;
+  let jusdc,
+    jusdv,
+    jusds;
 
   TxConfig.setEthAccounts(accounts);
   const ethAccounts = TxConfig.getEthAccounts();
@@ -66,6 +70,7 @@ contract("JibrelDEX", accounts => {
     jusdv = await JUSDView.at(addr[2]);
     jusds = await JUSDStorage.at(addr[0]);
 
+    await jusdc.enableManager(JibrelDEXinstance.address, { from: ethAccounts.owner });
     await jusdc.grantManagerPermission(JibrelDEXinstance.address, 'forced_transfer', { from: ethAccounts.owner });
     await jusdc.grantManagerPermission(JibrelDEXinstance.address, 'block_account_funds', { from: ethAccounts.owner });
     await jusdc.grantManagerPermission(JibrelDEXinstance.address, 'unblock_account_funds', { from: ethAccounts.owner });
@@ -74,38 +79,77 @@ contract("JibrelDEX", accounts => {
     await jusds.unpauseContract({ from: ethAccounts.managerPause });
     await jusdv.unpauseContract({ from: ethAccounts.managerPause });
 
-    console.log('C paused???', await jusdc.getPaused());
+    console.log('C paused???', await jusdc.getPaused(), jusdc.address);
     console.log('S paused???', await jusds.getPaused());
     console.log('V paused???', await jusdv.getPaused());
-    await jusdc.mint(ethAccounts.testInvestor1, 1000000, { from: ethAccounts.managerMint });
+    console.log('DEX can block ???', await jusdc.isManagerAllowed(JibrelDEXinstance.address, 'block_account_funds'));
+    await jusdc.mint(ethAccounts.testInvestor1, 100000, { from: ethAccounts.managerMint });
 
   });
 
-  it("should create sell order", async () => {
+  it('should create Buy Order', async () => {
 
     var res = await JibrelDEXinstance.listOrders();
+
     assert.strictEqual(res.length, 0);
+    var ts = new Date('2050-12-12').getTime();
 
     res = await JibrelDEXinstance.placeBuyOrder(
       DEXSampleViewInstance.address,          //address _tradedAsset,
       1000,                                   //uint256 _amountToSell,
       jusdc.address,                 //address _fiatAsset,
       5,                                      //uint256 _assetPrice,
-      new Date("2050-12-12").getTime(),  //uint256 _expirationTimestamp,
+      ts,  //uint256 _expirationTimestamp,
       { from: ethAccounts.testInvestor1 });
+    var event = res['logs'][0];
 
-    assert.strictEqual(res, 1);
+    console.log('TX RES', res['logs'][0]);
+
+    assert.strictEqual(event.args.orderCreator, ethAccounts.testInvestor1);
+    assert.strictEqual(event.args.orderID.toString(), '0');
+    assert.strictEqual(event.args.orderType.toString(), '0');
+    assert.strictEqual(event.args.tradedAsset, DEXSampleViewInstance.address);
+    assert.strictEqual(event.args.tradedAmount.toString(), '1000');
+    assert.strictEqual(event.args.fiatAsset, jusdc.address);
+    assert.strictEqual(event.args.assetPrice.toString(), '5');
+    assert.strictEqual(event.args.expirationTimestamp.toString(), ts.toString());
+
+
+    res = await JibrelDEXinstance.listOrders();
+    var order = res[0]
+    // console.log('LIST', res, typeof res[0]);
+
+    assert.strictEqual(order.orderCreator, ethAccounts.testInvestor1);
+    assert.strictEqual(order.orderID, '0');
+    assert.strictEqual(order.orderType, '0');
+    assert.strictEqual(order.tradedAsset, DEXSampleViewInstance.address);
+    assert.strictEqual(order.tradedAssetAmount, '1000');
+    assert.strictEqual(order.fiatAsset, jusdc.address);
+    assert.strictEqual(order.fiatPrice, '5');
+    assert.strictEqual(order.remainingTradedAssetAmount, '1000');
+    assert.strictEqual(order.expirationTimestamp, ts.toString());
+    assert.strictEqual(order.orderStatus, '0');
+
+    //   orderCreator: '0xf610b7d5b53CE5B5445e4F50EB9DCAA260764F8E',
+    //  orderID: <BN: 0>,
+    //  orderType: <BN: 0>,
+    //  tradedAsset: '0x6e81E9Eb702dFA387C6903a0Ed8DaACDD819E8D6',
+    //  tradedAmount: <BN: 3e8>,
+    //  fiatAsset: '0x9f44FEEF4f80F853bE1AbfD21B4AF5703eC94a1c',
+    //  assetPrice: <BN: 5>,
+    //  expirationTimestamp: <BN: 252bf0eec00>
+    // });
 
   });
 
-      // .then(instance => instance.getBalance.call(accounts[0]))
-      // .then(balance => {
-      //   assert.equal(
-      //     balance.valueOf(),
-      //     10000,
-      //     "10000 wasn't in the first account"
-      //   );
-      // }));
+  // .then(instance => instance.getBalance.call(accounts[0]))
+  // .then(balance => {
+  //   assert.equal(
+  //     balance.valueOf(),
+  //     10000,
+  //     "10000 wasn't in the first account"
+  //   );
+  // }));
 
   // it("should call a function that depends on a linked library", () => {
   //   let meta;

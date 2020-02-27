@@ -215,7 +215,7 @@ contract JibrelDEX is DEXTradingInterface{
 //        sellOrdersIndexes[orderId] = sellOrders.length - 1;
     ordersCount += 1;
 
-    CrydrControllerBlockableInterface(_fiatAsset).blockAccountFunds(msg.sender, _amountToBuy);
+    CrydrControllerBlockableInterface(_fiatAsset).blockAccountFunds(msg.sender, _amountToBuy * _assetPrice);
 
     emit OrderPlacedEvent(msg.sender,
                      orderId,
