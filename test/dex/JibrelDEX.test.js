@@ -2,6 +2,7 @@ import * as BN from 'bn.js';
 
 import * as TxConfig from '../../jsroutines/jsconfig/TxConfig';
 import * as CrydrInit from '../../jsroutines/jsinit/CrydrInit';
+import * as CheckExceptions from '../../jsroutines/util/CheckExceptions';
 
 const JibrelDEX = artifacts.require('JibrelDEX');
 const DEXSampleView = artifacts.require('DEXTradableSampleView');
@@ -101,7 +102,7 @@ contract('JibrelDEX', accounts => {
     await jusdv.unpauseContract({ from: ethAccounts.managerPause });
 
     await jusdc.mint(ethAccounts.testInvestor1, 100000, { from: ethAccounts.managerMint });
-    await jusdc.mint(ethAccounts.testInvestor2, 100000, { from: ethAccounts.managerMint });
+    await jusdc.mint(ethAccounts.testInvestor2, 10000, { from: ethAccounts.managerMint });
     await DEXSampleControllerInstance.mint(ethAccounts.testInvestor1, 2000, { from: ethAccounts.managerGeneral });
     await DEXSampleControllerInstance.mint(ethAccounts.testInvestor2, 4000, { from: ethAccounts.managerGeneral });
 
@@ -190,7 +191,142 @@ contract('JibrelDEX', accounts => {
   //
   // });
 
-  it('should create Sell Trade', async () => {
+  // it('should create Sell Trade', async () => {
+  //
+  //   var ts = new Date('2050-12-12').getTime();
+  //
+  //   var res = await JibrelDEXinstance.placeSellOrder(
+  //       DEXSampleViewInstance.address, //address _tradedAsset
+  //       1000,                          //uint256 _amountToSell
+  //       jusdv.address,                 //address _fiatAsset
+  //       5,                             //uint256 _assetPrice
+  //       ts,                            //uint256 _expirationTimestamp
+  //       { from: ethAccounts.testInvestor1 }
+  //   );
+  //
+  //   res = await JibrelDEXinstance.executeSellOrder(0, 300, { from: ethAccounts.testInvestor2 });
+  //   var bn = res.receipt.blockNumber;
+  //
+  //   var events = res.logs;
+  //   assert.strictEqual(events[0].event, 'TradePlacedEvent');
+  //   assert.strictEqual(events[0].args.tradeCreator,  ethAccounts.testInvestor2);
+  //   assert.strictEqual(events[0].args.tradeID.toString(),  '0');
+  //   assert.strictEqual(events[0].args.orderID.toString(),  '0');
+  //   assert.strictEqual(events[0].args.tradedAmount.toString(),  '300');
+  //
+  //   assert.strictEqual(events[1].event, 'TradeCompletedEvent');
+  //   assert.strictEqual(events[1].args.tradeID.toString(), '0');
+  //
+  //
+  //   res = await JibrelDEXinstance.getOrderTrades(0);
+  //   var trade = res[0];
+  //
+  //   var b = await web3.eth.getBlock(bn);
+  //
+  //   assert.strictEqual(trade.tradeCreator, ethAccounts.testInvestor2);
+  //   assert.strictEqual(trade.orderID, '0');
+  //   assert.strictEqual(trade.tradeID, '0');
+  //   assert.strictEqual(trade.tradeAmount, '300');
+  //   assert.strictEqual(trade.tradeStatus, '1');
+  //   assert.strictEqual(trade.tradeCreationTimestamp, b.timestamp.toString());
+  //
+  //   res = await JibrelDEXinstance.getOrderData(0);
+  //   assert.strictEqual(res.remainingTradedAssetAmount, '700');
+  // });
+  //
+  // it('should create Buy Trade', async () => {
+  //
+  //   var ts = new Date('2050-12-12').getTime();
+  //
+  //   var res = await JibrelDEXinstance.placeBuyOrder(
+  //       DEXSampleViewInstance.address, //address _tradedAsset
+  //       1000,                          //uint256 _amountToSell
+  //       jusdv.address,                 //address _fiatAsset
+  //       5,                             //uint256 _assetPrice
+  //       ts,                            //uint256 _expirationTimestamp
+  //       { from: ethAccounts.testInvestor1 }
+  //   );
+  //
+  //   res = await JibrelDEXinstance.executeBuyOrder(0, 400, { from: ethAccounts.testInvestor2 });
+  //   var bn = res.receipt.blockNumber;
+  //
+  //   var events = res.logs;
+  //   assert.strictEqual(events[0].event, 'TradePlacedEvent');
+  //   assert.strictEqual(events[0].args.tradeCreator,  ethAccounts.testInvestor2);
+  //   assert.strictEqual(events[0].args.tradeID.toString(),  '0');
+  //   assert.strictEqual(events[0].args.orderID.toString(),  '0');
+  //   assert.strictEqual(events[0].args.tradedAmount.toString(),  '400');
+  //
+  //   assert.strictEqual(events[1].event, 'TradeCompletedEvent');
+  //   assert.strictEqual(events[1].args.tradeID.toString(), '0');
+  //
+  //
+  //   res = await JibrelDEXinstance.getOrderTrades(0);
+  //   var trade = res[0];
+  //
+  //   var b = await web3.eth.getBlock(bn);
+  //   assert.strictEqual(trade.tradeCreator, ethAccounts.testInvestor2);
+  //   assert.strictEqual(trade.orderID, '0');
+  //   assert.strictEqual(trade.tradeID, '0');
+  //   assert.strictEqual(trade.tradeAmount, '400');
+  //   assert.strictEqual(trade.tradeStatus, '1');
+  //   assert.strictEqual(trade.tradeCreationTimestamp, b.timestamp.toString());
+  //
+  //   var b = await web3.eth.getBlock(bn - 1);
+  //   res = await JibrelDEXinstance.getOrderData(0);
+  //   res = respToObj(res);
+  //   console.log('ORD', res);
+  //   assert.deepEqual(res, {
+  //     orderCreator: ethAccounts.testInvestor1,
+  //     orderID: '0',
+  //     orderType: '0',
+  //     tradedAsset: DEXSampleViewInstance.address,
+  //     tradedAssetAmount:  '1000',
+  //     fiatAsset: jusdv.address,
+  //     fiatPrice: '5',
+  //     remainingTradedAssetAmount: '600',
+  //     expirationTimestamp: ts.toString(),
+  //     orderCreationTimestamp: b.timestamp.toString(),
+  //     orderStatus: '0',
+  //   });
+  //
+  //
+  // });
+  //
+  // it('should set buy order completed', async () => {
+  //
+  //   var ts = new Date('2050-12-12').getTime();
+  //
+  //   var res = await JibrelDEXinstance.placeBuyOrder(
+  //       DEXSampleViewInstance.address, //address _tradedAsset
+  //       1000,                          //uint256 _amountToSell
+  //       jusdv.address,                 //address _fiatAsset
+  //       5,                             //uint256 _assetPrice
+  //       ts,                            //uint256 _expirationTimestamp
+  //       { from: ethAccounts.testInvestor1 }
+  //   );
+  //
+  //   res = await JibrelDEXinstance.executeBuyOrder(0, 1000, { from: ethAccounts.testInvestor2 });
+  //   var bn = res.receipt.blockNumber;
+  //   var b = await web3.eth.getBlock(bn);
+  //   res = await JibrelDEXinstance.getOrderData(0);
+  //   res = respToObj(res);
+  //   assert.deepEqual(res, {
+  //     orderCreator: ethAccounts.testInvestor1,
+  //     orderID: '0',
+  //     orderType: '0',
+  //     tradedAsset: DEXSampleViewInstance.address,
+  //     tradedAssetAmount:  '1000',
+  //     fiatAsset: jusdv.address,
+  //     fiatPrice: '5',
+  //     remainingTradedAssetAmount: '0',
+  //     expirationTimestamp: ts.toString(),
+  //     orderCreationTimestamp: b.timestamp.toString(),
+  //     orderStatus: '2',
+  //   });
+  // });
+
+  it('should set sell order completed', async () => {
 
     var ts = new Date('2050-12-12').getTime();
 
@@ -202,118 +338,17 @@ contract('JibrelDEX', accounts => {
         ts,                            //uint256 _expirationTimestamp
         { from: ethAccounts.testInvestor1 }
     );
-
-    res = await JibrelDEXinstance.executeSellOrder(0, 300, { from: ethAccounts.testInvestor2 });
-    var bn = res.receipt.blockNumber;
-
-    var events = res.logs;
-    assert.strictEqual(events[0].event, 'TradePlacedEvent');
-    assert.strictEqual(events[0].args.tradeCreator,  ethAccounts.testInvestor2);
-    assert.strictEqual(events[0].args.tradeID.toString(),  '0');
-    assert.strictEqual(events[0].args.orderID.toString(),  '0');
-    assert.strictEqual(events[0].args.tradedAmount.toString(),  '300');
-
-    assert.strictEqual(events[1].event, 'TradeCompletedEvent');
-    assert.strictEqual(events[1].args.tradeID.toString(), '0');
-
-
-    res = await JibrelDEXinstance.getOrderTrades(0);
-    var trade = res[0];
-
-    var b = await web3.eth.getBlock(bn);
-
-    assert.strictEqual(trade.tradeCreator, ethAccounts.testInvestor2);
-    assert.strictEqual(trade.orderID, '0');
-    assert.strictEqual(trade.tradeID, '0');
-    assert.strictEqual(trade.tradeAmount, '300');
-    assert.strictEqual(trade.tradeStatus, '1');
-    assert.strictEqual(trade.tradeCreationTimestamp, b.timestamp.toString());
-
-    res = await JibrelDEXinstance.getOrderData(0);
-    assert.strictEqual(res.remainingTradedAssetAmount, '700');
-  });
-
-  it('should create Buy Trade', async () => {
-
-    var ts = new Date('2050-12-12').getTime();
-
-    var res = await JibrelDEXinstance.placeBuyOrder(
-        DEXSampleViewInstance.address, //address _tradedAsset
-        1000,                          //uint256 _amountToSell
-        jusdv.address,                 //address _fiatAsset
-        5,                             //uint256 _assetPrice
-        ts,                            //uint256 _expirationTimestamp
-        { from: ethAccounts.testInvestor1 }
-    );
-
-    res = await JibrelDEXinstance.executeBuyOrder(0, 400, { from: ethAccounts.testInvestor2 });
-    var bn = res.receipt.blockNumber;
-
-    var events = res.logs;
-    assert.strictEqual(events[0].event, 'TradePlacedEvent');
-    assert.strictEqual(events[0].args.tradeCreator,  ethAccounts.testInvestor2);
-    assert.strictEqual(events[0].args.tradeID.toString(),  '0');
-    assert.strictEqual(events[0].args.orderID.toString(),  '0');
-    assert.strictEqual(events[0].args.tradedAmount.toString(),  '400');
-
-    assert.strictEqual(events[1].event, 'TradeCompletedEvent');
-    assert.strictEqual(events[1].args.tradeID.toString(), '0');
-
-
-    res = await JibrelDEXinstance.getOrderTrades(0);
-    var trade = res[0];
-
-    var b = await web3.eth.getBlock(bn);
-    assert.strictEqual(trade.tradeCreator, ethAccounts.testInvestor2);
-    assert.strictEqual(trade.orderID, '0');
-    assert.strictEqual(trade.tradeID, '0');
-    assert.strictEqual(trade.tradeAmount, '400');
-    assert.strictEqual(trade.tradeStatus, '1');
-    assert.strictEqual(trade.tradeCreationTimestamp, b.timestamp.toString());
-
-    var b = await web3.eth.getBlock(bn - 1);
-    res = await JibrelDEXinstance.getOrderData(0);
-    res = respToObj(res);
-    console.log('ORD', res);
-    assert.deepEqual(res, {
-      orderCreator: ethAccounts.testInvestor1,
-      orderID: '0',
-      orderType: '0',
-      tradedAsset: DEXSampleViewInstance.address,
-      tradedAssetAmount:  '1000',
-      fiatAsset: jusdv.address,
-      fiatPrice: '5',
-      remainingTradedAssetAmount: '600',
-      expirationTimestamp: ts.toString(),
-      orderCreationTimestamp: b.timestamp.toString(),
-      orderStatus: '0',
-    });
-
-
-  });
-
-  it('should set buy order completed', async () => {
-
-    var ts = new Date('2050-12-12').getTime();
-
-    var res = await JibrelDEXinstance.placeBuyOrder(
-        DEXSampleViewInstance.address, //address _tradedAsset
-        1000,                          //uint256 _amountToSell
-        jusdv.address,                 //address _fiatAsset
-        5,                             //uint256 _assetPrice
-        ts,                            //uint256 _expirationTimestamp
-        { from: ethAccounts.testInvestor1 }
-    );
-
-    res = await JibrelDEXinstance.executeBuyOrder(0, 1000, { from: ethAccounts.testInvestor2 });
     var bn = res.receipt.blockNumber;
     var b = await web3.eth.getBlock(bn);
+    res = await JibrelDEXinstance.executeSellOrder(0, 1000, { from: ethAccounts.testInvestor2 });
+    // var bn = res.receipt.blockNumber;
+    // var b = await web3.eth.getBlock(bn);
     res = await JibrelDEXinstance.getOrderData(0);
     res = respToObj(res);
     assert.deepEqual(res, {
       orderCreator: ethAccounts.testInvestor1,
       orderID: '0',
-      orderType: '0',
+      orderType: '1',
       tradedAsset: DEXSampleViewInstance.address,
       tradedAssetAmount:  '1000',
       fiatAsset: jusdv.address,
@@ -324,5 +359,118 @@ contract('JibrelDEX', accounts => {
       orderStatus: '2',
     });
   });
+
+
+  it('should reject create order if not enough assets/funds', async () => {
+
+    var ts = new Date('2050-12-12').getTime();
+
+    var throws = await CheckExceptions.isContractThrows( JibrelDEXinstance.placeSellOrder,
+      [DEXSampleViewInstance.address, //address _tradedAsset
+        5000,                          //uint256 _amountToSell
+        jusdv.address,                 //address _fiatAsset
+        5,                             //uint256 _assetPrice
+        ts,                            //uint256 _expirationTimestamp
+        { from: ethAccounts.testInvestor1 }],
+      'Not enough Asset Amount',
+    );
+
+    assert.isTrue(throws, '"Not enough Asset Amount" is not thrown');
+
+    var throws = await CheckExceptions.isContractThrows( JibrelDEXinstance.placeBuyOrder,
+      [DEXSampleViewInstance.address, //address _tradedAsset
+        50000,                          //uint256 _amountToBuy
+        jusdv.address,                 //address _fiatAsset
+        5,                             //uint256 _assetPrice
+        ts,                            //uint256 _expirationTimestamp
+        { from: ethAccounts.testInvestor1 }],
+      'Not enough Fiat Amount',
+    );
+
+    assert.isTrue(throws, '"Not enough Fiat Amount" is not thrown');
+
+  });
+
+  it('should reject execute order if not enough assets/funds', async () => {
+
+    var ts = new Date('2050-12-12').getTime();
+
+    var res = await JibrelDEXinstance.placeSellOrder(
+        DEXSampleViewInstance.address, //address _tradedAsset
+        1000,                          //uint256 _amountToSell
+        jusdv.address,                 //address _fiatAsset
+        50,                             //uint256 _assetPrice
+        ts,                            //uint256 _expirationTimestamp
+        { from: ethAccounts.testInvestor1 }
+    );
+
+    // res = await JibrelDEXinstance.executeSellOrder(0, 500, { from: ethAccounts.testInvestor2 });
+
+    var throws = await CheckExceptions.isContractThrows( JibrelDEXinstance.executeSellOrder,
+      [0, 500, { from: ethAccounts.testInvestor2 }],
+      'Not enough Fiat Amount',
+    );
+
+    assert.isTrue(throws, '"Not enough Fiat Amount" is not thrown');
+
+    var res = await JibrelDEXinstance.placeBuyOrder(
+        DEXSampleViewInstance.address, //address _tradedAsset
+        5000,                          //uint256 _amountToSell
+        jusdv.address,                 //address _fiatAsset
+        2,                             //uint256 _assetPrice
+        ts,                            //uint256 _expirationTimestamp
+        { from: ethAccounts.testInvestor1 }
+    );
+
+    var throws = await CheckExceptions.isContractThrows( JibrelDEXinstance.executeBuyOrder,
+      [1, 5000, { from: ethAccounts.testInvestor2 }],
+      'Not enough Asset Amount',
+    );
+
+    assert.isTrue(throws, '"Not enough Asset Amount" is not thrown');
+
+  });
+
+
+  it('should reject execute order if creator and executer are same address', async () => {
+
+    var ts = new Date('2050-12-12').getTime();
+
+    var res = await JibrelDEXinstance.placeSellOrder(
+        DEXSampleViewInstance.address, //address _tradedAsset
+        1000,                          //uint256 _amountToSell
+        jusdv.address,                 //address _fiatAsset
+        50,                             //uint256 _assetPrice
+        ts,                            //uint256 _expirationTimestamp
+        { from: ethAccounts.testInvestor1 }
+    );
+
+    // res = await JibrelDEXinstance.executeSellOrder(0, 500, { from: ethAccounts.testInvestor2 });
+
+    var throws = await CheckExceptions.isContractThrows( JibrelDEXinstance.executeSellOrder,
+      [0, 1, { from: ethAccounts.testInvestor1 }],
+      'Could not execute order of yourself',
+    );
+
+    assert.isTrue(throws, '"Could not execute order of yourself" is not thrown');
+
+    var res = await JibrelDEXinstance.placeBuyOrder(
+        DEXSampleViewInstance.address, //address _tradedAsset
+        5000,                          //uint256 _amountToSell
+        jusdv.address,                 //address _fiatAsset
+        2,                             //uint256 _assetPrice
+        ts,                            //uint256 _expirationTimestamp
+        { from: ethAccounts.testInvestor1 }
+    );
+
+    var throws = await CheckExceptions.isContractThrows( JibrelDEXinstance.executeBuyOrder,
+      [1, 1, { from: ethAccounts.testInvestor1 }],
+      'Could not execute order of yourself',
+    );
+
+    assert.isTrue(throws, '"Could not execute order of yourselft" is not thrown');
+
+  });
+
 
 });

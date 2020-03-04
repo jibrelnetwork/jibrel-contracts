@@ -94,6 +94,8 @@ contract JibrelDEX is DEXTradingInterface{
 //        sellOrdersIndexes[orderId] = sellOrders.length - 1;
     ordersCount += 1;
 
+    require(CrydrViewERC20Interface(_fiatAsset).balanceOf(msg.sender) >= _amountToBuy * _assetPrice, "Not enough Fiat Amount");
+
     address assetControllerAddress = CrydrViewBaseInterface(_fiatAsset).getCrydrController();
     CrydrControllerBlockableInterface(assetControllerAddress).blockAccountFunds(msg.sender, _amountToBuy * _assetPrice);
 
@@ -167,7 +169,7 @@ contract JibrelDEX is DEXTradingInterface{
       require(msg.sender != order.orderCreator, "Could not execute order of yourself");
       require(order.remainingTradedAssetAmount >= _amountToBuy, "Not enough remained amount");
       require(CrydrViewERC20Interface(order.fiatAsset).balanceOf(msg.sender) >= fundsRequired,
-              "Not ehough fiat assets");
+              "Not enough Fiat Amount");
 
       // crate Trade
       uint tradeId = tradesCount;
@@ -215,7 +217,7 @@ contract JibrelDEX is DEXTradingInterface{
       require(msg.sender != order.orderCreator, "Could not execute order of yourself");
       require(order.remainingTradedAssetAmount >= _amountToSell, "Not enough remained amount");
       require(CrydrViewERC20Interface(order.tradedAsset).balanceOf(msg.sender) >= _amountToSell,
-              "Not ehough assets");
+              "Not enough Asset Amount");
 
       // crate Trade
       uint tradeId = tradesCount;
