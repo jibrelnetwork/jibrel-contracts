@@ -51,11 +51,11 @@ contract JibrelDEX is DEXTradingInterface{
             fiatAsset: _fiatAsset,
             fiatPrice: _assetPrice,
             remainingTradedAssetAmount: _amountToSell,
-            orderStatus: OrderStatus.Placed,
+            orderStatus: OrderStatus.Active,
             expirationTimestamp: _expirationTimestamp
         })
     );
-//        sellOrdersIndexes[orderId] = sellOrders.length - 1;
+
     ordersCount += 1;
 
     require(CrydrViewERC20Interface(_tradedAsset).balanceOf(msg.sender) >= _amountToSell, "Not enough Asset Amount");
@@ -87,11 +87,11 @@ contract JibrelDEX is DEXTradingInterface{
             fiatAsset: _fiatAsset,
             fiatPrice: _assetPrice,
             remainingTradedAssetAmount: _amountToBuy,
-            orderStatus: OrderStatus.Placed,
+            orderStatus: OrderStatus.Active,
             expirationTimestamp: _expirationTimestamp
         })
     );
-//        sellOrdersIndexes[orderId] = sellOrders.length - 1;
+
     ordersCount += 1;
 
     require(CrydrViewERC20Interface(_fiatAsset).balanceOf(msg.sender) >= _amountToBuy * _assetPrice, "Not enough Fiat Amount");
@@ -111,7 +111,8 @@ contract JibrelDEX is DEXTradingInterface{
   }
 
   function cancelOrder(uint256 _orderID) external {
-    removeOrderById(_orderID);
+    require(msg.sender == orders[_orderID].orderCreator, "Only creater can cancel Order");
+    orders[_orderID].orderStatus = OrderStatus.Cancelled;
     emit OrderCancelledEvent(_orderID);
   }
 
@@ -146,21 +147,6 @@ contract JibrelDEX is DEXTradingInterface{
   }
 
 
-  /*
-    enum TradeStatus { Placed, Completed, Cancelled }
-
-  struct OrderTrade {
-    address tradeCreator;
-    uint256 tradeCreationTimestamp;
-
-    uint256 tradeID;
-    uint256 orderID;
-    uint256 tradeAmount;
-
-    TradeStatus tradeStatus;
-  }
-  */
-
   function executeSellOrder(uint256 _orderID, uint256 _amountToBuy) external returns (uint256){
       //check availability
       OrderData memory order = orders[_orderID];  // FIXME!! memory??
@@ -168,6 +154,7 @@ contract JibrelDEX is DEXTradingInterface{
 
       require(msg.sender != order.orderCreator, "Could not execute order of yourself");
       require(order.remainingTradedAssetAmount >= _amountToBuy, "Not enough remained amount");
+      require(order.orderStatus == OrderStatus.Active, "Order not Active");
       require(CrydrViewERC20Interface(order.fiatAsset).balanceOf(msg.sender) >= fundsRequired,
               "Not enough Fiat Amount");
 
@@ -216,6 +203,7 @@ contract JibrelDEX is DEXTradingInterface{
 
       require(msg.sender != order.orderCreator, "Could not execute order of yourself");
       require(order.remainingTradedAssetAmount >= _amountToSell, "Not enough remained amount");
+      require(order.orderStatus == OrderStatus.Active, "Order not Active");
       require(CrydrViewERC20Interface(order.tradedAsset).balanceOf(msg.sender) >= _amountToSell,
               "Not enough Asset Amount");
 
@@ -263,24 +251,6 @@ contract JibrelDEX is DEXTradingInterface{
           i++;
       }
       trades[i].tradeStatus = TradeStatus.Cancelled;
-//      while (i < trades.length - 1) {
-//          trades[i] = trades[i+1];
-//          i++;
-//      }
-//      trades.length--;
       emit TradeCancelledEvent(_tradeID);
   }
-
 }
-
-/*
-
-let dex = await JibrelDEX.new()
-await dex.getBuyOrders()
-await dex.placeBuyOrder(accounts[3], 100, accounts[4], 1024)
-await dex.placeBuyOrder(accounts[5], 200, accounts[4], 1024)
-await dex.placeBuyOrder(accounts[6], 300, accounts[4], 1024)
-await dex.placeBuyOrder(accounts[7], 400, accounts[4], 1024)
-
-await dex.cancelBuyOrder(2)
-*/
