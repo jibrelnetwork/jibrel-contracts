@@ -178,7 +178,7 @@ contract('JibrelDEX', accounts => {
     res = await JibrelDEXinstance.listOrders();
     var order = res[0]
 
-    assert.strictEqual(order.orderCreator, ethAccounts.testInvestor1);
+    assert.strictEqual(order.orderCreator, ethAccounts.testInvestor1);  
     assert.strictEqual(order.orderID, '0');
     assert.strictEqual(order.orderType, '1');
     assert.strictEqual(order.tradedAsset, DEXSampleViewInstance.address);
@@ -542,9 +542,19 @@ contract('JibrelDEX', accounts => {
       { from: ethAccounts.testInvestor1 }
     );
 
+    var locked_assets = await DEXSampleStorageInstance.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    var locked_fiats = await jusds.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    assert.strictEqual(locked_assets.toString(), '10');
+    assert.strictEqual(locked_fiats.toString(), '0');
+
     await JibrelDEXinstance.executeSellOrder(0, 5, { from: ethAccounts.testInvestor2 });
 
     await JibrelDEXinstance.cancelOrder(0, { from: ethAccounts.testInvestor1 });
+
+    var locked_assets = await DEXSampleStorageInstance.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    var locked_fiats = await jusds.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    assert.strictEqual(locked_assets.toString(), '0');
+    assert.strictEqual(locked_fiats.toString(), '0');
 
     var throws = await CheckExceptions.isContractThrows(JibrelDEXinstance.executeSellOrder,
       [0, 3, { from: ethAccounts.testInvestor2 }],
@@ -554,7 +564,7 @@ contract('JibrelDEX', accounts => {
     assert.isTrue(throws, '"Order not Active" is not thrown');
 
 
-    var res = await JibrelDEXinstance.placeSellOrder(
+    var res = await JibrelDEXinstance.placeBuyOrder(
       DEXSampleViewInstance.address, //address _tradedAsset
       10,                          //uint256 _amountToSell
       jusdv.address,                 //address _fiatAsset
@@ -563,11 +573,21 @@ contract('JibrelDEX', accounts => {
       { from: ethAccounts.testInvestor1 }
     );
 
-    await JibrelDEXinstance.executeSellOrder(1, 5, { from: ethAccounts.testInvestor2 });
+    var locked_assets = await DEXSampleStorageInstance.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    var locked_fiats = await jusds.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    assert.strictEqual(locked_assets.toString(), '0');
+    assert.strictEqual(locked_fiats.toString(), '50');
+
+    await JibrelDEXinstance.executeBuyOrder(1, 5, { from: ethAccounts.testInvestor2 });
 
     await JibrelDEXinstance.cancelOrder(1, { from: ethAccounts.testInvestor1 });
 
-    var throws = await CheckExceptions.isContractThrows(JibrelDEXinstance.executeSellOrder,
+    var locked_assets = await DEXSampleStorageInstance.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    var locked_fiats = await jusds.getAccountBlockedFunds(ethAccounts.testInvestor1);
+    assert.strictEqual(locked_assets.toString(), '0');
+    assert.strictEqual(locked_fiats.toString(), '0');
+
+    var throws = await CheckExceptions.isContractThrows(JibrelDEXinstance.executeBuyOrder,
       [1, 3, { from: ethAccounts.testInvestor2 }],
       'Order not Active',
     );

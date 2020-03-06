@@ -113,6 +113,17 @@ contract JibrelDEX is DEXTradingInterface{
   function cancelOrder(uint256 _orderID) external {
     require(msg.sender == orders[_orderID].orderCreator, "Only creater can cancel Order");
     orders[_orderID].orderStatus = OrderStatus.Cancelled;
+
+    address assetControllerAddress = CrydrViewBaseInterface(orders[_orderID].tradedAsset).getCrydrController();
+    address fiatControllerAddress = CrydrViewBaseInterface(orders[_orderID].fiatAsset).getCrydrController();
+
+    if(orders[_orderID].orderType == OrderType.Sell){
+      CrydrControllerBlockableInterface(assetControllerAddress).unblockAccountFunds(orders[_orderID].orderCreator, orders[_orderID].remainingTradedAssetAmount);
+    }else{
+      CrydrControllerBlockableInterface(fiatControllerAddress).unblockAccountFunds(
+        orders[_orderID].orderCreator, orders[_orderID].remainingTradedAssetAmount * orders[_orderID].fiatPrice);
+    }
+
     emit OrderCancelledEvent(_orderID);
   }
 
@@ -150,6 +161,7 @@ contract JibrelDEX is DEXTradingInterface{
   function executeSellOrder(uint256 _orderID, uint256 _amountToBuy) external returns (uint256){
       //check availability
       OrderData memory order = orders[_orderID];  // FIXME!! memory??
+      require(order.orderType == OrderType.Sell, "Sell order with requested ID not exists");
       uint256 fundsRequired = order.fiatPrice * _amountToBuy;
 
       require(msg.sender != order.orderCreator, "Could not execute order of yourself");
@@ -199,6 +211,7 @@ contract JibrelDEX is DEXTradingInterface{
   function executeBuyOrder(uint256 _orderID, uint256 _amountToSell) external returns (uint256){
  //check availability
       OrderData memory order = orders[_orderID];  // FIXME!! memory??
+      require(order.orderType == OrderType.Buy, "Buy order with requested ID not exists");
       uint256 fundsRequired = order.fiatPrice * _amountToSell;
 
       require(msg.sender != order.orderCreator, "Could not execute order of yourself");
