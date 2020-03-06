@@ -178,7 +178,7 @@ contract('JibrelDEX', accounts => {
     res = await JibrelDEXinstance.listOrders();
     var order = res[0]
 
-    assert.strictEqual(order.orderCreator, ethAccounts.testInvestor1);  
+    assert.strictEqual(order.orderCreator, ethAccounts.testInvestor1);
     assert.strictEqual(order.orderID, '0');
     assert.strictEqual(order.orderType, '1');
     assert.strictEqual(order.tradedAsset, DEXSampleViewInstance.address);
@@ -305,10 +305,10 @@ contract('JibrelDEX', accounts => {
         ts,                            //uint256 _expirationTimestamp
         { from: ethAccounts.testInvestor1 }
     );
-
-    res = await JibrelDEXinstance.executeBuyOrder(0, 1000, { from: ethAccounts.testInvestor2 });
     var bn = res.receipt.blockNumber;
     var b = await web3.eth.getBlock(bn);
+    res = await JibrelDEXinstance.executeBuyOrder(0, 1000, { from: ethAccounts.testInvestor2 });
+
     res = await JibrelDEXinstance.getOrderData(0);
     res = respToObj(res);
     assert.deepEqual(res, {
@@ -580,7 +580,11 @@ contract('JibrelDEX', accounts => {
 
     await JibrelDEXinstance.executeBuyOrder(1, 5, { from: ethAccounts.testInvestor2 });
 
-    await JibrelDEXinstance.cancelOrder(1, { from: ethAccounts.testInvestor1 });
+    res = await JibrelDEXinstance.cancelOrder(1, { from: ethAccounts.testInvestor1 });
+    var event = res['logs'][0];
+
+    assert.strictEqual(event.event, "OrderCancelledEvent");
+    assert.strictEqual(event.args.orderID.toString(), '1');
 
     var locked_assets = await DEXSampleStorageInstance.getAccountBlockedFunds(ethAccounts.testInvestor1);
     var locked_fiats = await jusds.getAccountBlockedFunds(ethAccounts.testInvestor1);
